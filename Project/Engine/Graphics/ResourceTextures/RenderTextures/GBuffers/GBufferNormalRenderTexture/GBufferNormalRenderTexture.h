@@ -1,5 +1,5 @@
 #pragma once
-#include "RenderTextures/BaseRenderTexture/BaseRenderTexture.h"
+#include "ResourceTextures/RenderTextures/BaseRenderTexture/BaseRenderTexture.h"
 
 class GBufferNormalRenderTexture : public BaseRenderTexture {
 public:

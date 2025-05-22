@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderTextures/BaseRenderTexture/BaseRenderTexture.h"
+#include "ResourceTextures/RenderTextures/BaseRenderTexture/BaseRenderTexture.h"
 
 
 class ColorRenderTexture : public BaseRenderTexture {

@@ -7,15 +7,15 @@
 #include "Structs/PostEffectStruct.h"
 
 // シーンカラー用のレンダーテクスチャ
-#include "RenderTextures/ColorRenderTexture/ColorRenderTexture.h"
+#include "ResourceTextures/RenderTextures/ColorRenderTexture/ColorRenderTexture.h"
 
 // GBuffe用のレンダーテクスチャ
-#include "RenderTextures/GBuffers/GBufferAlbedoRenderTexture/GBufferAlbedoRenderTexture.h"
-#include "RenderTextures/GBuffers/GBufferNormalRenderTexture/GBufferNormalRenderTexture.h"
-#include "RenderTextures/GBuffers/GBufferPositionRenderTexture/GBufferPositionRenderTexture.h"
+#include "ResourceTextures/RenderTextures/GBuffers/GBufferAlbedoRenderTexture/GBufferAlbedoRenderTexture.h"
+#include "ResourceTextures/RenderTextures/GBuffers/GBufferNormalRenderTexture/GBufferNormalRenderTexture.h"
+#include "ResourceTextures/RenderTextures/GBuffers/GBufferPositionRenderTexture/GBufferPositionRenderTexture.h"
 
 // シャドウマップ用の深度テクスチャ
-#include "DepthTextures/ShadowDepthTexture/ShadowDepthTexture.h"
+#include "ResourceTextures/DepthTextures/ShadowDepthTexture/ShadowDepthTexture.h"
 
 // 前方宣言
 class DXGI;
