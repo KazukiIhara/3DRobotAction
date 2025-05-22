@@ -1,0 +1,2 @@
+[*.{cpp,h,ipp}]
+charset = utf-8
