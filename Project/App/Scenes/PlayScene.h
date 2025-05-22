@@ -36,6 +36,23 @@ private:
 
 template<typename Data>
 inline void PlayScene<Data>::Initialize() {
+	//-------------------------------------------------------
+	// シーンの必須設定(はよ基底クラスに移せや)
+	//-------------------------------------------------------
+
+	// シーンカメラ作成
+	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
+	// マネージャに追加
+	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
+	// カメラを設定
+	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
+
+	// 2Dカメラ作成
+	sceneCamera2D_ = std::make_unique<Camera2D>("SpriteCamera");
+	// マネージャに追加
+	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D_));
+	// カメラを設定
+	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
 
 }

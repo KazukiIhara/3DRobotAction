@@ -1,8 +1,10 @@
 #include "Game.h"
 
 // EngineScenes
-#include "Scenes/SampleScene.h"
-#include "Scenes/ParticleEditScene.h"
+#include "EngineScenes/SampleScene.h"
+
+// GameScene
+#include "Scenes/PlayScene.h"
 
 Game::~Game() {}
 
@@ -13,9 +15,10 @@ void Game::Initialize() {
 	// シーンの追加
 	// サンプルシーン
 	sceneManager_->AddScene<SampleScene>("Sample");
-	// パーティクル作成シーン
-	sceneManager_->AddScene<ParticleEditScene>("ParticleEdit");
+
+	sceneManager_->AddScene<PlayScene>("Play");
+
 
 	// 最初のシーンを設定
-	sceneManager_->ChangeScene("Sample");
+	sceneManager_->ChangeScene("Play");
 }
