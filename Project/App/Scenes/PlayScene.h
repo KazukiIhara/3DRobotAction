@@ -31,7 +31,6 @@ private:
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
-
 };
 
 template<typename Data>
