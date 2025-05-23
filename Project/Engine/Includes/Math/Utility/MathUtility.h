@@ -116,7 +116,8 @@ Quaternion operator+(const Quaternion& q1, const Quaternion& q2);
 Quaternion operator-(const Quaternion& q1, const Quaternion& q2);
 Quaternion operator*(const Quaternion& q1, const Quaternion& q2);
 
-
+bool operator!=(const Quaternion& q1, const Quaternion& q2);
+bool operator==(const Quaternion& q1, const Quaternion& q2);
 
 /// <summary>
 /// 数学関数群　(左手座標系、行ベクトル)
@@ -125,7 +126,6 @@ namespace MAGIMath {
 
 	// ゼロベクトルを返す
 	Vector3 MakeZeroVector3();
-
 	// 右方向のベクトル
 	Vector3 MakeRightVector3();
 	// 上方向のベクトル
@@ -239,7 +239,9 @@ namespace MAGIMath {
 	float Norm(const Quaternion& quaternion);
 
 	// オイラー角をクオータニオンに変換
-	Quaternion EulerToQuaternion(const Vector3& euler);
+	Quaternion EulerToQuaternionXYZ(const Vector3& euler);
+
+	Vector3 QuaternionToEulerXYZ(const Quaternion& qIn);
 
 	// 向きからクオータニオン角を取得
 	Quaternion DirectionToQuaternion(const Vector3& direction);

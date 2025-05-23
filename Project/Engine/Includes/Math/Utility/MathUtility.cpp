@@ -184,6 +184,14 @@ Quaternion operator*(const Quaternion& q1, const Quaternion& q2) {
 	);
 }
 
+bool operator!=(const Quaternion& q1, const Quaternion& q2) {
+	return (q1.x != q2.x) || (q1.y != q2.y) || (q1.z != q2.z) || (q1.w != q2.w);
+}
+
+bool operator==(const Quaternion& q1, const Quaternion& q2) {
+	return (q1.x == q2.x) || (q1.y == q2.y) || (q1.z == q2.z) || (q1.w == q2.w);
+}
+
 Vector3 MAGIMath::MakeZeroVector3() {
 	Vector3 result{};
 	result.x = 0.0f;
@@ -791,7 +799,7 @@ float MAGIMath::Norm(const Quaternion& quaternion) {
 	);
 }
 
-Quaternion MAGIMath::EulerToQuaternion(const Vector3& euler) {
+Quaternion MAGIMath::EulerToQuaternionXYZ(const Vector3& euler) {
 	// オイラー角を半分にする
 	float halfPitch = euler.x * 0.5f;
 	float halfYaw = euler.y * 0.5f;
@@ -805,15 +813,43 @@ Quaternion MAGIMath::EulerToQuaternion(const Vector3& euler) {
 	float sinZ = std::sin(halfRoll);
 	float cosZ = std::cos(halfRoll);
 
-	Quaternion q;
-
 	// X → Y → Z 回転順序に基づくクオータニオンの計算
-	q.w = cosX * cosY * cosZ - sinX * sinY * sinZ;
-	q.x = sinX * cosY * cosZ + cosX * sinY * sinZ;
-	q.y = cosX * sinY * cosZ - sinX * cosY * sinZ;
-	q.z = cosX * cosY * sinZ + sinX * sinY * cosZ;
+	Quaternion q = {
+		.x = sinX * cosY * cosZ + cosX * sinY * sinZ,
+		.y = cosX * sinY * cosZ - sinX * cosY * sinZ,
+		.z = cosX * cosY * sinZ + sinX * sinY * cosZ,
+		.w = cosX * cosY * cosZ - sinX * sinY * sinZ
+	};
 
-	return q;
+	return Normalize(q);
+}
+
+Vector3 MAGIMath::QuaternionToEulerXYZ(const Quaternion& qIn) {
+	// ① 浮動小数誤差で伸びていることがあるので念のため正規化
+	Quaternion q = Normalize(qIn);
+
+	Vector3 euler; // [x]Pitch, [y]Yaw, [z]Roll
+
+	// ── Roll(X) ─────────────────────────
+	float sinr_cosp = 2.0f * (q.w * q.x + q.y * q.z);
+	float cosr_cosp = 1.0f - 2.0f * (q.x * q.x + q.y * q.y);
+	euler.x = std::atan2(sinr_cosp, cosr_cosp);
+
+	// ── Pitch(Y) ────────────────────────
+	float sinp = 2.0f * (q.w * q.y - q.z * q.x);
+	if (std::abs(sinp) >= 1.0f) {
+		// ±90° 近傍：ジンバルロック補正（符号維持）
+		euler.y = std::copysign(std::numbers::pi_v<float> *0.5f, sinp);
+	} else {
+		euler.y = std::asin(sinp);
+	}
+
+	// ── Yaw(Z) ─────────────────────────
+	float siny_cosp = 2.0f * (q.w * q.z + q.x * q.y);
+	float cosy_cosp = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
+	euler.z = std::atan2(siny_cosp, cosy_cosp);
+
+	return euler; // 返り値は XYZ 順ラジアン
 }
 
 Quaternion MAGIMath::DirectionToQuaternion(const Vector3& direction) {
@@ -848,7 +884,6 @@ Quaternion MAGIMath::DirectionToQuaternion(const Vector3& direction) {
 	return MakeRotateAxisAngleQuaternion(axis, angle);
 }
 
-
 Quaternion MAGIMath::Normalize(const Quaternion& quaternion) {
 	// ノルムを求める
 	float length = Norm(quaternion);
@@ -862,11 +897,12 @@ Quaternion MAGIMath::Normalize(const Quaternion& quaternion) {
 	float inv_length = 1.0f / length;
 
 	// 正規化したクオータニオンを返す
-	Quaternion result;
-	result.x = quaternion.x * inv_length;
-	result.y = quaternion.y * inv_length;
-	result.z = quaternion.z * inv_length;
-	result.w = quaternion.w * inv_length;
+	Quaternion result = {
+		.x = quaternion.x * inv_length,
+		.y = quaternion.y * inv_length,
+		.z = quaternion.z * inv_length,
+		.w = quaternion.w * inv_length
+	};
 	return result;
 }
 
