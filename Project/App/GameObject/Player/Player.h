@@ -8,6 +8,10 @@ public:
 	Player();
 	~Player();
 
+	void Update();
+
+	void Draw();
+
 private:
 
 };

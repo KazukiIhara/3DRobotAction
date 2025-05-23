@@ -8,6 +8,13 @@
 
 using namespace MAGIUtility;
 
+
+//-------------------------------------------
+// シーンオブジェクト
+//-------------------------------------------
+#include "GameObject/Player/Player.h"
+
+
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
@@ -31,6 +38,12 @@ private:
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
+
+	//----------------------------------------- 
+	// シーンオブジェクト
+	//-----------------------------------------
+	std::unique_ptr<Player> player = nullptr;
+
 };
 
 template<typename Data>
@@ -53,19 +66,21 @@ inline void PlayScene<Data>::Initialize() {
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
+	// プレイヤー作成
+	player = std::make_unique<Player>();
 
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
-
-
+	// プレイヤー更新
+	player->Update();
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Draw() {
-
-
+	// プレイヤー描画
+	player->Draw();
 }
 
 template<typename Data>
