@@ -68,9 +68,19 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
 	//-------------------------------------------------------
+	// アセットのロード
+	//-------------------------------------------------------
+	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
+
+
+	//-------------------------------------------------------
 	// シーン固有の初期化処理
 	//-------------------------------------------------------
-	
+
+	// スカイボックスを設定
+	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
+
+
 	// プレイヤー作成
 	player_ = std::make_unique<Player>();
 

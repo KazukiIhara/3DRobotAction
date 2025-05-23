@@ -26,4 +26,6 @@ private:
 	// トランスフォーム
 	std::unique_ptr<Transform3D> transform_;
 
+	float groundSize_ = 0.0f;
+
 };
