@@ -23,7 +23,7 @@ Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const V
 void Transform3D::Update() {
 
 	// ユーザー入力用の回転に変更があった場合
-	if (preInputRadians_ != preInputRadians_) {
+	if (preInputRadians_ != inputRadians_) {
 		// 変換してクオータニオンの回転に適用
 		rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
 	}

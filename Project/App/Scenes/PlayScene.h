@@ -13,7 +13,7 @@ using namespace MAGIUtility;
 // シーンオブジェクト
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
-
+#include "GameObject/Ground/Ground.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -42,8 +42,9 @@ private:
 	//----------------------------------------- 
 	// シーンオブジェクト
 	//-----------------------------------------
-	std::unique_ptr<Player> player = nullptr;
+	std::unique_ptr<Player> player_ = nullptr;
 
+	std::unique_ptr<Ground> ground_ = nullptr;
 };
 
 template<typename Data>
@@ -66,25 +67,37 @@ inline void PlayScene<Data>::Initialize() {
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
+	//-------------------------------------------------------
+	// シーン固有の初期化処理
+	//-------------------------------------------------------
+	
 	// プレイヤー作成
-	player = std::make_unique<Player>();
+	player_ = std::make_unique<Player>();
+
+	// 地面作成
+	ground_ = std::make_unique<Ground>();
 
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
+	// 床更新
+	ground_->Update();
+
 	// プレイヤー更新
-	player->Update();
+	player_->Update();
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Draw() {
+	// 床描画
+	ground_->Draw();
+
 	// プレイヤー描画
-	player->Draw();
+	player_->Draw();
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Finalize() {
-
 
 }
