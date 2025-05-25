@@ -9,7 +9,7 @@
 // MyHedder
 #include "DirectX/ComPtr/ComPtr.h"
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
-#include "3D/Base3D/WorldTransform/WorldTransform.h"
+#include "EngineLogic/Transform3D/Transform3D.h"
 #include "Structs/CameraStruct.h"
 
 /// <summary>
@@ -20,8 +20,6 @@ public:
 	Camera3D(const std::string& cameraName);
 	virtual ~Camera3D()override;
 
-	// 初期化
-	virtual void Initialize();
 	// 更新
 	virtual void Update();
 	// データ更新
@@ -55,7 +53,7 @@ protected:
 	const Vector3 kDefaultCameraRotate_ = { 0.45f,0.0f,0.0f };
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,2.0f,-3.0f };
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_{};
+	std::unique_ptr<Transform3D> transform_{};
 	// ビューマトリックス
 	Matrix4x4 viewMatrix_{};
 	// プロジェクション行列

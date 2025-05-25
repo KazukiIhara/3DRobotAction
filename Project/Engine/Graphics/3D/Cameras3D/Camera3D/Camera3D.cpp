@@ -8,30 +8,24 @@ using namespace MAGIMath;
 
 Camera3D::Camera3D(const std::string& cameraName) {
 	name = cameraName;
-	Initialize();
-}
-
-Camera3D::~Camera3D() {
-
-}
-
-void Camera3D::Initialize() {
 	// ワールド行列初期化
-	worldTransform_.Initialize();
-	worldTransform_.rotate_ = kDefaultCameraRotate_;
-	worldTransform_.translate_ = kDefaultCameraTranslate_;
-	worldTransform_.Update();
+	transform_ = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), kDefaultCameraRotate_, kDefaultCameraTranslate_);
+	transform_->Update();
 
 	// ワールド座標を取得
-	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);
+	worldPosition = ExtractionWorldPos(transform_->GetWorldMatrix());
 
 	// ビュー行列やらあれこれ
-	viewMatrix_ = Inverse(worldTransform_.worldMatrix_);
+	viewMatrix_ = Inverse(transform_->GetWorldMatrix());
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
 	CreateCameraResource();
 	MapCameraData();
+}
+
+Camera3D::~Camera3D() {
+
 }
 
 void Camera3D::Update() {
@@ -41,12 +35,12 @@ void Camera3D::Update() {
 }
 
 void Camera3D::UpdateData() {
-	worldTransform_.Update();
-	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);
-	viewMatrix_ = Inverse(worldTransform_.worldMatrix_);
+	transform_->Update();
+	worldPosition = ExtractionWorldPos(transform_->GetWorldMatrix());
+	viewMatrix_ = Inverse(transform_->GetWorldMatrix());
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
-	billboardMatrix_ = worldTransform_.worldMatrix_;
+	billboardMatrix_ = transform_->GetWorldMatrix();
 	// 平行移動成分を削除
 	billboardMatrix_.m[3][0] = 0.0f;
 	billboardMatrix_.m[3][1] = 0.0f;
@@ -64,11 +58,11 @@ void Camera3D::TransferCameraInv(uint32_t rootParameterIndex) {
 }
 
 Vector3& Camera3D::GetRotate() {
-	return worldTransform_.rotate_;
+	return transform_->GetRotate();
 }
 
 Vector3& Camera3D::GetTranslate() {
-	return worldTransform_.translate_;
+	return transform_->GetTranslate();
 }
 
 Matrix4x4 Camera3D::GetViewProjectionMatrix() const {
