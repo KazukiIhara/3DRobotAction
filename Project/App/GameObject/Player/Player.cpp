@@ -19,6 +19,15 @@ void Player::Update() {
 	// 親だけ更新　TODO:TransformManagerを作る
 	transform_->Update();
 
+	// 破壊時エフェクトテスト
+	if (MAGISYSTEM::PushKey(DIK_SPACE)) {
+		breakEffect_ = std::make_unique<BreakEffect>(MAGIMath::ExtractionWorldPos(transform_->GetWorldMatrix()));
+	}
+
+	if (breakEffect_) {
+		breakEffect_->Update();
+	}
+
 }
 
 void Player::Draw() {

@@ -1178,7 +1178,7 @@ void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
 	textureDataCantainer_->LoadNormalMap(filePath);
 }
 
-std::map<std::string, Texture>& MAGISYSTEM::GetTexture() {
+std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
 	return textureDataCantainer_->GetTexture();
 }
 
@@ -1186,7 +1186,7 @@ const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& fi
 	return textureDataCantainer_->GetMetaData(filePath);
 }
 
-const std::map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
+const std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
 	return textureDataCantainer_->GetTextureContainer();
 }
 

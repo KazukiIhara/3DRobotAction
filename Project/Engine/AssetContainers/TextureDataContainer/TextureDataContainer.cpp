@@ -115,7 +115,7 @@ void TextureDataContainer::LoadNormalMap(const std::string& filePath) {
 
 }
 
-std::map<std::string, Texture>& TextureDataContainer::GetTexture() {
+std::unordered_map<std::string, Texture>& TextureDataContainer::GetTexture() {
 	return textureDatas_;
 }
 
@@ -125,7 +125,7 @@ const DirectX::TexMetadata& TextureDataContainer::GetMetaData(const std::string&
 	return texture.metaData;
 }
 
-const std::map<std::string, Texture>& TextureDataContainer::GetTextureContainer()const {
+const std::unordered_map<std::string, Texture>& TextureDataContainer::GetTextureContainer()const {
 	return textureDatas_;
 }
 
