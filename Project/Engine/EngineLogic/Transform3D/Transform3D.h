@@ -35,6 +35,7 @@ public:
 	Vector3& GetScale();
 	Vector3& GetRotate();
 	Vector3& GetTranslate();
+	Quaternion& GetQuaternion();
 
 	const Matrix4x4& GetWorldMatrix()const;
 

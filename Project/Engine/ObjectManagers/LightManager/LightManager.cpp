@@ -46,9 +46,9 @@ void LightManager::Update() {
 	// シーン中心から離れた位置にライト（eye）を置く
 	const float lightDistance = 100.0f;
 
-	Vector3 position = -directionalLight_.direction * lightDistance;
 	Vector3 target = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 up = Vector3(1.0f, 0.0f, 0.0f);
+	Vector3 position = (target - lightDir) * lightDistance;
 
 	// ビュー行列（ライト空間ビュー）
 	Matrix4x4 lightView = MakeLookAtMatrix(position, target, up);

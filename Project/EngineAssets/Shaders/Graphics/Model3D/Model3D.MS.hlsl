@@ -45,6 +45,7 @@ MeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
     vout.position = mul(v.position, mul(instData.world, gCamera.viewProjection));
     vout.uv = v.uv;
     vout.normal = normalize(mul(v.normal, (float3x3) instData.worldInverseTranspose));
+    vout.color = instData.color;
     return vout;
 }
 

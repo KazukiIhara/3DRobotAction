@@ -15,6 +15,6 @@ void FollowCamera::FollowTarget() {
 
 }
 
-void FollowCamera::SetTarget(const Transform3D* target) {
-
+void FollowCamera::SetTarget(const Transform3D* followTarget) {
+	followTarget;
 }

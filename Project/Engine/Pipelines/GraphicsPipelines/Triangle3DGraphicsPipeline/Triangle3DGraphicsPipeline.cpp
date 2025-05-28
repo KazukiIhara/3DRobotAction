@@ -241,7 +241,7 @@ D3D12_INPUT_LAYOUT_DESC Triangle3DGraphicsPipeline::InputLayoutSetting() {
 D3D12_RASTERIZER_DESC Triangle3DGraphicsPipeline::RasterizerStateSetting() {
 	D3D12_RASTERIZER_DESC desc{};
 	desc.FillMode = D3D12_FILL_MODE_SOLID;
-	desc.CullMode = D3D12_CULL_MODE_BACK;
+	desc.CullMode = D3D12_CULL_MODE_NONE;
 	desc.FrontCounterClockwise = FALSE;
 	return desc;
 }

@@ -38,11 +38,13 @@ uint3 GetPrimitive(in Meshlet m, uint localPrim)
 MeshOutputWithAlpha GetVertexAttributes(uint vertexIndex, uint instID)
 {
     VertexData3D v = gVertexBuffer[vertexIndex];
+    ModelDataForGPU instData = gInstanceData[instID];
     
     MeshOutputWithAlpha vout;
-    vout.position = mul(v.position, mul(gInstanceData[instID].world, gCamera.viewProjection));
+    vout.position = mul(v.position, mul(instData.world, gCamera.viewProjection));
     vout.uv = v.uv;
-    
+    vout.color = instData.color;
+
     return vout;
 }
 // ───── MS 本体 ─────

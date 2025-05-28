@@ -30,4 +30,5 @@ namespace MAGIUtility {
 
 	uint32_t DivRoundUp(uint32_t num, uint32_t den);
 
+	Vector4 NormalizePlane(const Vector4& plane);
 }

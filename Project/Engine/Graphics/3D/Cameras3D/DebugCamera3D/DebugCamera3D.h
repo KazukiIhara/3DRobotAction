@@ -8,11 +8,13 @@ public:
 	DebugCamera3D(const std::string& cameraName);
 	~DebugCamera3D()override = default;
 
+	void Initialize()override;
+
 	void UpdateData()override;
 
-	void HandleCameraRotation(Vector3& cameraRotate, const POINT& delta);
+	void HandleCameraRotation(const POINT& delta);
 
-	void HandleCameraTranslation(Vector3& cameraTranslate, Vector3& cameraRotate, const POINT& delta);
+	void HandleCameraTranslation(const POINT& delta);
 
-	void HandleCameraZoom(Vector3& cameraTranslate, Vector3& cameraRotate, int64_t wheelDelta);
+	void HandleCameraZoom(int64_t wheelDelta);
 };

@@ -19,16 +19,16 @@ void Camera3DManager::Initialize() {
 }
 
 void Camera3DManager::Update() {
-#ifdef _DEBUG
-	if (isDebugCamera_) {
-		debugCamera_->UpdateData();
-		return;
-	}
-#endif // _DEBUG
 	if (currentCamera_) {
 		currentCamera_->Update();
 		currentCamera_->UpdateData();
 	}
+#ifdef _DEBUG
+	if (isDebugCamera_) {
+		debugCamera_->UpdateData();
+		currentCamera_->DrawFrustum();
+	}
+#endif // _DEBUG
 }
 
 void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
@@ -53,6 +53,10 @@ void Camera3DManager::TransferCurrentCameraInverse(uint32_t rootParameterIndex) 
 #endif // _DEBUG
 	// 現在選択中のカメラを見つけて転送
 	currentCamera_->TransferCameraInv(rootParameterIndex);
+}
+
+void Camera3DManager::DrawCurrentCameraFrustum() {
+	currentCamera_->DrawFrustum();
 }
 
 std::string Camera3DManager::Add(std::unique_ptr<Camera3D> newCamera3D) {

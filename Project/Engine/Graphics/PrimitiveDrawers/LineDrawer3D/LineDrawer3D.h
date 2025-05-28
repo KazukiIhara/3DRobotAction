@@ -38,7 +38,6 @@ public:
 	void AddLine(const Vector3& start, const Vector3& end, const Vector4& color);
 
 private:
-	void ClearLines();
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
@@ -50,9 +49,6 @@ private:
 	// instancingデータ書き込み
 	void MapInstancingData();
 private:
-
-	// ライン
-	std::vector<LineData3D> lines_;
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
 
@@ -65,6 +61,8 @@ private:
 	uint32_t srvIndex_ = 0;
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
+	// 現在のインデックス
+	uint32_t currentIndex_ = 0;
 private:
 	DXGI* dxgi_ = nullptr;
 	DirectXCommand* directXCommand_ = nullptr;

@@ -3,7 +3,7 @@
 Transform3D::Transform3D(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	scale_ = scale;
 	inputRadians_ = rotate;
-	rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
+	rotate_ = MAGIMath::EulerToQuaternionYXZ(inputRadians_);
 	translate_ = translate;
 
 	// ワールド行列作成
@@ -13,7 +13,7 @@ Transform3D::Transform3D(const Vector3& scale, const Vector3& rotate, const Vect
 Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const Vector3& translate) {
 	scale_ = scale;
 	rotate_ = rotate;
-	inputRadians_ = MAGIMath::QuaternionToEulerXYZ(rotate_);
+	inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
 	translate_ = translate;
 
 	// ワールド行列作成
@@ -21,11 +21,12 @@ Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const V
 }
 
 void Transform3D::Update() {
-
-	// ユーザー入力用の回転に変更があった場合
-	if (preInputRadians_ != inputRadians_) {
+	// 直接Q回転に変更があった場合はこっち優先
+	if (preRotate_ != rotate_) {
+		inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
+	} else if (preInputRadians_ != inputRadians_) { 	// ユーザー入力用の回転に変更があった場合
 		// 変換してクオータニオンの回転に適用
-		rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
+		rotate_ = MAGIMath::EulerToQuaternionYXZ(inputRadians_);
 	}
 
 	// 変更チェック
@@ -42,6 +43,7 @@ void Transform3D::Update() {
 		preScale_ = scale_;
 		preRotate_ = rotate_;
 		preTranslate_ = translate_;
+		preInputRadians_ = inputRadians_;
 
 		// 次フレーム用のフラグを立てる
 		isChanged_ = false;
@@ -75,6 +77,10 @@ Vector3& Transform3D::GetTranslate() {
 	return translate_;
 }
 
+Quaternion& Transform3D::GetQuaternion() {
+	return rotate_;
+}
+
 const Matrix4x4& Transform3D::GetWorldMatrix() const {
 	return worldMatrix_;
 }
@@ -84,6 +90,9 @@ void Transform3D::SetParent(Transform3D* parent) {
 	if (parent_ == parent) {
 		return;
 	}
+
+	// 親が変更されたらひとまず更新確定
+	isChanged_ = true;
 
 	// すでに親がいた場合は旧親から自身を削除する
 	if (parent_) {

@@ -236,6 +236,10 @@ float MAGIMath::LengthSquared(const Vector3& v) {
 	return v.x * v.x + v.y * v.y + v.z * v.z;
 }
 
+float MAGIMath::DegreeToRadian(float degree) {
+	return degree * (std::numbers::pi_v<float> / 180.0f);
+}
+
 Vector3 MAGIMath::Normalize(const Vector3& a) {
 	float length = Length(a);
 	Vector3 normalizedVector{};
@@ -276,6 +280,22 @@ Vector3 MAGIMath::Forward(const Vector3& rotate) {
 
 	// 単位ベクトル化
 	return Normalize(forward);
+}
+
+Vector3 MAGIMath::Forward(const Quaternion& q) {
+	return Normalize(Vector3{
+		2.0f * (q.x * q.z + q.w * q.y),
+		2.0f * (q.y * q.z - q.w * q.x),
+		1.0f - 2.0f * (q.x * q.x + q.y * q.y)
+		});
+}
+
+Vector3 MAGIMath::Right(const Quaternion& q) {
+	return Normalize(Vector3{
+		1.0f - 2.0f * (q.y * q.y + q.z * q.z),
+		2.0f * (q.x * q.y + q.w * q.z),
+		2.0f * (q.x * q.z - q.w * q.y)
+		});
 }
 
 Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
@@ -350,6 +370,15 @@ Vector3 MAGIMath::Transform(const Vector3& vector, const Quaternion& rotation) {
 
 	// 結果をベクトル形式に戻す
 	return { rotatedQuat.x, rotatedQuat.y, rotatedQuat.z };
+}
+
+Vector4 MAGIMath::Transform(const Vector4& v, const Matrix4x4& m) {
+	Vector4 result;
+	result.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + v.w * m.m[3][0];
+	result.y = v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + v.w * m.m[3][1];
+	result.z = v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + v.w * m.m[3][2];
+	result.w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + v.w * m.m[3][3];
+	return result;
 }
 
 Vector3 MAGIMath::ExtractionWorldPos(const Matrix4x4& m) {
@@ -699,7 +728,7 @@ Matrix4x4 MAGIMath::MakeTranslateMatrix(const Vector3& translate) {
 }
 
 Matrix4x4 MAGIMath::MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
-	Matrix4x4 result = MakeScaleMatrix(scale) * MakeRotateXYZMatrix(rotate) * MakeTranslateMatrix(translate);
+	Matrix4x4 result = MakeScaleMatrix(scale) * MakeRotateYXZMatrix(rotate) * MakeTranslateMatrix(translate);
 	return result;
 }
 
@@ -799,32 +828,19 @@ float MAGIMath::Norm(const Quaternion& quaternion) {
 	);
 }
 
-Quaternion MAGIMath::EulerToQuaternionXYZ(const Vector3& euler) {
-	// オイラー角を半分にする
-	float halfPitch = euler.x * 0.5f;
-	float halfYaw = euler.y * 0.5f;
-	float halfRoll = euler.z * 0.5f;
+Quaternion MAGIMath::EulerToQuaternionYXZ(const Vector3& euler) {
 
-	// 三角関数をあらかじめ計算
-	float sinX = std::sin(halfPitch);
-	float cosX = std::cos(halfPitch);
-	float sinY = std::sin(halfYaw);
-	float cosY = std::cos(halfYaw);
-	float sinZ = std::sin(halfRoll);
-	float cosZ = std::cos(halfRoll);
+	// 各軸回転クォータニオンを生成（X→Y→Z 軸）
+	Quaternion qx = MakeRotateAxisAngleQuaternion({ 1, 0, 0 }, euler.x);
+	Quaternion qy = MakeRotateAxisAngleQuaternion({ 0, 1, 0 }, euler.y);
+	Quaternion qz = MakeRotateAxisAngleQuaternion({ 0, 0, 1 }, euler.z);
 
-	// X → Y → Z 回転順序に基づくクオータニオンの計算
-	Quaternion q = {
-		.x = sinX * cosY * cosZ + cosX * sinY * sinZ,
-		.y = cosX * sinY * cosZ - sinX * cosY * sinZ,
-		.z = cosX * cosY * sinZ + sinX * sinY * cosZ,
-		.w = cosX * cosY * cosZ - sinX * sinY * sinZ
-	};
+	Quaternion q = qy * qx * qz;
 
 	return Normalize(q);
 }
 
-Vector3 MAGIMath::QuaternionToEulerXYZ(const Quaternion& qIn) {
+Vector3 MAGIMath::QuaternionToEuler(const Quaternion& qIn) {
 	// ① 浮動小数誤差で伸びていることがあるので念のため正規化
 	Quaternion q = Normalize(qIn);
 
@@ -962,6 +978,27 @@ Quaternion MAGIMath::MakeRotateAxisAngleQuaternion(const Vector3& axis, float an
 	q.w = c;
 
 	return q;
+}
+
+Quaternion MAGIMath::QuaternionFromYawPitchRoll(float yaw, float pitch, float roll) {
+	const float halfYaw = yaw * 0.5f;
+	const float halfPitch = pitch * 0.5f;
+	const float halfRoll = roll * 0.5f;
+
+	const float cy = std::cos(halfYaw);
+	const float sy = std::sin(halfYaw);
+	const float cp = std::cos(halfPitch);
+	const float sp = std::sin(halfPitch);
+	const float cr = std::cos(halfRoll);
+	const float sr = std::sin(halfRoll);
+
+	Quaternion q;
+	q.w = cr * cp * cy + sr * sp * sy;  // = cos(R/2)cos(P/2)cos(Y/2) + sin(R/2)sin(P/2)sin(Y/2)
+	q.x = sr * cp * cy - cr * sp * sy;
+	q.y = cr * sp * cy + sr * cp * sy;
+	q.z = cr * cp * sy - sr * sp * cy;
+
+	return Normalize(q);                // MAGIMath::Normalize で長さ1に
 }
 
 Quaternion MAGIMath::Slerp(Quaternion q1, Quaternion q2, float t) {

@@ -63,3 +63,8 @@ std::array<float, 7> MAGIUtility::GenerateGaussianWeights(float sigma) {
 uint32_t MAGIUtility::DivRoundUp(uint32_t num, uint32_t den) {
 	return (num + den - 1) / den;
 }
+
+Vector4 MAGIUtility::NormalizePlane(const Vector4& plane) {
+	float length = std::sqrt(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z);
+	return plane / length;
+}

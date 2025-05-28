@@ -13,7 +13,7 @@
 /// <summary>メッシュ描画クラス（Mesh Shader + Meshlet）</summary>
 class MeshDrawer {
 public:
-	explicit MeshDrawer(const MeshData& meshData);
+	MeshDrawer(const MeshData& meshData);
 	~MeshDrawer();
 
 	void Update();
@@ -40,7 +40,6 @@ private:
 
 	ComPtr<ID3D12Resource> meshletPrimIB_;              // StructuredBuffer<MeshletTriangle>
 	uint32_t primSrvIdx_ = 0;
-
 
 	// マテリアル
 	ComPtr<ID3D12Resource> materialBuffer_;

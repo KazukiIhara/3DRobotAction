@@ -7,6 +7,7 @@ struct MeshOutput
     float4 position : SV_Position;
     float2 uv : TEXCOORD0;
     float3 normal : NORMAL0;
+    float4 color : COLOR0;
 };
 
 // αありの頂点出力
@@ -14,6 +15,7 @@ struct MeshOutputWithAlpha
 {
     float4 position : SV_Position;
     float2 uv : TEXCOORD0;
+    float4 color : COLOR0;
 };
 
 // シャドウ用軽量Vertex出力
@@ -36,6 +38,9 @@ struct ModelDataForGPU
 {
     float4x4 world;
     float4x4 worldInverseTranspose;
+    float4 color;
+    uint isMakeShadow;
+    float3 _pad;
 };
 
 // αありのインスタンスデータ

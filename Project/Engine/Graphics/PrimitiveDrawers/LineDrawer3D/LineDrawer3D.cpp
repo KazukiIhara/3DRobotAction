@@ -29,7 +29,6 @@ LineDrawer3D::LineDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVMan
 	// Srvを作成
 	srvUavManager_->CreateSrvStructuredBuffer(srvIndex_, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(LineData3D));
 
-	lines_.reserve(PrimitiveCommonConst::NumMaxInstance);
 	Logger::Log("LineDrawer3D Initialize\n");
 }
 
@@ -38,20 +37,9 @@ LineDrawer3D::~LineDrawer3D() {
 }
 
 void LineDrawer3D::Update() {
-	// 最大数を超えていたら止める
-	if (lines_.size() > PrimitiveCommonConst::NumMaxInstance) {
-		assert(false && "Line size is over !");
-	}
-
-	// 描画すべきインスタンス数
-	instanceCount_ = static_cast<uint32_t>(lines_.size());
-
-	if (instancingData_ != nullptr && !lines_.empty()) {
-		// コピー
-		std::memcpy(instancingData_, lines_.data(), instanceCount_ * sizeof(LineData3D));
-	}
-	// ラインのコンテナをクリア
-	ClearLines();
+	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
+	instanceCount_ = currentIndex_;
+	currentIndex_ = 0;
 }
 
 void LineDrawer3D::Draw() {
@@ -77,18 +65,21 @@ void LineDrawer3D::Draw() {
 }
 
 void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const Vector4& color) {
+#ifdef _DEBUG
+	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
+		Logger::Log("LineDrawer3D: Max instance count exceeded!\n");
+		return;
+	}
+#endif // _DEBUG
+
 	// 追加するLine
 	LineData3D newLineData{
 		.start = start,
 		.end = end,
 		.color = color,
 	};
-	// コンテナに挿入
-	lines_.push_back(newLineData);
-}
-
-void LineDrawer3D::ClearLines() {
-	lines_.clear();
+	instancingData_[currentIndex_] = newLineData;
+	currentIndex_++;
 }
 
 void LineDrawer3D::SetDXGI(DXGI* dxgi) {

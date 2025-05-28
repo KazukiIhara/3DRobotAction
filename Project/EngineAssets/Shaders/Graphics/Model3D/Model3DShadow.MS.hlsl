@@ -63,14 +63,25 @@ void main(
 
     Meshlet m = gMeshlets[meshletIndex];
 
-    // 不正meshletは0出力に
-    if (meshletIndex >= gMeshInfo.MeshletCount)
+    bool visible = meshletIndex < gMeshInfo.MeshletCount;
+    
+    if (visible && !gInstanceData[instID].isMakeShadow)
+    {
+        visible = false;
+    }
+    
+    if (!visible)
     {
         m.VertCount = 0;
         m.PrimCount = 0;
     }
 
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
+    
+    if (!visible)
+    {
+        return;
+    }
 
     // 頂点出力
     if (gtid.x < m.VertCount)

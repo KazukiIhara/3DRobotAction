@@ -23,8 +23,8 @@ public:
 	void SetTarget(const Transform3D* target);
 
 private:
-	// 追従対象
-	Transform3D* target_ = nullptr;
+	// 追従対象のトランスフォーム
+	Transform3D* followTarget_ = nullptr;
 
 	// 追従対象からカメラまでのオフセット
 	const Vector3 kOffset = { 0.0f, 2.5f, -15.0f };

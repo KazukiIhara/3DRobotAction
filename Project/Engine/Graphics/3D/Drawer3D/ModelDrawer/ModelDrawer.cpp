@@ -52,6 +52,8 @@ void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMateri
 	ModelDataForGPU newModelData{
 		.worldMatrix = worldMatrix,
 		.WorldInverseTransepose = MakeInverseTransposeMatrix(worldMatrix),
+		.color = material.color,
+		.isMakeShadow = material.isMakeShadow,
 	};
 
 	// コンテナに挿入
