@@ -62,6 +62,14 @@ void BreakEffect::Update(Vector3 positionOffset) {
 	}
 }
 
+void BreakEffect::Draw() {
+
+}
+
+bool BreakEffect::IsFinished() {
+	return false;
+}
+
 void BreakEffect::UpdateElectric() {
 
 }
@@ -72,8 +80,4 @@ void BreakEffect::UpdateHaze() {
 
 void BreakEffect::UpdateExplosion() {
 
-}
-
-bool BreakEffect::IsFinished() {
-	return false;
 }

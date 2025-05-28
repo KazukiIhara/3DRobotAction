@@ -31,5 +31,9 @@ void Player::Update() {
 }
 
 void Player::Draw() {
+
+	if (breakEffect_) {
+		breakEffect_->Draw();
+	}
 	MAGISYSTEM::DrawBox3D(renderTransform_->GetWorldMatrix(), BoxData3D{}, PrimitiveMaterialData3D{});
 }
