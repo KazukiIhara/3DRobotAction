@@ -1,28 +1,16 @@
 #pragma once
 
-
 #include <unordered_map>
 
 #include "Framework/MAGI.h"
 
-
 /// <summary>
 /// 状態を表す
 /// </summary>
-enum State {
+enum class State {
 	Electric,
 	Haze,
 	Explosion,
-};
-
-/// <summary>
-/// フェーズ
-/// </summary>
-struct Phase {
-	// どの状態か
-	State state;
-	// この状態の時間
-	uint32_t time;
 };
 
 /// <summary>
@@ -37,6 +25,10 @@ public:
 
 	/// <param name="positionOffset">最初に指定した座標から動かしたい場合オフセット値を入力</param>
 	void Update(Vector3	positionOffset = { 0.0f,0.0f,0.0f });
+
+	void UpdateElectric();
+	void UpdateHaze();
+	void UpdateExplosion();
 
 	/// <summary>
 	/// 終了通知
@@ -55,15 +47,29 @@ private:
 	// エフェクトの中心座標
 	Vector3 corePosition_;
 
+	// 現在の状態
+	State currentState_;
+	float timer_ = 0.0f;
 
+	// ステートごとの時間
+	float electricTime_ = 1.0f;
+	float hazeTime_ = 0.5f;
+	float explosionTime_ = 1.0f;
 
 	//====================================
 	// リングエフェクト用変数
 	//====================================
 
 	// リング用のデータ
+
+	// 形状
 	std::array<RingData3D, 4> ringDatas_;
 
+	// マテリアル
+	PrimitiveMaterialData3D ringMaterial_{};
+
+	// 回転
+	std::array<Vector3, 4> ringRotates_;
 
 	//===================================
 	// パーティクル用変数
