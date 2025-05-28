@@ -58,8 +58,6 @@ private:
 private:
 	// テクスチャデータコンテナ
 	std::unordered_map<std::string, Texture> textureDatas_;
-	// インデックス管理のテクスチャデータコンテナ
-	std::unordered_map<uint32_t, Texture> textureDatasWithSrvIndex_;
 private:
 	// DXGI
 	DXGI* dxgi_ = nullptr;

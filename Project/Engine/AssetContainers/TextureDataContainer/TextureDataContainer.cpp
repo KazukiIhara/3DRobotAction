@@ -70,9 +70,6 @@ uint32_t TextureDataContainer::Load(const std::string& fileName, bool isFullPath
 		srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textureDatas_[fileName].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
 	}
 
-	// インデックス管理のコンテナにも追加
-	textureDatasWithSrvIndex_.insert(std::make_pair(texture.srvIndex, texture));
-
 	// テクスチャ枚数上限チェック
 	assert(srvUavManager_->IsLowerViewMax());
 
@@ -107,12 +104,8 @@ void TextureDataContainer::LoadNormalMap(const std::string& filePath) {
 	// srvの作成
 	srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textureDatas_[filePath].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
 
-	// インデックス管理のマップにも追加
-	textureDatasWithSrvIndex_.insert(std::make_pair(texture.srvIndex, texture));
-
 	// テクスチャ枚数上限チェック
 	assert(srvUavManager_->IsLowerViewMax());
-
 }
 
 std::unordered_map<std::string, Texture>& TextureDataContainer::GetTexture() {
