@@ -8,6 +8,13 @@
 
 using namespace MAGIUtility;
 
+
+//-------------------------------------------
+// シーンオブジェクト
+//-------------------------------------------
+#include "GameObject/Player/Player.h"
+#include "GameObject/Ground/Ground.h"
+
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
@@ -31,6 +38,13 @@ private:
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
+
+	//----------------------------------------- 
+	// シーンオブジェクト
+	//-----------------------------------------
+	std::unique_ptr<Player> player_ = nullptr;
+
+	std::unique_ptr<Ground> ground_ = nullptr;
 };
 
 template<typename Data>
@@ -53,23 +67,47 @@ inline void PlayScene<Data>::Initialize() {
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
+	//-------------------------------------------------------
+	// アセットのロード
+	//-------------------------------------------------------
+	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
+
+
+	//-------------------------------------------------------
+	// シーン固有の初期化処理
+	//-------------------------------------------------------
+
+	// スカイボックスを設定
+	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
+
+
+	// プレイヤー作成
+	player_ = std::make_unique<Player>();
+
+	// 地面作成
+	ground_ = std::make_unique<Ground>();
 
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
+	// 床更新
+	ground_->Update();
 
-
+	// プレイヤー更新
+	player_->Update();
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Draw() {
+	// 床描画
+	ground_->Draw();
 
-
+	// プレイヤー描画
+	player_->Draw();
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Finalize() {
-
 
 }

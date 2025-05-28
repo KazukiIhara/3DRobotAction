@@ -1,7 +1,7 @@
 #include "Game.h"
 
 // EngineScenes
-#include "EngineScenes/SampleScene.h"
+#include "Scenes/SampleScene.h"
 
 // GameScene
 #include "Scenes/PlayScene.h"

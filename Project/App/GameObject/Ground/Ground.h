@@ -5,23 +5,27 @@
 
 // MyHedder
 #include "Transform3D/Transform3D.h"
-
+#include "Framework/MAGI.h"
 
 /// <summary>
-/// プレイヤークラス
+/// 地面
 /// </summary>
-class Player {
+class Ground {
 public:
-	Player();
-	~Player() = default;
+	Ground();
+	~Ground() = default;
 
 	void Update();
 
 	void Draw();
 
 private:
+	// 板ポリデータ
+	PlaneData3D planeData_;
+
 	// トランスフォーム
 	std::unique_ptr<Transform3D> transform_;
-	// 描画用トランスフォーム
-	std::unique_ptr<Transform3D> renderTransform_;
+
+	float groundSize_ = 0.0f;
+
 };

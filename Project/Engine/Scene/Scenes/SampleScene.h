@@ -8,6 +8,8 @@
 
 using namespace MAGIUtility;
 
+#include "Transform3D/Transform3D.h"
+
 // サンプルシーン
 template <typename Data>
 class SampleScene : public BaseScene<Data> {
@@ -24,6 +26,9 @@ private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
+
+	// トランスフォーム
+	std::unique_ptr<Transform3D> transform_;
 
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_[5]{};
@@ -174,10 +179,18 @@ inline void SampleScene<Data>::Initialize() {
 	worldTransform_[2].translate_.x = -2.0f;
 	worldTransform_[2].translate_.y = 1.0f;
 
+
+	transform_ = std::make_unique<Transform3D>();
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
+
+	ImGui::Begin("NewTranslate");
+	ImGui::DragFloat3("Scale", &transform_->GetScale().x, 0.01f);
+	ImGui::DragFloat3("Rotate", &transform_->GetRotate().x, 0.01f);
+	ImGui::DragFloat3("Translate", &transform_->GetTranslate().x, 0.01f);
+	ImGui::End();
 
 	ImGui::Begin("Translate0");
 	ImGui::DragFloat3("Scale", &worldTransform_[0].scale_.x, 0.01f);
@@ -311,6 +324,8 @@ inline void SampleScene<Data>::Update() {
 		wts_[i].Update();
 	}
 
+	transform_->Update();
+
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// ポストエフェクトをかける
@@ -340,7 +355,7 @@ inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
 	// 球体描画
-	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
+	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), sphereData_, material_);
 
 	// ボックス描画
 	MAGISYSTEM::DrawBox3D(worldTransform_[2].worldMatrix_, boxData_, material_);

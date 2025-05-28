@@ -9,12 +9,6 @@ DebugCamera3D::DebugCamera3D(const std::string& cameraName)
 
 }
 
-void DebugCamera3D::Initialize() {
-	Camera3D::Initialize();
-	// クオータニオン角を使用しない
-	worldTransform_.isUseQuaternion_ = false;
-}
-
 void DebugCamera3D::UpdateData() {
 	// マウス入力の取得
 	POINT cursorPos;
@@ -31,11 +25,11 @@ void DebugCamera3D::UpdateData() {
 	int64_t wheelDelta = MAGISYSTEM::GetMouseWheelDelta();
 
 	// カメラ回転処理
-	HandleCameraRotation(worldTransform_.rotate_, delta);
+	HandleCameraRotation(transform_->GetRotate(), delta);
 	// カメラ移動処理
-	HandleCameraTranslation(worldTransform_.translate_, worldTransform_.rotate_, delta);
+	HandleCameraTranslation(transform_->GetTranslate(), transform_->GetRotate(), delta);
 	// カメラズーム処理
-	HandleCameraZoom(worldTransform_.translate_, worldTransform_.rotate_, wheelDelta);
+	HandleCameraZoom(transform_->GetTranslate(), transform_->GetRotate(), wheelDelta);
 
 	// 現在のカーソル位置を保存
 	lastCursorPos = cursorPos;
