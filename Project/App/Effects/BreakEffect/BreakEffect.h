@@ -38,6 +38,10 @@ private:
 	void UpdateHaze();
 	void UpdateExplosion();
 
+	void DrawElectric();
+	void DrawHaze();
+	void DrawExplosion();
+
 private:
 	//============================
 	// エフェクトの構成要素
@@ -57,7 +61,10 @@ private:
 	// ステートごとの時間
 	float electricTime_ = 1.0f;
 	float hazeTime_ = 0.5f;
-	float explosionTime_ = 1.0f;
+	float explosionTime_ = 3.0f;
+
+	// 終了フラグ
+	bool isFinished_ = false;
 
 	//====================================
 	// リングエフェクト用変数
