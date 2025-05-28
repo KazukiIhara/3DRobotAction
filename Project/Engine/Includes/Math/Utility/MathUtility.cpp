@@ -240,6 +240,14 @@ float MAGIMath::DegreeToRadian(float degree) {
 	return degree * (std::numbers::pi_v<float> / 180.0f);
 }
 
+float MAGIMath::Lerp(float a, float b, float t) {
+	return a + (a - b) * t;
+}
+
+Vector2 MAGIMath::lerp(const Vector2& v1, const Vector2& v2, float t) {
+	return v1 + (v1 - v2) * t;
+}
+
 Vector3 MAGIMath::Normalize(const Vector3& a) {
 	float length = Length(a);
 	Vector3 normalizedVector{};
@@ -314,11 +322,7 @@ Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
 }
 
 Vector3 MAGIMath::Lerp(const Vector3& v1, const Vector3& v2, float t) {
-	return Vector3(
-		v1.x + t * (v2.x - v1.x),
-		v1.y + t * (v2.y - v1.y),
-		v1.z + t * (v2.z - v1.z)
-	);
+	return v1 + (v2 - v1) * t;
 }
 
 Vector3 MAGIMath::CatmullRomSpline(const std::vector<Vector3>& controlPoints, float t) {
