@@ -10,9 +10,11 @@ using namespace MAGIUtility;
 
 #include "Transform3D/Transform3D.h"
 
+#include "SimpleAnimation/SimpleAnimation.h"
+
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -86,6 +88,10 @@ private:
 
 	// スプライトデータ
 	SpriteData spriteData_{};
+
+	std::unique_ptr<SimpleAnimation<Vector3>> simpleAnimation_;
+
+	float t_ = 0.0f;
 };
 
 template<typename Data>
@@ -137,8 +143,6 @@ inline void SampleScene<Data>::Initialize() {
 
 	// モデルのマテリアル設定
 	modelMaterial_.blendMode = BlendMode::None;
-	modelMaterial_.color = { 1.0f,0.0f,0.0f,1.0f };
-	modelMaterial_.isMakeShadow = false;
 
 	modelMatAlpha_.blendMode = BlendMode::Add;
 
@@ -184,6 +188,12 @@ inline void SampleScene<Data>::Initialize() {
 
 
 	transform_ = std::make_unique<Transform3D>();
+
+	// アニメーション作成
+	simpleAnimation_ = std::make_unique<SimpleAnimation<Vector3>>(
+		Vector3(0.0f, -1.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f),
+		EasingType::EaseInOut, true, LoopType::PingPong
+	);
 }
 
 template<typename Data>
@@ -318,6 +328,12 @@ inline void SampleScene<Data>::Update() {
 	ImGui::Checkbox("IsFlipY", &spriteMaterial.isFlipY);
 	ImGui::End();
 
+	ImGui::Begin("SimpleAnimation");
+	ImGui::DragFloat("t", &t_, 0.01f);
+	ImGui::End();
+
+	t_ += MAGISYSTEM::GetDeltaTime();
+
 	// トランスフォーム更新
 	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Update();
@@ -326,6 +342,8 @@ inline void SampleScene<Data>::Update() {
 	for (uint32_t i = 0; i < wtsNum_; i++) {
 		wts_[i].Update();
 	}
+
+	transform_->GetTranslate() = simpleAnimation_->GetValue(t_);
 
 	transform_->Update();
 

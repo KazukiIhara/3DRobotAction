@@ -244,7 +244,7 @@ float MAGIMath::Lerp(float a, float b, float t) {
 	return a + (a - b) * t;
 }
 
-Vector2 MAGIMath::lerp(const Vector2& v1, const Vector2& v2, float t) {
+Vector2 MAGIMath::Lerp(const Vector2& v1, const Vector2& v2, float t) {
 	return v1 + (v1 - v2) * t;
 }
 
