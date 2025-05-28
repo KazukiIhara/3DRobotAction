@@ -24,10 +24,10 @@ public:
 	~BreakEffect();
 
 	/// <param name="positionOffset">最初に指定した座標から動かしたい場合オフセット値を入力</param>
-	void Update(Vector3	positionOffset = { 0.0f,0.0f,0.0f });
+	void Update();
 
 	void Draw();
-	
+
 	/// <summary>
 	/// 終了通知
 	/// </summary>

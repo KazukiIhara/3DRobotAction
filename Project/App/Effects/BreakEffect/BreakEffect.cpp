@@ -1,5 +1,8 @@
 #include "BreakEffect.h"
 
+using namespace MAGIMath;
+using namespace MAGIUtility;
+
 BreakEffect::BreakEffect(Vector3 worldPosition) {
 	//===================================
 	// テクスチャのロード
@@ -48,7 +51,7 @@ BreakEffect::~BreakEffect() {
 
 }
 
-void BreakEffect::Update(Vector3 positionOffset) {
+void BreakEffect::Update() {
 	switch (currentState_) {
 	case State::Electric:
 		UpdateElectric();
@@ -63,7 +66,8 @@ void BreakEffect::Update(Vector3 positionOffset) {
 }
 
 void BreakEffect::Draw() {
-
+	Matrix4x4 wMat = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, ringRotates_[0], corePosition_);
+	MAGISYSTEM::DrawRing3D(wMat, ringDatas_[0], ringMaterial_);
 }
 
 bool BreakEffect::IsFinished() {

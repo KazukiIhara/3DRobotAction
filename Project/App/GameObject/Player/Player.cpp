@@ -25,13 +25,16 @@ void Player::Update() {
 	}
 
 	if (breakEffect_) {
-		breakEffect_->Update();
+		// 終わってたら抜ける
+		if (breakEffect_->IsFinished()) {
+			breakEffect_.reset();
+		} else {
+			breakEffect_->Update();
+		}
 	}
-
 }
 
 void Player::Draw() {
-
 	if (breakEffect_) {
 		breakEffect_->Draw();
 	}
