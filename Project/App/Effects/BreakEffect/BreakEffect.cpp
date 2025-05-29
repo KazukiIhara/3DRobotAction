@@ -30,8 +30,6 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	//===================================
 
 
-
-
 	//===================================
 	// リングのデータを初期化
 	//===================================
@@ -40,17 +38,23 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	}
 	ringMaterial_.blendMode = BlendMode::Add;
 	ringMaterial_.textureName = "gradation.png";
+	ringMaterial_.baseColor = { 1.0f,0.5f,0.0f,1.0f };
 
-	ringRotates_[0] = { 0.0f,0.5f,0.0f };
-	ringRotates_[1] = { 0.0f,-0.5f,0.0f };
-	ringRotates_[2] = { 0.0f,1.0f,0.0f };
-	ringRotates_[3] = { 0.0f,-1.0f,0.0f };
+	ringRotates_[0] = { 0.7f,1.2f,-0.43f };
+	ringRotates_[1] = { 1.11f,0.0f,0.0f };
+	ringRotates_[2] = { 0.0f,1.4f,-0.9f };
+	ringRotates_[3] = { 0.0f,-1.17f,0.92f };
 
+
+	ringOuterAnimation_[0] = std::make_unique<SimpleAnimation<float>>(1.0f, 5.0f, EasingType::EaseOutQuart);
+	ringInnerAnimation_[0] = std::make_unique<SimpleAnimation<float>>(0.8f, 4.0f, EasingType::EaseOutQuart);
+
+	ringOuterAnimation_[1] = std::make_unique<SimpleAnimation<float>>(1.0f, 7.0f, EasingType::EaseOutQuart);
+	ringInnerAnimation_[1] = std::make_unique<SimpleAnimation<float>>(0.8f, 6.0f, EasingType::EaseOutQuart);
 
 	//===================================
 	// 粒子のデータを初期化
 	//===================================
-
 
 }
 
@@ -58,16 +62,15 @@ BreakEffect::~BreakEffect() {
 
 }
 
+void BreakEffect::SetRingRotates(std::array<Vector3, 4> rotates) {
+	ringRotates_ = rotates;
+}
+
+void BreakEffect::SetRingColor(Vector4 color) {
+	ringMaterial_.baseColor = color;
+}
+
 void BreakEffect::Update() {
-	ImGui::Begin("EffectParamater");
-
-	ImGui::DragFloat3("RingRotate0", &ringRotates_[0].x, 0.01f);
-	ImGui::DragFloat3("RingRotate1", &ringRotates_[1].x, 0.01f);
-	ImGui::DragFloat3("RingRotate2", &ringRotates_[2].x, 0.01f);
-	ImGui::DragFloat3("RingRotate3", &ringRotates_[3].x, 0.01f);
-
-	ImGui::End();
-
 	switch (currentState_) {
 	case State::Electric:
 		UpdateElectric();
@@ -77,6 +80,9 @@ void BreakEffect::Update() {
 		break;
 	case State::Explosion:
 		UpdateExplosion();
+		break;
+	case State::Finish:
+		UpdateFinish();
 		break;
 	}
 }
@@ -91,6 +97,9 @@ void BreakEffect::Draw() {
 		break;
 	case State::Explosion:
 		DrawExplosion();
+		break;
+	case State::Finish:
+		DrawFinish();
 		break;
 	}
 }
@@ -120,17 +129,32 @@ void BreakEffect::UpdateHaze() {
 void BreakEffect::UpdateExplosion() {
 	timer_ += MAGISYSTEM::GetDeltaTime();
 
-	const float scalingSize = 5.0f;
-
-	for (uint32_t i = 0; i < 4; i++) {
-		ringDatas_[i].outerRadius += scalingSize * MAGISYSTEM::GetDeltaTime();
-		ringDatas_[i].innerRadius += scalingSize * MAGISYSTEM::GetDeltaTime();
+	for (uint32_t i = 0; i < 2; i++) {
+		ringDatas_[i].outerRadius = ringOuterAnimation_[0]->GetValue(timer_ / explosionTime_);
+		ringDatas_[i].innerRadius = ringInnerAnimation_[0]->GetValue(timer_ / explosionTime_);
 	}
+
+	for (uint32_t i = 2; i < 4; i++) {
+		ringDatas_[i].outerRadius = ringOuterAnimation_[1]->GetValue(timer_ / explosionTime_);
+		ringDatas_[i].innerRadius = ringInnerAnimation_[1]->GetValue(timer_ / explosionTime_);
+	}
+
+	if (timer_ >= explosionTime_) {
+		timer_ = 0.0f;
+		currentState_ = State::Finish;
+	}
+}
+
+void BreakEffect::UpdateFinish() {
+	timer_ += MAGISYSTEM::GetDeltaTime();
+
+	ringMaterial_.baseColor.w = 1.0f - timer_ / finishTime_;
 
 	if (timer_ >= explosionTime_) {
 		timer_ = 0.0f;
 		isFinished_ = true;
 	}
+
 }
 
 void BreakEffect::DrawElectric() {
@@ -142,6 +166,13 @@ void BreakEffect::DrawHaze() {
 }
 
 void BreakEffect::DrawExplosion() {
+	for (uint32_t i = 0; i < 4; i++) {
+		Matrix4x4 wMat = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, ringRotates_[i], corePosition_);
+		MAGISYSTEM::DrawRing3D(wMat, ringDatas_[i], ringMaterial_);
+	}
+}
+
+void BreakEffect::DrawFinish() {
 	for (uint32_t i = 0; i < 4; i++) {
 		Matrix4x4 wMat = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, ringRotates_[i], corePosition_);
 		MAGISYSTEM::DrawRing3D(wMat, ringDatas_[i], ringMaterial_);

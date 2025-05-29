@@ -192,7 +192,7 @@ inline void SampleScene<Data>::Initialize() {
 	// アニメーション作成
 	simpleAnimation_ = std::make_unique<SimpleAnimation<Vector3>>(
 		Vector3(0.0f, -1.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f),
-		EasingType::EaseInOut, true, LoopType::PingPong
+		EasingType::EaseInOutSine, true, LoopType::PingPong
 	);
 }
 

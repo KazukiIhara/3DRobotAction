@@ -32,4 +32,6 @@ private:
 
 	// デバッグ用変数
 	bool isBreak_ = false;
+	std::array<Vector3,4> ringRotate_;
+	Vector4 color_ = Color::White;
 };

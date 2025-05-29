@@ -4,24 +4,31 @@
 
 #include "Framework/MAGI.h"
 
-/// <summary>
-/// 状態を表す
-/// </summary>
-enum class State {
-	Electric,
-	Haze,
-	Explosion,
-};
+#include "SimpleAnimation/SimpleAnimation.h"
 
 /// <summary>
 /// 破壊時エフェクト
 /// </summary>
 class BreakEffect {
+private:
+	/// <summary>
+	/// 状態を表す
+	/// </summary>
+	enum class State {
+		Electric,
+		Haze,
+		Explosion,
+		Finish,
+	};
 public:
+
 	/// <param name="worldPosition">破壊エフェクトを出すワールド座標を設定</param>
 	BreakEffect(Vector3 worldPosition);
 
 	~BreakEffect();
+
+	void SetRingRotates(std::array<Vector3, 4> rotates);
+	void SetRingColor(Vector4 color);
 
 	/// <param name="positionOffset">最初に指定した座標から動かしたい場合オフセット値を入力</param>
 	void Update();
@@ -37,10 +44,12 @@ private:
 	void UpdateElectric();
 	void UpdateHaze();
 	void UpdateExplosion();
+	void UpdateFinish();
 
 	void DrawElectric();
 	void DrawHaze();
 	void DrawExplosion();
+	void DrawFinish();
 
 private:
 	//============================
@@ -61,7 +70,8 @@ private:
 	// ステートごとの時間
 	float electricTime_ = 1.0f;
 	float hazeTime_ = 0.5f;
-	float explosionTime_ = 3.0f;
+	float explosionTime_ = 1.5f;
+	float finishTime_ = 1.0f;
 
 	// 終了フラグ
 	bool isFinished_ = false;
@@ -71,15 +81,18 @@ private:
 	//====================================
 
 	// リング用のデータ
-
 	// 形状
 	std::array<RingData3D, 4> ringDatas_;
-
 	// マテリアル
 	PrimitiveMaterialData3D ringMaterial_{};
-
 	// 回転
 	std::array<Vector3, 4> ringRotates_;
+
+	// リングのアニメーション
+	std::unique_ptr<SimpleAnimation<float>> ringOuterAnimation_[2];
+	std::unique_ptr<SimpleAnimation<float>> ringInnerAnimation_[2];
+
+
 
 	//===================================
 	// パーティクル用変数
