@@ -179,6 +179,7 @@ void BreakEffect::UpdateExplosion() {
 	timer_ += MAGISYSTEM::GetDeltaTime();
 
 	float t = timer_ / explosionTime_;
+
 	// リングの処理
 	for (uint32_t i = 0; i < 2; i++) {
 		ringDatas_[i].outerRadius = ringOuterAnimation_[0]->GetValue(t);

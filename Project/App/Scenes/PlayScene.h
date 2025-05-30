@@ -109,7 +109,7 @@ inline void PlayScene<Data>::Initialize() {
 
 	// エミッターとパーティクルを作成
 	MAGISYSTEM::CreateEmitter3D("Star", Vector3(0.0f, 0.0f, 0.0f));
-	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Star", Primitive3DType::Plane, "Star.png");
+	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Star", Primitive3DType::Plane, "star.png");
 
 	// エミッターとパーティクルを作成
 	MAGISYSTEM::CreateEmitter3D("Haze", Vector3(0.0f, 0.0f, 0.0f));
