@@ -22,15 +22,6 @@ Player::Player() {
 
 void Player::Update() {
 
-	ImGui::Begin("BreakEffectSetting");
-	ImGui::DragFloat3("RingRotate0", &ringRotate_[0].x, 0.01f);
-	ImGui::DragFloat3("RingRotate1", &ringRotate_[1].x, 0.01f);
-	ImGui::DragFloat3("RingRotate2", &ringRotate_[2].x, 0.01f);
-	ImGui::DragFloat3("RingRotate3", &ringRotate_[3].x, 0.01f);
-
-	ImGui::ColorEdit4("RingColor", &color_.x);
-	ImGui::End();
-
 	// 親だけ更新　TODO:TransformManagerを作る
 	transform_->Update();
 
@@ -44,9 +35,6 @@ void Player::Update() {
 		if (breakEffect_->IsFinished()) {
 			breakEffect_.reset();
 		} else {
-			//breakEffect_->SetRingRotates(ringRotate_);
-			// breakEffect_->SetRingColor(color_);
-
 			breakEffect_->Update();
 		}
 	}

@@ -36,7 +36,7 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	for (size_t i = 0; i < 4; i++) {
 		ringDatas_[i] = RingData3D{};
 	}
-	ringMaterial_.blendMode = BlendMode::Add;
+	ringMaterial_.blendMode = BlendMode::Normal;
 	ringMaterial_.textureName = "gradation.png";
 	ringMaterial_.baseColor = { 1.0f,0.5f,0.0f,1.0f };
 
