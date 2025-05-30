@@ -75,10 +75,13 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 
 	starSetting_.minLifeTime = 2.5f;
 	starSetting_.maxLifeTime = 3.0f;
-	starSetting_.count = 600;
+	starSetting_.count = 1000;
 
-	starSetting_.minVelocity = { -1.5f,-1.5f,-1.5f };
-	starSetting_.maxVelocity = { 1.5f,1.5f,1.5f };
+	starSetting_.minTranslate = { -2.0f,-2.0f,-2.0f };
+	starSetting_.maxTranslate = { 2.0f,2.0f,2.0f };
+
+	starSetting_.minVelocity = { -1.0f,-1.0f,-1.0f };
+	starSetting_.maxVelocity = { 1.0f,1.0f,1.0f };
 
 	starEmitter_->GetEmitterSetting() = starSetting_;
 	starParticle_->GetBlendMode() = BlendMode::Normal;
