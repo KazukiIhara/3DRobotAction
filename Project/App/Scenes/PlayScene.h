@@ -129,19 +129,6 @@ inline void PlayScene<Data>::Initialize() {
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
 
-	// 
-	// デバッグ用
-	// 
-
-	/*planeData_.verticesOffsets[0] = { -5.0f,5.0f,0.0f };
-	planeData_.verticesOffsets[1] = { 5.0f,5.0f,0.0f };
-	planeData_.verticesOffsets[2] = { -5.0f,-5.0f,0.0f };
-	planeData_.verticesOffsets[3] = { 5.0f,-5.0f,0.0f };
-
-	planeMaterial_.baseColor = Color::DarkGray;
-	planeMaterial_.baseColor.w = 0.2f;
-	planeMaterial_.blendMode = BlendMode::Add;
-	planeMaterial_.textureName = "white.png";*/
 }
 
 template<typename Data>
