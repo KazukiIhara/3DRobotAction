@@ -25,7 +25,7 @@ void Player::Update() {
 	transform_->Update();
 
 	// 破壊時エフェクトテスト
-	if (MAGISYSTEM::PushKey(DIK_SPACE)) {
+	if (ImGui::Button("PlayEffect")) {
 		breakEffect_ = std::make_unique<BreakEffect>(MAGIMath::ExtractionWorldPos(renderTransform_->GetWorldMatrix()));
 	}
 

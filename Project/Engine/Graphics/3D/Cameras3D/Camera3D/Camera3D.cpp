@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "Framework/MAGI.h"
+#include <Random/Random.h>
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
@@ -18,8 +19,6 @@ Camera3D::~Camera3D() {
 
 void Camera3D::Initialize() {
 	eye_ = kDefaultCameraTranslate_;
-	// ワールド座標設定 p
-	worldPosition = eye_;
 	// ビュー行列やらあれこれ
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
@@ -35,7 +34,6 @@ void Camera3D::Update() {
 }
 
 void Camera3D::UpdateData() {
-	worldPosition = eye_;
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
@@ -78,7 +76,34 @@ void Camera3D::UpdateData() {
 		m.m[2][3] - m.m[2][2],
 		m.m[3][3] - m.m[3][2])); // Far
 
+	ApplyShake();
+
 	UpdateCameraData();
+}
+
+void Camera3D::Shake(float duration, float intensity) {
+	shakeTime_ = duration;
+	shakeDuration_ = duration;
+	shakeIntensity_ = intensity;
+	shakeStartTranslate_ = eye_;
+}
+
+void Camera3D::ApplyShake() {
+	if (shakeDuration_ > 0) {
+		float multiplyer = shakeDuration_ / shakeTime_;
+		// ランダムなシェイクオフセットを生成
+		Vector3 shakeOffset = Random::GenerateVector3(-shakeIntensity_ * multiplyer, shakeIntensity_ * multiplyer);
+		eye_ = shakeStartTranslate_ + shakeOffset;
+
+		// シェイクの時間を減らす
+		shakeDuration_ -= MAGISYSTEM::GetDeltaTime();
+
+		// シェイクが終了した場合リセット
+		if (shakeDuration_ <= 0) {
+			shakeDuration_ = 0;
+			eye_ = shakeStartTranslate_;
+		}
+	}
 }
 
 Vector3 Camera3D::DirectionFromYawPitch(float yaw, float pitch) {
@@ -184,7 +209,7 @@ void Camera3D::MapCameraData() {
 }
 
 void Camera3D::UpdateCameraData() {
-	cameraData_->worldPosition = worldPosition;
+	cameraData_->worldPosition = eye_;
 	cameraData_->viewProjection = viewProjectionMatrix_;
 
 	cameraInvData_->invView = Inverse(viewMatrix_);

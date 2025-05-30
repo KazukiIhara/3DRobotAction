@@ -48,7 +48,7 @@ private:
 
 
 	// ポストエフェクトの用の変数
-	float vignetteScale_ = 12.0f;
+	float vignetteScale_ = 18.0f;
 	float vignetteFalloff_ = 0.8f;
 	Vector2 radialBlurCenter_ = { 0.5f,0.5f };
 	float radialBlurWidth_ = 0.01f;
