@@ -93,6 +93,16 @@ private:
 	std::unique_ptr<SimpleAnimation<float>> ringInnerAnimation_[2];
 
 	//===================================
+	// フラッシュ用の変数
+	//===================================
+	float flashScale_ = 1.0f;
+	PlaneData3D flashPlaneData_;
+	PrimitiveMaterialData3D flashPlaneMaterial_;
+
+	std::unique_ptr<SimpleAnimation<float>> flashScaleAnimation_;
+	std::unique_ptr<SimpleAnimation<float>> flashAlphaAnimation_;
+
+	//===================================
 	// 靄用のパーティクル
 	//===================================
 

@@ -241,11 +241,11 @@ float MAGIMath::DegreeToRadian(float degree) {
 }
 
 float MAGIMath::Lerp(float a, float b, float t) {
-	return a + (a - b) * t;
+	return a + (b - a) * t;
 }
 
 Vector2 MAGIMath::Lerp(const Vector2& v1, const Vector2& v2, float t) {
-	return v1 + (v1 - v2) * t;
+	return v1 + (v2 - v1) * t;
 }
 
 Vector3 MAGIMath::Normalize(const Vector3& a) {

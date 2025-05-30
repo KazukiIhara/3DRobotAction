@@ -62,7 +62,7 @@ private:
 
 protected:
 	// カメラの初期トランスフォーム
-	const Vector3 kDefaultCameraTranslate_ = { 0.0f,3.0f,-4.0f };
+	const Vector3 kDefaultCameraTranslate_ = { 0.0f,3.0f,-5.0f };
 
 	// 縦軸
 	float yaw_ = 0.0f;
