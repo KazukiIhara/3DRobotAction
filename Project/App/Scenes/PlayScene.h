@@ -52,7 +52,7 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	Vector2 radialBlurCenter_ = { 0.5f,0.5f };
 	float radialBlurWidth_ = 0.01f;
-	float gaussianSigma_ = 0.8f;
+	float gaussianSigma_ = 0.5f;
 
 	// 
 	// デバッグ用

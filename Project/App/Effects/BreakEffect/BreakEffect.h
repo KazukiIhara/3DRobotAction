@@ -77,6 +77,12 @@ private:
 	bool isFinished_ = false;
 
 	//====================================
+	// ラジアルブラー用変数
+	//====================================
+	std::unique_ptr<SimpleAnimation<float>> radialBlurScaleAni_;
+	float radialBlurScale_ = 0.01f;
+
+	//====================================
 	// リングエフェクト用変数
 	//====================================
 

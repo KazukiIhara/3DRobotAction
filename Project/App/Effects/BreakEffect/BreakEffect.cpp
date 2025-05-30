@@ -41,17 +41,13 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	//===================================
 	// フラッシュのデータを初期化
 	//===================================
-	/*flashPlaneData_.verticesOffsets[0] = { -5.0f,5.0f,0.0f };
-	flashPlaneData_.verticesOffsets[1] = { 5.0f,5.0f,0.0f };
-	flashPlaneData_.verticesOffsets[2] = { -5.0f,-5.0f,0.0f };
-	flashPlaneData_.verticesOffsets[3] = { 5.0f,-5.0f,0.0f };*/
 
 	flashPlaneMaterial_.blendMode = BlendMode::Add;
 	flashPlaneMaterial_.textureName = "Circle2.png";
 	flashPlaneMaterial_.baseColor = Color::Blue;
 
 	flashScaleAnimation_ = std::make_unique<SimpleAnimation<float>>(1.0f, 30.0f, EasingType::EaseOutQuart);
-	flashAlphaAnimation_ = std::make_unique<SimpleAnimation<float>>(1.0f, 0.0f,EasingType::EaseInQuart);
+	flashAlphaAnimation_ = std::make_unique<SimpleAnimation<float>>(1.0f, 0.0f, EasingType::EaseInQuart);
 
 	//===================================
 	// リングのデータを初期化
@@ -101,6 +97,10 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	starEmitter_->GetEmitterSetting() = starSetting_;
 	starParticle_->GetBlendMode() = BlendMode::Normal;
 
+	//===================================
+	// ブラー用のデータを初期化
+	//===================================
+	radialBlurScaleAni_ = std::make_unique<SimpleAnimation<float>>(0.0f, 0.01f, EasingType::EaseInOutSine, true, LoopType::PingPong);
 }
 
 BreakEffect::~BreakEffect() {
@@ -179,6 +179,10 @@ void BreakEffect::UpdateExplosion() {
 	timer_ += MAGISYSTEM::GetDeltaTime();
 
 	float t = timer_ / explosionTime_;
+
+	radialBlurScale_ = radialBlurScaleAni_->GetValue(t * 2.0f);
+
+	MAGISYSTEM::ApplyPostEffectRadialBlur(Vector2(0.5f, 0.5f), radialBlurScale_);
 
 	// リングの処理
 	for (uint32_t i = 0; i < 2; i++) {
