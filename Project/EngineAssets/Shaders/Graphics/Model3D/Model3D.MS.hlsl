@@ -65,19 +65,7 @@ void main(
 
     Meshlet m = gMeshlets[meshletIndex];
     
-    bool visible = meshletIndex < gMeshInfo.MeshletCount;
-    if (!visible)
-    {
-        m.VertCount = 0;
-        m.PrimCount = 0;
-    }
-
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
-    
-    if (!visible)
-    {
-        return;
-    }
 
     //------------------- 頂点 --------------------
     if (gtid.x < m.VertCount)

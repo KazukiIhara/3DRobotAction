@@ -45,6 +45,15 @@ private:
 	std::unique_ptr<Player> player_ = nullptr;
 
 	std::unique_ptr<Ground> ground_ = nullptr;
+
+
+	// 
+	// デバッグ用
+	// 
+
+
+	PlaneData3D planeData_;
+	PrimitiveMaterialData3D planeMaterial_;
 };
 
 template<typename Data>
@@ -72,6 +81,23 @@ inline void PlayScene<Data>::Initialize() {
 	//-------------------------------------------------------
 	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
 
+	//===================================
+	// テクスチャのロード
+	//===================================
+
+	// ホワイトテクスチャ
+	MAGISYSTEM::LoadTexture("white.png");
+
+	// 靄用
+	MAGISYSTEM::LoadTexture("smoke.png");
+	// リング用
+	MAGISYSTEM::LoadTexture("gradation.png");
+	// 粒子用
+	MAGISYSTEM::LoadTexture("star.png");
+
+	// エミッターとパーティクルを作成
+	MAGISYSTEM::CreateEmitter3D("Star", Vector3(0.0f, 0.0f, 0.0f));
+	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Star", Primitive3DType::Plane, "star.png");
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
@@ -87,10 +113,28 @@ inline void PlayScene<Data>::Initialize() {
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
 
+	// 
+	// デバッグ用
+	// 
+
+	planeData_.verticesOffsets[0] = { -5.0f,5.0f,0.0f };
+	planeData_.verticesOffsets[1] = { 5.0f,5.0f,0.0f };
+	planeData_.verticesOffsets[2] = { -5.0f,-5.0f,0.0f };
+	planeData_.verticesOffsets[3] = { 5.0f,-5.0f,0.0f };
+
+	planeMaterial_.baseColor = Color::DarkGray;
+	planeMaterial_.baseColor.w = 0.2f;
+	planeMaterial_.blendMode = BlendMode::Add;
+	planeMaterial_.textureName = "white.png";
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
+
+	// 
+	// パーティクル用変数
+	// 
+
 	// 床更新
 	ground_->Update();
 
@@ -105,6 +149,9 @@ inline void PlayScene<Data>::Draw() {
 
 	// プレイヤー描画
 	player_->Draw();
+
+
+	MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData_, planeMaterial_);
 }
 
 template<typename Data>

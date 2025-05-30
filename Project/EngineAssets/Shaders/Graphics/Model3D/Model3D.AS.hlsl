@@ -1,6 +1,5 @@
 #include "Model3D.hlsli"
 
-// b2 ‚É“ü‚Á‚Ä‚¢‚é MeshInfo ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
 ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
 
 [shader("amplification")]
@@ -25,6 +24,5 @@ void main(uint3 dtid : SV_DispatchThreadID)
     
     uint visibleCount = WaveActiveCountBits(visible);
 
-    // MS ‚Ö‚Í meshletCount ~ 1 ~ 1 TG ‚ğ”ò‚Î‚·
     DispatchMesh(visibleCount, 1, 1, payload);
 }

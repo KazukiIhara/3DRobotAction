@@ -21,7 +21,6 @@ Player::Player() {
 }
 
 void Player::Update() {
-
 	// 親だけ更新　TODO:TransformManagerを作る
 	transform_->Update();
 

@@ -93,10 +93,12 @@ private:
 	std::unique_ptr<SimpleAnimation<float>> ringInnerAnimation_[2];
 
 
-
 	//===================================
 	// パーティクル用変数
 	//===================================
 
+	Emitter3D* starEmitter_;
+	BaseParticleGroup3D* starParticle_;
+	EmitterSetting starSetting_;
 
 };

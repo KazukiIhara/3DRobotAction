@@ -4,18 +4,6 @@ using namespace MAGIMath;
 using namespace MAGIUtility;
 
 BreakEffect::BreakEffect(Vector3 worldPosition) {
-	//===================================
-	// テクスチャのロード
-	//===================================
-
-	// 靄用
-	MAGISYSTEM::LoadTexture("smoke.png");
-
-	// リング用
-	MAGISYSTEM::LoadTexture("gradation.png");
-
-	// 粒子用
-	MAGISYSTEM::LoadTexture("star.png");
 
 	//===================================
 	// コアの設定
@@ -55,6 +43,25 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	//===================================
 	// 粒子のデータを初期化
 	//===================================
+	starEmitter_ = MAGISYSTEM::FindEmitter3D("Star");
+	starParticle_ = MAGISYSTEM::FindParticleGroup3D("Star");
+	starEmitter_->worldPosition = corePosition_;
+
+	starEmitter_->AddParticleGroup(starParticle_);
+
+	starSetting_.emitType = EmitType::Random;
+	starSetting_.minColor = Color::SkyBlue;
+	starSetting_.maxColor = Color::SkyBlue;
+
+	starSetting_.minLifeTime = 2.5f;
+	starSetting_.maxLifeTime = 3.0f;
+	starSetting_.count = 600;
+
+	starSetting_.minVelocity = { -1.5f,-1.5f,-1.5f };
+	starSetting_.maxVelocity = { 1.5f,1.5f,1.5f };
+
+	starEmitter_->GetEmitterSetting() = starSetting_;
+	starParticle_->GetBlendMode() = BlendMode::Normal;
 
 }
 
@@ -123,21 +130,24 @@ void BreakEffect::UpdateHaze() {
 	if (timer_ >= electricTime_) {
 		timer_ = 0.0f;
 		currentState_ = State::Explosion;
+		starEmitter_->EmitAll();
 	}
 }
 
 void BreakEffect::UpdateExplosion() {
 	timer_ += MAGISYSTEM::GetDeltaTime();
 
+	// リングの処理
 	for (uint32_t i = 0; i < 2; i++) {
 		ringDatas_[i].outerRadius = ringOuterAnimation_[0]->GetValue(timer_ / explosionTime_);
 		ringDatas_[i].innerRadius = ringInnerAnimation_[0]->GetValue(timer_ / explosionTime_);
 	}
-
 	for (uint32_t i = 2; i < 4; i++) {
 		ringDatas_[i].outerRadius = ringOuterAnimation_[1]->GetValue(timer_ / explosionTime_);
 		ringDatas_[i].innerRadius = ringInnerAnimation_[1]->GetValue(timer_ / explosionTime_);
 	}
+
+	// パーティクルの処理
 
 	if (timer_ >= explosionTime_) {
 		timer_ = 0.0f;

@@ -115,6 +115,11 @@ void BaseParticleGroup3D::UpdateInstancingData() {
 		(*particleIterator).currentTime += MAGISYSTEM::GetDeltaTime();
 		// 移動
 		(*particleIterator).transform.translate += (*particleIterator).velocity * MAGISYSTEM::GetDeltaTime();
+
+		if (isRotate) {
+			(*particleIterator).transform.rotate.z += MAGISYSTEM::GetDeltaTime();
+		}
+
 		// 透明度
 		float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
 
