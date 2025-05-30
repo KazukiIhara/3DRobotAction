@@ -1258,6 +1258,10 @@ void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
 }
 
+void MAGISYSTEM::ShakeCurrentCamera3D(float duration, float intensity) {
+	camera3DManager_->ShakeCurrentCamera(duration, intensity);
+}
+
 void MAGISYSTEM::ClearCamera3D() {
 	camera3DManager_->Clear();
 }

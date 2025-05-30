@@ -52,6 +52,7 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	Vector2 radialBlurCenter_ = { 0.5f,0.5f };
 	float radialBlurWidth_ = 0.01f;
+	float gaussianSigma_ = 0.8f;
 
 	// 
 	// デバッグ用
@@ -148,6 +149,10 @@ inline void PlayScene<Data>::Update() {
 	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("GaussianBlurParamater");
+	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
+	ImGui::End();
+
 
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
@@ -160,6 +165,8 @@ inline void PlayScene<Data>::Update() {
 
 
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
+	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
+	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
 }
 
 template<typename Data>
