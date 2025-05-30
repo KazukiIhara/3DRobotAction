@@ -33,7 +33,8 @@ public:
 	~SpriteDrawer();
 
 	void Update();
-	void Draw(BlendMode blendMode);
+	void DrawFront(BlendMode blendMode);
+	void DrawBack(BlendMode blendMode);
 
 	void AddSprite(
 		const SpriteData& data,
@@ -41,7 +42,6 @@ public:
 	);
 
 private:
-
 	SpriteDataForGPU ComputeSpriteDataForGPU(const SpriteData& data, const SpriteMaterialData& material);
 private:
 	void SetDXGI(DXGI* dxgi);
@@ -54,19 +54,41 @@ private:
 	// インスタンス最大数
 	const uint32_t NumMaxInstance = 262144;
 
+	//===============================
+	// Front
+	//===============================
+
 	// instancing描画用のリソース
-	ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
+	ComPtr<ID3D12Resource> instancingResourceFront_[static_cast<uint32_t>(BlendMode::Num)];
 	// instancing描画用のデータ
-	SpriteDataForGPU* instancingData_[static_cast<uint32_t>(BlendMode::Num)];
+	SpriteDataForGPU* instancingDataFront_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// SpriteSrvIndex
-	uint32_t instancingSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
+	uint32_t instancingSrvIndexFront_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// instance描画する際に使う変数
-	uint32_t instanceCount_[static_cast<uint32_t>(BlendMode::Num)];
+	uint32_t instanceCountFront_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// 現在のインデックス
-	uint32_t currentIndex_[static_cast<uint32_t>(BlendMode::Num)];
+	uint32_t currentIndexFront_[static_cast<uint32_t>(BlendMode::Num)];
+
+	//===============================
+	// Back
+	//===============================
+
+	// instancing描画用のリソース
+	ComPtr<ID3D12Resource> instancingResourceBack_[static_cast<uint32_t>(BlendMode::Num)];
+	// instancing描画用のデータ
+	SpriteDataForGPU* instancingDataBack_[static_cast<uint32_t>(BlendMode::Num)];
+
+	// SpriteSrvIndex
+	uint32_t instancingSrvIndexBack_[static_cast<uint32_t>(BlendMode::Num)];
+
+	// instance描画する際に使う変数
+	uint32_t instanceCountBack_[static_cast<uint32_t>(BlendMode::Num)];
+
+	// 現在のインデックス
+	uint32_t currentIndexBack_[static_cast<uint32_t>(BlendMode::Num)];
 
 private:
 	DXGI* dxgi_ = nullptr;

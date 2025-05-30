@@ -22,8 +22,6 @@ ModelDrawer::ModelDrawer(const ModelData& modelData) {
 
 	// 描画用のリソースを準備
 	for (uint32_t i = 0; i < kBlendModeNum; i++) {
-		modelDatasForRender_[i].resize(kNumMaxInstance);
-
 		instancingResource_[i] = MAGISYSTEM::CreateBufferResource(sizeof(ModelDataForGPU) * kNumMaxInstance);
 		instancingSrvIndex_[i] = MAGISYSTEM::SrvUavAllocate();
 		MAGISYSTEM::CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), kNumMaxInstance, sizeof(ModelDataForGPU));

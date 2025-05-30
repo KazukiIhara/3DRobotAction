@@ -14,7 +14,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -145,6 +145,8 @@ inline void SampleScene<Data>::Initialize() {
 	modelMaterial_.blendMode = BlendMode::None;
 
 	modelMatAlpha_.blendMode = BlendMode::Add;
+
+	spriteData_.isBack = true;
 
 	// スプライト用のマテリアルデータ
 	spriteMaterial.blendmode = BlendMode::Normal;
@@ -369,8 +371,8 @@ template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
 	// スプライト描画
-	//MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
-	//MAGISYSTEM::DrawSprite(SpriteData{}, spriteMaterial);
+	MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
+	MAGISYSTEM::DrawSprite(spriteData_, spriteMaterial);
 
 	// 板ポリ描画
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);

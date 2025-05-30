@@ -30,9 +30,6 @@ private:
 	// メッシュ
 	std::vector<std::unique_ptr<MeshDrawer>> meshes_;
 
-	// 描画する情報の配列
-	std::vector<ModelDataForGPU> modelDatasForRender_[static_cast<uint32_t>(BlendMode::Num)];
-
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
 	// instancing描画用のデータ
