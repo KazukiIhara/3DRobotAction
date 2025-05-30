@@ -17,7 +17,8 @@ Camera3D::~Camera3D() {
 }
 
 void Camera3D::Initialize() {
-	// ワールド座標設定
+	eye_ = kDefaultCameraTranslate_;
+	// ワールド座標設定 p
 	worldPosition = eye_;
 	// ビュー行列やらあれこれ
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);

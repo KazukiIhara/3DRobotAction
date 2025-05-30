@@ -47,6 +47,12 @@ private:
 	std::unique_ptr<Ground> ground_ = nullptr;
 
 
+	// ポストエフェクトの用の変数
+	float vignetteScale_ = 12.0f;
+	float vignetteFalloff_ = 0.8f;
+	Vector2 radialBlurCenter_ = { 0.5f,0.5f };
+	float radialBlurWidth_ = 0.01f;
+
 	// 
 	// デバッグ用
 	// 
@@ -76,6 +82,8 @@ inline void PlayScene<Data>::Initialize() {
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
+	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
+
 	//-------------------------------------------------------
 	// アセットのロード
 	//-------------------------------------------------------
@@ -99,13 +107,17 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::CreateEmitter3D("Star", Vector3(0.0f, 0.0f, 0.0f));
 	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Star", Primitive3DType::Plane, "star.png");
 
+	// エミッターとパーティクルを作成
+	MAGISYSTEM::CreateEmitter3D("Haze", Vector3(0.0f, 0.0f, 0.0f));
+	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Haze", Primitive3DType::Plane, "smoke.png");
+
+
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
 	//-------------------------------------------------------
 
 	// スカイボックスを設定
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
-
 
 	// プレイヤー作成
 	player_ = std::make_unique<Player>();
@@ -117,7 +129,7 @@ inline void PlayScene<Data>::Initialize() {
 	// デバッグ用
 	// 
 
-	planeData_.verticesOffsets[0] = { -5.0f,5.0f,0.0f };
+	/*planeData_.verticesOffsets[0] = { -5.0f,5.0f,0.0f };
 	planeData_.verticesOffsets[1] = { 5.0f,5.0f,0.0f };
 	planeData_.verticesOffsets[2] = { -5.0f,-5.0f,0.0f };
 	planeData_.verticesOffsets[3] = { 5.0f,-5.0f,0.0f };
@@ -125,21 +137,29 @@ inline void PlayScene<Data>::Initialize() {
 	planeMaterial_.baseColor = Color::DarkGray;
 	planeMaterial_.baseColor.w = 0.2f;
 	planeMaterial_.blendMode = BlendMode::Add;
-	planeMaterial_.textureName = "white.png";
+	planeMaterial_.textureName = "white.png";*/
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
 
-	// 
-	// パーティクル用変数
-	// 
+	ImGui::Begin("VignetteParamater");
+	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
+	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
+	ImGui::End();
+
+
+	// ライト変数
+	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// 床更新
 	ground_->Update();
 
 	// プレイヤー更新
 	player_->Update();
+
+
+	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 }
 
 template<typename Data>
@@ -151,7 +171,7 @@ inline void PlayScene<Data>::Draw() {
 	player_->Draw();
 
 
-	MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData_, planeMaterial_);
+	//MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData_, planeMaterial_);
 }
 
 template<typename Data>

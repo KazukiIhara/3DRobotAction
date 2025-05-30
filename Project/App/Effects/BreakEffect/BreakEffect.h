@@ -92,6 +92,13 @@ private:
 	std::unique_ptr<SimpleAnimation<float>> ringOuterAnimation_[2];
 	std::unique_ptr<SimpleAnimation<float>> ringInnerAnimation_[2];
 
+	//===================================
+	// 靄用のパーティクル
+	//===================================
+
+	Emitter3D* hazeEmitter_;
+	BaseParticleGroup3D* hazeParticle_;
+	EmitterSetting hazeSetting_;
 
 	//===================================
 	// パーティクル用変数

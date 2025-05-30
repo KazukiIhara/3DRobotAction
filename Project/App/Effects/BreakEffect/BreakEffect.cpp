@@ -16,7 +16,27 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	//===================================
 	// 靄のデータを初期化
 	//===================================
+	hazeEmitter_ = MAGISYSTEM::FindEmitter3D("Haze");
+	hazeParticle_ = MAGISYSTEM::FindParticleGroup3D("Haze");
+	hazeEmitter_->worldPosition = corePosition_;
 
+	hazeEmitter_->AddParticleGroup(hazeParticle_);
+
+	hazeSetting_.emitType = EmitType::Random;
+	hazeSetting_.minColor = Color::DarkOrange;
+	hazeSetting_.maxColor = Color::DarkOrange;
+
+	hazeSetting_.minScale = 3.0f;
+	hazeSetting_.maxScale = 3.0f;
+	hazeSetting_.minLifeTime = 1.0f;
+	hazeSetting_.maxLifeTime = 2.0f;
+	hazeSetting_.count = 20;
+	hazeSetting_.frequency = 0.1f;
+	hazeSetting_.minVelocity = { -3.5f,-2.5f,-2.5f };
+	hazeSetting_.maxVelocity = { 3.5f,2.5f,2.5f };
+
+	hazeEmitter_->GetEmitterSetting() = hazeSetting_;
+	hazeParticle_->GetBlendMode() = BlendMode::Add;
 
 	//===================================
 	// リングのデータを初期化
@@ -121,6 +141,7 @@ void BreakEffect::UpdateElectric() {
 	if (timer_ >= electricTime_) {
 		timer_ = 0.0f;
 		currentState_ = State::Haze;
+		hazeEmitter_->GetEmitterSetting().isRepeat = true;
 	}
 }
 
@@ -131,6 +152,7 @@ void BreakEffect::UpdateHaze() {
 		timer_ = 0.0f;
 		currentState_ = State::Explosion;
 		starEmitter_->EmitAll();
+		hazeEmitter_->GetEmitterSetting().isRepeat = false;
 	}
 }
 
