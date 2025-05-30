@@ -145,6 +145,12 @@ namespace MAGIMath {
 	// 度数法からラジアンに変換
 	float DegreeToRadian(float degree);
 
+	// 線形補完
+	float Lerp(float a, float b, float t);
+
+	// 線形補完
+	Vector2 Lerp(const Vector2& v1, const Vector2& v2, float t);
+
 	// 正規化
 	Vector3 Normalize(const Vector3& a);
 

@@ -65,12 +65,6 @@ void main(
 
     Meshlet m = gMeshlets[meshletIndex];
     
-    if (meshletIndex >= gMeshInfo.MeshletCount)
-    {
-        m.VertCount = 0;
-        m.PrimCount = 0;
-    }
-
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
 
     //------------------- 頂点 --------------------

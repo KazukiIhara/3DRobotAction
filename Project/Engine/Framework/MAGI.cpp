@@ -154,7 +154,7 @@ void MAGISYSTEM::Initialize() {
 	// Scissor
 	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
 	// DepthStencil
-	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get(),srvuavManager_.get());
+	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get(), srvuavManager_.get());
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), viewport_.get(), scissorRect_.get(), directXCommand_.get(), rtvManager_.get());
 
@@ -213,7 +213,7 @@ void MAGISYSTEM::Initialize() {
 	// PlaneDrawer3D
 	planeDrawer3D_ = std::make_unique<PlaneDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// BoxDrawer3D
-	boxDrawer3D_ = std::make_unique<BoxDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(),shadowPipelineManager_.get(), camera3DManager_.get(),lightManager_.get());
+	boxDrawer3D_ = std::make_unique<BoxDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), shadowPipelineManager_.get(), camera3DManager_.get(), lightManager_.get());
 	// SphereDrawer3D
 	sphereDrawer3D_ = std::make_unique<SphereDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), shadowPipelineManager_.get(), camera3DManager_.get(), lightManager_.get());
 	// RingDrawer3D
@@ -706,11 +706,20 @@ void MAGISYSTEM::Draw() {
 	// シーン用のレンダーテクスチャに描画
 	//==============================================
 
+	// シーン用のレンダーテクスチャに描画する前の処理
+	renderController_->PreSceneRender();
+
 	// ライトの適用
 	renderController_->LightingPass();
 
 	// 背景ボックスを描画
 	skyBoxDrawer_->Draw();
+
+	// ポストエフェクトの影響を受ける背景スプライトを描画
+	for (uint32_t i = static_cast<uint32_t>(BlendMode::None); i < kBlendModeNum; ++i) {
+		BlendMode mode = static_cast<BlendMode>(i);
+		spriteDrawer_->DrawBack(mode);
+	}
 
 	// LineDrawer3Dの描画処理
 	lineDrawer3D_->Draw();
@@ -727,13 +736,16 @@ void MAGISYSTEM::Draw() {
 		cylinderDrawer3D_->Draw(mode);
 	}
 
+	// パーティクルの描画処理
+	particleGroup3DManager_->Draw();
+
 	// ポストエフェクトの影響を受けるスプライトを描画
 	for (uint32_t i = static_cast<uint32_t>(BlendMode::None); i < kBlendModeNum; ++i) {
 		BlendMode mode = static_cast<BlendMode>(i);
-		spriteDrawer_->Draw(mode);
+		spriteDrawer_->DrawFront(mode);
 	}
 
-	// ライト適用後の処理
+	// シーン用のレンダーテクスチャ描画後処理
 	renderController_->PostSceneRender();
 
 
@@ -1178,7 +1190,7 @@ void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
 	textureDataCantainer_->LoadNormalMap(filePath);
 }
 
-std::map<std::string, Texture>& MAGISYSTEM::GetTexture() {
+std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
 	return textureDataCantainer_->GetTexture();
 }
 
@@ -1186,7 +1198,7 @@ const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& fi
 	return textureDataCantainer_->GetMetaData(filePath);
 }
 
-const std::map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
+const std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
 	return textureDataCantainer_->GetTextureContainer();
 }
 
@@ -1244,6 +1256,10 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
+}
+
+void MAGISYSTEM::ShakeCurrentCamera3D(float duration, float intensity) {
+	camera3DManager_->ShakeCurrentCamera(duration, intensity);
 }
 
 void MAGISYSTEM::ClearCamera3D() {

@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 // C++
 #include <cstdint>
 #include <string>
@@ -36,6 +34,7 @@ struct SpriteData {
 	Vector2 size = { 0.0f,0.0f };
 	float rotate = 0.0f;
 	Vector2 position = { 0.0f,0.0f };
+	bool isBack = false; // 背景スプライトかどうか
 };
 
 /// <summary>

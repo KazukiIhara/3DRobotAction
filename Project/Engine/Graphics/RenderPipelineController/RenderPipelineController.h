@@ -66,6 +66,9 @@ public:
 	// シーン描画後の処理
 	void PostRenderForGBuffers();
 
+	// シーン用のレンダーテクスチャに描画する前の処理
+	void PreSceneRender();
+
 	// ライト適用
 	void LightingPass();
 

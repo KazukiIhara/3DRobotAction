@@ -347,11 +347,11 @@ public: // エンジンの機能
 	// 法線マップ画像の読み込み
 	static void LoadNormalMapTexture(const std::string& filePath);
 	// テクスチャの取得
-	static std::map<std::string, Texture>& GetTexture();
+	static std::unordered_map<std::string, Texture>& GetTexture();
 	// メタデータ取得
 	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
 	// テクスチャコンテナを渡す
-	static const std::map<std::string, Texture>& GetTextureContainer();
+	static const std::unordered_map<std::string, Texture>& GetTextureContainer();
 	// テクスチャのインデックスを渡す
 	static uint32_t GetTextureIndex(const std::string& textureName);
 	// エンジンのデフォルトテクスチャインデクス(UVChecker)を渡す
@@ -431,6 +431,8 @@ public: // エンジンの機能
 	static void SetCurrentCamera3D(const std::string& cameraName);
 	// 3Dカメラの転送
 	static void TransferCamera3D(uint32_t rootParameterIndex);
+	// カメラシェイク
+	static void ShakeCurrentCamera3D(float duration, float intensity);
 	// 3Dカメラ全削除
 	static void ClearCamera3D();
 #pragma endregion

@@ -16,7 +16,7 @@
 /// <summary>
 /// 3D用カメラ
 /// </summary>
-class Camera3D:public WorldEntity {
+class Camera3D :public WorldEntity {
 public:
 	Camera3D(const std::string& cameraName);
 	virtual ~Camera3D()override;
@@ -28,6 +28,11 @@ public:
 	// データ更新
 	virtual void UpdateData();
 
+	// カメラを揺らす
+	void Shake(float duration, float intensity);
+	void ApplyShake();
+
+	// ヨーとピッチから方向を求める
 	Vector3 DirectionFromYawPitch(float yaw, float pitch);
 
 	// カメラのデバッグ描画
@@ -57,8 +62,7 @@ private:
 
 protected:
 	// カメラの初期トランスフォーム
-	const Vector3 kDefaultCameraRotate_ = { 0.45f,0.0f,0.0f };
-	const Vector3 kDefaultCameraTranslate_ = { 0.0f,2.0f,-3.0f };
+	const Vector3 kDefaultCameraTranslate_ = { 0.0f,3.0f,-5.0f };
 
 	// 縦軸
 	float yaw_ = 0.0f;
@@ -94,6 +98,12 @@ protected:
 	Vector4 frustumPlanes_[6];
 	// 有効フラグ
 	bool isActive_ = true;
+
+	// カメラシェイク用変数
+	float shakeTime_ = 0;
+	float shakeDuration_ = 0;
+	float shakeIntensity_ = 0.0f;
+	Vector3 shakeStartTranslate_ = { 0.0f,0.0f,0.0f };
 private:
 	// Camera用リソース
 	ComPtr<ID3D12Resource> cameraResource_ = nullptr;

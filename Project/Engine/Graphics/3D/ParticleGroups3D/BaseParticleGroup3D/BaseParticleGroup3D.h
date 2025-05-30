@@ -75,6 +75,9 @@ protected:
 
 	// 描画フラグ
 	bool isShow_ = true;
+
+	bool isRotate = true;
+
 private:
 	// カメラのルートパラメタインデックス番号
 	const uint32_t cameraRootParamaterIndex_ = 4;

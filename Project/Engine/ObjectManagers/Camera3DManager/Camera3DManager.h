@@ -21,6 +21,7 @@ public:
 	void TransferCurrentCamera(uint32_t rootParameterIndex);
 	void TransferCurrentCameraInverse(uint32_t rootParameterIndex);
 	void DrawCurrentCameraFrustum();
+	void ShakeCurrentCamera(float duration, float intensity);
 
 	std::string Add(std::unique_ptr<Camera3D> newCamera3D);
 	void Remove(const std::string& cameraName);

@@ -67,8 +67,12 @@ bool& BaseParticleGroup3D::GetIsShow() {
 void BaseParticleGroup3D::PrepareForRendering() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
+	// RootSignatureを設定
+	commandList->SetGraphicsRootSignature(MAGISYSTEM::GetGraphicsRootSignature(GraphicsPipelineStateType::Particle3D));
 	// PSOを設定
 	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Particle3D, blendMode_));
+	// 形状を設定
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	// StructuredBufferのSRVを設定する
@@ -111,6 +115,11 @@ void BaseParticleGroup3D::UpdateInstancingData() {
 		(*particleIterator).currentTime += MAGISYSTEM::GetDeltaTime();
 		// 移動
 		(*particleIterator).transform.translate += (*particleIterator).velocity * MAGISYSTEM::GetDeltaTime();
+
+		if (isRotate) {
+			(*particleIterator).transform.rotate.z += MAGISYSTEM::GetDeltaTime();
+		}
+
 		// 透明度
 		float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
 

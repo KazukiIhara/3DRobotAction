@@ -29,12 +29,12 @@ public:
 	// ノーマルマップテクスチャのロード
 	void LoadNormalMap(const std::string& filePath);
 	// Textureを渡す
-	std::map<std::string, Texture>& GetTexture();
+	std::unordered_map<std::string, Texture>& GetTexture();
 	// メタデータを渡す
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
 
 	// コンテナごと渡す
-	const std::map<std::string, Texture>& GetTextureContainer()const;
+	const std::unordered_map<std::string, Texture>& GetTextureContainer()const;
 	// デフォルトテクスチャのインデックスを渡す
 	uint32_t GetDefaultTextureIndex()const;
 private:
@@ -57,9 +57,7 @@ private:
 	void SetSrvUavManager(SRVUAVManager* srvUavManager);
 private:
 	// テクスチャデータコンテナ
-	std::map<std::string, Texture> textureDatas_;
-	// インデックス管理のテクスチャデータコンテナ
-	std::unordered_map<uint32_t, Texture> textureDatasWithSrvIndex_;
+	std::unordered_map<std::string, Texture> textureDatas_;
 private:
 	// DXGI
 	DXGI* dxgi_ = nullptr;

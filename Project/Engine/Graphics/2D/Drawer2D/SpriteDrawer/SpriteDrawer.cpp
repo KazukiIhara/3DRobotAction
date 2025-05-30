@@ -33,13 +33,28 @@ SpriteDrawer::SpriteDrawer(
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		// リソース作成
-		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(SpriteDataForGPU) * NumMaxInstance);
-		instancingSrvIndex_[i] = srvUavManager_->Allocate();
-		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), NumMaxInstance, sizeof(SpriteDataForGPU));
-		instancingResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_[i]));
 
-		currentIndex_[i] = 0;
-		instanceCount_[i] = 0;
+		// 
+		// Front
+		// 
+		instancingResourceFront_[i] = dxgi_->CreateBufferResource(sizeof(SpriteDataForGPU) * NumMaxInstance);
+		instancingSrvIndexFront_[i] = srvUavManager_->Allocate();
+		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndexFront_[i], instancingResourceFront_[i].Get(), NumMaxInstance, sizeof(SpriteDataForGPU));
+		instancingResourceFront_[i]->Map(0, nullptr, reinterpret_cast<void**>(&instancingDataFront_[i]));
+
+		currentIndexFront_[i] = 0;
+		instanceCountFront_[i] = 0;
+
+		// 
+		// Back
+		// 
+		instancingResourceBack_[i] = dxgi_->CreateBufferResource(sizeof(SpriteDataForGPU) * NumMaxInstance);
+		instancingSrvIndexBack_[i] = srvUavManager_->Allocate();
+		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndexBack_[i], instancingResourceBack_[i].Get(), NumMaxInstance, sizeof(SpriteDataForGPU));
+		instancingResourceBack_[i]->Map(0, nullptr, reinterpret_cast<void**>(&instancingDataBack_[i]));
+
+		currentIndexBack_[i] = 0;
+		instanceCountBack_[i] = 0;
 	}
 
 	Logger::Log("SpriteDrawer Initialize\n");
@@ -51,15 +66,19 @@ SpriteDrawer::~SpriteDrawer() {
 
 void SpriteDrawer::Update() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		assert(currentIndex_[i] <= NumMaxInstance);
-		instanceCount_[i] = currentIndex_[i];
-		currentIndex_[i] = 0;
+		assert(currentIndexFront_[i] <= NumMaxInstance);
+		instanceCountFront_[i] = currentIndexFront_[i];
+		currentIndexFront_[i] = 0;
+
+		assert(currentIndexBack_[i] <= NumMaxInstance);
+		instanceCountBack_[i] = currentIndexBack_[i];
+		currentIndexBack_[i] = 0;
 	}
 }
 
-void SpriteDrawer::Draw(BlendMode blendMode) {
+void SpriteDrawer::DrawFront(BlendMode blendMode) {
 	const uint32_t i = static_cast<uint32_t>(blendMode);
-	if (instanceCount_[i] == 0) return;
+	if (instanceCountFront_[i] == 0) return;
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
@@ -67,16 +86,37 @@ void SpriteDrawer::Draw(BlendMode blendMode) {
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sprite, blendMode));
 
 	camera2DManager_->TransferCurrentCamera(0);
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndexFront_[i]));
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(0));
 
-	commandList->DispatchMesh(1, instanceCount_[i], 1);
+	commandList->DispatchMesh(1, instanceCountFront_[i], 1);
+}
+
+void SpriteDrawer::DrawBack(BlendMode blendMode) {
+	const uint32_t i = static_cast<uint32_t>(blendMode);
+	if (instanceCountBack_[i] == 0) return;
+
+	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
+
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sprite));
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sprite, blendMode));
+
+	camera2DManager_->TransferCurrentCamera(0);
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndexBack_[i]));
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(0));
+
+	commandList->DispatchMesh(1, instanceCountBack_[i], 1);
 }
 
 void SpriteDrawer::AddSprite(const SpriteData& data, const SpriteMaterialData& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendmode);
-	instancingData_[blendIndex][currentIndex_[blendIndex]] = ComputeSpriteDataForGPU(data, material);
-	currentIndex_[blendIndex]++;
+	if (data.isBack) {
+		instancingDataBack_[blendIndex][currentIndexBack_[blendIndex]] = ComputeSpriteDataForGPU(data, material);
+		currentIndexBack_[blendIndex]++;
+	} else {
+		instancingDataFront_[blendIndex][currentIndexFront_[blendIndex]] = ComputeSpriteDataForGPU(data, material);
+		currentIndexFront_[blendIndex]++;
+	}
 }
 
 SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, const SpriteMaterialData& material) {
@@ -128,9 +168,11 @@ SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, c
 		texBottom = -texBottom;
 	}
 
+	// 前景か背景か
+	float z = data.isBack ? 10000.0f : 0.0f;
 	// 追加するスプライトデータ
 	SpriteDataForGPU newSpriteData{
-		.worldMatrix = MakeAffineMatrix(Vector3(size.x,size.y,1.0f),Vector3(0.0f,0.0f,data.rotate),Vector3(data.position.x,data.position.y,0.0f)),
+		.worldMatrix = MakeAffineMatrix(Vector3(size.x,size.y,1.0f),Vector3(0.0f,0.0f,data.rotate),Vector3(data.position.x,data.position.y,z)),
 		.vertexPosition{
 			{left,top},			// 左上
 			{right,top},		// 右上

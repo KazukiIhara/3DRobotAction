@@ -59,6 +59,10 @@ void Camera3DManager::DrawCurrentCameraFrustum() {
 	currentCamera_->DrawFrustum();
 }
 
+void Camera3DManager::ShakeCurrentCamera(float duration, float intensity) {
+	currentCamera_->Shake(duration, intensity);
+}
+
 std::string Camera3DManager::Add(std::unique_ptr<Camera3D> newCamera3D) {
 	// 新しいオブジェクト名を決定
 	std::string uniqueName = newCamera3D->name;

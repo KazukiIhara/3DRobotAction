@@ -132,10 +132,7 @@ void RenderController::PostRenderForGBuffers() {
 	depthStencil_->TransitionToRead();
 }
 
-void RenderController::LightingPass() {
-	// コマンドリスト取得
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-
+void RenderController::PreSceneRender() {
 	// SceneRenderTextureに書き込む
 	sceneRenderTexture_->SetAsRenderTarget(depthStencil_->GetDepthStencilResorceCPUHandle());
 	sceneRenderTexture_->ClearRenderTarget();
@@ -143,6 +140,11 @@ void RenderController::LightingPass() {
 	// ビューポートとシザー設定
 	viewport_->SettingViewport();
 	scissorRect_->SettingScissorRect();
+}
+
+void RenderController::LightingPass() {
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 
 	// ルートシグネチャとPSOを設定
 	commandList->SetGraphicsRootSignature(defferedRenderringPipelineManager_->GetRootSignature(DefferedRenderringType::Lighting));
