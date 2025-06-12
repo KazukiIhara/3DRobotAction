@@ -60,9 +60,13 @@ public:
 	void SetIsAlive(bool isAlive);
 
 	void SetScale(const Vector3& scale);
-	void SetRotate(const Vector3& scale);
-	void SetTranslate(const Vector3& scale);
+	void SetRotate(const Vector3& rotate);
+	void SetTranslate(const Vector3& translate);
 	void SetQuaternion(const Quaternion& rotate);
+
+	void AddScale(const Vector3& scale);
+	void AddRotate(const Vector3& rotate);
+	void AddTranslate(const Vector3& translate);
 
 	//
 	// ゲッター

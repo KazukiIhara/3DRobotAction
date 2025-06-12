@@ -268,3 +268,18 @@ void Transform3D::SetQuaternion(const Quaternion& rotate) {
 	rotate_ = rotate;
 	isChanged_ = true;
 }
+
+void Transform3D::AddScale(const Vector3& scale) {
+	scale_ += scale;
+	isChanged_ = true;
+}
+
+void Transform3D::AddRotate(const Vector3& rotate) {
+	inputRadians_ += rotate;
+	isChanged_ = true;
+}
+
+void Transform3D::AddTranslate(const Vector3& translate) {
+	translate_ += translate;
+	isChanged_ = true;
+}
