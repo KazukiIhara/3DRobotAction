@@ -3,30 +3,16 @@
 #include "Framework/MAGI.h"
 
 Player::Player() {
-	// トランスフォーム初期化
-	transform_ = std::make_unique<Transform3D>();
-	renderTransform_ = std::make_unique<Transform3D>(
-		Vector3(1.0f, 1.0f, 1.0f),
-		Vector3(0.0f, 0.0f, 0.0f),
-		Vector3(0.0f, 1.0f, 0.0f)
-	);
-
-	// 描画用トランスフォームと親子付け
-	renderTransform_->SetParent(transform_.get());
-
-	for (size_t i = 0; i < 4; i++) {
-		ringRotate_[i] = { 0.0f,0.0f,0.0f };
-	}
-
+	std::shared_ptr<ModelRenderer> playerModel = std::make_shared<ModelRenderer>("Player", "teapot");
+	std::shared_ptr<GameObject3D> obj = std::make_shared<GameObject3D>("Player");
+	obj->AddModelRenderer(std::move(playerModel));
+	playerObject_ = MAGISYSTEM::AddGameObject3D(std::move(obj));
 }
 
 void Player::Update() {
-	// 親だけ更新　TODO:TransformManagerを作る
-	transform_->Update();
-
 	// 破壊時エフェクトテスト
 	if (ImGui::Button("PlayEffect")) {
-		breakEffect_ = std::make_unique<BreakEffect>(MAGIMath::ExtractionWorldPos(renderTransform_->GetWorldMatrix()));
+		breakEffect_ = std::make_unique<BreakEffect>(Vector3(0.0f, 0.0f, 0.0f));
 	}
 
 	if (breakEffect_) {
@@ -43,5 +29,5 @@ void Player::Draw() {
 	if (breakEffect_) {
 		breakEffect_->Draw();
 	}
-	MAGISYSTEM::DrawBox3D(renderTransform_->GetWorldMatrix(), BoxData3D{}, MaterialData3D{});
+
 }

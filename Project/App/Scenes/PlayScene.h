@@ -115,6 +115,12 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::CreateEmitter3D("Haze", Vector3(0.0f, 0.0f, 0.0f));
 	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Haze", Primitive3DType::Plane, "smoke.png");
 
+	//===================================
+	// モデルのロード
+	//===================================
+
+	MAGISYSTEM::LoadModel("teapot");
+	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
