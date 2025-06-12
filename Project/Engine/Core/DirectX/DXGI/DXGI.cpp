@@ -4,16 +4,13 @@
 
 #include "Logger/Logger.h"
 
-DXGI::DXGI() {
-	Initialize();
-	Logger::Log("DXGI Initialize\n");
-}
+DXGI::DXGI() {}
 
 DXGI::~DXGI() {
 	Logger::Log("DXGI Finalize\n");
 }
 
-void DXGI::Initialize() {
+bool DXGI::Initialize() {
 #ifdef _DEBUG
 	ComPtr<ID3D12Debug1> debugController = nullptr;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
@@ -68,13 +65,63 @@ void DXGI::Initialize() {
 	// デバイスの生成がうまくいかなかったので起動できない
 	assert(device_ != nullptr);
 
-	// MeshShader対応のデバイスを取得
-	hr_ = device_->QueryInterface(IID_PPV_ARGS(&device10_));
-	assert(SUCCEEDED(hr_));
-	Logger::Log("Device10 (MeshShader対応) を取得しました。\n");
+	// DirectX12Ultimateに対応しているかどうかをチェック
+	bool isSupportDirectX12Ultimate = false;
+	{
+		D3D12_FEATURE_DATA_D3D12_OPTIONS7 options7{};
+		if (SUCCEEDED(device_->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS7, &options7, sizeof(options7)))) {
+			if (options7.MeshShaderTier >= D3D12_MESH_SHADER_TIER_1) {
+				isSupportDirectX12Ultimate = true;
+				Logger::Log("DirectX12 Ultimate (MeshShaderTier1以上) に対応しています。\n");
+			} else {
+				Logger::Log("MeshShaderTierが非対応、DirectX12 Ultimate 非対応です。\n");
+
+			}
+		} else {
+			Logger::Log("D3D12_OPTIONS7の取得に失敗しました。\n");
+		}
+	}
+
+	// サポートしているなら
+	if (isSupportDirectX12Ultimate) {
+		// MeshShader対応のデバイスを取得
+		hr_ = device_->QueryInterface(IID_PPV_ARGS(&device10_));
+		if (SUCCEEDED(hr_)) {
+			Logger::Log("Device10を取得しました。\n");
+		} else {
+			// 念のためnullptrに
+			device10_ = nullptr;
+			isSupportDirectX12Ultimate = false;
+			Logger::Log("Device10の取得に失敗しました。MeshShaderはサポートされていますが、ドライバまたはOSが古い可能性があります。\n");
+
+			MessageBox(
+				nullptr,
+				L"DirectX12 Ultimate 非対応です。\nお使いのハードウェアは本アプリケーションの動作要件を満たしていません。\n"
+				L"アプリケーションを終了します。",
+				L"サポート外のデバイス",
+				MB_OK | MB_ICONERROR
+			);
+			CoUninitialize();
+			Logger::Finalize();
+			ExitProcess(EXIT_FAILURE);
+		}
+	} else {
+		Logger::Log("MeshShader未対応GPUです。Device10の取得をスキップしました。\n");
+
+		MessageBox(
+			nullptr,
+			L"DirectX12 Ultimate 非対応です。\nお使いのハードウェアは本アプリケーションの動作要件を満たしていません。\n"
+			L"アプリケーションを終了します。",
+			L"サポート外のデバイス",
+			MB_OK | MB_ICONERROR
+		);
+		CoUninitialize();
+		Logger::Finalize();
+		ExitProcess(EXIT_FAILURE);
+	}
 
 	// 初期化完了ログ
-	Logger::Log("Complete Create D3D12DDevice\n");
+	Logger::Log("Complete Create D3D12Device\n");
 
 #ifdef _DEBUG
 	ComPtr<ID3D12InfoQueue> infoQueue = nullptr;
@@ -104,6 +151,10 @@ void DXGI::Initialize() {
 	}
 #endif // _DEBUG
 
+	// 初期化完了
+	Logger::Log("DXGI Initialize\n");
+
+	return isSupportDirectX12Ultimate;
 }
 
 ComPtr<ID3D12DescriptorHeap> DXGI::CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {

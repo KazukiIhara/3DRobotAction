@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math/Types/Vector3.h"
+#include "Math/Types/Vector4.h"
 #include "Math/Types/Matrix4x4.h"
 
 struct DirectionalLightCameraForGPU {
@@ -18,4 +19,9 @@ struct DirectionalLightForGPU {
 	float intensity = 1.0f;
 	Vector3 color = { 1.0f,1.0f,1.0f };
 	float padding;
+};
+
+struct DirectionalLightFrustumForGPU
+{
+    Vector4 planes[6];   // Left, Right, Bottom, Top, Near, Far
 };

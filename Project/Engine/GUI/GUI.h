@@ -9,7 +9,6 @@
 
 // 前方宣言
 class DeltaTimer;
-class DataIO;
 class SRVUAVManager;
 
 // エンジンのグラフィックUIクラス
@@ -17,8 +16,7 @@ class GUI {
 public:
 	GUI(
 		DeltaTimer* deltaTimer,
-		SRVUAVManager* srvUavManager,
-		DataIO* dataIO
+		SRVUAVManager* srvUavManager
 	);
 
 	// メインUI描画
@@ -75,6 +73,4 @@ private:
 	DeltaTimer* deltaTimer_ = nullptr;
 	// SrvUavManagerのインスタンス
 	SRVUAVManager* srvUavManager_ = nullptr;
-	// DataIOのインスタンス
-	DataIO* dataIO_ = nullptr;
 };

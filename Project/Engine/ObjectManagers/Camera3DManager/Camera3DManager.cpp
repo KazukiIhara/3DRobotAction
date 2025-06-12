@@ -13,9 +13,9 @@ Camera3DManager::~Camera3DManager() {
 }
 
 void Camera3DManager::Initialize() {
-#ifdef _DEBUG
-	debugCamera_ = std::make_unique<DebugCamera3D>("DebugCamera");
-#endif // _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
+	debugCamera_ = std::make_unique<DebugCamera3D>();
+#endif
 }
 
 void Camera3DManager::Update() {
@@ -23,28 +23,28 @@ void Camera3DManager::Update() {
 		currentCamera_->Update();
 		currentCamera_->UpdateData();
 	}
-#ifdef _DEBUG
+#if defined(DEBUG)|| defined(DEVELOP)
 	if (isDebugCamera_) {
 		debugCamera_->UpdateData();
 		currentCamera_->DrawFrustum();
 	}
-#endif // _DEBUG
+#endif
 }
 
 void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
-#ifdef _DEBUG
+#if defined(DEBUG)|| defined(DEVELOP)
 	// デバッグカメラフラグがオンの場合デバッグカメラを転送
 	if (isDebugCamera_) {
 		debugCamera_->TransferCamera(rootParameterIndex);
 		return;
 	}
-#endif // _DEBUG
+#endif
 	// 現在選択中のカメラを見つけて転送
 	currentCamera_->TransferCamera(rootParameterIndex);
 }
 
 void Camera3DManager::TransferCurrentCameraInverse(uint32_t rootParameterIndex) {
-#ifdef _DEBUG
+#if defined(DEBUG)|| defined(DEVELOP)
 	// デバッグカメラフラグがオンの場合デバッグカメラを転送
 	if (isDebugCamera_) {
 		debugCamera_->TransferCameraInv(rootParameterIndex);
@@ -55,6 +55,10 @@ void Camera3DManager::TransferCurrentCameraInverse(uint32_t rootParameterIndex) 
 	currentCamera_->TransferCameraInv(rootParameterIndex);
 }
 
+void Camera3DManager::TransferCurrentCameraFrustum(uint32_t rootParameterIndex) {
+	currentCamera_->TransferCameraFrustum(rootParameterIndex);
+}
+
 void Camera3DManager::DrawCurrentCameraFrustum() {
 	currentCamera_->DrawFrustum();
 }
@@ -63,31 +67,11 @@ void Camera3DManager::ShakeCurrentCamera(float duration, float intensity) {
 	currentCamera_->Shake(duration, intensity);
 }
 
-std::string Camera3DManager::Add(std::unique_ptr<Camera3D> newCamera3D) {
-	// 新しいオブジェクト名を決定
-	std::string uniqueName = newCamera3D->name;
-	int suffix = 1;
-
-	// 同じ名前が既に存在する場合、ユニークな名前を生成
-	auto isNameUsed = [&](const std::string& testName) {
-		return std::any_of(cameras3D_.begin(), cameras3D_.end(), [&](const auto& camera3D) {
-			return camera3D.second->name == testName;
-			});
-		};
-
-	while (isNameUsed(uniqueName)) {
-		uniqueName = newCamera3D->name + "_" + std::to_string(suffix);
-		suffix++;
-	}
-
-	// ユニークな名前に変更
-	newCamera3D->name = uniqueName;
-
+Camera3D* Camera3DManager::Add(const std::string& name, std::unique_ptr<Camera3D> newCamera3D) {
 	// コンテナに登録
-	cameras3D_.insert(std::pair(uniqueName, std::move(newCamera3D)));
-
-	// ユニークな名前を返す
-	return uniqueName;
+	cameras3D_.insert(std::pair(name, std::move(newCamera3D)));
+	// 追加したカメラのポインタを返す
+	return Find(name);
 }
 
 void Camera3DManager::Remove(const std::string& cameraName) {
@@ -119,7 +103,7 @@ void Camera3DManager::SetCurrentCamera(const std::string& cameraName) {
 }
 
 Camera3D* Camera3DManager::GetCurrentCamera() {
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	if (isDebugCamera_) {
 		return debugCamera_.get();
 	}

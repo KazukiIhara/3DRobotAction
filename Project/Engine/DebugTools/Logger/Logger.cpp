@@ -10,9 +10,12 @@
 std::ofstream Logger::logFile_;
 
 void Logger::Initialize() {
+
+	bool runningUnderVS = IsDebuggerPresent();
+	bool runningUnderPix = IsRunningUnderPIX();
+
 	// logsフォルダ作成
-	// VSから実行
-	if (IsDebuggerPresent()) {
+	if (runningUnderVS || runningUnderPix) {
 		std::filesystem::create_directories("../generated/logs");
 	} else {
 		std::filesystem::create_directories("logs");
@@ -31,7 +34,7 @@ void Logger::Initialize() {
 	std::ostringstream fileNameStream;
 
 	// VSから実行
-	if (IsDebuggerPresent()) {
+	if (runningUnderVS || runningUnderPix) {
 		fileNameStream << "../generated/logs/"
 			<< std::put_time(&localTime, "%Y%m%d_%H%M%S")
 			<< ".txt";
@@ -105,4 +108,11 @@ std::string Logger::ConvertString(const std::wstring& str) {
 	std::string result(sizeNeeded, 0);
 	WideCharToMultiByte(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), result.data(), sizeNeeded, NULL, NULL);
 	return result;
+}
+
+bool Logger::IsRunningUnderPIX() {
+	char buf[2];         // 値は不要なので1バイトあれば良い
+	size_t len = 0;
+	getenv_s(&len, buf, sizeof(buf), "PIX_PROCESS");
+	return len > 0;      // 文字列長が0より大きければ存在
 }

@@ -7,7 +7,7 @@
 /// 3Dプリミティブ形状で汎用的に使える定数
 /// </summary>
 namespace PrimitiveCommonConst {
-	inline constexpr uint32_t NumMaxInstance = 262144;										// 全プリミティブ共通の最大インスタンス数
+	inline constexpr uint32_t NumMaxInstance = 65536;										// 全プリミティブ共通の最大インスタンス数
 	inline constexpr uint32_t MaxThreadGroupCount = 4194303;								// DispatchMesh制限（全体上限）
 }
 

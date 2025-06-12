@@ -20,6 +20,10 @@ public:
 	static std::wstring ConvertString(const std::string& str);
 	// wstring型をstring型に変換する関数
 	static std::string ConvertString(const std::wstring& str);
+
+private:
+	// PIXから実行されているかどうか
+	static bool IsRunningUnderPIX();
 private:
 	static std::ofstream logFile_;
 };

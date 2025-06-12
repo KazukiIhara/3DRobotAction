@@ -16,7 +16,7 @@ public:
 	~DXGI();
 
 	// 初期化
-	void Initialize();
+	bool Initialize();
 
 	// ディスクリプタヒープの作成
 	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
@@ -33,6 +33,7 @@ public:
 	ID3D12Device10* GetDevice10();
 	// DXGIファクトリーの取得
 	IDXGIFactory7* GetFactory();
+
 private:
 	// エラー判別
 	HRESULT hr_ = S_FALSE;
@@ -44,4 +45,5 @@ private:
 	ComPtr<ID3D12Device> device_ = nullptr;
 	// MeshShader対応Device
 	ComPtr<ID3D12Device10> device10_;
+
 };

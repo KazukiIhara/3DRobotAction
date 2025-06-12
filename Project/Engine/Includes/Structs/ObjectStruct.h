@@ -30,12 +30,6 @@ struct QuaternionTransform3D {
 	Vector3 translate = { 0.0f,0.0f,0.0f };
 };
 
-// トランスフォーメーション構造体
-struct TransformationMatrix {
-	Matrix4x4 World;
-	Matrix4x4 WorldInverseTransepose;
-};
-
 // 3D用マテリアル構造体
 struct Material3D {
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
@@ -45,11 +39,6 @@ struct Material3D {
 	float shininess;
 };
 
-// 2D用マテリアル構造体
-struct Material2D {
-	Vector4 color;
-	Matrix4x4 uvTransformMatrix;
-};
 
 // GPUに送る3D用マテリアル構造体
 struct Material3DForGPU {

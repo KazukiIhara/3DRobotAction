@@ -90,7 +90,7 @@ private:
 	// 形状
 	std::array<RingData3D, 4> ringDatas_;
 	// マテリアル
-	PrimitiveMaterialData3D ringMaterial_{};
+	MaterialData3D ringMaterial_{};
 	// 回転
 	std::array<Vector3, 4> ringRotates_;
 
@@ -103,7 +103,7 @@ private:
 	//===================================
 	float flashScale_ = 1.0f;
 	PlaneData3D flashPlaneData_;
-	PrimitiveMaterialData3D flashPlaneMaterial_;
+	MaterialData3D flashPlaneMaterial_;
 
 	std::unique_ptr<SimpleAnimation<float>> flashScaleAnimation_;
 	std::unique_ptr<SimpleAnimation<float>> flashAlphaAnimation_;

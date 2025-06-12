@@ -7,8 +7,7 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 ModelShadowPipeline::ModelShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
-	:BaseShadowPipeline(dxgi, shaderCompiler) {
-}
+	:BaseShadowPipeline(dxgi, shaderCompiler) {}
 
 void ModelShadowPipeline::CreateRootSignature() {
 	HRESULT hr;
@@ -38,17 +37,23 @@ void ModelShadowPipeline::CreateRootSignature() {
 	descriptorRangePrimitive.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangePrimitive.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	D3D12_DESCRIPTOR_RANGE rangeCullData{};
+	rangeCullData.BaseShaderRegister = 5;
+	rangeCullData.NumDescriptors = 1;
+	rangeCullData.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	rangeCullData.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
 	// Root Parameters
-	D3D12_ROOT_PARAMETER rootParams[7] = {};
+	D3D12_ROOT_PARAMETER rootParams[9] = {};
 
 	// b0 : Camera
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParams[0].Descriptor.ShaderRegister = 0;
 
 	// t0 : InstanceData
 	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
 	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
 
@@ -75,11 +80,22 @@ void ModelShadowPipeline::CreateRootSignature() {
 	rootParams[5].DescriptorTable.pDescriptorRanges = &descriptorRangePrimitive;
 	rootParams[5].DescriptorTable.NumDescriptorRanges = 1;
 
-	// b2 : MeshInfo
-	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	rootParams[6].Constants.Num32BitValues = 4;
-	rootParams[6].Constants.ShaderRegister = 2;
+	// t5 CullData
+	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
+	rootParams[6].DescriptorTable.pDescriptorRanges = &rangeCullData;
+	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
+
+	// b2 MeshInfo
+	rootParams[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
+	rootParams[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	rootParams[7].Constants.Num32BitValues = 4;
+	rootParams[7].Constants.ShaderRegister = 2;
+
+	// b3 Frustum
+	rootParams[8].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[8].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
+	rootParams[8].Descriptor.ShaderRegister = 3;
 
 	// --- Static Samplerなし ---
 
@@ -107,7 +123,7 @@ void ModelShadowPipeline::CreateRootSignature() {
 }
 
 void ModelShadowPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl", L"as_6_5");
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DShadow.AS.hlsl", L"as_6_5");
 	assert(amplificationShaderBlob_);
 
 	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DShadow.MS.hlsl", L"ms_6_5");

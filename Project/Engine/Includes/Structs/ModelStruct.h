@@ -21,14 +21,6 @@ struct VertexData3D {
 };
 
 /// <summary>
-/// 2D頂点データ
-/// </summary>
-struct VertexData2D {
-	Vector4 position;
-	Vector2 texcoord;
-};
-
-/// <summary>
 /// マテリアルデータ
 /// </summary>
 struct MaterialData {

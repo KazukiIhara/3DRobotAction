@@ -51,48 +51,30 @@ ShadowMeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
 [outputtopology("triangle")]
 [numthreads(128, 1, 1)]
 void main(
-     uint gtid : SV_GroupThreadID,
-     uint gid : SV_GroupID,
+     uint3 gtid : SV_GroupThreadID,
+     uint3 gid : SV_GroupID,
      in payload Payload payload,
      out vertices ShadowMeshOutput verts[256],
      out indices uint3 tris[256]
 )
 {
     const uint instID = payload.instanceID;
-    uint meshletIndex = payload.meshletIndices[gid];
+    uint meshletID = payload.meshletIndices[gid.x];
 
-    Meshlet m = gMeshlets[meshletIndex];
-
-    bool visible = meshletIndex < gMeshInfo.MeshletCount;
-    
-    if (visible && !gInstanceData[instID].isMakeShadow)
-    {
-        visible = false;
-    }
-    
-    if (!visible)
-    {
-        m.VertCount = 0;
-        m.PrimCount = 0;
-    }
+    Meshlet m = gMeshlets[meshletID];
 
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
-    
-    if (!visible)
-    {
-        return;
-    }
 
     // 頂点出力
     if (gtid.x < m.VertCount)
     {
-        uint vertexIndex = GetVertexIndex(m, gtid);
-        verts[gtid] = GetVertexAttributes(vertexIndex, instID);
+        uint vertexIndex = GetVertexIndex(m, gtid.x);
+        verts[gtid.x] = GetVertexAttributes(vertexIndex, instID);
     }
 
     // インデックス出力
     if (gtid.x < m.PrimCount)
     {
-        tris[gtid] = GetPrimitive(m, gtid);
+        tris[gtid.x] = GetPrimitive(m, gtid.x);
     }
 }

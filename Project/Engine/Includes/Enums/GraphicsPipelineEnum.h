@@ -7,7 +7,6 @@
 /// グラフィックスパイプラインの種類
 /// </summary>
 enum class GraphicsPipelineStateType {
-	Object2D,
 	Sprite,
 
 	Line3D,
@@ -20,9 +19,7 @@ enum class GraphicsPipelineStateType {
 	Model3D,
 	SkyBox,
 
-	Object3D,
 	Particle3D,
-	Object3DGroup,
 
 	Num,
 };

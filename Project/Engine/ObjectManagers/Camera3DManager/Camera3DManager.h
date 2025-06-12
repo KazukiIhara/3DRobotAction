@@ -20,10 +20,12 @@ public:
 	void Update();
 	void TransferCurrentCamera(uint32_t rootParameterIndex);
 	void TransferCurrentCameraInverse(uint32_t rootParameterIndex);
+	void TransferCurrentCameraFrustum(uint32_t rootParameterIndex);
+
 	void DrawCurrentCameraFrustum();
 	void ShakeCurrentCamera(float duration, float intensity);
 
-	std::string Add(std::unique_ptr<Camera3D> newCamera3D);
+	Camera3D* Add(const std::string& name, std::unique_ptr<Camera3D> newCamera3D);
 	void Remove(const std::string& cameraName);
 	Camera3D* Find(const std::string& cameraName);
 

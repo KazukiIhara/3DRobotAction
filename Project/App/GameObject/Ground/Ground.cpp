@@ -6,7 +6,7 @@
 Ground::Ground() {
 	transform_ = std::make_unique<Transform3D>();
 
-	transform_->GetRotate().x = std::numbers::pi_v<float> *0.5f;
+	transform_->SetRotate(Vector3(std::numbers::pi_v<float> *0.5f, 0.0f, 0.0f));
 
 	groundSize_ = 40.0f;
 
@@ -23,5 +23,5 @@ void Ground::Update() {
 }
 
 void Ground::Draw() {
-	MAGISYSTEM::DrawPlane3D(transform_->GetWorldMatrix(), planeData_, PrimitiveMaterialData3D{});
+	MAGISYSTEM::DrawPlane3D(transform_->GetWorldMatrix(), planeData_, MaterialData3D{});
 }

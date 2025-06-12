@@ -163,6 +163,9 @@ namespace MAGIMath {
 	// クオータニオンから右向きを取得
 	Vector3 Right(const Quaternion& q);
 
+	// ヨーとピッチから方向を求める
+	Vector3 DirectionFromYawPitch(float yaw, float pitch);
+
 	// 向きから回転を取得
 	Vector3 DirectionToEuler(const Vector3& dir);
 
@@ -230,6 +233,11 @@ namespace MAGIMath {
 	Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
 	// アフィン変換(クオータニオン)
 	Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
+	// アフィン行列分解
+	void DecomposeAffineMatrix(const Matrix4x4& matrix,Vector3& outScale,Quaternion& outRotation,Vector3& outTranslate);
+
+	// 回転行列からクオータニオンを作成
+	Quaternion MatrixToQuaternion(const Matrix3x3& m);
 
 	// ビューポート行列作成
 	Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth);

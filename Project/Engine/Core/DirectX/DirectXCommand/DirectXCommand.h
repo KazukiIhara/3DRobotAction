@@ -17,11 +17,11 @@ class DXGI;
 
 class DirectXCommand {
 public:
-	DirectXCommand(DXGI* dxgi);
+	DirectXCommand(DXGI* dxgi, bool isSupportDirectX12Ultimate);
 	~DirectXCommand();
 
 	// 初期化
-	void Initialize(DXGI* dxgi);
+	void Initialize(DXGI* dxgi, bool isSupportDirectX12Ultimate);
 	// コマンドの実行
 	void KickCommand();
 	// コマンドのリセット

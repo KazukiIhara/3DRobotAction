@@ -306,6 +306,15 @@ Vector3 MAGIMath::Right(const Quaternion& q) {
 		});
 }
 
+Vector3 MAGIMath::DirectionFromYawPitch(float yaw, float pitch) {
+	float cosPitch = std::cosf(pitch);
+	return Normalize(Vector3{
+		std::sinf(yaw) * cosPitch,
+		std::sinf(pitch),
+		std::cosf(yaw) * cosPitch
+		});
+}
+
 Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
 	Vector3 forward = Normalize(dir);
 
@@ -739,6 +748,71 @@ Matrix4x4 MAGIMath::MakeAffineMatrix(const Vector3& scale, const Vector3& rotate
 Matrix4x4 MAGIMath::MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate) {
 	Matrix4x4 result = MakeScaleMatrix(scale) * MakeRotateMatrix(rotate) * MakeTranslateMatrix(translate);
 	return result;
+}
+
+void MAGIMath::DecomposeAffineMatrix(const Matrix4x4& matrix, Vector3& outScale, Quaternion& outRotation, Vector3& outTranslate) {
+	// 平行移動
+	outTranslate = Vector3(matrix.m[3][0], matrix.m[3][1], matrix.m[3][2]);
+
+	// スケール抽出
+	outScale.x = Length(Vector3(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2]));
+	outScale.y = Length(Vector3(matrix.m[1][0], matrix.m[1][1], matrix.m[1][2]));
+	outScale.z = Length(Vector3(matrix.m[2][0], matrix.m[2][1], matrix.m[2][2]));
+
+	// スケーリング除去して回転行列を生成
+	Matrix3x3 rotMatrix;
+
+	// X軸
+	rotMatrix.m[0][0] = matrix.m[0][0] / outScale.x;
+	rotMatrix.m[0][1] = matrix.m[0][1] / outScale.x;
+	rotMatrix.m[0][2] = matrix.m[0][2] / outScale.x;
+
+	// Y軸
+	rotMatrix.m[1][0] = matrix.m[1][0] / outScale.y;
+	rotMatrix.m[1][1] = matrix.m[1][1] / outScale.y;
+	rotMatrix.m[1][2] = matrix.m[1][2] / outScale.y;
+
+	// Z軸
+	rotMatrix.m[2][0] = matrix.m[2][0] / outScale.z;
+	rotMatrix.m[2][1] = matrix.m[2][1] / outScale.z;
+	rotMatrix.m[2][2] = matrix.m[2][2] / outScale.z;
+
+	outRotation = MatrixToQuaternion(rotMatrix);
+}
+
+Quaternion MAGIMath::MatrixToQuaternion(const Matrix3x3& m) {
+	Quaternion q;
+	float trace = m.m[0][0] + m.m[1][1] + m.m[2][2];
+
+	if (trace > 0.0f) {
+		float s = std::sqrt(trace + 1.0f) * 2.0f;
+		q.w = s * 0.25f;
+		q.x = (m.m[2][1] - m.m[1][2]) / s;
+		q.y = (m.m[0][2] - m.m[2][0]) / s;
+		q.z = (m.m[1][0] - m.m[0][1]) / s;
+	} else {
+		if (m.m[0][0] > m.m[1][1] && m.m[0][0] > m.m[2][2]) {
+			float s = std::sqrt(1.0f + m.m[0][0] - m.m[1][1] - m.m[2][2]) * 2.0f;
+			q.w = (m.m[2][1] - m.m[1][2]) / s;
+			q.x = s * 0.25f;
+			q.y = (m.m[0][1] + m.m[1][0]) / s;
+			q.z = (m.m[0][2] + m.m[2][0]) / s;
+		} else if (m.m[1][1] > m.m[2][2]) {
+			float s = std::sqrt(1.0f + m.m[1][1] - m.m[0][0] - m.m[2][2]) * 2.0f;
+			q.w = (m.m[0][2] - m.m[2][0]) / s;
+			q.x = (m.m[0][1] + m.m[1][0]) / s;
+			q.y = s * 0.25f;
+			q.z = (m.m[1][2] + m.m[2][1]) / s;
+		} else {
+			float s = std::sqrt(1.0f + m.m[2][2] - m.m[0][0] - m.m[1][1]) * 2.0f;
+			q.w = (m.m[1][0] - m.m[0][1]) / s;
+			q.x = (m.m[0][2] + m.m[2][0]) / s;
+			q.y = (m.m[1][2] + m.m[2][1]) / s;
+			q.z = s * 0.25f;
+		}
+	}
+
+	return Normalize(q);
 }
 
 Matrix4x4 MAGIMath::MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth) {

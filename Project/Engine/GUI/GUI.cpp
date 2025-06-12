@@ -7,22 +7,19 @@
 
 #include "DeltaTimer/DeltaTimer.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
-#include "DataIO/DataIO.h"
 
 // Windows環境限定
 #ifdef _WIN32
 #include <Windows.h>
 #endif
-GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager, DataIO* dataIO) {
+GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager) {
 	// 
 	// インスタンスのセット
 	// 
 	assert(deltaTimer);
 	assert(srvUavManager);
-	assert(dataIO);
 	deltaTimer_ = deltaTimer;
 	srvUavManager_ = srvUavManager;
-	dataIO_ = dataIO;
 
 	// 
 	// データIOクラスから受け取るインスタンス

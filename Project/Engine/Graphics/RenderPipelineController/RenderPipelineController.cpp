@@ -13,9 +13,9 @@
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/DefferedRenderringPipelineManager/DefferedRenderringPipelineManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
-#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
-#include "ObjectManagers/LightManager/LightManager.h"
-#include "SkyBoxDrawer/SkyBoxDrawer.h"
+#include "Camera3DManager/Camera3DManager.h"
+#include "LightManager/LightManager.h"
+#include "3D/Drawer3D/SkyBoxDrawer/SkyBoxDrawer.h"
 
 #include "Logger/Logger.h"
 

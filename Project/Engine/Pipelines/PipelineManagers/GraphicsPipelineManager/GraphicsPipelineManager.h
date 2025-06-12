@@ -11,8 +11,6 @@
 // MyHedder
 #include "Enums/GraphicsPipelineEnum.h"
 
-#include "GraphicsPipelines/Object2DGraphicsPipeline/Object2DGraphicsPipeline.h"
-
 #include "GraphicsPipelines/SpriteGraphicsPipeline/SpriteGraphicsPipeline.h"
 
 #include "GraphicsPipelines/Line3DGraphicsPipeline/Line3DGraphicsPipeline.h"
@@ -27,9 +25,7 @@
 
 #include "GraphicsPipelines/SkyBoxGraphicsPipeline/SkyBoxGraphicsPipeline.h"
 
-#include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
-#include "GraphicsPipelines/Object3DGroupGraphicsPipeline/Object3DGroupGraphicsPipeline.h"
 
 // 前方宣言
 class DXGI;
@@ -64,8 +60,6 @@ private: // メンバ変数
 	ComPtr<ID3D12PipelineState> graphicsPipelineStates_[kGraphicsPipelineStateNum][kBlendModeNum];
 
 private:
-	// Object2DGraphicsPipeline
-	std::unique_ptr<Object2DGraphicsPipeline> object2DGraphicsPipeline_ = nullptr;
 
 	// SpriteGraphicsPipeline
 	std::unique_ptr<SpriteGraphicsPipeline> spriteGraphicsPipeline_ = nullptr;
@@ -91,10 +85,6 @@ private:
 	// SkyBoxGraphicsPipeline
 	std::unique_ptr<SkyBoxGraphicsPipeline> skyBoxGraphicsPipeline_ = nullptr;
 
-	// Object3DGraphicsPipeline
-	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;
 	// Particle3DGraphicsPipeline
 	std::unique_ptr<Particle3DGraphicsPipeline> particle3DGraphicsPipeline_ = nullptr;
-	// Object3DGroupGraphicsPipeline
-	std::unique_ptr<Object3DGroupGraphicsPipeline> object3DGroupGraphicsPipeline_ = nullptr;
 };

@@ -7,7 +7,7 @@
 using namespace MAGIUtility;
 
 // Staticメンバ変数の初期化
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 #endif // _DEBUG
 
@@ -59,17 +59,20 @@ std::unique_ptr<PrimitiveShapeDataContainer> MAGISYSTEM::primitiveDataContainer_
 std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
+std::unique_ptr<SceneDataContainer> MAGISYSTEM::sceneDataContainer_ = nullptr;
+
+// 
+// ComponentManager
+// 
+std::unique_ptr<TransformManager> MAGISYSTEM::transformManager_ = nullptr;
+std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 
 //
 // ObjectManager
 //
 std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
-std::unique_ptr<GameObject3DGroupManager> MAGISYSTEM::gameObject3DGroupManager_ = nullptr;
 std::unique_ptr<Camera2DManager> MAGISYSTEM::camera2DManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
-std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
-std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
-std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
 std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
 std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nullptr;
 std::unique_ptr<LightManager> MAGISYSTEM::lightManager_ = nullptr;
@@ -99,14 +102,13 @@ std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
 // 
 // GameManager
 // 
-std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 //
 // Data入出力クラス
 //
-std::unique_ptr<DataIO> MAGISYSTEM::dataIO_ = nullptr;
 std::unique_ptr<GrobalDataManager> MAGISYSTEM::grobalDataManager_ = nullptr;
+std::unique_ptr<SceneDataImporter> MAGISYSTEM::sceneDataImporter_ = nullptr;
 
 //
 // UIクラス
@@ -118,7 +120,7 @@ void MAGISYSTEM::Initialize() {
 	// 開始ログ
 	Logger::Log("MAGISYSTEM Start\n");
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	// リークチェッカ
 	leakCheck_ = std::make_unique<D3DResourceLeakChecker>();
 #endif // _DEBUG
@@ -134,13 +136,15 @@ void MAGISYSTEM::Initialize() {
 
 	// DXGI
 	dxgi_ = std::make_unique<DXGI>();
+	// デバイスがDX12Ultimateに対応しているかどうかを取得
+	isSupportDX12Ultimate_ = dxgi_->Initialize();
+
 	// DirectXCommand
-	directXCommand_ = std::make_unique<DirectXCommand>(dxgi_.get());
+	directXCommand_ = std::make_unique<DirectXCommand>(dxgi_.get(), isSupportDX12Ultimate_);
 	// Fence
 	fence_ = std::make_unique<Fence>(dxgi_.get(), directXCommand_.get());
 	// ShaderCompiler
 	shaderCompiler_ = std::make_unique<ShaderCompiler>();
-
 
 	// RTVManager
 	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
@@ -158,7 +162,6 @@ void MAGISYSTEM::Initialize() {
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), viewport_.get(), scissorRect_.get(), directXCommand_.get(), rtvManager_.get());
 
-
 	// TextureDataContainer
 	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
 	// PrimitiveDataContainer
@@ -167,24 +170,25 @@ void MAGISYSTEM::Initialize() {
 	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
 	// AnimationDataContainer
 	animationDataContainer_ = std::make_unique<AnimationDataContainer>();
-	// SoundDataCOntainer
+	// SoundDataContainer
 	soundDataContainer_ = std::make_unique<SoundDataContainer>();
+	// SceneDataContainer
+	sceneDataContainer_ = std::make_unique<SceneDataContainer>();
+
+	// TransformManager
+	transformManager_ = std::make_unique<TransformManager>();
+	// Renderr3DManager
+	renderer3DManager_ = std::make_unique<Renderer3DManager>();
 
 
 	// GameObject3DManager
 	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
-	// GameObject3DGroupManager
-	gameObject3DGroupManager_ = std::make_unique<GameObject3DGroupManager>();
-	// Renderer3DManager
-	renderer3DManager_ = std::make_unique<Renderer3DManager>();
+
+
 	// Camera2DManager
 	camera2DManager_ = std::make_unique<Camera2DManager>();
 	// Camera3DManager
 	camera3DManager_ = std::make_unique<Camera3DManager>();
-	// PunctualLightManager
-	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
-	// ColliderManager
-	colliderManager_ = std::make_unique<ColliderManager>();
 	// Emitter3DManager
 	emitter3DManager_ = std::make_unique<Emitter3DManager>();
 	// ParticleGroup3DManager
@@ -203,6 +207,7 @@ void MAGISYSTEM::Initialize() {
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 	// ShadowPipelineManager
 	shadowPipelineManager_ = std::make_unique<ShadowPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+
 
 	// SpriteDrawer
 	spriteDrawer_ = std::make_unique<SpriteDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera2DManager_.get());
@@ -235,22 +240,18 @@ void MAGISYSTEM::Initialize() {
 		skyBoxDrawer_.get()
 	);
 
-	// CollisionManager
-	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
-	// DataIO
-	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();
-
+	// SceneDataImporter
+	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get(), renderer3DManager_.get(), transformManager_.get());
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
-
 	// GUI
-	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get());
+	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -268,25 +269,19 @@ void MAGISYSTEM::Finalize() {
 		imguiController_.reset();
 	}
 
+	// SceneDataImporter
+	if (sceneDataImporter_) {
+		sceneDataImporter_.reset();
+	}
+
 	// GrobalDataManager
 	if (grobalDataManager_) {
 		grobalDataManager_.reset();
 	}
 
-	// DataIO
-	if (dataIO_) {
-		dataIO_.reset();
-	}
-
-
 	// SceneManager
 	if (sceneManager_) {
 		sceneManager_.reset();
-	}
-
-	// CollisionManager
-	if (collisionManager_) {
-		collisionManager_.reset();
 	}
 
 	// RenderController
@@ -384,21 +379,6 @@ void MAGISYSTEM::Finalize() {
 		emitter3DManager_.reset();
 	}
 
-	// ColliderManager
-	if (colliderManager_) {
-		colliderManager_.reset();
-	}
-
-	// Renderer3DManager
-	if (renderer3DManager_) {
-		renderer3DManager_.reset();
-	}
-
-	// PunctualLightManager
-	if (punctualLightManager_) {
-		punctualLightManager_.reset();
-	}
-
 	// Camera3DManager
 	if (camera3DManager_) {
 		camera3DManager_.reset();
@@ -409,14 +389,24 @@ void MAGISYSTEM::Finalize() {
 		camera2DManager_.reset();
 	}
 
-	// GameObject3DGroupManager
-	if (gameObject3DGroupManager_) {
-		gameObject3DGroupManager_.reset();
-	}
-
 	// GameObject3DManager
 	if (gameObject3DManager_) {
 		gameObject3DManager_.reset();
+	}
+
+	// TransformManager
+	if (transformManager_) {
+		transformManager_.reset();
+	}
+
+	// Renderer3DManager
+	if (renderer3DManager_) {
+		renderer3DManager_.reset();
+	}
+
+	// SceneDataContainer
+	if (sceneDataContainer_) {
+		sceneDataContainer_.reset();
 	}
 
 	// SoundDataContainer
@@ -562,20 +552,14 @@ void MAGISYSTEM::Update() {
 	// ImGui開始処理
 	imguiController_->BeginFrame();
 
-	// Dataクラスフレーム開始処理
-	dataIO_->BeginFrame();
-
 	// デバッグ表示(FPS、DELTATIME)
 	gui_->ShowDebugUI();
 
 	// シーンの更新処理
 	sceneManager_->Update();
 
-	// ゲームオブジェクトマネージャの更新
-	gameObject3DManager_->Update();
-
-	// 3Dオブジェクトグループマネージャの更新処理
-	gameObject3DGroupManager_->Update();
+	// トランスフォームコンポーネントの更新
+	transformManager_->Update();
 
 	// 2Dカメラマネージャの更新処理
 	camera2DManager_->Update();
@@ -583,14 +567,6 @@ void MAGISYSTEM::Update() {
 	// 3Dカメラマネージャの更新処理
 	camera3DManager_->Update();
 
-	// ライトマネージャの更新
-	punctualLightManager_->Update();
-
-	// 描画オブジェクトクラスの更新処理
-	renderer3DManager_->Update();
-
-	// コライダーマネージャの更新
-	colliderManager_->Update();
 
 	// 3Dエミッターマネージャの更新処理
 	emitter3DManager_->Update();
@@ -602,11 +578,6 @@ void MAGISYSTEM::Update() {
 	lightManager_->Update();
 
 
-	// コリジョンマネージャの更新処理
-	collisionManager_->Update();
-
-	// Dataクラスフレーム終了処理
-	dataIO_->EndFrame();
 	// グローバルデータ
 	grobalDataManager_->Update();
 
@@ -633,6 +604,9 @@ void MAGISYSTEM::Draw() {
 	// シーンの描画処理
 	//
 	sceneManager_->Draw();
+
+	// 3D描画オブジェクトマネージャー
+	renderer3DManager_->Draw();
 
 	//==============================================
 	// 描画クラスの更新
@@ -661,6 +635,7 @@ void MAGISYSTEM::Draw() {
 
 	// 背景ボックス描画クラスの更新
 	skyBoxDrawer_->Update();
+
 
 	//==============================================
 	// ShadowMap用のDepthのみの描画
@@ -810,20 +785,16 @@ void MAGISYSTEM::Draw() {
 }
 
 void MAGISYSTEM::DeleteGarbages() {
-	// 
-	// 3Dオブジェクト
-	// 
 
-	// ゲームオブジェクト3D
-	gameObject3DManager_->DeleteGarbages();
-	// 描画オブジェクト3D
-	renderer3DManager_->DeleteGarbages();
-	// コライダー3D
-	colliderManager_->DeleteGarbages();
+	//
+	// 削除順に気を付けて実装する(基本外側から消していくイメージ) 
+	//
 
-	// ライト
-	punctualLightManager_->DeleteGarbages();
+	gameObject3DManager_->DeleteGarbage();
 
+	renderer3DManager_->DeleteGarbage();
+
+	transformManager_->DeleteGarbage();
 
 }
 
@@ -1254,8 +1225,28 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 	soundDataContainer_->StopWaveLoop(fileName);
 }
 
+void MAGISYSTEM::LoadSceneDataFromJson(const std::string& fileName) {
+	sceneDataContainer_->LoadFromJson(fileName);
+}
+
+Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
+	return transformManager_->Add(std::move(transform));
+}
+
+std::weak_ptr<ModelRenderer> MAGISYSTEM::AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer) {
+	return renderer3DManager_->Add(std::move(modelRenderer));
+}
+
+std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap) {
+	return gameObject3DManager_->Add(std::move(gameObjec3D), insertMap);
+}
+
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
+}
+
+void MAGISYSTEM::TransferCurrentCamera3DFrustum(uint32_t rootParameterIndex) {
+	camera3DManager_->TransferCurrentCameraFrustum(rootParameterIndex);
 }
 
 void MAGISYSTEM::ShakeCurrentCamera3D(float duration, float intensity) {
@@ -1264,62 +1255,6 @@ void MAGISYSTEM::ShakeCurrentCamera3D(float duration, float intensity) {
 
 void MAGISYSTEM::ClearCamera3D() {
 	camera3DManager_->Clear();
-}
-
-void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
-	punctualLightManager_->AddNewLight(lightName, lightData);
-}
-
-PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
-	return punctualLightManager_->GetPunctualLight(lightName);
-}
-
-void MAGISYSTEM::TransferPunctualLight(uint32_t parmIndex) {
-	punctualLightManager_->TransferLightsData(parmIndex);
-}
-
-void MAGISYSTEM::ClearPunctualLight() {
-	punctualLightManager_->Clear();
-}
-
-std::unique_ptr<PrimitiveRenderer3D> MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
-	return renderer3DManager_->CreatePrimitiveRenderer(name, primitiveRenderer, textureName);
-}
-
-std::unique_ptr<StaticRenderer3D> MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
-	return renderer3DManager_->CreateStaticRenderer(name, modelName);
-}
-
-std::unique_ptr<SkinningRenderer3D> MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
-	return renderer3DManager_->CreateSkinningRenderer(name, modelName);
-}
-
-void MAGISYSTEM::AddRenderer(std::unique_ptr<BaseRenderable3D> newRederer) {
-	renderer3DManager_->AddRenderer(std::move(newRederer));
-}
-
-BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
-	return renderer3DManager_->Find(name);
-}
-
-void MAGISYSTEM::ClearRenderer3D() {
-	renderer3DManager_->Clear();
-}
-
-std::string MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {
-	return colliderManager_->Create(name, colliderType);
-}
-
-void MAGISYSTEM::RemoveCollider(const std::string& name) {
-	colliderManager_->Remove(name);
-}
-
-BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
-	return colliderManager_->Find(name);
-}
-
-void MAGISYSTEM::ClearColliders() {
-	colliderManager_->Clear();
 }
 
 std::string MAGISYSTEM::CreateEmitter3D(const std::string& emitterName, const Vector3& position) {
@@ -1358,33 +1293,22 @@ void MAGISYSTEM::SetDirectionalLight(const DirectionalLight& directionalLight) {
 	lightManager_->SetDirectionalLight(directionalLight);
 }
 
+void MAGISYSTEM::SetDirectionalLightCameraTarget(const Vector3& target) {
+	lightManager_->SetDirectionalLightCameraTarget(target);
+}
+
 void MAGISYSTEM::TransferDirectionalLightCamera(uint32_t paramIndex) {
 	lightManager_->TransferDirectionalLightCamera(paramIndex);
+}
+
+void MAGISYSTEM::TransferDirectionalLightFrustum(uint32_t paramIndex) {
+	lightManager_->TransferDirectionalLightFrustum(paramIndex);
 }
 
 void MAGISYSTEM::DrawSprite(const SpriteData& data, const SpriteMaterialData& material) {
 	spriteDrawer_->AddSprite(data, material);
 }
 
-void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
-	gameObject3DManager_->Add(std::move(newGameObject3D));
-}
-
-GameObject3D* MAGISYSTEM::FindGameObject3D(const std::string& objectName) {
-	return gameObject3DManager_->Find(objectName);
-}
-
-void MAGISYSTEM::ClearGameObject3D() {
-	gameObject3DManager_->Clear();
-}
-
-void MAGISYSTEM::AddGameObejct3DGroup(std::unique_ptr<GameObject3DGroup> newGameObjectGroup) {
-	gameObject3DGroupManager_->Add(std::move(newGameObjectGroup));
-}
-
-void MAGISYSTEM::ClearGameObject3DGroup() {
-	gameObject3DGroupManager_->Clear();
-}
 
 void MAGISYSTEM::AddCamera2D(std::unique_ptr<Camera2D> newCamera2D) {
 	camera2DManager_->Add(std::move(newCamera2D));
@@ -1406,8 +1330,8 @@ void MAGISYSTEM::ClearCamera2D() {
 	camera2DManager_->Clear();
 }
 
-void MAGISYSTEM::AddCamera3D(std::unique_ptr<Camera3D> newCamera3D) {
-	camera3DManager_->Add(std::move(newCamera3D));
+void MAGISYSTEM::AddCamera3D(const std::string& name, std::unique_ptr<Camera3D> newCamera3D) {
+	camera3DManager_->Add(name, std::move(newCamera3D));
 }
 
 void MAGISYSTEM::RemoveCamera3D(const std::string& cameraName) {
@@ -1426,27 +1350,27 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const Vect
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const MaterialData3D& material) {
 	triangleDrawer3D_->AddTriangle(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const PrimitiveMaterialData3D& materialData) {
+void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const MaterialData3D& materialData) {
 	planeDrawer3D_->AddPlane(worldMatrix, planeData, materialData);
 }
 
-void MAGISYSTEM::DrawBox3D(const Matrix4x4& worldMatrix, const BoxData3D& boxData, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawBox3D(const Matrix4x4& worldMatrix, const BoxData3D& boxData, const MaterialData3D& material) {
 	boxDrawer3D_->AddBox(worldMatrix, boxData, material);
 }
 
-void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& data, const MaterialData3D& material) {
 	sphereDrawer3D_->AddSphere(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawRing3D(const Matrix4x4& worldMatrix, const RingData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawRing3D(const Matrix4x4& worldMatrix, const RingData3D& data, const MaterialData3D& material) {
 	ringDrawer3D_->AddRing(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawCylinder3D(const Matrix4x4& worldMatrix, const CylinderData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawCylinder3D(const Matrix4x4& worldMatrix, const CylinderData3D& data, const MaterialData3D& material) {
 	cylinderDrawer3D_->AddCylinder(worldMatrix, data, material);
 }
 
@@ -1514,18 +1438,6 @@ bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std:
 	return grobalDataManager_->GetValueBool(groupName, key);
 }
 
-void MAGISYSTEM::PreDrawObject3D() {
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	// RootSignatureの設定
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
-	// 形状を設定
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
-void MAGISYSTEM::PreDrawObject2D() {
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	// RootSignatureの設定
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object2D));
-	// 形状を設定
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneClear) {
+	sceneDataImporter_->Import(sceneDataName, isSceneClear);
 }

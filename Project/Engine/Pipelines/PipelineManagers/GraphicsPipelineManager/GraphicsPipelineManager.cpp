@@ -18,12 +18,6 @@ GraphicsPipelineManager::~GraphicsPipelineManager() {
 }
 
 void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
-	// 2Dオブジェクトのグラフィックスパイプラインを生成、初期化
-	object2DGraphicsPipeline_ = std::make_unique<Object2DGraphicsPipeline>(dxgi, shaderCompiler);
-	object2DGraphicsPipeline_->Initialize();
-	SetRootSignature(GraphicsPipelineStateType::Object2D);
-	SetPipelineState(GraphicsPipelineStateType::Object2D);
-
 	// スプライト描画用のグラフィックスパイプラインを生成、初期化
 	spriteGraphicsPipeline_ = std::make_unique<SpriteGraphicsPipeline>(dxgi, shaderCompiler);
 	spriteGraphicsPipeline_->Initialize();
@@ -84,23 +78,11 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::SkyBox);
 	SetPipelineState(GraphicsPipelineStateType::SkyBox);
 
-	// 3Dオブジェクトのグラフィックスパイプラインを生成、初期化
-	object3DGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipeline>(dxgi, shaderCompiler);
-	object3DGraphicsPipeline_->Initialize();
-	SetRootSignature(GraphicsPipelineStateType::Object3D);
-	SetPipelineState(GraphicsPipelineStateType::Object3D);
-
 	// 3Dパーティクルのグラフィックスパイプラインを生成、初期化
 	particle3DGraphicsPipeline_ = std::make_unique<Particle3DGraphicsPipeline>(dxgi, shaderCompiler);
 	particle3DGraphicsPipeline_->Initialize();
 	SetRootSignature(GraphicsPipelineStateType::Particle3D);
 	SetPipelineState(GraphicsPipelineStateType::Particle3D);
-
-	// 3Dオブジェクトグループのグラフィックスパイプラインを生成、初期化
-	object3DGroupGraphicsPipeline_ = std::make_unique<Object3DGroupGraphicsPipeline>(dxgi, shaderCompiler);
-	object3DGroupGraphicsPipeline_->Initialize();
-	SetRootSignature(GraphicsPipelineStateType::Object3DGroup);
-	SetPipelineState(GraphicsPipelineStateType::Object3DGroup);
 
 	// 他のパイプラインステートが追加された場合はここに追加
 }
@@ -116,10 +98,6 @@ ID3D12PipelineState* GraphicsPipelineManager::GetPipelineState(GraphicsPipelineS
 void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelineState) {
 	// パイプラインステートごとに対応するルートシグネチャを設定
 	switch (pipelineState) {
-	case GraphicsPipelineStateType::Object2D:
-		// 2Dオブジェクト描画用のルートシグネチャを設定
-		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object2DGraphicsPipeline_->GetRootSignature();
-		break;
 	case GraphicsPipelineStateType::Sprite:
 		// スプライト描画用のルートシグネチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = spriteGraphicsPipeline_->GetRootSignature();
@@ -160,15 +138,8 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 		// スカイボックス用のルートシグネイチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = skyBoxGraphicsPipeline_->GetRootSignature();
 		break;
-	case GraphicsPipelineStateType::Object3D:
-		// 3Dオブジェクト描画用のルートシグネチャを設定
-		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGraphicsPipeline_->GetRootSignature();
-		break;
 	case GraphicsPipelineStateType::Particle3D:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = particle3DGraphicsPipeline_->GetRootSignature();
-		break;
-	case GraphicsPipelineStateType::Object3DGroup:
-		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGroupGraphicsPipeline_->GetRootSignature();
 		break;
 		// 他のパイプラインステートが追加された場合はここに追加
 	}
@@ -176,11 +147,6 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 
 void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelineState) {
 	switch (pipelineState) {
-	case GraphicsPipelineStateType::Object2D:
-		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object2DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-		}
-		break;
 	case GraphicsPipelineStateType::Sprite:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = spriteGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
@@ -231,19 +197,9 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = skyBoxGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
-	case GraphicsPipelineStateType::Object3D:
-		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-		}
-		break;
 	case GraphicsPipelineStateType::Particle3D:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = particle3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-		}
-		break;
-	case GraphicsPipelineStateType::Object3DGroup:
-		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DGroupGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 

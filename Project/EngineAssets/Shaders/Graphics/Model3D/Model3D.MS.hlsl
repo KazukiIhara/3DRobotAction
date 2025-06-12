@@ -53,29 +53,29 @@ MeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
 [outputtopology("triangle")]
 [numthreads(128, 1, 1)]
 void main(
-     uint gtid : SV_GroupThreadID,
-     uint gid : SV_GroupID,
+     uint3 gtid : SV_GroupThreadID,
+     uint3 gid : SV_GroupID,
      in payload Payload payload,
      out vertices MeshOutput verts[256],
      out indices uint3 tris[256]
 )
 {
     const uint instID = payload.instanceID;
-    uint meshletIndex = payload.meshletIndices[gid];
+    const uint meshletID = payload.meshletIndices[gid.x];
 
-    Meshlet m = gMeshlets[meshletIndex];
+    Meshlet m = gMeshlets[meshletID];
     
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
 
     //------------------- 頂点 --------------------
     if (gtid.x < m.VertCount)
     {
-        uint vertexIndex = GetVertexIndex(m, gtid);
-        verts[gtid] = GetVertexAttributes(vertexIndex, instID);
+        uint vertexIndex = GetVertexIndex(m, gtid.x);
+        verts[gtid.x] = GetVertexAttributes(vertexIndex, instID);
     }
 
     if (gtid.x < m.PrimCount)
     {
-        tris[gtid] = GetPrimitive(m, gtid);
+        tris[gtid.x] = GetPrimitive(m, gtid.x);
     }
 }

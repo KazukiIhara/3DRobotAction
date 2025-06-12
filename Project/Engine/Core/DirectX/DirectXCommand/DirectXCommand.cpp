@@ -6,8 +6,8 @@
 
 #include "Logger/Logger.h"
 
-DirectXCommand::DirectXCommand(DXGI* dxgi) {
-	Initialize(dxgi);
+DirectXCommand::DirectXCommand(DXGI* dxgi, bool isSupportDirectX12Ultimate) {
+	Initialize(dxgi, isSupportDirectX12Ultimate);
 	Logger::Log("DirectXCommand Initialize\n");
 }
 
@@ -15,7 +15,7 @@ DirectXCommand::~DirectXCommand() {
 	Logger::Log("DirectXCommand Finalize\n");
 }
 
-void DirectXCommand::Initialize(DXGI* dxgi) {
+void DirectXCommand::Initialize(DXGI* dxgi, bool isSupportDirectX12Ultimate) {
 	// DXGIのセット
 	SetDXGI(dxgi);
 	// コマンドキューを生成する
@@ -32,9 +32,12 @@ void DirectXCommand::Initialize(DXGI* dxgi) {
 	hr_ = dxgi_->GetDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator_.Get(), nullptr, IID_PPV_ARGS(&commandList_));
 	assert(SUCCEEDED(hr_));
 
-	// MeshShader用：ID3D12GraphicsCommandList6 にキャスト
-	hr_ = commandList_->QueryInterface(IID_PPV_ARGS(&commandList6_));
-	assert(SUCCEEDED(hr_));
+	// もしサポートされているデバイスなら
+	if (isSupportDirectX12Ultimate) {
+		// MeshShader用：ID3D12GraphicsCommandList6 にキャスト
+		hr_ = commandList_->QueryInterface(IID_PPV_ARGS(&commandList6_));
+		assert(SUCCEEDED(hr_));
+	}
 }
 
 void DirectXCommand::KickCommand() {

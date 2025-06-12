@@ -1,34 +1,27 @@
 #pragma once
 
-#include <map>
-#include <string>
+// C++
+#include <vector>
+#include <unordered_map>
 #include <memory>
 
-#include "3D/GameObject3D/GameObject3D.h"
+// MyHedder
+#include "GameObject3D/GameObject3D.h"
 
 /// <summary>
-/// 3Dゲームオブジェクトのマネージャー
+/// 3Dゲームオブジェクトマネージャー
 /// </summary>
 class GameObject3DManager {
 public:
 	GameObject3DManager();
 	~GameObject3DManager();
 
-	// 更新
-	void Update();
-	// 描画
-	void Draw();
-
-	// 新規オブジェクトを追加
-	std::string Add(std::unique_ptr<GameObject3D> newGameObject);
-	// 名前からオブジェクトを検索
-	GameObject3D* Find(const std::string& objectName);
-	// 削除フラグの立ったオブジェクトを削除する
-	void DeleteGarbages();
-
+	std::weak_ptr<GameObject3D> Add(std::shared_ptr<GameObject3D> gameObject3D, bool insertMap);
+	std::weak_ptr<GameObject3D> Find(const std::string& objectName);
+	void DeleteGarbage();
 	void Clear();
 
 private:
-	// ゲームオブジェクトコンテナ
-	std::map<std::string, std::unique_ptr<GameObject3D>> gameObjects3D_;
+	std::vector<std::shared_ptr<GameObject3D>> gameObjects_;
+	std::unordered_map<std::string, std::weak_ptr<GameObject3D>> gameObjectList_;
 };

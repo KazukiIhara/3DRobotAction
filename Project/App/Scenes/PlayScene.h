@@ -60,7 +60,7 @@ private:
 
 
 	PlaneData3D planeData_;
-	PrimitiveMaterialData3D planeMaterial_;
+	MaterialData3D planeMaterial_;
 };
 
 template<typename Data>
@@ -70,9 +70,9 @@ inline void PlayScene<Data>::Initialize() {
 	//-------------------------------------------------------
 
 	// シーンカメラ作成
-	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
+	sceneCamera_ = std::make_unique<Camera3D>();
 	// マネージャに追加
-	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
+	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera_));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 

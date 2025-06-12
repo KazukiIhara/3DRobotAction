@@ -18,7 +18,7 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	//===================================
 	hazeEmitter_ = MAGISYSTEM::FindEmitter3D("Haze");
 	hazeParticle_ = MAGISYSTEM::FindParticleGroup3D("Haze");
-	hazeEmitter_->worldPosition = corePosition_;
+	hazeEmitter_->SetEmitPosition(corePosition_);
 
 	hazeEmitter_->AddParticleGroup(hazeParticle_);
 
@@ -76,7 +76,7 @@ BreakEffect::BreakEffect(Vector3 worldPosition) {
 	//===================================
 	starEmitter_ = MAGISYSTEM::FindEmitter3D("Star");
 	starParticle_ = MAGISYSTEM::FindParticleGroup3D("Star");
-	starEmitter_->worldPosition = corePosition_;
+	starEmitter_->SetEmitPosition(corePosition_);
 
 	starEmitter_->AddParticleGroup(starParticle_);
 

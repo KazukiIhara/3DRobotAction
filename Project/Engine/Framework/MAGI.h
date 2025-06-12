@@ -3,7 +3,7 @@
 // C++
 #include <memory>
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 #include "LeakChecker/D3DResourceLeakChecker.h"
 #endif // _DEBUG
 
@@ -42,11 +42,12 @@
 // 
 // AssetContainer
 // 
-#include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
-#include "AssetContainers/PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
-#include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
-#include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
-#include "AssetContainers/SoundDataContainer/SoundDataContainer.h"
+#include "TextureDataContainer/TextureDataContainer.h"
+#include "PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
+#include "SceneDataContainer/SceneDataContainer.h"
+#include "ModelDataContainer/ModelDataContainer.h"
+#include "AnimationDataContainer/AnimationDataContainer.h"
+#include "SoundDataContainer/SoundDataContainer.h"
 
 // 
 // PipelineManager
@@ -58,41 +59,42 @@
 #include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 
 // 
+// ComponentManagers
+// 
+#include "TransformManager/TransformManager.h"
+#include "Renderer3DManager/Renderer3DManager.h"
+
+// 
 // ObjectManager
 // 
-#include "ObjectManagers/GameObject3DManager/GameObject3DManager.h"
-#include "ObjectManagers/Camera2DManager/Camera2DManager.h"
-#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
-#include "ObjectManagers/PunctualLightManager/PunctualLightManager.h"
-#include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
-#include "ObjectManagers/ColliderManager/ColliderManager.h"
-#include "ObjectManagers/Emitter3DManager/Emitter3DManager.h"
-#include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
-#include "ObjectManagers/GameObject3DGroupManager/GameObject3DGroupManager.h"
-#include "ObjectManagers/LightManager/LightManager.h"
+#include "GameObject3DManager/GameObject3DManager.h"
+#include "Camera2DManager/Camera2DManager.h"
+#include "Camera3DManager/Camera3DManager.h"
+#include "Emitter3DManager/Emitter3DManager.h"
+#include "ParticleGroup3DManager/ParticleGroup3DManager.h"
+#include "LightManager/LightManager.h"
 
 // 
 // Drawer
 // 
 #include "2D/Drawer2D/SpriteDrawer/SpriteDrawer.h"
 
-#include "PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
-#include "PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
-#include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
-#include "PrimitiveDrawers/BoxDrawer3D/BoxDrawer3D.h"
-#include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
-#include "PrimitiveDrawers/RingDrawer3D/RingDrawer3D.h"
-#include "PrimitiveDrawers/CylinderDrawer3D/CylinderDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/BoxDrawer3D/BoxDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/RingDrawer3D/RingDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/CylinderDrawer3D/CylinderDrawer3D.h"
 
-#include "ModelDrawerManager/ModelDrawerManager.h"
+#include "3D/ModelDrawerManager/ModelDrawerManager.h"
 
-#include "SkyBoxDrawer/SkyBoxDrawer.h"
+#include "3D/Drawer3D/SkyBoxDrawer/SkyBoxDrawer.h"
 
 
 // 
 // GameManager
 // 
-#include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
 
@@ -104,8 +106,8 @@
 // 
 // Data入出力クラス
 // 
-#include "DataIO/DataIO.h"
 #include "GrobalDataManager/GrobalDataManager.h"
+#include "SceneDataImporter/SceneDataImporter.h"
 
 // 
 // UIクラス
@@ -391,20 +393,27 @@ public: // エンジンの機能
 	static void StopLoopWaveSound(const std::string& fileName);
 #pragma endregion
 
-#pragma region GameObject3DManager
-	// 3Dゲームオブジェクトの追加
-	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
-	// 3Dゲームオブジェクトを取得
-	static GameObject3D* FindGameObject3D(const std::string& objectName);
-	// 全削除
-	static void ClearGameObject3D();
+#pragma region SceneDataContainer
+	// シーンデータの読み込み
+	static void LoadSceneDataFromJson(const std::string& fileName);
 #pragma endregion
 
-#pragma region GameObject3DGroupManager
-	// 3Dゲームオブジェクトグループを作成
-	static void AddGameObejct3DGroup(std::unique_ptr<GameObject3DGroup> newGameObjectGroup);
-	// 全削除
-	static void ClearGameObject3DGroup();
+
+#pragma region TransformComponent
+	// トランスフォーム追加
+	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
+#pragma endregion
+
+#pragma region Renderer3DComponent
+	// モデルのレンダラー追加
+	static std::weak_ptr<ModelRenderer> AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer);
+
+#pragma endregion
+
+#pragma region GameObject3DManager
+	// ゲームオブジェクト3Dを追加
+	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap = true);
+
 #pragma endregion
 
 #pragma region Camera2DManager
@@ -422,7 +431,7 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// 3Dカメラの追加
-	static void AddCamera3D(std::unique_ptr<Camera3D> newCamera3D);
+	static void AddCamera3D(const std::string& name, std::unique_ptr<Camera3D> newCamera3D);
 	// 3Dカメラの削除
 	static void RemoveCamera3D(const std::string& cameraName);
 	// 3Dカメラの取得
@@ -431,48 +440,12 @@ public: // エンジンの機能
 	static void SetCurrentCamera3D(const std::string& cameraName);
 	// 3Dカメラの転送
 	static void TransferCamera3D(uint32_t rootParameterIndex);
+	// Frustumの転送
+	static void TransferCurrentCamera3DFrustum(uint32_t rootParameterIndex);
 	// カメラシェイク
 	static void ShakeCurrentCamera3D(float duration, float intensity);
 	// 3Dカメラ全削除
 	static void ClearCamera3D();
-#pragma endregion
-
-#pragma region PunctualLightManager
-	// ライトの追加
-	static void AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData = PunctualLightData{});
-	// ライトの取得
-	static PunctualLightData& GetLightData(const std::string& lightName);
-	// ライトの転送
-	static void TransferPunctualLight(uint32_t parmIndex);
-	// 全削除
-	static void ClearPunctualLight();
-#pragma endregion
-
-#pragma region Renderer3DManager
-	// 描画オブジェクトの追加
-	// シンプル形状
-	static std::unique_ptr<PrimitiveRenderer3D> CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName = "");
-	// 静的モデル
-	static std::unique_ptr<StaticRenderer3D> CreateStaticRenderer3D(const std::string& name, const std::string& modelName);
-	// スキニングモデル
-	static std::unique_ptr<SkinningRenderer3D> CreateSkinningRenderer3D(const std::string& name, const std::string& modelName);
-	// レンダラーをマネージャに追加
-	static void AddRenderer(std::unique_ptr<BaseRenderable3D> newRederer);
-	// 描画オブジェクトの取得
-	static BaseRenderable3D* FindRenderer3D(const std::string& name);
-	// 全削除
-	static void ClearRenderer3D();
-#pragma endregion
-
-#pragma region ColliderManager
-	// コライダーの追加
-	static std::string CreateCollider(const std::string& name, Collider3DType colliderType);
-	// コライダーの削除
-	static void RemoveCollider(const std::string& name);
-	// コライダーの取得
-	static BaseCollider3D* FindCollider(const std::string& name);
-	// 全削除
-	static void ClearColliders();
 #pragma endregion
 
 #pragma region Emitter3DManager
@@ -491,7 +464,6 @@ public: // エンジンの機能
 	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName = "");
 	// モデルのパーティクルグループの追加
 	static std::string CreateStaticParticleGroup3D(const std::string& particleGroupName, const std::string& modelName);
-
 	// パーティクルグループの取得
 	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
 	// パーティクルリストを取得
@@ -501,8 +473,12 @@ public: // エンジンの機能
 #pragma region LightManager
 	// DirectionalLightをセット
 	static void SetDirectionalLight(const DirectionalLight& directionalLight);
+	// DirectionalLightのカメラターゲットをセット
+	static void SetDirectionalLightCameraTarget(const Vector3& target);
 	// ライトカメラを転送
 	static void TransferDirectionalLightCamera(uint32_t paramIndex);
+	// ライトのフラスタムを転送
+	static void TransferDirectionalLightFrustum(uint32_t paramIndex);
 #pragma endregion
 
 #pragma region SpriteDrawer
@@ -520,7 +496,7 @@ public: // エンジンの機能
 	static void DrawTriangle3D(
 		const Matrix4x4& worldMatrix,
 		const TriangleData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 #pragma endregion
 
@@ -529,7 +505,7 @@ public: // エンジンの機能
 	static void DrawPlane3D(
 		const Matrix4x4& worldMatrix,
 		const PlaneData3D& planeData,
-		const PrimitiveMaterialData3D& materialData
+		const MaterialData3D& materialData
 	);
 
 #pragma endregion
@@ -539,7 +515,7 @@ public: // エンジンの機能
 	static void DrawBox3D(
 		const Matrix4x4& worldMatrix,
 		const BoxData3D& boxData,
-		const PrimitiveMaterialData3D& 
+		const MaterialData3D&
 	);
 #pragma endregion
 
@@ -548,10 +524,9 @@ public: // エンジンの機能
 	// 球体描画
 	static void DrawSphere3D(
 		const Matrix4x4& worldMatrix,
-		const SphereData3D& data,
-		const PrimitiveMaterialData3D& material
+		const SphereData3D& data = SphereData3D{},
+		const MaterialData3D& material = MaterialData3D{}
 	);
-
 #pragma endregion
 
 #pragma region RingDrawer3D
@@ -559,9 +534,8 @@ public: // エンジンの機能
 	static void DrawRing3D(
 		const Matrix4x4& worldMatrix,
 		const RingData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
-
 #pragma endregion
 
 #pragma region CylinderDrawer3D
@@ -569,7 +543,7 @@ public: // エンジンの機能
 	static void DrawCylinder3D(
 		const Matrix4x4& worldMatrix,
 		const CylinderData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 #pragma endregion
 
@@ -626,28 +600,26 @@ public: // エンジンの機能
 	static bool GetGrobalDataValueBool(const std::string& groupName, const std::string& key);
 #pragma endregion
 
-#pragma region GUI
-
+#pragma region SceneDataImporter
+	// シーンデータをインポート
+	static void ImportSceneData(const std::string& sceneDataName, bool isSceneClear = true);
 
 #pragma endregion
 
-#pragma region PreRender
-	// Object3Dの描画前処理
-	static void PreDrawObject3D();
 
-	// Object2Dの描画前処理
-	static void PreDrawObject2D();
+#pragma region GUI
+
 
 #pragma endregion
 
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;
-	// GUI描画フラグ
-	bool isActivateGUI_ = false;
+	// DX12Ultimateに対応したデバイスかどうか(ASやMSを使えるかどうか)
+	bool isSupportDX12Ultimate_ = false;
 
 protected:
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	static std::unique_ptr<D3DResourceLeakChecker> leakCheck_;
 #endif // _DEBUG
 
@@ -699,6 +671,13 @@ protected:
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
 	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
 	static std::unique_ptr<SoundDataContainer> soundDataContainer_;
+	static std::unique_ptr<SceneDataContainer> sceneDataContainer_;
+
+	//
+	// ComponentManagers
+	//
+	static std::unique_ptr<TransformManager> transformManager_;
+	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 
 	//
 	// ObjectManager
@@ -706,12 +685,8 @@ protected:
 	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 	static std::unique_ptr<Camera2DManager> camera2DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
-	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
-	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
-	static std::unique_ptr<ColliderManager> colliderManager_;
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
 	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
-	static std::unique_ptr<GameObject3DGroupManager> gameObject3DGroupManager_;
 	static std::unique_ptr<LightManager> lightManager_;
 
 	// 
@@ -739,15 +714,14 @@ protected:
 	// 
 	// GameManager
 	// 
-	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
 
 	//
 	// Data入出力クラス
 	//
-	static std::unique_ptr<DataIO> dataIO_;
 	static std::unique_ptr<GrobalDataManager> grobalDataManager_;
+	static std::unique_ptr<SceneDataImporter> sceneDataImporter_;
 
 	//
 	// UIクラス
