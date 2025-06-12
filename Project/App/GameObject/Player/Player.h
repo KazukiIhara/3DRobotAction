@@ -10,18 +10,16 @@
 /// <summary>
 /// プレイヤークラス
 /// </summary>
-class Player {
+class Player :public GameObject3D {
 public:
-	Player();
+	Player(const std::string& name);
 	~Player() = default;
 
-	void Update();
+	void Update()override;
 
 	void Draw();
 
 private:
-	// ゲームオブジェクト
-	std::weak_ptr<GameObject3D> playerObject_;
 
 	// 破壊時のエフェクト
 	std::unique_ptr<BreakEffect> breakEffect_ = nullptr;

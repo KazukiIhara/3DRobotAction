@@ -8,7 +8,6 @@
 
 using namespace MAGIUtility;
 
-
 //-------------------------------------------
 // シーンオブジェクト
 //-------------------------------------------
@@ -42,7 +41,7 @@ private:
 	//----------------------------------------- 
 	// シーンオブジェクト
 	//-----------------------------------------
-	std::unique_ptr<Player> player_ = nullptr;
+	std::weak_ptr<Player> player_;
 
 	std::unique_ptr<Ground> ground_ = nullptr;
 
@@ -130,7 +129,19 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
 	// プレイヤー作成
-	player_ = std::make_unique<Player>();
+	std::shared_ptr<Player> player = std::make_shared<Player>("Player");
+
+	// ① Manager から基底型の weak_ptr を受け取る
+	auto wBase = MAGISYSTEM::AddGameObject3D(std::move(player));  // weak<GameObject3D>
+
+	// ② 一時的に shared_ptr<GameObject3D> を取得
+	if (auto spBase = wBase.lock()) {
+		// ③ dynamic_pointer_cast で派生型に変換
+		if (auto spPlayer = std::dynamic_pointer_cast<Player>(spBase)) {
+			// ④ 新しい weak_ptr<Player> を作成
+			player_ = spPlayer;
+		}
+	}
 
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
@@ -157,7 +168,10 @@ inline void PlayScene<Data>::Update() {
 	ground_->Update();
 
 	// プレイヤー更新
-	player_->Update();
+
+	if (auto p = player_.lock()) {
+		p->Update();
+	}
 
 
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
@@ -171,7 +185,10 @@ inline void PlayScene<Data>::Draw() {
 	ground_->Draw();
 
 	// プレイヤー描画
-	player_->Draw();
+	if (auto p = player_.lock()) {
+		p->Draw();
+	}
+
 
 
 	//MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData_, planeMaterial_);
