@@ -18,13 +18,11 @@ private:
 	Transform3D* targetTransform_;
 
 	// パラメータ
-	float radius_ = 5.0f;       // 基本距離
-	float minRadius_ = 1.5f;
-	float maxRadius_ = 7.0f;
-	float yawSpeed_ = 3.0f;       // 入力感度
-	float pitchSpeed_ = 3.0f;
-	float followLag_ = 10.0f;      // 0=追随即時、値↑でふわっと
-	float shoulderSign_ = 1.0f;       // 1:右肩 -1:左肩
+	float radius_ = 5.0f;
+	float yawSpeed_ = 2.0f;
+	float pitchSpeed_ = 2.0f;
+	float followLag_ = 3.0f;
+	float shoulderSign_ = 1.0f; // 1:右肩 -1:左肩
 	Vector3 pivotOffset_ = { 0.0f, 1.6f, 0.0f }; // プレイヤー胸元くらい
 
 };

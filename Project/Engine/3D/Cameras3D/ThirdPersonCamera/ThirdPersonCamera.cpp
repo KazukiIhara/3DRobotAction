@@ -25,8 +25,8 @@ void ThirdPersonCamera::Update() {
 
 	// パッド入力
 	if (MAGISYSTEM::IsPadConnected(0)) {
-		yaw_ += MAGISYSTEM::GetRightStickX(0) * dt;
-		pitch_ -= MAGISYSTEM::GetRightStickY(0) * dt;
+		yaw_ += MAGISYSTEM::GetRightStickX(0) * yawSpeed_ * dt;
+		pitch_ -= MAGISYSTEM::GetRightStickY(0) * pitchSpeed_ * dt;
 	}
 
 	// ジンバルロック対策
