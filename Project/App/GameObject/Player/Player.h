@@ -19,6 +19,8 @@ public:
 
 	void Draw();
 
+	std::weak_ptr<GameObject3D> GetGameObject();
+
 private:
 
 	std::weak_ptr<GameObject3D> gameObject_;

@@ -48,3 +48,7 @@ void Player::Draw() {
 	}
 
 }
+
+std::weak_ptr<GameObject3D> Player::GetGameObject() {
+	return gameObject_;
+}

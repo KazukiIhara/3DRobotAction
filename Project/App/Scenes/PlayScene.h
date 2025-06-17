@@ -13,6 +13,7 @@ using namespace MAGIUtility;
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
 #include "GameObject/Ground/Ground.h"
+#include "Cameras3D/ThirdPersonCamera/ThirdPersonCamera.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -31,6 +32,7 @@ public:
 
 private:
 	// カメラ
+	std::unique_ptr<ThirdPersonCamera> mainCamera_ = nullptr;
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
 
@@ -133,6 +135,13 @@ inline void PlayScene<Data>::Initialize() {
 
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
+
+	// ゲームシーン用追尾カメラ作成
+	mainCamera_ = std::make_unique<ThirdPersonCamera>();
+	mainCamera_->SetTargetTransform(player_->GetGameObject().lock()->GetTransform());
+	MAGISYSTEM::AddCamera3D("MainCamera", std::move(mainCamera_));
+	// カメラ設定
+	MAGISYSTEM::SetCurrentCamera3D("MainCamera");
 
 }
 

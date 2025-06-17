@@ -1,6 +1,6 @@
 #include "DebugCamera3D.h"
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 
 using namespace MAGIMath;
 
