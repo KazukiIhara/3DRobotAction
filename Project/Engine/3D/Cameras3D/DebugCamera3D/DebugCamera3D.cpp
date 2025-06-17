@@ -13,7 +13,7 @@ void DebugCamera3D::Initialize() {
 	Camera3D::Initialize();
 }
 
-void DebugCamera3D::UpdateData() {
+void DebugCamera3D::Update() {
 	// マウス入力の取得
 	POINT cursorPos;
 	GetCursorPos(&cursorPos);
@@ -35,8 +35,6 @@ void DebugCamera3D::UpdateData() {
 	HandleCameraZoom(wheelDelta);
 
 	lastCursorPos = cursorPos;
-
-	Camera3D::UpdateData();
 }
 
 void DebugCamera3D::HandleCameraRotation(const POINT& delta) {

@@ -41,7 +41,7 @@ private:
 	//----------------------------------------- 
 	// シーンオブジェクト
 	//-----------------------------------------
-	std::weak_ptr<Player> player_;
+	std::unique_ptr<Player> player_;
 
 	std::unique_ptr<Ground> ground_ = nullptr;
 
@@ -129,19 +129,7 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
 	// プレイヤー作成
-	std::shared_ptr<Player> player = std::make_shared<Player>("Player");
-
-	// ① Manager から基底型の weak_ptr を受け取る
-	auto wBase = MAGISYSTEM::AddGameObject3D(std::move(player));  // weak<GameObject3D>
-
-	// ② 一時的に shared_ptr<GameObject3D> を取得
-	if (auto spBase = wBase.lock()) {
-		// ③ dynamic_pointer_cast で派生型に変換
-		if (auto spPlayer = std::dynamic_pointer_cast<Player>(spBase)) {
-			// ④ 新しい weak_ptr<Player> を作成
-			player_ = spPlayer;
-		}
-	}
+	player_ = std::make_unique<Player>();
 
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
@@ -169,10 +157,7 @@ inline void PlayScene<Data>::Update() {
 
 	// プレイヤー更新
 
-	if (auto p = player_.lock()) {
-		p->Update();
-	}
-
+	player_->Update();
 
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
@@ -184,14 +169,8 @@ inline void PlayScene<Data>::Draw() {
 	// 床描画
 	ground_->Draw();
 
-	// プレイヤー描画
-	if (auto p = player_.lock()) {
-		p->Draw();
-	}
+	player_->Draw();
 
-
-
-	//MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData_, planeMaterial_);
 }
 
 template<typename Data>

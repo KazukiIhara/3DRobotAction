@@ -10,7 +10,7 @@ public:
 
 	void Initialize()override;
 
-	void UpdateData()override;
+	void Update()override;
 
 	void HandleCameraRotation(const POINT& delta);
 

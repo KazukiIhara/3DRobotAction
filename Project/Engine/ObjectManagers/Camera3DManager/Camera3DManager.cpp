@@ -25,6 +25,7 @@ void Camera3DManager::Update() {
 	}
 #if defined(DEBUG)|| defined(DEVELOP)
 	if (isDebugCamera_) {
+		debugCamera_->Update();
 		debugCamera_->UpdateData();
 		currentCamera_->DrawFrustum();
 	}

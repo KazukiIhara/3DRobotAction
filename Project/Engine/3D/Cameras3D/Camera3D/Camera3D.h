@@ -24,7 +24,7 @@ public:
 	// 更新
 	virtual void Update();
 	// データ更新
-	virtual void UpdateData();
+	void UpdateData();
 
 	// カメラを揺らす
 	void Shake(float duration, float intensity);

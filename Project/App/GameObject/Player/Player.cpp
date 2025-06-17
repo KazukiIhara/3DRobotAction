@@ -2,10 +2,14 @@
 
 #include "Framework/MAGI.h"
 
-Player::Player(const std::string& name) :GameObject3D(name) {
+Player::Player() {
 	std::shared_ptr<ModelRenderer> playerModel = std::make_shared<ModelRenderer>("Player", "teapot");
 	playerModel->GetTransform()->SetTranslate(Vector3(0.0f, 1.0f, 0.0f));
-	AddModelRenderer(std::move(playerModel));
+
+	std::shared_ptr<GameObject3D> gameObject = std::make_shared<GameObject3D>("Player");
+	gameObject->AddModelRenderer(std::move(playerModel));
+
+	gameObject_ = MAGISYSTEM::AddGameObject3D(std::move(gameObject));
 }
 
 void Player::Update() {
@@ -19,7 +23,9 @@ void Player::Update() {
 	velocity_ = Normalize(Vector3(stick.x, 0.0f, stick.y));
 	velocity_ *= speed_ * MAGISYSTEM::GetDeltaTime();
 
-	GetTransform()->AddTranslate(velocity_);
+	if (auto obj = gameObject_.lock()) {
+		obj->GetTransform()->AddTranslate(velocity_);
+	}
 
 	// 破壊時エフェクトテスト
 	if (ImGui::Button("PlayEffect")) {

@@ -10,21 +10,22 @@
 /// <summary>
 /// プレイヤークラス
 /// </summary>
-class Player :public GameObject3D {
+class Player {
 public:
-	Player(const std::string& name);
+	Player();
 	~Player() = default;
 
-	void Update()override;
+	void Update();
 
 	void Draw();
 
 private:
 
+	std::weak_ptr<GameObject3D> gameObject_;
 	// 破壊時のエフェクト
 	std::unique_ptr<BreakEffect> breakEffect_ = nullptr;
 
-	Vector3 velocity_;
+	Vector3 velocity_ = { 0.0f,0.0f };
 	float speed_ = 2.0f;
 
 	// デバッグ用変数
