@@ -25,7 +25,8 @@ struct InputCommand {
 
 // 状態
 enum class MechCoreState {
-	Root,
+	Idle,
+	Move,
 	QuickBoost,
 	AsslutBoost
 };
@@ -41,25 +42,37 @@ public:
 	void Update();
 	void ChangeState(MechCoreState nextState);
 
+	std::weak_ptr<GameObject3D> GetGameObject()const;
 	const MechCoreState& GetCurrentState()const;
 	const Vector3& GetVelocity()const;
+	const InputCommand& GetInputCommand()const;
 
 	void SetVelocity(const Vector3& velocity);
+	void SetInputCommand(InputCommand command);
 
 private:
 	std::weak_ptr<MechCoreBaseState> GetState(MechCoreState state);
 private:
+	// インプットコマンド
+	InputCommand inputCommand_;
+
 	// オブジェクト
 	std::weak_ptr<GameObject3D> core_;
 	// ステートテーブル
 	std::unordered_map<MechCoreState, std::shared_ptr<MechCoreBaseState>> states_;
 	// 現在のステート
 	std::pair<MechCoreState, std::weak_ptr<MechCoreBaseState>> currentState_;
-	
+
+	//======================= 
+	// コンポーネント
+	//=======================
+
+	// 移動コンポーネント
 
 
-private:
+	//=======================
 	// パラメータ
+	//=======================
 	Vector3 velocity_ = { 0.0f,0.0f,0.0f };
 	bool onGround_ = false;
 };
