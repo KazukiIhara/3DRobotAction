@@ -32,9 +32,7 @@ public:
 
 private:
 	// カメラ
-	std::unique_ptr<ThirdPersonCamera> mainCamera_ = nullptr;
-	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
-	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
+	std::weak_ptr<ThirdPersonCamera> mainCamera_ = nullptr;
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
@@ -71,14 +69,14 @@ inline void PlayScene<Data>::Initialize() {
 	//-------------------------------------------------------
 
 	// シーンカメラ作成
-	sceneCamera_ = std::make_unique<Camera3D>();
+	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>();
 	// マネージャに追加
-	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera_));
+	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 
 	// 2Dカメラ作成
-	sceneCamera2D_ = std::make_unique<Camera2D>("SpriteCamera");
+	std::shared_ptr<Camera2D> sceneCamera2D = std::make_shared<Camera2D>("SpriteCamera");
 	// マネージャに追加
 	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D_));
 	// カメラを設定
