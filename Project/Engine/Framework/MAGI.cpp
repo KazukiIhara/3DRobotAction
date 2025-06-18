@@ -1346,6 +1346,10 @@ void MAGISYSTEM::SetCurrentCamera3D(const std::string& cameraName) {
 	camera3DManager_->SetCurrentCamera(cameraName);
 }
 
+std::weak_ptr<Camera3D> MAGISYSTEM::GetCurrentCamera3D() {
+	return camera3DManager_->GetCurrentCamera();
+}
+
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color) {
 	lineDrawer3D_->AddLine(start, end, color);
 }

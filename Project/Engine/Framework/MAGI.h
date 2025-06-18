@@ -438,6 +438,8 @@ public: // エンジンの機能
 	static std::weak_ptr<Camera3D> FindCamera3D(const std::string& cameraName);
 	// 使用する3Dカメラのセット
 	static void SetCurrentCamera3D(const std::string& cameraName);
+	// 使用している3Dカメラの取得
+	static std::weak_ptr<Camera3D> GetCurrentCamera3D();
 	// 3Dカメラの転送
 	static void TransferCamera3D(uint32_t rootParameterIndex);
 	// Frustumの転送

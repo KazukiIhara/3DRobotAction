@@ -47,10 +47,11 @@ public:
 	float GetFarClipRange()const;
 
 	// 視点を送る
-	Vector3 GetEye()const;
-
 	float GetYaw()const;
 	float GetPitch()const;
+
+	const Vector3& GetEye()const;
+	const Vector3& GetTarget()const;
 
 	void SetIsUseYawPitch(bool isUseYawPitch);
 	void SetEye(const Vector3& eye);

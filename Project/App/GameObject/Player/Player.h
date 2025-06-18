@@ -22,9 +22,8 @@ public:
 	std::weak_ptr<GameObject3D> GetGameObject();
 
 private:
-
+	// プレイヤーのオブジェクト
 	std::weak_ptr<GameObject3D> gameObject_;
-
 	// 破壊時のエフェクト
 	std::unique_ptr<BreakEffect> breakEffect_ = nullptr;
 

@@ -32,19 +32,19 @@ public:
 
 private:
 	// カメラ
-	std::weak_ptr<ThirdPersonCamera> mainCamera_ = nullptr;
+	std::weak_ptr<Camera3D> mainCamera_;
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
-
 	//----------------------------------------- 
 	// シーンオブジェクト
 	//-----------------------------------------
+
+	// プレイヤー
 	std::unique_ptr<Player> player_;
 
 	std::unique_ptr<Ground> ground_ = nullptr;
-
 
 	// ポストエフェクトの用の変数
 	float vignetteScale_ = 18.0f;
@@ -76,9 +76,9 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 
 	// 2Dカメラ作成
-	std::shared_ptr<Camera2D> sceneCamera2D = std::make_shared<Camera2D>("SpriteCamera");
+	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");
 	// マネージャに追加
-	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D_));
+	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
@@ -135,9 +135,9 @@ inline void PlayScene<Data>::Initialize() {
 	ground_ = std::make_unique<Ground>();
 
 	// ゲームシーン用追尾カメラ作成
-	mainCamera_ = std::make_unique<ThirdPersonCamera>();
-	mainCamera_->SetTargetTransform(player_->GetGameObject().lock()->GetTransform());
-	MAGISYSTEM::AddCamera3D("MainCamera", std::move(mainCamera_));
+	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>();
+	mainCamera->SetTargetTransform(player_->GetGameObject().lock()->GetTransform());
+	mainCamera_ = MAGISYSTEM::AddCamera3D("MainCamera", std::move(mainCamera));
 	// カメラ設定
 	MAGISYSTEM::SetCurrentCamera3D("MainCamera");
 
@@ -145,7 +145,6 @@ inline void PlayScene<Data>::Initialize() {
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
-
 	ImGui::Begin("VignetteParamater");
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
 	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
@@ -155,7 +154,6 @@ inline void PlayScene<Data>::Update() {
 	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
 	ImGui::End();
 
-
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
@@ -163,9 +161,9 @@ inline void PlayScene<Data>::Update() {
 	ground_->Update();
 
 	// プレイヤー更新
-
 	player_->Update();
 
+	// ポストエフェクト適用
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
@@ -176,6 +174,7 @@ inline void PlayScene<Data>::Draw() {
 	// 床描画
 	ground_->Draw();
 
+	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
 }

@@ -13,15 +13,23 @@ Player::Player() {
 }
 
 void Player::Update() {
-
 	Vector2 stick{};
+	Vector3 forward{};
+	Vector3 right{};
+	Vector3 moveDir{};
+
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		stick.x = MAGISYSTEM::GetLeftStickX(0);
 		stick.y = MAGISYSTEM::GetLeftStickY(0);
 	}
 
-	velocity_ = Normalize(Vector3(stick.x, 0.0f, stick.y));
-	velocity_ *= speed_ * MAGISYSTEM::GetDeltaTime();
+	if (auto cucam = MAGISYSTEM::GetCurrentCamera3D().lock()) {
+		forward = cucam->GetTarget() - cucam->GetEye();
+		forward.y = 0.0f;
+		right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+		moveDir = Normalize(right * stick.x + forward * stick.y);
+		velocity_ = moveDir * speed_ * MAGISYSTEM::GetDeltaTime();
+	}
 
 	if (auto obj = gameObject_.lock()) {
 		obj->GetTransform()->AddTranslate(velocity_);

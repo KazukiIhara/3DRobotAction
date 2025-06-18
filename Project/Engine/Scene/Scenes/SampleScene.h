@@ -12,7 +12,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -24,7 +24,7 @@ public:
 
 private:
 	// カメラ
-	Camera3D* sceneCamera_ = nullptr;
+	std::weak_ptr<Camera3D> sceneCamera_;
 	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
 	float yaw_ = 0.0f;
 	float pitch_ = -0.5f;
@@ -78,7 +78,7 @@ inline void SampleScene<Data>::Initialize() {
 	// カメラ
 
 	// シーンカメラ作成
-	std::unique_ptr<Camera3D> sceneCamera = std::make_unique<Camera3D>();
+	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>();
 	// マネージャに追加
 	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera));
 	// カメラを設定
@@ -159,8 +159,11 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("Pitch", &pitch_, 0.01f);
 	ImGui::End();
 
-	sceneCamera_->SetYaw(yaw_);
-	sceneCamera_->SetPitch(pitch_);
+	if (auto sc = sceneCamera_.lock()) {
+		sc->SetYaw(yaw_);
+		sc->SetPitch(pitch_);
+	}
+
 
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 

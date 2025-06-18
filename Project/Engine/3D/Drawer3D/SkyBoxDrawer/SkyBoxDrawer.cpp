@@ -10,6 +10,7 @@
 #include "MAGIUitility/MAGIUtility.h"
 
 #include "Framework/MAGI.h"
+#include "MAGIAssert/MAGIAssert.h"
 
 #include <cassert>
 
@@ -63,15 +64,17 @@ SkyBoxDrawer::~SkyBoxDrawer() {
 }
 
 void SkyBoxDrawer::Update() {
-	Camera3D* currentCamera = camera3DManager_->GetCurrentCamera();
-	Vector3 translate = currentCamera->GetEye();
-	float farClipRange = currentCamera->GetFarClipRange() * 0.9f;
-	Vector3 scale = { farClipRange,farClipRange,farClipRange };
+	if (auto cucam = camera3DManager_->GetCurrentCamera().lock()) {
+		Vector3 translate = cucam->GetEye();
+		float farClipRange = cucam->GetFarClipRange() * 0.9f;
+		Vector3 scale = { farClipRange,farClipRange,farClipRange };
 
-	Matrix4x4 scaleMat = MakeScaleMatrix(scale);
-	Matrix4x4 translateMat = MakeTranslateMatrix(translate);
-
-	skyBoxData_->worldMatrix = scaleMat * translateMat;
+		Matrix4x4 scaleMat = MakeScaleMatrix(scale);
+		Matrix4x4 translateMat = MakeTranslateMatrix(translate);
+		skyBoxData_->worldMatrix = scaleMat * translateMat;
+	} else {
+		MAGIAssert::Assert(false, "Not found CurrentCamera3D!");
+	}
 }
 
 void SkyBoxDrawer::Draw() {
