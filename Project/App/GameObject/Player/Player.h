@@ -7,6 +7,13 @@
 #include "GameObject3D/GameObject3D.h"
 #include "Effects/BreakEffect/BreakEffect.h"
 
+
+enum class State {
+	Root,
+	QB,
+	AQB,
+};
+
 /// <summary>
 /// プレイヤークラス
 /// </summary>
