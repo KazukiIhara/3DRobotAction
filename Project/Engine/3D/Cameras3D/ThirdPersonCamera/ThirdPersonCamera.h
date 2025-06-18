@@ -22,7 +22,7 @@ private:
 	float yawSpeed_ = 5.0f;
 	float pitchSpeed_ = 5.0f;
 	float followLag_ = 0.2f;
-	float shoulderSign_ = 0.0f; // 1:右肩 -1:左肩
-	Vector3 pivotOffset_ = { 0.0f, 1.5f, 0.0f }; // プレイヤー胸元くらい
+	float shoulderSign_ = 0.0f; 
+	Vector3 pivotOffset_ = { 0.0f, 1.5f, 0.0f }; 
 	Vector3 smoothedPivot_{};
 };
