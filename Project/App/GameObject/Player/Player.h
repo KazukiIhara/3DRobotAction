@@ -35,7 +35,7 @@ private:
 	std::unique_ptr<BreakEffect> breakEffect_ = nullptr;
 
 	Vector3 velocity_ = { 0.0f,0.0f };
-	float speed_ = 2.0f;
+	float speed_ = 10.0f;
 
 	// デバッグ用変数
 	bool isBreak_ = false;

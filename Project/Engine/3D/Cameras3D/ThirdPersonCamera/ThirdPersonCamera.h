@@ -21,7 +21,7 @@ private:
 	float radius_ = 5.0f;
 	float yawSpeed_ = 5.0f;
 	float pitchSpeed_ = 5.0f;
-	float followLag_ = 0.2f;
+	float followLag_ = 0.25f;
 	float shoulderSign_ = 0.0f; 
 	Vector3 pivotOffset_ = { 0.0f, 1.5f, 0.0f }; 
 	Vector3 smoothedPivot_{};
