@@ -9,7 +9,7 @@
 #include "MechCoreStates/MechCoreBaseState.h"
 
 // 部位ごとのクラス
-#include "GameObject/Mech/MechLeg/MechLeg.h"
+#include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
 
 // 前方宣言
@@ -28,7 +28,7 @@ enum class MechCoreState {
 	Idle,
 	Move,
 	QuickBoost,
-	AsslutBoost
+	AssultBoost
 };
 
 /// <summary>
@@ -51,6 +51,7 @@ public:
 	void SetInputCommand(InputCommand command);
 
 private:
+	// 対応するステートを取得
 	std::weak_ptr<MechCoreBaseState> GetState(MechCoreState state);
 private:
 	// インプットコマンド
