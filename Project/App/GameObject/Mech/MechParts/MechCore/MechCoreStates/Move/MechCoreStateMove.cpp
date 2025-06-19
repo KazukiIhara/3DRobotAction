@@ -15,13 +15,14 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 	// コマンド取得
 	InputCommand command = mechCore->GetInputCommand();
 
-	// 移動入力なし　→　移動状態に遷移
+	// 移動入力なし　→　待機状態に遷移
 	if (!Length(command.moveDirection)) {
-		mechCore->ChangeState(MechCoreState::Move);
+		mechCore->ChangeState(MechCoreState::Idle);
 	}
 
 	// 加速
 	moveSpeed_ += moveAcc_ * MAGISYSTEM::GetDeltaTime();
+	moveSpeed_ = std::min(moveSpeed_, kMaxSpeed_);
 
 	// 移動量計算
 	Vector3 velocity = { command.moveDirection.x, 0.0f, command.moveDirection.y };
