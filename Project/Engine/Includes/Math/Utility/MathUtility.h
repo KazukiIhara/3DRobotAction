@@ -134,6 +134,7 @@ namespace MAGIMath {
 	Vector3 MakeForwardVector3();
 
 	// ベクトルの長さ
+	float Length(const Vector2& a);
 	float Length(const Vector3& a);
 
 	// 内積
@@ -234,7 +235,7 @@ namespace MAGIMath {
 	// アフィン変換(クオータニオン)
 	Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
 	// アフィン行列分解
-	void DecomposeAffineMatrix(const Matrix4x4& matrix,Vector3& outScale,Quaternion& outRotation,Vector3& outTranslate);
+	void DecomposeAffineMatrix(const Matrix4x4& matrix, Vector3& outScale, Quaternion& outRotation, Vector3& outTranslate);
 
 	// 回転行列からクオータニオンを作成
 	Quaternion MatrixToQuaternion(const Matrix3x3& m);

@@ -1,23 +1,45 @@
 #include "MechCore.h"
 
+#include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
+#include "Math/Utility/MathUtility.h"
+
+#include "MechCoreStates/MechCoreBaseState.h"
+#include "MechCoreStates/Idle/MechCoreStateIdle.h"
+#include "MechCoreStates/Move/MechCoreStateMove.h"
+
+using namespace MAGIMath;
 
 MechCore::MechCore() {
-	// ゲームオブジェクトを作成
+	// レンダラーとゲームオブジェクトを作成 TODO: 引数からオブジェクトを作るようにする
+	std::shared_ptr<ModelRenderer> coreModel = std::make_shared<ModelRenderer>("Player", "teapot");
+	coreModel->GetTransform()->SetTranslate(Vector3(0.0f, 1.0f, 0.0f));
+
+	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("Player");
+	coreObject->AddModelRenderer(std::move(coreModel));
+
+	core_ = MAGISYSTEM::AddGameObject3D(std::move(coreObject));
+
+	// パーツを作成
+
 
 
 	// ステートを作成
+	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
+	states_[MechCoreState::Move] = std::make_shared<MechCoreStateMove>();
 
+	// 最初のステートを設定
+	ChangeState(MechCoreState::Idle);
 
 	// コンポーネントを作成
-
-
-	// パーツを作成
 
 
 }
 
 void MechCore::Update() {
+	// 状態を整理 (コマンドはMechCoreの更新前に外部からセットする)
+
+
 	// ステートごとの更新
 	if (auto cs = currentState_.second.lock()) {
 		cs->Update(this);
@@ -26,9 +48,10 @@ void MechCore::Update() {
 	// 各パーツを更新
 
 
-	// 各パーツの更新後のCoreの更新
-
-
+	// 速度を加算
+	if (auto obj = core_.lock()) {
+		obj->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
+	}
 }
 
 void MechCore::ChangeState(MechCoreState nextState) {
@@ -64,7 +87,7 @@ void MechCore::SetVelocity(const Vector3& velocity) {
 	velocity_ = velocity;
 }
 
-void MechCore::SetInputCommand(InputCommand command) {
+void MechCore::SetInputCommand(const InputCommand& command) {
 	inputCommand_ = command;
 }
 

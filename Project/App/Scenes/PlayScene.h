@@ -136,7 +136,7 @@ inline void PlayScene<Data>::Initialize() {
 
 	// ゲームシーン用追尾カメラ作成
 	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>();
-	mainCamera->SetTargetTransform(player_->GetGameObject().lock()->GetTransform());
+	mainCamera->SetTargetTransform(player_->GetMechCore()->GetGameObject().lock()->GetTransform());
 	mainCamera_ = MAGISYSTEM::AddCamera3D("MainCamera", std::move(mainCamera));
 	// カメラ設定
 	MAGISYSTEM::SetCurrentCamera3D("MainCamera");

@@ -3,37 +3,45 @@
 #include "Framework/MAGI.h"
 
 Player::Player() {
-	std::shared_ptr<ModelRenderer> playerModel = std::make_shared<ModelRenderer>("Player", "teapot");
-	playerModel->GetTransform()->SetTranslate(Vector3(0.0f, 1.0f, 0.0f));
-
-	std::shared_ptr<GameObject3D> gameObject = std::make_shared<GameObject3D>("Player");
-	gameObject->AddModelRenderer(std::move(playerModel));
-
-	gameObject_ = MAGISYSTEM::AddGameObject3D(std::move(gameObject));
+	mech_ = std::make_unique<MechCore>();
 }
 
 void Player::Update() {
+	//
+	// 入力からコマンドを生成
+	//
+
+	InputCommand command{};
 	Vector2 stick{};
 	Vector3 forward{};
 	Vector3 right{};
-	Vector3 moveDir{};
+	Vector2 moveDir{};
 
+	// パッド接続確認
 	if (MAGISYSTEM::IsPadConnected(0)) {
+		// スティック入力を取得
 		stick.x = MAGISYSTEM::GetLeftStickX(0);
 		stick.y = MAGISYSTEM::GetLeftStickY(0);
+
+		// カメラに対しての移動方向を計算
+		if (auto cucam = MAGISYSTEM::GetCurrentCamera3D().lock()) {
+			forward = cucam->GetTarget() - cucam->GetEye();
+			forward.y = 0.0f;
+			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+			Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
+			moveDir = { tempDir.x, tempDir.z };
+		}
+
+		// 
+		// コマンドを生成してセット
+		// 
+		command.moveDirection = moveDir;
+		mech_->SetInputCommand(command);
 	}
 
-	if (auto cucam = MAGISYSTEM::GetCurrentCamera3D().lock()) {
-		forward = cucam->GetTarget() - cucam->GetEye();
-		forward.y = 0.0f;
-		right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
-		moveDir = Normalize(right * stick.x + forward * stick.y);
-		velocity_ = moveDir * speed_ * MAGISYSTEM::GetDeltaTime();
-	}
+	// 機体更新
+	mech_->Update();
 
-	if (auto obj = gameObject_.lock()) {
-		obj->GetTransform()->AddTranslate(velocity_);
-	}
 
 	// 破壊時エフェクトテスト
 	if (ImGui::Button("PlayEffect")) {
@@ -57,6 +65,6 @@ void Player::Draw() {
 
 }
 
-std::weak_ptr<GameObject3D> Player::GetGameObject() {
-	return gameObject_;
+MechCore* Player::GetMechCore() {
+	return mech_.get();
 }

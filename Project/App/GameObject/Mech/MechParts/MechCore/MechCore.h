@@ -1,12 +1,11 @@
 #pragma once
 
 // C++
+#include <memory>
 #include <unordered_map>
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
-
-#include "MechCoreStates/MechCoreBaseState.h"
 
 // 部位ごとのクラス
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
@@ -14,10 +13,11 @@
 
 // 前方宣言
 class GameObject3D;
+class MechCoreBaseState;
 
 // 入力コマンド
 struct InputCommand {
-	Vector2 direction = { 0.0f,0.0f };
+	Vector2 moveDirection = { 0.0f,0.0f };
 	bool jump = false;
 	bool quickBoost = false;
 	bool assultBoost = false;
@@ -48,7 +48,7 @@ public:
 	const InputCommand& GetInputCommand()const;
 
 	void SetVelocity(const Vector3& velocity);
-	void SetInputCommand(InputCommand command);
+	void SetInputCommand(const InputCommand& command);
 
 private:
 	// 対応するステートを取得
