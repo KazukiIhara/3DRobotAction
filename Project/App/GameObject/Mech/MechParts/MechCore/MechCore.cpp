@@ -2,7 +2,6 @@
 
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
-#include "Math/Utility/MathUtility.h"
 
 #include "MechCoreStates/MechCoreBaseState.h"
 #include "MechCoreStates/Idle/MechCoreStateIdle.h"
@@ -32,6 +31,7 @@ MechCore::MechCore() {
 	ChangeState(MechCoreState::Idle);
 
 	// コンポーネントを作成
+	movementComponent_ = std::make_unique<MechMovementComponent>();
 
 
 }
@@ -48,10 +48,8 @@ void MechCore::Update() {
 	// 各パーツを更新
 
 
-	// 速度を加算
-	if (auto obj = core_.lock()) {
-		obj->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
-	}
+	// コンポーネントを更新
+	movementComponent_->Update(this);
 }
 
 void MechCore::ChangeState(MechCoreState nextState) {
@@ -75,16 +73,12 @@ const MechCoreState& MechCore::GetCurrentState() const {
 	return currentState_.first;
 }
 
-const Vector3& MechCore::GetVelocity()const {
-	return velocity_;
-}
-
 const InputCommand& MechCore::GetInputCommand() const {
 	return inputCommand_;
 }
 
-void MechCore::SetVelocity(const Vector3& velocity) {
-	velocity_ = velocity;
+MechMovementComponent* MechCore::GetMovementComponent() {
+	return movementComponent_.get();
 }
 
 void MechCore::SetInputCommand(const InputCommand& command) {

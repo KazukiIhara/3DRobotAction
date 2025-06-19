@@ -10,6 +10,8 @@
 // 部位ごとのクラス
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
+// コンポーネントクラス
+#include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
 
 // 前方宣言
 class GameObject3D;
@@ -44,12 +46,11 @@ public:
 
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 	const MechCoreState& GetCurrentState()const;
-	const Vector3& GetVelocity()const;
 	const InputCommand& GetInputCommand()const;
+	MechMovementComponent* GetMovementComponent();
 
-	void SetVelocity(const Vector3& velocity);
+
 	void SetInputCommand(const InputCommand& command);
-
 private:
 	// 対応するステートを取得
 	std::weak_ptr<MechCoreBaseState> GetState(MechCoreState state);
@@ -69,6 +70,7 @@ private:
 	//=======================
 
 	// 移動コンポーネント
+	std::unique_ptr<MechMovementComponent> movementComponent_;
 
 
 	// ロックオンコンポーネント
@@ -93,9 +95,4 @@ private:
 	// 武器系
 
 
-	//=======================
-	// パラメータ
-	//=======================
-	Vector3 velocity_ = { 0.0f,0.0f,0.0f };
-	bool onGround_ = false;
 };

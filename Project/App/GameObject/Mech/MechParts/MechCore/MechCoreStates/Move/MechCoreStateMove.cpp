@@ -6,9 +6,9 @@
 
 using namespace MAGIMath;
 
-void MechCoreStateMove::Enter([[maybe_unused]] MechCore* mechCore) {
+void MechCoreStateMove::Enter(MechCore* mechCore) {
 	// 速度リセット
-	moveSpeed_ = 0.0f;
+	mechCore->GetMovementComponent()->SetMoveSpeed(0.0f);
 }
 
 void MechCoreStateMove::Update(MechCore* mechCore) {
@@ -20,19 +20,11 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 		mechCore->ChangeState(MechCoreState::Idle);
 	}
 
-	// 加速
-	moveSpeed_ += moveAcc_ * MAGISYSTEM::GetDeltaTime();
-	moveSpeed_ = std::min(moveSpeed_, kMaxSpeed_);
-
 	// 移動量計算
-	Vector3 velocity = { command.moveDirection.x, 0.0f, command.moveDirection.y };
-	velocity *= moveSpeed_;
-
-	// 移動量セット
-	mechCore->SetVelocity(velocity);
+	mechCore->GetMovementComponent()->Move(mechCore);
 }
 
-void MechCoreStateMove::Exit([[maybe_unused]] MechCore* mechCore) {
+void MechCoreStateMove::Exit(MechCore* mechCore) {
 	// 速度リセット
-	moveSpeed_ = 0.0f;
+	mechCore->GetMovementComponent()->SetMoveSpeed(0.0f);
 }
