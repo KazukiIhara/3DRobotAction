@@ -30,13 +30,15 @@ public:
 
 	// 移動速度セット
 	void SetMoveSpeed(float moveSpeed);
-
+private:
+	// 待機状態の摩擦減速
+	void ApplyIdleFriction(float& v, float decelPerSec, float dt);
 private:
 	// 重力加速度
 	const float kGravityAcc_ = -9.8f;
 
 	// 待機時の減速度
-	const float kIdleFriction_ = 0.94f;
+	const float kIdleFriction_ = 30.0f;
 
 	// 通常移動の最大速度
 	const float kMaxMoveSpeed_ = 15.0f;
@@ -44,9 +46,9 @@ private:
 	const float kMoveAcc_ = 30.0f;
 
 	// ジャンプの初速度
-	const float kJumpFirstSpeed_ = 30.0f;
+	const float kJumpFirstSpeed_ = 10.0f;
 	// ジャンプの最大速度
-	const float kMaxJumpSpeed_ = 50.0f;
+	const float kMaxJumpSpeed_ = 20.0f;
 	// ジャンプの秒間加速量
 	const float kJumpAcc_ = 30.0f;
 

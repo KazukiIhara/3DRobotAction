@@ -21,13 +21,17 @@ void MechCoreStateIdle::Update(MechCore* mechCore) {
 	}
 
 	// 待機時の処理
-	mechCore->GetMovementComponent()->Idle(mechCore);
+	mechCore->GetMovementComponent()->Idle();
+	// ジャンプの処理
+	mechCore->GetMovementComponent()->Jump(mechCore);
 
 	// 重力による移動量計算
 	mechCore->GetMovementComponent()->CulGravityVelocity();
 }
 
-void MechCoreStateIdle::Exit([[maybe_unused]] MechCore* mechCore) {
+void MechCoreStateIdle::Exit(MechCore* mechCore) {
+	// ジャンプの処理
+	mechCore->GetMovementComponent()->Jump(mechCore);
 	// 重力による移動量計算
 	mechCore->GetMovementComponent()->CulGravityVelocity();
 }

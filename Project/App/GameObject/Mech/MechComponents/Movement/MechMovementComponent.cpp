@@ -17,8 +17,10 @@ void MechMovementComponent::Update(MechCore* mechCore) {
 void MechMovementComponent::Idle() {
 	// 接地状態　→　摩擦計算 
 	if (onGround_) {
-		velocity_.x *= kIdleFriction_;
-		velocity_.z *= kIdleFriction_;
+		const float dt = MAGISYSTEM::GetDeltaTime();
+
+		ApplyIdleFriction(velocity_.x, kIdleFriction_, dt);
+		ApplyIdleFriction(velocity_.z, kIdleFriction_, dt);
 	}
 }
 
@@ -38,16 +40,19 @@ void MechMovementComponent::Move(MechCore* mechCore) {
 void MechMovementComponent::Jump(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
-
 	if (command.jump) {
 		if (onGround_) { 	// 接地状態の場合
 			// ジャンプの初速を与える
 			velocity_.y = kJumpFirstSpeed_;
+			// 空中判定にする
+			onGround_ = false;
 		} else {			// 空中にいる場合
-
+			// 上昇加速度計算
+			velocity_.y += kJumpAcc_ * MAGISYSTEM::GetDeltaTime();
 		}
+		// 上昇移動量をクランプ
+		velocity_.y = std::min(velocity_.y, kMaxJumpSpeed_);
 	}
-
 }
 
 void MechMovementComponent::CheckOnGround(MechCore* mechCore) {
@@ -75,4 +80,15 @@ void MechMovementComponent::CulGravityVelocity() {
 
 void MechMovementComponent::SetMoveSpeed(float moveSpeed) {
 	moveSpeed_ = moveSpeed;
+}
+
+void MechMovementComponent::ApplyIdleFriction(float& v, float decelPerSec, float dt) {
+	if (v > 0.0f) {
+		// 正方向：v から減らす
+		v = std::max(0.0f, v - decelPerSec * dt);
+	} else if (v < 0.0f) {
+		// 負方向：v に加える
+		v = std::min(0.0f, v + decelPerSec * dt);
+	}
+	// v == 0 のときは何もしない
 }

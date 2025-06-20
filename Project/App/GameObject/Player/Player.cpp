@@ -8,9 +8,10 @@ Player::Player() {
 }
 
 void Player::Update() {
-	//
-	// 入力からコマンドを生成
-	//
+
+	//===========================
+	// 入力を取得
+	//===========================
 
 	InputCommand command{};
 	Vector2 stick{};
@@ -18,17 +19,27 @@ void Player::Update() {
 	Vector3 right{};
 	Vector2 moveDir{};
 
+	//===========================
+	// 入力を取得
+	//===========================
+
 	// パッド接続確認
 	if (MAGISYSTEM::IsPadConnected(0)) {
-		// スティック入力を取得
+		// スティックによる移動入力
 		stick.x = MAGISYSTEM::GetLeftStickX(0);
 		stick.y = MAGISYSTEM::GetLeftStickY(0);
 
-	} else {
+	} else { // パッドなしならキーボード入力解禁
+		// 移動入力
 		if (MAGISYSTEM::PushKey(DIK_W)) stick.y += 1.0f;
 		if (MAGISYSTEM::PushKey(DIK_A)) stick.x -= 1.0f;
 		if (MAGISYSTEM::PushKey(DIK_S)) stick.y -= 1.0f;
 		if (MAGISYSTEM::PushKey(DIK_D)) stick.x += 1.0f;
+
+		// ジャンプ入力
+		if (MAGISYSTEM::PushKey(DIK_SPACE)) {
+			command.jump = true;
+		}
 	}
 
 	//===========================

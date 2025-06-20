@@ -23,6 +23,8 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 
 	// 移動量計算
 	mechCore->GetMovementComponent()->Move(mechCore);
+	// ジャンプの処理
+	mechCore->GetMovementComponent()->Jump(mechCore);
 
 	// 重力による移動量計算
 	mechCore->GetMovementComponent()->CulGravityVelocity();
@@ -30,6 +32,8 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 }
 
 void MechCoreStateMove::Exit([[maybe_unused]] MechCore* mechCore) {
+	// ジャンプの処理
+	mechCore->GetMovementComponent()->Jump(mechCore);
 	// 重力による移動量計算
 	mechCore->GetMovementComponent()->CulGravityVelocity();
 
