@@ -264,6 +264,21 @@ void Transform3D::SetTranslate(const Vector3& translate) {
 	isChanged_ = true;
 }
 
+void Transform3D::SetTranslateX(float x) {
+	translate_.x = x;
+	isChanged_ = true;
+}
+
+void Transform3D::SetTranslateY(float y) {
+	translate_.y = y;
+	isChanged_ = true;
+}
+
+void Transform3D::SetTranslateZ(float z) {
+	translate_.z = z;
+	isChanged_ = true;
+}
+
 void Transform3D::SetQuaternion(const Quaternion& rotate) {
 	rotate_ = rotate;
 	isChanged_ = true;

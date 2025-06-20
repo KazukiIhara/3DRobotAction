@@ -62,6 +62,9 @@ public:
 	void SetScale(const Vector3& scale);
 	void SetRotate(const Vector3& rotate);
 	void SetTranslate(const Vector3& translate);
+	void SetTranslateX(float x);
+	void SetTranslateY(float y);
+	void SetTranslateZ(float z);
 	void SetQuaternion(const Quaternion& rotate);
 
 	void AddScale(const Vector3& scale);

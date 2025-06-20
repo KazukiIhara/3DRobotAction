@@ -1,6 +1,7 @@
 #include "Player.h"
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
+#include "MAGIAssert/MAGIAssert.h"
 
 Player::Player() {
 	mech_ = std::make_unique<MechCore>();
@@ -23,21 +24,33 @@ void Player::Update() {
 		stick.x = MAGISYSTEM::GetLeftStickX(0);
 		stick.y = MAGISYSTEM::GetLeftStickY(0);
 
-		// カメラに対しての移動方向を計算
-		if (auto cucam = MAGISYSTEM::GetCurrentCamera3D().lock()) {
-			forward = cucam->GetTarget() - cucam->GetEye();
-			forward.y = 0.0f;
-			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
-			Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
-			moveDir = { tempDir.x, tempDir.z };
-		}
-
-		// 
-		// コマンドを生成してセット
-		// 
-		command.moveDirection = moveDir;
-		mech_->SetInputCommand(command);
+	} else {
+		if (MAGISYSTEM::PushKey(DIK_W)) stick.y += 1.0f;
+		if (MAGISYSTEM::PushKey(DIK_A)) stick.x -= 1.0f;
+		if (MAGISYSTEM::PushKey(DIK_S)) stick.y -= 1.0f;
+		if (MAGISYSTEM::PushKey(DIK_D)) stick.x += 1.0f;
 	}
+
+	//===========================
+	// コマンド作成
+	//===========================
+
+	// カメラに対しての移動方向を計算
+	if (auto cucam = MAGISYSTEM::GetCurrentCamera3D().lock()) {
+		forward = cucam->GetTarget() - cucam->GetEye();
+		forward.y = 0.0f;
+		right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+		Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
+		moveDir = { tempDir.x, tempDir.z };
+	} else {
+		MAGIAssert::Assert(false, "Not found SceneCamera!");
+	}
+
+	command.moveDirection = moveDir;
+
+	// コマンドセット
+	mech_->SetInputCommand(command);
+
 
 	// 機体更新
 	mech_->Update();

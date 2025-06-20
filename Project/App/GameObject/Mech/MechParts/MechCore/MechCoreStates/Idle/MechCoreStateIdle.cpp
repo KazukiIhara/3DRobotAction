@@ -17,9 +17,17 @@ void MechCoreStateIdle::Update(MechCore* mechCore) {
 	// 移動あり　→　移動状態に遷移
 	if (Length(command.moveDirection)) {
 		mechCore->ChangeState(MechCoreState::Move);
+		return;
 	}
+
+	// 待機時の処理
+	mechCore->GetMovementComponent()->Idle(mechCore);
+
+	// 重力による移動量計算
+	mechCore->GetMovementComponent()->CulGravityVelocity();
 }
 
 void MechCoreStateIdle::Exit([[maybe_unused]] MechCore* mechCore) {
-
+	// 重力による移動量計算
+	mechCore->GetMovementComponent()->CulGravityVelocity();
 }

@@ -17,12 +17,16 @@ public:
 	void Update(MechCore* mechCore);
 
 	// 待機
-	void Idle(MechCore* mechCore);
+	void Idle();
 	// 移動
 	void Move(MechCore* mechCore);
+	// ジャンプ
+	void Jump(MechCore* mechCore);
 
 	// 接地判定
-	bool CheckOnGround(MechCore* mechCore);
+	void CheckOnGround(MechCore* mechCore);
+	// 重力計算
+	void CulGravityVelocity();
 
 	// 移動速度セット
 	void SetMoveSpeed(float moveSpeed);
@@ -30,10 +34,21 @@ public:
 private:
 	// 重力加速度
 	const float kGravityAcc_ = -9.8f;
+
+	// 待機時の減速度
+	const float kIdleFriction_ = 0.94f;
+
 	// 通常移動の最大速度
 	const float kMaxMoveSpeed_ = 15.0f;
 	// 通常移動の秒間加速量
 	const float kMoveAcc_ = 30.0f;
+
+	// ジャンプの初速度
+	const float kJumpFirstSpeed_ = 30.0f;
+	// ジャンプの最大速度
+	const float kMaxJumpSpeed_ = 50.0f;
+	// ジャンプの秒間加速量
+	const float kJumpAcc_ = 30.0f;
 
 
 	// 移動量

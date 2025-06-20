@@ -14,7 +14,7 @@ MechCore::MechCore() {
 	std::shared_ptr<ModelRenderer> coreModel = std::make_shared<ModelRenderer>("Player", "teapot");
 	coreModel->GetTransform()->SetTranslate(Vector3(0.0f, 1.0f, 0.0f));
 
-	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("Player");
+	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("Player", Vector3(0.0f, 50.0f, 0.0f));
 	coreObject->AddModelRenderer(std::move(coreModel));
 
 	core_ = MAGISYSTEM::AddGameObject3D(std::move(coreObject));
@@ -39,6 +39,8 @@ MechCore::MechCore() {
 void MechCore::Update() {
 	// 状態を整理 (コマンドはMechCoreの更新前に外部からセットする)
 
+	// 接地状態かどうかチェック
+	movementComponent_->CheckOnGround(this);
 
 	// ステートごとの更新
 	if (auto cs = currentState_.second.lock()) {
