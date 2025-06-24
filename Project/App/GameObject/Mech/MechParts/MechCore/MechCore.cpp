@@ -1,7 +1,7 @@
 #include "MechCore.h"
 
 #include "MAGI.h"
-#include "MAGIAssert/MAGIAssert.h"
+#include "MAGIAssert/MAGIAssert.h" 
 
 #include "MechCoreStates/MechCoreBaseState.h"
 #include "MechCoreStates/Idle/MechCoreStateIdle.h"
