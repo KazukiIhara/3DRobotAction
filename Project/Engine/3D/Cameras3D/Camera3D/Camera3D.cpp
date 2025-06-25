@@ -22,7 +22,7 @@ void Camera3D::Initialize() {
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
-	
+
 	pitch_ = kDefaultPitch_;
 
 	CreateCameraResource();
@@ -193,16 +193,20 @@ float Camera3D::GetFarClipRange() const {
 	return farClipRange_;
 }
 
-Vector3 Camera3D::GetEye() const {
-	return eye_;
-}
-
 float Camera3D::GetYaw() const {
 	return yaw_;
 }
 
 float Camera3D::GetPitch() const {
 	return pitch_;
+}
+
+const Vector3& Camera3D::GetEye() const {
+	return eye_;
+}
+
+const Vector3& Camera3D::GetTarget() const {
+	return target_;
 }
 
 void Camera3D::SetEye(const Vector3& eye) {

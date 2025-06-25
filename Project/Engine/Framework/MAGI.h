@@ -431,13 +431,15 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// 3Dカメラの追加
-	static void AddCamera3D(const std::string& name, std::unique_ptr<Camera3D> newCamera3D);
+	static std::weak_ptr<Camera3D> AddCamera3D(const std::string& name, std::shared_ptr<Camera3D> newCamera3D);
 	// 3Dカメラの削除
 	static void RemoveCamera3D(const std::string& cameraName);
 	// 3Dカメラの取得
-	static Camera3D* FindCamera3D(const std::string& cameraName);
+	static std::weak_ptr<Camera3D> FindCamera3D(const std::string& cameraName);
 	// 使用する3Dカメラのセット
 	static void SetCurrentCamera3D(const std::string& cameraName);
+	// 使用している3Dカメラの取得
+	static std::weak_ptr<Camera3D> GetCurrentCamera3D();
 	// 3Dカメラの転送
 	static void TransferCamera3D(uint32_t rootParameterIndex);
 	// Frustumの転送

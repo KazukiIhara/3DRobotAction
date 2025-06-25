@@ -1330,20 +1330,24 @@ void MAGISYSTEM::ClearCamera2D() {
 	camera2DManager_->Clear();
 }
 
-void MAGISYSTEM::AddCamera3D(const std::string& name, std::unique_ptr<Camera3D> newCamera3D) {
-	camera3DManager_->Add(name, std::move(newCamera3D));
+std::weak_ptr<Camera3D> MAGISYSTEM::AddCamera3D(const std::string& name, std::shared_ptr<Camera3D> newCamera3D) {
+	return camera3DManager_->Add(name, std::move(newCamera3D));
 }
 
 void MAGISYSTEM::RemoveCamera3D(const std::string& cameraName) {
 	camera3DManager_->Remove(cameraName);
 }
 
-Camera3D* MAGISYSTEM::FindCamera3D(const std::string& cameraName) {
+std::weak_ptr<Camera3D> MAGISYSTEM::FindCamera3D(const std::string& cameraName) {
 	return camera3DManager_->Find(cameraName);
 }
 
 void MAGISYSTEM::SetCurrentCamera3D(const std::string& cameraName) {
 	camera3DManager_->SetCurrentCamera(cameraName);
+}
+
+std::weak_ptr<Camera3D> MAGISYSTEM::GetCurrentCamera3D() {
+	return camera3DManager_->GetCurrentCamera();
 }
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color) {

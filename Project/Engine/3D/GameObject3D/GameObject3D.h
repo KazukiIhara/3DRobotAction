@@ -21,7 +21,8 @@ public:
 	GameObject3D(const std::string& name, const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
 	GameObject3D(const std::string& name, const Vector3& translate = Vector3(0.0f, 0.0f, 0.0f));
 
-	~GameObject3D() = default;
+	virtual ~GameObject3D() = default;
+	virtual void Update();
 
 	void Finalize();
 

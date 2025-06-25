@@ -123,22 +123,54 @@ void MAGIDirectInput::InitializeMouse() {
 }
 
 void MAGIDirectInput::UpdateKeybord() {
-	// デバイスを取得 (Acquire)
-	keybord_->Acquire();
+	// アクティブでなければ入力をクリアして終了
+	if (GetActiveWindow() != windowApp_->GetHwnd()) {
+		ZeroMemory(keys_, sizeof(keys_));
+		ZeroMemory(preKeys_, sizeof(preKeys_));
+		return;
+	}
+
+	// デバイスの取得
+	HRESULT hr = keybord_->Acquire();
+	if (FAILED(hr)) {
+		ZeroMemory(keys_, sizeof(keys_));
+		return;
+	}
+
 	// 前フレームの状態を保存
 	memcpy(preKeys_, keys_, sizeof(keys_));
-	// 現在のキーボード状態を取得
-	keybord_->GetDeviceState(sizeof(keys_), keys_);
+
+	// 入力取得
+	hr = keybord_->GetDeviceState(sizeof(keys_), keys_);
+	if (FAILED(hr)) {
+		ZeroMemory(keys_, sizeof(keys_));
+	}
 }
 
 void MAGIDirectInput::UpdateMouse() {
-	// デバイスを取得 (Acquire)
-	mouse_->Acquire();
-	// 前フレームのマウス状態を保存（押し始め/離し始めを判定したい場合に使う）
+	// アクティブでなければマウス状態をクリア
+	if (GetActiveWindow() != windowApp_->GetHwnd()) {
+		ZeroMemory(&mouseState_, sizeof(mouseState_));
+		ZeroMemory(&prevMouseState_, sizeof(prevMouseState_));
+		return;
+	}
+
+	// 前フレームのマウス状態を保存
 	prevMouseState_ = mouseState_;
 
+	// デバイスを取得
+	HRESULT hr = mouse_->Acquire();
+	if (FAILED(hr)) {
+		ZeroMemory(&mouseState_, sizeof(mouseState_));
+		return;
+	}
+
 	// 今フレームの状態取得
-	mouse_->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState_);
+	hr = mouse_->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState_);
+	if (FAILED(hr)) {
+		ZeroMemory(&mouseState_, sizeof(mouseState_));
+	}
+
 }
 
 void MAGIDirectInput::SetWindowApp(WindowApp* windowApp) {

@@ -23,6 +23,9 @@ GameObject3D::GameObject3D(const std::string& name, const Vector3& translate) {
 	transformComponent_ = MAGISYSTEM::AddTransform3D(std::move(transform));
 }
 
+void GameObject3D::Update() {
+
+}
 
 void GameObject3D::Finalize() {
 	{

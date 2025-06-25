@@ -224,6 +224,10 @@ Vector3 MAGIMath::MakeForwardVector3() {
 	return result;
 }
 
+float MAGIMath::Length(const Vector2& a) {
+	return std::sqrt(a.x * a.x + a.y * a.y);
+}
+
 float MAGIMath::Length(const Vector3& a) {
 	return std::sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
 }

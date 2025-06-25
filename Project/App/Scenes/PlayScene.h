@@ -8,12 +8,12 @@
 
 using namespace MAGIUtility;
 
-
 //-------------------------------------------
 // シーンオブジェクト
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
 #include "GameObject/Ground/Ground.h"
+#include "Cameras3D/ThirdPersonCamera/ThirdPersonCamera.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -32,20 +32,19 @@ public:
 
 private:
 	// カメラ
-	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
-	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
+	std::weak_ptr<Camera3D> mainCamera_;
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
-
 	//----------------------------------------- 
 	// シーンオブジェクト
 	//-----------------------------------------
-	std::unique_ptr<Player> player_ = nullptr;
+
+	// プレイヤー
+	std::unique_ptr<Player> player_;
 
 	std::unique_ptr<Ground> ground_ = nullptr;
-
 
 	// ポストエフェクトの用の変数
 	float vignetteScale_ = 18.0f;
@@ -70,16 +69,16 @@ inline void PlayScene<Data>::Initialize() {
 	//-------------------------------------------------------
 
 	// シーンカメラ作成
-	sceneCamera_ = std::make_unique<Camera3D>();
+	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>();
 	// マネージャに追加
-	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera_));
+	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 
 	// 2Dカメラ作成
-	sceneCamera2D_ = std::make_unique<Camera2D>("SpriteCamera");
+	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");
 	// マネージャに追加
-	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D_));
+	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
@@ -115,6 +114,12 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::CreateEmitter3D("Haze", Vector3(0.0f, 0.0f, 0.0f));
 	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Haze", Primitive3DType::Plane, "smoke.png");
 
+	//===================================
+	// モデルのロード
+	//===================================
+
+	MAGISYSTEM::LoadModel("teapot");
+	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
@@ -129,11 +134,17 @@ inline void PlayScene<Data>::Initialize() {
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
 
+	// ゲームシーン用追尾カメラ作成
+	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>();
+	mainCamera->SetTargetTransform(player_->GetMechCore()->GetGameObject().lock()->GetTransform());
+	mainCamera_ = MAGISYSTEM::AddCamera3D("MainCamera", std::move(mainCamera));
+	// カメラ設定
+	MAGISYSTEM::SetCurrentCamera3D("MainCamera");
+
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
-
 	ImGui::Begin("VignetteParamater");
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
 	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
@@ -142,7 +153,6 @@ inline void PlayScene<Data>::Update() {
 	ImGui::Begin("GaussianBlurParamater");
 	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
 	ImGui::End();
-
 
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
@@ -153,7 +163,7 @@ inline void PlayScene<Data>::Update() {
 	// プレイヤー更新
 	player_->Update();
 
-
+	// ポストエフェクト適用
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
@@ -164,11 +174,9 @@ inline void PlayScene<Data>::Draw() {
 	// 床描画
 	ground_->Draw();
 
-	// プレイヤー描画
+	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
-
-	//MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData_, planeMaterial_);
 }
 
 template<typename Data>
