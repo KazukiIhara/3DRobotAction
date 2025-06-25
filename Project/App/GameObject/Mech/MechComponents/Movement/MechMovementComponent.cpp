@@ -37,6 +37,16 @@ void MechMovementComponent::Move(MechCore* mechCore) {
 	velocity_.z = command.moveDirection.y * moveSpeed_;
 }
 
+void MechMovementComponent::StartQuickBoost(MechCore* mechCore) {
+	// コマンド取得
+	const InputCommand command = mechCore->GetInputCommand();
+	
+	// 移動方向をセット　
+	quickBoostDirection_ = command.moveDirection;
+
+
+}
+
 void MechMovementComponent::Jump(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();

@@ -15,6 +15,12 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 
+	// クイックブースト入力あり
+	if (!command.quickBoost) {
+		mechCore->ChangeState(MechCoreState::QuickBoost);
+		return;
+	}
+
 	// 移動入力なし　→　待機状態に遷移
 	if (!Length(command.moveDirection)) {
 		mechCore->ChangeState(MechCoreState::Idle);

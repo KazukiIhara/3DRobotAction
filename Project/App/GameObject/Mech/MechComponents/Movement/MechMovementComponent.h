@@ -20,6 +20,9 @@ public:
 	void Idle();
 	// 移動
 	void Move(MechCore* mechCore);
+	// クイックブースト
+	void StartQuickBoost(MechCore* mechCore);
+
 	// ジャンプ
 	void Jump(MechCore* mechCore);
 
@@ -45,6 +48,13 @@ private:
 	// 通常移動の秒間加速量
 	const float kMoveAcc_ = 30.0f;
 
+
+	// クイックブーストの初速度
+	const float kQuickBoostFirstSpeed_ = 30.0f;
+	// クイックブーストの減速度
+	const float kQuickBoostFriction_ = 30.0f;
+
+
 	// ジャンプの初速度
 	const float kJumpFirstSpeed_ = 10.0f;
 	// ジャンプの最大速度
@@ -55,6 +65,8 @@ private:
 
 	// 移動量
 	Vector3 velocity_ = { 0.0f,0.0f,0.0f };
+	// クイックブーストの方向
+	Vector2 quickBoostDirection_ = { 0.0f,0.0f };
 	// 移動速度
 	float moveSpeed_ = 0.0f;
 	// 接地フラグ

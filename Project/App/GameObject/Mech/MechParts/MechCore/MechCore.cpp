@@ -6,15 +6,16 @@
 #include "MechCoreStates/MechCoreBaseState.h"
 #include "MechCoreStates/Idle/MechCoreStateIdle.h"
 #include "MechCoreStates/Move/MechCoreStateMove.h"
+#include "MechCoreStates/QuickBoost/MechCoreStateQuickBoost.h"
 
 using namespace MAGIMath;
 
 MechCore::MechCore() {
 	// レンダラーとゲームオブジェクトを作成 TODO: 引数からオブジェクトを作るようにする
-	std::shared_ptr<ModelRenderer> coreModel = std::make_shared<ModelRenderer>("Player", "teapot");
+	std::shared_ptr<ModelRenderer> coreModel = std::make_shared<ModelRenderer>("PlayerMechCore", "teapot");
 	coreModel->GetTransform()->SetTranslate(Vector3(0.0f, 1.0f, 0.0f));
 
-	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("Player", Vector3(0.0f, 50.0f, 0.0f));
+	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("PlayerMechCore", Vector3(0.0f, 50.0f, 0.0f));
 	coreObject->AddModelRenderer(std::move(coreModel));
 
 	core_ = MAGISYSTEM::AddGameObject3D(std::move(coreObject));
@@ -26,6 +27,7 @@ MechCore::MechCore() {
 	// ステートを作成
 	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
 	states_[MechCoreState::Move] = std::make_shared<MechCoreStateMove>();
+	states_[MechCoreState::QuickBoost] = std::make_shared<MechCoreStateQuickBoost>();
 
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
