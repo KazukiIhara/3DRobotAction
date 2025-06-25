@@ -867,6 +867,14 @@ bool MAGISYSTEM::ReleaseMouseButton(MouseButton mouseButton) {
 	return directInput_->ReleaseMouseButton(mouseButton);
 }
 
+LONG MAGISYSTEM::GetMouseMoveDeltaX() {
+	return directInput_->GetMouseMoveDeltaX();
+}
+
+LONG MAGISYSTEM::GetMouseMoveDeltaY() {
+	return directInput_->GetMouseMoveDeltaY();
+}
+
 int64_t MAGISYSTEM::GetMouseWheelDelta() {
 	return directInput_->GetMouseWheelDelta();
 }

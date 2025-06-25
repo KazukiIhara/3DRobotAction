@@ -67,8 +67,15 @@ bool MAGIDirectInput::ReleaseMouseButton(MouseButton mouseButton) const {
 		!(mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
 }
 
+LONG MAGIDirectInput::GetMouseMoveDeltaX() const {
+	return mouseState_.lX;
+}
+
+LONG MAGIDirectInput::GetMouseMoveDeltaY() const {
+	return mouseState_.lY;
+}
+
 int64_t MAGIDirectInput::GetMouseWheelDelta() const {
-	// マウスのホイール回転量を取得（DIMOUSESTATEのz軸移動量がホイール回転に対応）
 	return static_cast<int64_t>(mouseState_.lZ);
 }
 

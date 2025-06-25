@@ -181,6 +181,11 @@ public: // エンジンの機能
 	static bool HoldMouseButton(MouseButton mouseButton);
 	// マウスボタンを離した
 	static bool ReleaseMouseButton(MouseButton mouseButton);
+
+	// マウス移動の入力を取得
+	static LONG GetMouseMoveDeltaX();
+	static LONG GetMouseMoveDeltaY();
+
 	// マウスホイールの入力を取得
 	static int64_t GetMouseWheelDelta();
 #pragma endregion

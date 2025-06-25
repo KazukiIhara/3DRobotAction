@@ -24,7 +24,11 @@ void ThirdPersonCamera::Update() {
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		yaw_ += MAGISYSTEM::GetRightStickX(0) * yawSpeed_ * dt;
 		pitch_ += MAGISYSTEM::GetRightStickY(0) * pitchSpeed_ * dt;
+	} else {
+		yaw_ += MAGISYSTEM::GetMouseMoveDeltaX() * mouseYawSpeed_ * dt;
+		pitch_ -= MAGISYSTEM::GetMouseMoveDeltaY() * mousePitchSpeed_ * dt;
 	}
+
 	pitch_ = std::clamp(pitch_, kMinLimit, kMaxLimit);
 
 	// ピボット計算

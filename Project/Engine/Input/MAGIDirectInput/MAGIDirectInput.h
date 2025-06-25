@@ -32,6 +32,10 @@ public:
 	bool HoldMouseButton(MouseButton mouseButton)const;
 	bool ReleaseMouseButton(MouseButton mouseButton)const;
 
+	// マウスの移動量を取得
+	LONG GetMouseMoveDeltaX()const;
+	LONG GetMouseMoveDeltaY()const;
+
 	// ホイールの回転量を取得
 	int64_t GetMouseWheelDelta() const;
 
@@ -67,8 +71,8 @@ private:
 	// 1フレーム前のキー入力
 	BYTE preKeys_[256];
 
-	// マウスの現在のボタン状態（DIMOUSESTATE で相対移動量 & ボタンの押下状態を保持）
+	// マウスの現在のボタン状態
 	DIMOUSESTATE mouseState_{};
-	// 1フレーム前の状態を保持する場合が必要なら
+	// 1フレーム前の状態を保持
 	DIMOUSESTATE prevMouseState_{};
 };

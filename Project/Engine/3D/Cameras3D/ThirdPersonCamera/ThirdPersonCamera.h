@@ -21,6 +21,9 @@ private:
 	float yawSpeed_ = 5.0f;
 	float pitchSpeed_ = 5.0f;
 
+	float mouseYawSpeed_ = 1.0f;
+	float mousePitchSpeed_ = 1.0f;
+
 	float maxPitchDegrees_ = 10.0f;
 	float minPitchDegrees_ = -60.0f;
 
