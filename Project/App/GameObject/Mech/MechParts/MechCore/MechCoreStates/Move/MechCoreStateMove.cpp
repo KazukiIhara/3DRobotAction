@@ -16,7 +16,7 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 	const InputCommand command = mechCore->GetInputCommand();
 
 	// クイックブースト入力あり
-	if (!command.quickBoost) {
+	if (command.quickBoost) {
 		mechCore->ChangeState(MechCoreState::QuickBoost);
 		return;
 	}

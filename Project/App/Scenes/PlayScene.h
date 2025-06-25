@@ -3,7 +3,7 @@
 #include <memory>
 #include <array>
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
 using namespace MAGIUtility;
@@ -13,7 +13,6 @@ using namespace MAGIUtility;
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
 #include "GameObject/Ground/Ground.h"
-#include "Cameras3D/ThirdPersonCamera/ThirdPersonCamera.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -67,13 +66,6 @@ inline void PlayScene<Data>::Initialize() {
 	//-------------------------------------------------------
 	// シーンの必須設定(はよ基底クラスに移せや)
 	//-------------------------------------------------------
-
-	// シーンカメラ作成
-	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>();
-	// マネージャに追加
-	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera));
-	// カメラを設定
-	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 
 	// 2Dカメラ作成
 	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");
@@ -133,13 +125,6 @@ inline void PlayScene<Data>::Initialize() {
 
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
-
-	// ゲームシーン用追尾カメラ作成
-	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>();
-	mainCamera->SetTargetTransform(player_->GetMechCore()->GetGameObject().lock()->GetTransform());
-	mainCamera_ = MAGISYSTEM::AddCamera3D("MainCamera", std::move(mainCamera));
-	// カメラ設定
-	MAGISYSTEM::SetCurrentCamera3D("MainCamera");
 
 }
 

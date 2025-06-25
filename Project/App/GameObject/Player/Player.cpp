@@ -4,7 +4,17 @@
 #include "MAGIAssert/MAGIAssert.h"
 
 Player::Player() {
+	// 機体の作成
 	mech_ = std::make_unique<MechCore>();
+
+	// 三人称視点カメラの作成
+	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>("MainCamera");
+	mainCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
+	mainCamera->ApplyCurrent();
+
+	if (auto mechObj = mech_->GetGameObject().lock()) {
+		mechObj->AddCamera3D(mainCamera);
+	}
 }
 
 void Player::Update() {
@@ -28,6 +38,9 @@ void Player::Update() {
 		// ジャンプ入力
 		command.jump = MAGISYSTEM::PushButton(0, ButtonL);
 
+		// クイックブースト入力
+		command.quickBoost = MAGISYSTEM::PushButton(0, ButtonR);
+
 	} else { // パッドなしならキーボード入力解禁
 		// 移動入力
 		if (MAGISYSTEM::PushKey(DIK_W)) stick.y += 1.0f;
@@ -45,7 +58,7 @@ void Player::Update() {
 	//===========================
 
 	// カメラに対しての移動方向を計算
-	if (auto cucam = MAGISYSTEM::GetCurrentCamera3D().lock()) {
+	if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
 		forward = cucam->GetTarget() - cucam->GetEye();
 		forward.y = 0.0f;
 		right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));

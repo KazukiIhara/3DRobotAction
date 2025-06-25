@@ -4,17 +4,12 @@
 
 using namespace MAGIMath;
 
-ThirdPersonCamera::ThirdPersonCamera()
-	:Camera3D() {
+ThirdPersonCamera::ThirdPersonCamera(const std::string& name)
+	:Camera3D(name, false) {
 }
 
 ThirdPersonCamera::~ThirdPersonCamera() {
 
-}
-
-void ThirdPersonCamera::Initialize() {
-	Camera3D::Initialize();
-	isUseYawPitch_ = false;
 }
 
 void ThirdPersonCamera::Update() {

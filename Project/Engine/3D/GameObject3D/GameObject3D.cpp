@@ -25,6 +25,9 @@ GameObject3D::GameObject3D(const std::string& name, const Vector3& translate) {
 
 void GameObject3D::Update() {
 
+	if (!camera3DComponents_.empty()) {
+
+	}
 }
 
 void GameObject3D::Finalize() {
@@ -43,6 +46,16 @@ void GameObject3D::Finalize() {
 			}
 		}
 	}
+
+	{
+		if (!camera3DComponents_.empty()) {
+			for (auto& camera3D : camera3DComponents_) {
+				if (auto it = camera3D.second.lock()) {
+					it;
+				}
+			}
+		}
+	}
 }
 
 void GameObject3D::AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer) {
@@ -51,6 +64,11 @@ void GameObject3D::AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer
 	if (auto p = ptr.lock()) {
 		modelRendererComponents_.insert(std::make_pair(p->GetName(), p));
 	}
+}
+
+void GameObject3D::AddCamera3D(std::shared_ptr<Camera3D> camera3D) {
+	std::weak_ptr<Camera3D> ptr = MAGISYSTEM::AddCamera3D(std::move(camera3D));
+
 }
 
 void GameObject3D::SetIsAlive(bool isAlive) {
@@ -84,6 +102,17 @@ std::weak_ptr<ModelRenderer> GameObject3D::GetModelRenderer(const std::string& r
 	}
 
 	MAGIAssert::Assert(false, "GameObject3D " + name_ + ": Not found renderer [ " + rendererName + " ]\n");
+
+	return {};
+}
+
+std::weak_ptr<Camera3D> GameObject3D::GetCamera3D(const std::string& camera3DName) {
+	const auto it = camera3DComponents_.find(camera3DName);
+	if (it != camera3DComponents_.end()) {
+		return it->second;
+	}
+
+	MAGIAssert::Assert(false, "GameObject3D " + name_ + ": Not found camera3D [ " + camera3DName + " ]\n");
 
 	return {};
 }

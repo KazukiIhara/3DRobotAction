@@ -6,10 +6,9 @@
 
 class ThirdPersonCamera :public Camera3D {
 public:
-	ThirdPersonCamera();
+	ThirdPersonCamera(const std::string& name);
 	~ThirdPersonCamera()override;
 
-	void Initialize()override;
 	void Update()override;
 
 	void SetTargetTransform(Transform3D* target);
