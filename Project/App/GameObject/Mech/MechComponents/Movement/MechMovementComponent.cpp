@@ -105,7 +105,7 @@ void MechMovementComponent::CulGravityVelocity() {
 	if (onGround_) {
 		velocity_.y = 0.0f;
 	} else {
-		velocity_.y += kGravityAcc_ * MAGISYSTEM::GetDeltaTime();
+		velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
 	}
 }
 

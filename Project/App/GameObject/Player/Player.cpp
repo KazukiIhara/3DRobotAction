@@ -61,6 +61,7 @@ void Player::Update() {
 	if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
 		forward = cucam->GetTarget() - cucam->GetEye();
 		forward.y = 0.0f;
+		forward = Normalize(forward);
 		right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
 		Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
 		moveDir = { tempDir.x, tempDir.z };
@@ -68,6 +69,7 @@ void Player::Update() {
 		MAGIAssert::Assert(false, "Not found SceneCamera!");
 	}
 
+	// 移動方向のコマンドをセット
 	command.moveDirection = moveDir;
 
 	// コマンドセット

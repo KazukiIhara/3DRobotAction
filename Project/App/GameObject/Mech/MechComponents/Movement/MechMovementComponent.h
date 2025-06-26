@@ -46,6 +46,7 @@ private:
 
 	// 重力加速度
 	const float kGravityAcc_ = -9.8f;
+	const float kGravityScale_ = 2.0f;
 
 	// 接地時の減速度
 	const float kIdleFrictionGround_ = 30.0f;
