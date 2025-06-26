@@ -34,7 +34,7 @@ void ThirdPersonCamera::Update() {
 	// ピボット計算
 	Vector3 rawPivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 
-	// 追従ラグ処理
+	// 追従処理
 	if (followLag_ <= 0.0f) {
 		smoothedPivot_ = rawPivot;                      // 即追従
 	} else {
@@ -42,7 +42,7 @@ void ThirdPersonCamera::Update() {
 		smoothedPivot_ += (rawPivot - smoothedPivot_) * t;
 	}
 
-	// 眼位置計算
+	// 位置計算
 	Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
 	Vector3 shoulder = Normalize(Cross(forward, { 0,1,0 })) * 1.5f * shoulderSign_; // ←任意
 	eye_ = smoothedPivot_ - forward * radius_ + shoulder;

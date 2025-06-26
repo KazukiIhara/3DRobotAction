@@ -21,7 +21,11 @@ public:
 	// 移動
 	void Move(MechCore* mechCore);
 	// クイックブースト
-	void StartQuickBoost(MechCore* mechCore);
+	void QuickBoostEnter(MechCore* mechCore);
+	// クイックブースト更新
+	void QuickBoostUpdate();
+	// クイックブースト終了通知
+	bool QuickBoostEndRequest()const;
 
 	// ジャンプ
 	void Jump(MechCore* mechCore);
@@ -31,12 +35,23 @@ public:
 	// 重力計算
 	void CulGravityVelocity();
 
+
+	//===================================
+	// セッター
+	//===================================
+
 	// 移動速度セット
 	void SetMoveSpeed(float moveSpeed);
+
 private:
 	// 待機状態の摩擦減速
 	void ApplyIdleFriction(float& v, float decelPerSec, float dt);
+
 private:
+	//===================================
+	// 移動用パラメータ
+	//===================================
+
 	// 重力加速度
 	const float kGravityAcc_ = -9.8f;
 
@@ -53,6 +68,8 @@ private:
 	const float kQuickBoostFirstSpeed_ = 30.0f;
 	// クイックブーストの減速度
 	const float kQuickBoostFriction_ = 30.0f;
+	// クイックブーストのリロード時間
+	const float kQuickBoostTime_ = 0.35f;
 
 
 	// ジャンプの初速度
@@ -63,12 +80,20 @@ private:
 	const float kJumpAcc_ = 30.0f;
 
 
+	//===================================
+	// 変数群
+	//===================================
+
 	// 移動量
 	Vector3 velocity_ = { 0.0f,0.0f,0.0f };
-	// クイックブーストの方向
-	Vector2 quickBoostDirection_ = { 0.0f,0.0f };
 	// 移動速度
 	float moveSpeed_ = 0.0f;
+
+	// クイックブースト
+	Vector2 quickBoostDir_ = { 0.0f,0.0f };
+	// クイックブーストのタイマー
+	float quickBoostTimer_ = 0.0f;
+
 	// 接地フラグ
 	bool onGround_ = false;
 };

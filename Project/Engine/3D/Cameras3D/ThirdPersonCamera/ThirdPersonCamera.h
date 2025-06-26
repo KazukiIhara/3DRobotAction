@@ -27,7 +27,7 @@ private:
 	float maxPitchDegrees_ = 10.0f;
 	float minPitchDegrees_ = -60.0f;
 
-	float followLag_ = 0.2f;
+	float followLag_ = 0.2f;	// 到達時間(秒)
 	float shoulderSign_ = 0.0f;
 	Vector3 pivotOffset_ = { 0.0f, 1.5f, 0.0f };
 	Vector3 smoothedPivot_{};

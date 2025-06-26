@@ -18,7 +18,6 @@ void MechMovementComponent::Idle() {
 	// 接地状態　→　摩擦計算 
 	if (onGround_) {
 		const float dt = MAGISYSTEM::GetDeltaTime();
-
 		ApplyIdleFriction(velocity_.x, kIdleFriction_, dt);
 		ApplyIdleFriction(velocity_.z, kIdleFriction_, dt);
 	}
@@ -27,24 +26,42 @@ void MechMovementComponent::Idle() {
 void MechMovementComponent::Move(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
-
+	const Vector2 dir = command.moveDirection;
 	// 加速度計算
 	moveSpeed_ += kMoveAcc_ * MAGISYSTEM::GetDeltaTime();
 	moveSpeed_ = std::min(moveSpeed_, kMaxMoveSpeed_);
 
 	// 移動量に反映
-	velocity_.x = command.moveDirection.x * moveSpeed_;
-	velocity_.z = command.moveDirection.y * moveSpeed_;
+	velocity_.x = dir.x * moveSpeed_;
+	velocity_.z = dir.y * moveSpeed_;
 }
 
-void MechMovementComponent::StartQuickBoost(MechCore* mechCore) {
+void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
-	
+
 	// 移動方向をセット　
-	quickBoostDirection_ = command.moveDirection;
+	quickBoostDir_ = command.moveDirection;
 
+	velocity_.x = quickBoostDir_.x * kQuickBoostFirstSpeed_;
+	velocity_.z = quickBoostDir_.y * kQuickBoostFirstSpeed_;
 
+	// タイマーセット
+	quickBoostTimer_ = 0.0f;
+}
+
+void MechMovementComponent::QuickBoostUpdate() {
+	const float t = quickBoostTimer_ / kQuickBoostTime_;
+	const Vector2 targetVelocity = quickBoostDir_ * kMaxMoveSpeed_;
+
+	velocity_.x = Lerp(velocity_.x, targetVelocity.x, t);
+	velocity_.z = Lerp(velocity_.z, targetVelocity.y, t);
+
+	quickBoostTimer_ += MAGISYSTEM::GetDeltaTime();
+}
+
+bool MechMovementComponent::QuickBoostEndRequest() const {
+	return quickBoostTimer_ > kQuickBoostTime_;
 }
 
 void MechMovementComponent::Jump(MechCore* mechCore) {
@@ -66,6 +83,7 @@ void MechMovementComponent::Jump(MechCore* mechCore) {
 }
 
 void MechMovementComponent::CheckOnGround(MechCore* mechCore) {
+	// ひとまず Y0.0f を地面とする
 	if (auto it = mechCore->GetGameObject().lock()) {
 		Transform3D* trans = it->GetTransform();
 		if (trans->GetWorldPosition().y <= 0.0f) {
