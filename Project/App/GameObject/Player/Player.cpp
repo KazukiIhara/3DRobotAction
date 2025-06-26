@@ -39,7 +39,7 @@ void Player::Update() {
 		command.jump = MAGISYSTEM::PushButton(0, ButtonL);
 
 		// クイックブースト入力
-		command.quickBoost = MAGISYSTEM::PushButton(0, ButtonR);
+		command.quickBoost = MAGISYSTEM::TriggerButton(0, ButtonR);
 
 	} else { // パッドなしならキーボード入力解禁
 		// 移動入力

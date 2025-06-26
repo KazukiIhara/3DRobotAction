@@ -8,7 +8,11 @@
 using namespace MAGIMath;
 
 void MechMovementComponent::Update(MechCore* mechCore) {
-	// 計算済みの移動量を加算
+	// スピードと向きからこのフレームでの移動量を計算
+	velocity_.x = currentMoveDir_.x * moveSpeed_;
+	velocity_.z = currentMoveDir_.y * moveSpeed_;
+
+	// 移動量をオブジェクトに加算
 	if (auto core = mechCore->GetGameObject().lock()) {
 		core->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
 	}
@@ -16,24 +20,24 @@ void MechMovementComponent::Update(MechCore* mechCore) {
 
 void MechMovementComponent::Idle() {
 	// 接地状態　→　摩擦計算 
+	const float dt = MAGISYSTEM::GetDeltaTime();
 	if (onGround_) {
-		const float dt = MAGISYSTEM::GetDeltaTime();
-		ApplyIdleFriction(velocity_.x, kIdleFriction_, dt);
-		ApplyIdleFriction(velocity_.z, kIdleFriction_, dt);
+		ApplyIdleFriction(moveSpeed_, kIdleFrictionGround_, dt);
+	} else {
+		ApplyIdleFriction(moveSpeed_, kIdleFrictionAir_, dt);
 	}
 }
 
 void MechMovementComponent::Move(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
-	const Vector2 dir = command.moveDirection;
+
+	// 方向を設定
+	currentMoveDir_ = command.moveDirection;
+
 	// 加速度計算
 	moveSpeed_ += kMoveAcc_ * MAGISYSTEM::GetDeltaTime();
 	moveSpeed_ = std::min(moveSpeed_, kMaxMoveSpeed_);
-
-	// 移動量に反映
-	velocity_.x = dir.x * moveSpeed_;
-	velocity_.z = dir.y * moveSpeed_;
 }
 
 void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
@@ -41,21 +45,20 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 	const InputCommand command = mechCore->GetInputCommand();
 
 	// 移動方向をセット　
-	quickBoostDir_ = command.moveDirection;
+	currentMoveDir_ = command.moveDirection;
 
-	velocity_.x = quickBoostDir_.x * kQuickBoostFirstSpeed_;
-	velocity_.z = quickBoostDir_.y * kQuickBoostFirstSpeed_;
+	// 速度をセット
+	moveSpeed_ = kQuickBoostFirstSpeed_;
 
 	// タイマーセット
 	quickBoostTimer_ = 0.0f;
 }
 
 void MechMovementComponent::QuickBoostUpdate() {
-	const float t = quickBoostTimer_ / kQuickBoostTime_;
-	const Vector2 targetVelocity = quickBoostDir_ * kMaxMoveSpeed_;
 
-	velocity_.x = Lerp(velocity_.x, targetVelocity.x, t);
-	velocity_.z = Lerp(velocity_.z, targetVelocity.y, t);
+	float t = std::clamp(quickBoostTimer_ / kQuickBoostTime_, 0.0f, 1.0f);
+
+	moveSpeed_ = Lerp(moveSpeed_, kMaxMoveSpeed_, t);
 
 	quickBoostTimer_ += MAGISYSTEM::GetDeltaTime();
 }
@@ -104,10 +107,6 @@ void MechMovementComponent::CulGravityVelocity() {
 	} else {
 		velocity_.y += kGravityAcc_ * MAGISYSTEM::GetDeltaTime();
 	}
-}
-
-void MechMovementComponent::SetMoveSpeed(float moveSpeed) {
-	moveSpeed_ = moveSpeed;
 }
 
 void MechMovementComponent::ApplyIdleFriction(float& v, float decelPerSec, float dt) {

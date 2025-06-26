@@ -35,14 +35,6 @@ public:
 	// 重力計算
 	void CulGravityVelocity();
 
-
-	//===================================
-	// セッター
-	//===================================
-
-	// 移動速度セット
-	void SetMoveSpeed(float moveSpeed);
-
 private:
 	// 待機状態の摩擦減速
 	void ApplyIdleFriction(float& v, float decelPerSec, float dt);
@@ -55,8 +47,10 @@ private:
 	// 重力加速度
 	const float kGravityAcc_ = -9.8f;
 
-	// 待機時の減速度
-	const float kIdleFriction_ = 30.0f;
+	// 接地時の減速度
+	const float kIdleFrictionGround_ = 30.0f;
+	// 空中時の減速度
+	const float kIdleFrictionAir_ = 15.0f;
 
 	// 通常移動の最大速度
 	const float kMaxMoveSpeed_ = 15.0f;
@@ -84,10 +78,13 @@ private:
 	// 変数群
 	//===================================
 
+	// 進行方向
+	Vector2 currentMoveDir_ = { 0.0f,0.0f };
+	// スピード
+	float moveSpeed_ = 0.0f;
 	// 移動量
 	Vector3 velocity_ = { 0.0f,0.0f,0.0f };
-	// 移動速度
-	float moveSpeed_ = 0.0f;
+
 
 	// クイックブースト
 	Vector2 quickBoostDir_ = { 0.0f,0.0f };

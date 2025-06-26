@@ -7,8 +7,7 @@
 using namespace MAGIMath;
 
 void MechCoreStateMove::Enter([[maybe_unused]] MechCore* mechCore) {
-	// 速度リセット
-	mechCore->GetMovementComponent()->SetMoveSpeed(0.0f);
+
 }
 
 void MechCoreStateMove::Update(MechCore* mechCore) {
@@ -37,12 +36,10 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 
 }
 
-void MechCoreStateMove::Exit([[maybe_unused]] MechCore* mechCore) {
+void MechCoreStateMove::Exit(MechCore* mechCore) {
 	// ジャンプの処理
 	mechCore->GetMovementComponent()->Jump(mechCore);
 	// 重力による移動量計算
 	mechCore->GetMovementComponent()->CulGravityVelocity();
 
-	// 速度リセット
-	mechCore->GetMovementComponent()->SetMoveSpeed(0.0f);
 }

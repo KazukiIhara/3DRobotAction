@@ -9,7 +9,6 @@ using namespace MAGIMath;
 void MechCoreStateQuickBoost::Enter(MechCore* mechCore) {
 	// クイックブースト初期化
 	mechCore->GetMovementComponent()->QuickBoostEnter(mechCore);
-
 }
 
 void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
@@ -18,11 +17,10 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 
 	// 終了通知があったら通常状態に移行
 	if (mechCore->GetMovementComponent()->QuickBoostEndRequest()) {
-		// 移動入力なし　→　待機状態に遷移
-		if (!Length(command.moveDirection)) {
+		if (!Length(command.moveDirection)) {	// 移動入力なし　→　待機状態に遷移
 			mechCore->ChangeState(MechCoreState::Idle);
 			return;
-		} else {
+		} else {	// 移動入力あり　→　移動状態に遷移
 			mechCore->ChangeState(MechCoreState::Move);
 			return;
 		}
@@ -33,5 +31,4 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 }
 
 void MechCoreStateQuickBoost::Exit([[maybe_unused]] MechCore* mechCore) {
-
 }
