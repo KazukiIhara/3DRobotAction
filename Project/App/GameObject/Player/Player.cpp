@@ -32,10 +32,7 @@ void Player::Update() {
 	// パッド接続確認
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		// スティックによる移動入力
-		stick.x = MAGISYSTEM::GetLeftStickX(0);
-		stick.y = MAGISYSTEM::GetLeftStickY(0);
-
-		stick = Normalize(stick);
+		stick = MAGISYSTEM::GetLeftStick(0);
 
 		// ジャンプ入力
 		command.jump = MAGISYSTEM::PushButton(0, ButtonL);
@@ -57,7 +54,7 @@ void Player::Update() {
 		command.quickBoost = MAGISYSTEM::TriggerKey(DIK_LSHIFT);
 	}
 
-	//// 移動入力があった場合
+	// 移動入力があった場合
 	if (Length(stick)) {
 		// カメラに対しての移動方向を計算
 		if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {

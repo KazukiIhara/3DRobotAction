@@ -68,8 +68,6 @@ private:
 
 	// 通常移動の最大速度
 	const float kMaxMoveSpeed_ = 15.0f;
-	// 空中時の通常移動最大速度
-	const float kMaxMoveSpeedAir_ = 10.0f;
 
 	// 通常移動の秒間加速量
 	const float kMoveAcc_ = 20.0f;
@@ -77,7 +75,7 @@ private:
 	const float kMoveAccAir_ = 10.0f;
 
 	// クイックブーストの初速度
-	const float kQuickBoostFirstSpeed_ = 30.0f;
+	const float kQuickBoostFirstSpeed_ = 50.0f;
 	// クイックブーストの時間
 	const float kQuickBoostTime_ = 0.6f;
 	// クイックブーストキャンセル時間

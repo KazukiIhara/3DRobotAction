@@ -12,6 +12,7 @@ void MechMovementComponent::Update(MechCore* mechCore) {
 	velocity_.x = currentMoveDir_.x * moveSpeed_;
 	velocity_.z = currentMoveDir_.y * moveSpeed_;
 
+
 	// 移動量をオブジェクトに加算
 	if (auto core = mechCore->GetGameObject().lock()) {
 		core->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
@@ -82,8 +83,8 @@ void MechMovementComponent::ReverseInputDeceleration(MechCore* mechCore) {
 
 	// 角度差を求める
 	float dot = Dot(currentMoveDir_, command.moveDirection);
-	if (dot <= 0.0f) { // 90度以上差がある
-		moveSpeed_ = 0.2f;
+	if (dot < 0.0f) { // 90度以上差がある
+		moveSpeed_ = 0.5f;
 	}
 }
 

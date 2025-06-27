@@ -200,11 +200,9 @@ public: // エンジンの機能
 	static bool HoldButton(int controllerID, int buttonNumber);
 	static bool ReleaseButton(int controllerID, int buttonNumber);
 
-	// スティックの位置取得
-	static float GetLeftStickX(int controllerID);
-	static float GetLeftStickY(int controllerID);
-	static float GetRightStickX(int controllerID);
-	static float GetRightStickY(int controllerID);
+	// スティックの入力を取得
+	static Vector2 GetLeftStick(int controllerID);
+	static Vector2 GetRightStick(int controllerID);
 
 	// トリガーの位置取得
 	static float GetLeftTrigger(int controllerID);

@@ -27,7 +27,7 @@ private:
 	float maxPitchDegrees_ = 10.0f;
 	float minPitchDegrees_ = -60.0f;
 
-	float followLagHorizontal_ = 0.1f;
+	float followLagHorizontal_ = 0.2f;
 	float followLagVertical_ = 0.05f;
 
 	float shoulderSign_ = 0.0f;
