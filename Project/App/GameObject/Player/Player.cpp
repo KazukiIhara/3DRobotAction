@@ -75,10 +75,8 @@ void Player::Update() {
 	// コマンドセット
 	mech_->SetInputCommand(command);
 
-
 	// 機体更新
 	mech_->Update();
-
 
 	// 破壊時エフェクトテスト
 	if (ImGui::Button("PlayEffect")) {
