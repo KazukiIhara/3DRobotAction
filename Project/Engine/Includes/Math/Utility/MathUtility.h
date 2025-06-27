@@ -138,6 +138,7 @@ namespace MAGIMath {
 	float Length(const Vector3& a);
 
 	// 内積
+	float Dot(const Vector2& a, const Vector2& b);
 	float Dot(const Vector3& a, const Vector3& b);
 
 	// ベクトルの長さとの二乗値
@@ -151,6 +152,9 @@ namespace MAGIMath {
 
 	// 線形補完
 	Vector2 Lerp(const Vector2& v1, const Vector2& v2, float t);
+
+	// 正規化
+	Vector2 Normalize(const Vector2& v);
 
 	// 正規化
 	Vector3 Normalize(const Vector3& a);

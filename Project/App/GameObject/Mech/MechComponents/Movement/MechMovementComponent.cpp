@@ -32,6 +32,14 @@ void MechMovementComponent::Move(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 
+	Vector2 nOld = Normalize(currentMoveDir_);
+	Vector2 nNew = Normalize(command.moveDirection);
+	float dot = Dot(nOld, nNew);
+
+	if (dot < 0.0f) { // 90度以上
+		moveSpeed_ *= 0.2f;
+	}
+
 	// 方向を設定
 	currentMoveDir_ = command.moveDirection;
 

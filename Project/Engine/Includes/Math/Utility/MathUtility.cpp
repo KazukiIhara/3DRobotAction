@@ -232,6 +232,10 @@ float MAGIMath::Length(const Vector3& a) {
 	return std::sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
 }
 
+float MAGIMath::Dot(const Vector2& a, const Vector2& b) {
+	return a.x * b.x + a.y * b.y;
+}
+
 float MAGIMath::Dot(const Vector3& a, const Vector3& b) {
 	return a.x * b.x + a.y * b.y + a.z * b.z;
 }
@@ -250,6 +254,20 @@ float MAGIMath::Lerp(float a, float b, float t) {
 
 Vector2 MAGIMath::Lerp(const Vector2& v1, const Vector2& v2, float t) {
 	return v1 + (v2 - v1) * t;
+}
+
+Vector2 MAGIMath::Normalize(const Vector2& v) {
+	float length = Length(v);
+	Vector2 normalizedVector{};
+	if (length != 0) {
+		normalizedVector.x = v.x / length;
+		normalizedVector.y = v.y / length;
+	} else {
+		normalizedVector.x = 0;
+		normalizedVector.y = 0;
+	}
+
+	return normalizedVector;
 }
 
 Vector3 MAGIMath::Normalize(const Vector3& a) {
