@@ -24,6 +24,8 @@ MechCore::MechCore() {
 	// パーツを作成
 
 
+	// コンポーネントを作成
+	movementComponent_ = std::make_unique<MechMovementComponent>();
 
 	// ステートを作成
 	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
@@ -32,9 +34,6 @@ MechCore::MechCore() {
 
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
-
-	// コンポーネントを作成
-	movementComponent_ = std::make_unique<MechMovementComponent>();
 
 }
 

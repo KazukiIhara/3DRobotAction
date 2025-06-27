@@ -80,11 +80,6 @@ void MechMovementComponent::ReverseInputDeceleration(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 
-	// 過去の入力がない　もしくは　現在の入力がない場合は早期リターン
-	if (!Length(currentMoveDir_) || !Length(command.moveDirection)) {
-		return;
-	}
-
 	// 角度差を求める
 	float dot = Dot(currentMoveDir_, command.moveDirection);
 	if (dot <= 0.0f) { // 90度以上差がある

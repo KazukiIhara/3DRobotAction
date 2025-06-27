@@ -41,7 +41,7 @@ void ThirdPersonCamera::Update() {
 		const float tH = (followLagHorizontal_ <= 0.0f)
 			? 1.0f
 			: 1.0f - std::exp(-dt / followLagHorizontal_);
-		const float tV = (followLagVertical_ <= 0.f)
+		const float tV = (followLagVertical_ <= 0.0f)
 			? 1.0f
 			: 1.0f - std::exp(-dt / followLagVertical_);
 

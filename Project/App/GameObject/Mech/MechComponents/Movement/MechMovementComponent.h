@@ -22,12 +22,14 @@ public:
 	void Move(MechCore* mechCore);
 	// クイックブースト
 	void QuickBoostEnter(MechCore* mechCore);
+
 	// クイックブースト更新
 	void QuickBoostUpdate();
 	// クイックブースト終了通知
 	bool QuickBoostEndRequest()const;
 	// クイックブーストキャンセル可能通知
 	bool QuickBoostEnableCancel()const;
+
 	// 逆入力時減速処理
 	void ReverseInputDeceleration(MechCore* mechCore);
 

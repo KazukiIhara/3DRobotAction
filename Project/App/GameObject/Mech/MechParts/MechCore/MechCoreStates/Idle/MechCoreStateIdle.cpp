@@ -6,7 +6,7 @@
 
 using namespace MAGIMath;
 
-void MechCoreStateIdle::Enter([[maybe_unused]] MechCore* mechCore) {
+void MechCoreStateIdle::Enter(MechCore* mechCore) {
 
 }
 

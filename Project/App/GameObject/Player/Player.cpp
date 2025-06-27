@@ -35,6 +35,8 @@ void Player::Update() {
 		stick.x = MAGISYSTEM::GetLeftStickX(0);
 		stick.y = MAGISYSTEM::GetLeftStickY(0);
 
+		stick = Normalize(stick);
+
 		// ジャンプ入力
 		command.jump = MAGISYSTEM::PushButton(0, ButtonL);
 
@@ -51,26 +53,26 @@ void Player::Update() {
 		// ジャンプ入力
 		command.jump = MAGISYSTEM::PushKey(DIK_SPACE);
 
+		// クイックブースト入力
+		command.quickBoost = MAGISYSTEM::TriggerKey(DIK_LSHIFT);
 	}
 
-	//===========================
-	// コマンド作成
-	//===========================
-
-	// カメラに対しての移動方向を計算
-	if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
-		forward = cucam->GetTarget() - cucam->GetEye();
-		forward.y = 0.0f;
-		forward = Normalize(forward);
-		right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
-		Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
-		moveDir = { tempDir.x, tempDir.z };
-	} else {
-		MAGIAssert::Assert(false, "Not found SceneCamera!");
+	// 移動入力があった場合
+	if (Length(stick)) {
+		// カメラに対しての移動方向を計算
+		if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
+			forward = cucam->GetTarget() - cucam->GetEye();
+			forward.y = 0.0f;
+			forward = Normalize(forward);
+			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+			Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
+			moveDir = { tempDir.x, tempDir.z };
+		} else {
+			MAGIAssert::Assert(false, "Not found SceneCamera!");
+		}
+		// 移動方向のコマンドをセット
+		command.moveDirection = Normalize(moveDir);
 	}
-
-	// 移動方向のコマンドをセット
-	command.moveDirection = moveDir;
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
