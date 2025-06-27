@@ -26,6 +26,8 @@ public:
 	void QuickBoostUpdate();
 	// クイックブースト終了通知
 	bool QuickBoostEndRequest()const;
+	// クイックブーストキャンセル可能通知
+	bool QuickBoostEnableCancel()const;
 
 	// ジャンプ
 	void Jump(MechCore* mechCore);
@@ -41,12 +43,12 @@ private:
 
 private:
 	//===================================
-	// 移動用パラメータ
+	// 移動用パラメータ　(外部から持ってくる構造にする)
 	//===================================
 
 	// 重力加速度
 	const float kGravityAcc_ = -9.8f;
-	const float kGravityScale_ = 2.0f;
+	const float kGravityScale_ = 3.0f;
 
 	// 接地時の減速度
 	const float kIdleFrictionGround_ = 30.0f;
@@ -61,18 +63,18 @@ private:
 
 	// クイックブーストの初速度
 	const float kQuickBoostFirstSpeed_ = 30.0f;
-	// クイックブーストの減速度
-	const float kQuickBoostFriction_ = 30.0f;
-	// クイックブーストのリロード時間
-	const float kQuickBoostTime_ = 0.35f;
+	// クイックブーストの時間
+	const float kQuickBoostTime_ = 0.6f;
+	// クイックブーストキャンセル時間
+	const float kQuickBoostCancelTime_ = 0.3f;
 
 
 	// ジャンプの初速度
 	const float kJumpFirstSpeed_ = 10.0f;
 	// ジャンプの最大速度
-	const float kMaxJumpSpeed_ = 20.0f;
+	const float kMaxJumpSpeed_ = 30.0f;
 	// ジャンプの秒間加速量
-	const float kJumpAcc_ = 30.0f;
+	const float kJumpAcc_ = 60.0f;
 
 
 	//===================================

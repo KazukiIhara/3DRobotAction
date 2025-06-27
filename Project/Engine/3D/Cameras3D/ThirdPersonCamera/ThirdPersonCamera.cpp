@@ -34,12 +34,22 @@ void ThirdPersonCamera::Update() {
 	// ピボット計算
 	Vector3 rawPivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 
-	// 追従処理
-	if (followLag_ <= 0.0f) {
-		smoothedPivot_ = rawPivot;                      // 即追従
+	// ──追従（水平と垂直を分離）──────────────
+	if (!followLagHorizontal_ && !followLagVertical_) {
+		smoothedPivot_ = rawPivot;                 // 全軸即追従
 	} else {
-		const float t = 1.0f - std::exp(-dt / followLag_);
-		smoothedPivot_ += (rawPivot - smoothedPivot_) * t;
+		const float tH = (followLagHorizontal_ <= 0.0f)
+			? 1.0f
+			: 1.0f - std::exp(-dt / followLagHorizontal_);
+		const float tV = (followLagVertical_ <= 0.f)
+			? 1.0f
+			: 1.0f - std::exp(-dt / followLagVertical_);
+
+		// XZ（水平）
+		smoothedPivot_.x += (rawPivot.x - smoothedPivot_.x) * tH;
+		smoothedPivot_.z += (rawPivot.z - smoothedPivot_.z) * tH;
+		// Y（垂直）
+		smoothedPivot_.y += (rawPivot.y - smoothedPivot_.y) * tV;
 	}
 
 	// 位置計算

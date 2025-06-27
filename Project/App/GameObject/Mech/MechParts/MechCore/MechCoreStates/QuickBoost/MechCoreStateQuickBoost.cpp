@@ -26,6 +26,17 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 		}
 	}
 
+	// キャンセル行動
+	if (mechCore->GetMovementComponent()->QuickBoostEnableCancel()) {
+		if (command.quickBoost) { // クイックブーストでキャンセル
+			mechCore->ChangeState(MechCoreState::QuickBoost);
+			return;
+		} else if (command.jump) { // ジャンプでキャンセル
+			mechCore->ChangeState(MechCoreState::Idle);
+			return;
+		}
+	}
+
 	// 更新
 	mechCore->GetMovementComponent()->QuickBoostUpdate();
 }

@@ -55,16 +55,17 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 }
 
 void MechMovementComponent::QuickBoostUpdate() {
-
 	float t = std::clamp(quickBoostTimer_ / kQuickBoostTime_, 0.0f, 1.0f);
-
 	moveSpeed_ = Lerp(moveSpeed_, kMaxMoveSpeed_, t);
-
 	quickBoostTimer_ += MAGISYSTEM::GetDeltaTime();
 }
 
 bool MechMovementComponent::QuickBoostEndRequest() const {
 	return quickBoostTimer_ > kQuickBoostTime_;
+}
+
+bool MechMovementComponent::QuickBoostEnableCancel() const {
+	return quickBoostTimer_ > kQuickBoostCancelTime_;
 }
 
 void MechMovementComponent::Jump(MechCore* mechCore) {
