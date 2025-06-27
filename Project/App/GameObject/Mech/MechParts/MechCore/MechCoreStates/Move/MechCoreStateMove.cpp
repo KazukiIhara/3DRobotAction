@@ -6,8 +6,8 @@
 
 using namespace MAGIMath;
 
-void MechCoreStateMove::Enter([[maybe_unused]] MechCore* mechCore) {
-
+void MechCoreStateMove::Enter(MechCore* mechCore) {
+	mechCore->GetMovementComponent()->ReverseInputDeceleration(mechCore);
 }
 
 void MechCoreStateMove::Update(MechCore* mechCore) {

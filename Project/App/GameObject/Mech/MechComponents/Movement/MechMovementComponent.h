@@ -28,6 +28,8 @@ public:
 	bool QuickBoostEndRequest()const;
 	// クイックブーストキャンセル可能通知
 	bool QuickBoostEnableCancel()const;
+	// 逆入力時減速処理
+	void ReverseInputDeceleration(MechCore* mechCore);
 
 	// ジャンプ
 	void Jump(MechCore* mechCore);
@@ -36,6 +38,13 @@ public:
 	void CheckOnGround(MechCore* mechCore);
 	// 重力計算
 	void CulGravityVelocity();
+
+	//===================================
+	// セッター
+	//===================================
+
+	// 移動速度セット
+	void SetMoveSpeed(float s);
 
 private:
 	// 待機状態の摩擦減速
@@ -57,9 +66,13 @@ private:
 
 	// 通常移動の最大速度
 	const float kMaxMoveSpeed_ = 15.0f;
-	// 通常移動の秒間加速量
-	const float kMoveAcc_ = 30.0f;
+	// 空中時の通常移動最大速度
+	const float kMaxMoveSpeedAir_ = 10.0f;
 
+	// 通常移動の秒間加速量
+	const float kMoveAcc_ = 20.0f;
+	// 空中時の通常移動秒間加速量
+	const float kMoveAccAir_ = 10.0f;
 
 	// クイックブーストの初速度
 	const float kQuickBoostFirstSpeed_ = 30.0f;
@@ -67,7 +80,6 @@ private:
 	const float kQuickBoostTime_ = 0.6f;
 	// クイックブーストキャンセル時間
 	const float kQuickBoostCancelTime_ = 0.3f;
-
 
 	// ジャンプの初速度
 	const float kJumpFirstSpeed_ = 10.0f;
