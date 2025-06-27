@@ -83,7 +83,7 @@ void MechMovementComponent::ReverseInputDeceleration(MechCore* mechCore) {
 	// 角度差を求める
 	float dot = Dot(currentMoveDir_, command.moveDirection);
 	if (dot <= 0.0f) { // 90度以上差がある
-		moveSpeed_ = 0.0f;
+		moveSpeed_ = 0.2f;
 	}
 }
 

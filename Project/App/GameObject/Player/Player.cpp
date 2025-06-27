@@ -57,7 +57,7 @@ void Player::Update() {
 		command.quickBoost = MAGISYSTEM::TriggerKey(DIK_LSHIFT);
 	}
 
-	// 移動入力があった場合
+	//// 移動入力があった場合
 	if (Length(stick)) {
 		// カメラに対しての移動方向を計算
 		if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
@@ -65,7 +65,7 @@ void Player::Update() {
 			forward.y = 0.0f;
 			forward = Normalize(forward);
 			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
-			Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
+			const Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
 			moveDir = { tempDir.x, tempDir.z };
 		} else {
 			MAGIAssert::Assert(false, "Not found SceneCamera!");
