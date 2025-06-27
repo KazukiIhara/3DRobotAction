@@ -181,6 +181,11 @@ public: // エンジンの機能
 	static bool HoldMouseButton(MouseButton mouseButton);
 	// マウスボタンを離した
 	static bool ReleaseMouseButton(MouseButton mouseButton);
+
+	// マウス移動の入力を取得
+	static LONG GetMouseMoveDeltaX();
+	static LONG GetMouseMoveDeltaY();
+
 	// マウスホイールの入力を取得
 	static int64_t GetMouseWheelDelta();
 #pragma endregion
@@ -431,15 +436,11 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// 3Dカメラの追加
-	static std::weak_ptr<Camera3D> AddCamera3D(const std::string& name, std::shared_ptr<Camera3D> newCamera3D);
-	// 3Dカメラの削除
-	static void RemoveCamera3D(const std::string& cameraName);
-	// 3Dカメラの取得
-	static std::weak_ptr<Camera3D> FindCamera3D(const std::string& cameraName);
+	static std::weak_ptr<Camera3D> AddCamera3D(std::shared_ptr<Camera3D> newCamera3D);
 	// 使用する3Dカメラのセット
-	static void SetCurrentCamera3D(const std::string& cameraName);
+	static void SetCurrentCamera3D(Camera3D* camera3D);
 	// 使用している3Dカメラの取得
-	static std::weak_ptr<Camera3D> GetCurrentCamera3D();
+	static Camera3D* GetCurrentCamera3D();
 	// 3Dカメラの転送
 	static void TransferCamera3D(uint32_t rootParameterIndex);
 	// Frustumの転送

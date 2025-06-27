@@ -4,17 +4,12 @@
 
 using namespace MAGIMath;
 
-ThirdPersonCamera::ThirdPersonCamera()
-	:Camera3D() {
+ThirdPersonCamera::ThirdPersonCamera(const std::string& name)
+	:Camera3D(name, false) {
 }
 
 ThirdPersonCamera::~ThirdPersonCamera() {
 
-}
-
-void ThirdPersonCamera::Initialize() {
-	Camera3D::Initialize();
-	isUseYawPitch_ = false;
 }
 
 void ThirdPersonCamera::Update() {
@@ -29,21 +24,35 @@ void ThirdPersonCamera::Update() {
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		yaw_ += MAGISYSTEM::GetRightStickX(0) * yawSpeed_ * dt;
 		pitch_ += MAGISYSTEM::GetRightStickY(0) * pitchSpeed_ * dt;
+	} else {
+		yaw_ += MAGISYSTEM::GetMouseMoveDeltaX() * mouseYawSpeed_ * dt;
+		pitch_ -= MAGISYSTEM::GetMouseMoveDeltaY() * mousePitchSpeed_ * dt;
 	}
+
 	pitch_ = std::clamp(pitch_, kMinLimit, kMaxLimit);
 
 	// ピボット計算
 	Vector3 rawPivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 
-	// 追従ラグ処理
-	if (followLag_ <= 0.0f) {
-		smoothedPivot_ = rawPivot;                      // 即追従
+	// ──追従（水平と垂直を分離）──────────────
+	if (!followLagHorizontal_ && !followLagVertical_) {
+		smoothedPivot_ = rawPivot;                 // 全軸即追従
 	} else {
-		const float t = 1.0f - std::exp(-dt / followLag_);
-		smoothedPivot_ += (rawPivot - smoothedPivot_) * t;
+		const float tH = (followLagHorizontal_ <= 0.0f)
+			? 1.0f
+			: 1.0f - std::exp(-dt / followLagHorizontal_);
+		const float tV = (followLagVertical_ <= 0.f)
+			? 1.0f
+			: 1.0f - std::exp(-dt / followLagVertical_);
+
+		// XZ（水平）
+		smoothedPivot_.x += (rawPivot.x - smoothedPivot_.x) * tH;
+		smoothedPivot_.z += (rawPivot.z - smoothedPivot_.z) * tH;
+		// Y（垂直）
+		smoothedPivot_.y += (rawPivot.y - smoothedPivot_.y) * tV;
 	}
 
-	// 眼位置計算
+	// 位置計算
 	Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
 	Vector3 shoulder = Normalize(Cross(forward, { 0,1,0 })) * 1.5f * shoulderSign_; // ←任意
 	eye_ = smoothedPivot_ - forward * radius_ + shoulder;

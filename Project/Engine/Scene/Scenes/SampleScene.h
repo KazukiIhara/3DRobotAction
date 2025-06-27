@@ -78,12 +78,10 @@ inline void SampleScene<Data>::Initialize() {
 	// カメラ
 
 	// シーンカメラ作成
-	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>();
+	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>("MainCamera");
+	sceneCamera->ApplyCurrent();
 	// マネージャに追加
-	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera));
-	// カメラを設定
-	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
-	sceneCamera_ = MAGISYSTEM::FindCamera3D("SceneCamera");
+	sceneCamera_ = MAGISYSTEM::AddCamera3D(std::move(sceneCamera));
 
 	// 2Dカメラ作成
 	sceneCamera2D_ = std::make_unique<Camera2D>("SpriteCamera");

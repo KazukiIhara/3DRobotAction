@@ -1,6 +1,7 @@
 #pragma once
 
 // C++
+#include <string>
 #include <memory>
 
 // DirectX
@@ -16,15 +17,16 @@
 /// </summary>
 class Camera3D {
 public:
-	Camera3D();
+	Camera3D(const std::string& name, bool isUseYawPitch = true);
 	virtual ~Camera3D();
 
-	// 初期化
-	virtual void Initialize();
 	// 更新
 	virtual void Update();
 	// データ更新
 	void UpdateData();
+
+	// このカメラを現在のカメラに適用
+	void ApplyCurrent();
 
 	// カメラを揺らす
 	void Shake(float duration, float intensity);
@@ -35,30 +37,25 @@ public:
 
 	// 定数バッファに転送
 	void TransferCamera(uint32_t rootParameterIndex);
-
 	void TransferCameraInv(uint32_t rootParameterIndex);
-
 	void TransferCameraFrustum(uint32_t rootParameterIndex);
 
-	// ビュープロジェクションマトリックスを送る
+
+	const std::string& GetName()const;
 	Matrix4x4 GetViewProjectionMatrix()const;
-
-	// ファークリップ距離を送る
 	float GetFarClipRange()const;
-
-	// 視点を送る
 	float GetYaw()const;
 	float GetPitch()const;
-
 	const Vector3& GetEye()const;
 	const Vector3& GetTarget()const;
+
 
 	void SetIsUseYawPitch(bool isUseYawPitch);
 	void SetEye(const Vector3& eye);
 	void SetTarget(const Vector3& target);
 	void SetYaw(float yaw);
 	void SetPitch(float pitch);
-
+	void SetIsAlive(bool isAlive);
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
@@ -68,6 +65,9 @@ private:
 	void UpdateCameraData();
 
 protected:
+	// 名前
+	std::string name_;
+
 	// カメラの初期トランスフォーム
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,3.0f,-5.0f };
 	const float kDefaultPitch_ = -0.5f;
@@ -102,10 +102,11 @@ protected:
 	Matrix4x4 billboardMatrix_{};
 	// frustumPlane
 	Vector4 frustumPlanes_[6];
-	// 有効フラグ
-	bool isActive_ = true;
 	// yawPicthを使うかどうか
 	bool isUseYawPitch_ = true;
+	// 生存フラグ
+	bool isAlive_ = true;
+
 
 	// カメラシェイク用変数
 	float shakeTime_ = 0;

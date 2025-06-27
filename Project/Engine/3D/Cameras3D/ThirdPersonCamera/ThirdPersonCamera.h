@@ -6,10 +6,9 @@
 
 class ThirdPersonCamera :public Camera3D {
 public:
-	ThirdPersonCamera();
+	ThirdPersonCamera(const std::string& name);
 	~ThirdPersonCamera()override;
 
-	void Initialize()override;
 	void Update()override;
 
 	void SetTargetTransform(Transform3D* target);
@@ -22,10 +21,15 @@ private:
 	float yawSpeed_ = 5.0f;
 	float pitchSpeed_ = 5.0f;
 
+	float mouseYawSpeed_ = 1.0f;
+	float mousePitchSpeed_ = 1.0f;
+
 	float maxPitchDegrees_ = 10.0f;
 	float minPitchDegrees_ = -60.0f;
 
-	float followLag_ = 0.2f;
+	float followLagHorizontal_ = 0.2f;
+	float followLagVertical_ = 0.05f;
+
 	float shoulderSign_ = 0.0f;
 	Vector3 pivotOffset_ = { 0.0f, 1.5f, 0.0f };
 	Vector3 smoothedPivot_{};

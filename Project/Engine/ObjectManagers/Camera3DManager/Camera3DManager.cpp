@@ -1,15 +1,9 @@
-//------------------------------------------------------------------------------
-// Camera3DManager.cpp
-//------------------------------------------------------------------------------
 #include "Camera3DManager.h"
 
-#include "Logger/Logger.h"
-#include <cassert>
 #include <memory>
 
-//------------------------------------------------------------------------------
-// ctor / dtor
-//------------------------------------------------------------------------------
+#include "MAGIAssert/MAGIAssert.h"
+
 Camera3DManager::Camera3DManager() {
 	Initialize();
 	Logger::Log("Camera3DManager Initialize\n");
@@ -19,22 +13,16 @@ Camera3DManager::~Camera3DManager() {
 	Logger::Log("Camera3DManager Finalize\n");
 }
 
-//------------------------------------------------------------------------------
-// 初期化
-//------------------------------------------------------------------------------
 void Camera3DManager::Initialize() {
 #if defined(DEBUG) || defined(DEVELOP)
-	debugCamera_ = std::make_shared<DebugCamera3D>();
+	debugCamera_ = std::make_unique<DebugCamera3D>();
 #endif
 }
 
-//------------------------------------------------------------------------------
-// 更新
-//------------------------------------------------------------------------------
 void Camera3DManager::Update() {
-	if (auto sp = currentCamera_.lock()) {
-		sp->Update();
-		sp->UpdateData();
+	if (currentCamera_) {
+		currentCamera_->Update();
+		currentCamera_->UpdateData();
 	}
 
 #if defined(DEBUG) || defined(DEVELOP)
@@ -42,17 +30,13 @@ void Camera3DManager::Update() {
 		debugCamera_->Update();
 		debugCamera_->UpdateData();
 
-		// デバッグカメラ中は、実際に描画対象となっているカメラの
-		if (auto sp = currentCamera_.lock()) {
-			sp->DrawFrustum();
+		if (currentCamera_) {
+			currentCamera_->DrawFrustum();
 		}
 	}
 #endif
 }
 
-//------------------------------------------------------------------------------
-// カメラ定数バッファ転送
-//------------------------------------------------------------------------------
 void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
 #if defined(DEBUG) || defined(DEVELOP)
 	if (isDebugCamera_) {
@@ -60,8 +44,8 @@ void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
 		return;
 	}
 #endif
-	if (auto sp = currentCamera_.lock()) {
-		sp->TransferCamera(rootParameterIndex);
+	if (currentCamera_) {
+		currentCamera_->TransferCamera(rootParameterIndex);
 	}
 }
 
@@ -72,8 +56,8 @@ void Camera3DManager::TransferCurrentCameraInverse(uint32_t rootParameterIndex) 
 		return;
 	}
 #endif
-	if (auto sp = currentCamera_.lock()) {
-		sp->TransferCameraInv(rootParameterIndex);
+	if (currentCamera_) {
+		currentCamera_->TransferCameraInv(rootParameterIndex);
 	}
 }
 
@@ -84,8 +68,8 @@ void Camera3DManager::TransferCurrentCameraFrustum(uint32_t rootParameterIndex) 
 		return;
 	}
 #endif
-	if (auto sp = currentCamera_.lock()) {
-		sp->TransferCameraFrustum(rootParameterIndex);
+	if (currentCamera_) {
+		currentCamera_->TransferCameraFrustum(rootParameterIndex);
 	}
 }
 
@@ -99,8 +83,8 @@ void Camera3DManager::DrawCurrentCameraFrustum() {
 		return;
 	}
 #endif
-	if (auto sp = currentCamera_.lock()) {
-		sp->DrawFrustum();
+	if (currentCamera_) {
+		currentCamera_->DrawFrustum();
 	}
 }
 
@@ -114,65 +98,32 @@ void Camera3DManager::ShakeCurrentCamera(float duration, float intensity) {
 		return;
 	}
 #endif
-	if (auto sp = currentCamera_.lock()) {
-		sp->Shake(duration, intensity);
+	if (currentCamera_) {
+		currentCamera_->Shake(duration, intensity);
 	}
 }
 
 //------------------------------------------------------------------------------
 // カメラ登録
 //------------------------------------------------------------------------------
-std::weak_ptr<Camera3D> Camera3DManager::Add(const std::string& name,
-	std::shared_ptr<Camera3D> newCamera3D) {
-	assert(newCamera3D && "newCamera3D must not be null");
-	assert(!cameras3D_.contains(name) && "Camera3D name already exists!");
-
-	auto [it, success] = cameras3D_.insert({ name, std::move(newCamera3D) });
-	assert(success && "Failed to insert Camera3D");
-
-	return std::weak_ptr<Camera3D>(it->second);
+std::weak_ptr<Camera3D> Camera3DManager::Add(std::shared_ptr<Camera3D> newCamera3D) {
+	MAGIAssert::Assert(newCamera3D.get(), "newCamera3D must not be null");
+	cameras3D_.push_back(std::move(newCamera3D));
+	return cameras3D_.back();
 }
 
-//------------------------------------------------------------------------------
-// カメラ削除
-//------------------------------------------------------------------------------
-void Camera3DManager::Remove(const std::string& cameraName) {
-	if (auto it = cameras3D_.find(cameraName); it != cameras3D_.end()) {
-		// 現在のカメラを消す場合は currentCamera_ も無効化
-		if (!currentCamera_.expired() && currentCamera_.lock() == it->second) {
-			currentCamera_.reset();
-		}
-		cameras3D_.erase(it);
-	} else {
-		assert(false && "Camera3D Not Found");
-	}
-}
-
-//------------------------------------------------------------------------------
-// カメラ検索
-//------------------------------------------------------------------------------
-std::weak_ptr<Camera3D> Camera3DManager::Find(const std::string& cameraName) {
-	if (auto it = cameras3D_.find(cameraName); it != cameras3D_.end()) {
-		return std::weak_ptr<Camera3D>(it->second);
-	}
-	return {};   // empty weak_ptr
-}
-
-//------------------------------------------------------------------------------
-// 使用カメラ指定
-//------------------------------------------------------------------------------
-void Camera3DManager::SetCurrentCamera(const std::string& cameraName) {
-	currentCamera_ = Find(cameraName);
-	assert(!currentCamera_.expired() && "Camera3D Not Found");
+void Camera3DManager::SetCurrentCamera(Camera3D* camera3D) {
+	currentCamera_ = camera3D;
+	MAGIAssert::Assert(currentCamera_, "CurrentCamera3D must not be null");
 }
 
 //------------------------------------------------------------------------------
 // 使用カメラ取得
 //------------------------------------------------------------------------------
-std::weak_ptr<Camera3D> Camera3DManager::GetCurrentCamera() {
+Camera3D* Camera3DManager::GetCurrentCamera() {
 #if defined(DEBUG) || defined(DEVELOP)
 	if (isDebugCamera_) {
-		return std::weak_ptr<Camera3D>(debugCamera_);
+		return debugCamera_.get();
 	}
 #endif
 	return currentCamera_;
@@ -190,5 +141,5 @@ bool& Camera3DManager::GetIsDebugCamera() {
 //------------------------------------------------------------------------------
 void Camera3DManager::Clear() {
 	cameras3D_.clear();
-	currentCamera_.reset();
+	currentCamera_ = nullptr;
 }

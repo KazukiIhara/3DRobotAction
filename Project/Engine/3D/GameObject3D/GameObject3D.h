@@ -11,6 +11,7 @@
 // 前方宣言
 class Transform3D;
 class ModelRenderer;
+class Camera3D;
 
 /// <summary>
 /// シーン上のオブジェクト
@@ -26,7 +27,13 @@ public:
 
 	void Finalize();
 
+	//=======================
+	// コンポーネント追加関数
+	//=======================
+
 	void AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer);
+	void AddCamera3D(std::shared_ptr<Camera3D> camera3D);
+
 
 	void SetIsAlive(bool isAlive);
 	void SetIsActive(bool isActive);
@@ -38,6 +45,8 @@ public:
 
 	[[nodiscard]] Transform3D* GetTransform();
 	[[nodiscard]] std::weak_ptr<ModelRenderer> GetModelRenderer(const std::string& rendererName);
+	[[nodiscard]] std::weak_ptr<Camera3D> GetCamera3D(const std::string& camera3DName);
+
 private:
 	// 名前
 	std::string name_ = "";
@@ -54,5 +63,6 @@ private:
 	Transform3D* transformComponent_;
 	// モデル描画コンポーネント
 	std::unordered_map<std::string, std::weak_ptr<ModelRenderer>> modelRendererComponents_;
-
+	// カメラコンポーネント
+	std::unordered_map<std::string, std::weak_ptr<Camera3D>> camera3DComponents_;
 };

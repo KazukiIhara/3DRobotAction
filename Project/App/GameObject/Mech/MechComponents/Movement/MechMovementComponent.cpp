@@ -8,7 +8,11 @@
 using namespace MAGIMath;
 
 void MechMovementComponent::Update(MechCore* mechCore) {
-	// 計算済みの移動量を加算
+	// スピードと向きからこのフレームでの移動量を計算
+	velocity_.x = currentMoveDir_.x * moveSpeed_;
+	velocity_.z = currentMoveDir_.y * moveSpeed_;
+
+	// 移動量をオブジェクトに加算
 	if (auto core = mechCore->GetGameObject().lock()) {
 		core->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
 	}
@@ -16,11 +20,11 @@ void MechMovementComponent::Update(MechCore* mechCore) {
 
 void MechMovementComponent::Idle() {
 	// 接地状態　→　摩擦計算 
+	const float dt = MAGISYSTEM::GetDeltaTime();
 	if (onGround_) {
-		const float dt = MAGISYSTEM::GetDeltaTime();
-
-		ApplyIdleFriction(velocity_.x, kIdleFriction_, dt);
-		ApplyIdleFriction(velocity_.z, kIdleFriction_, dt);
+		ApplyIdleFriction(moveSpeed_, kIdleFrictionGround_, dt);
+	} else {
+		ApplyIdleFriction(moveSpeed_, kIdleFrictionAir_, dt);
 	}
 }
 
@@ -28,23 +32,48 @@ void MechMovementComponent::Move(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 
+	Vector2 nOld = Normalize(currentMoveDir_);
+	Vector2 nNew = Normalize(command.moveDirection);
+	float dot = Dot(nOld, nNew);
+
+	if (dot < 0.0f) { // 90度以上
+		moveSpeed_ *= 0.2f;
+	}
+
+	// 方向を設定
+	currentMoveDir_ = command.moveDirection;
+
 	// 加速度計算
 	moveSpeed_ += kMoveAcc_ * MAGISYSTEM::GetDeltaTime();
 	moveSpeed_ = std::min(moveSpeed_, kMaxMoveSpeed_);
-
-	// 移動量に反映
-	velocity_.x = command.moveDirection.x * moveSpeed_;
-	velocity_.z = command.moveDirection.y * moveSpeed_;
 }
 
-void MechMovementComponent::StartQuickBoost(MechCore* mechCore) {
+void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
-	
+
 	// 移動方向をセット　
-	quickBoostDirection_ = command.moveDirection;
+	currentMoveDir_ = command.moveDirection;
 
+	// 速度をセット
+	moveSpeed_ = kQuickBoostFirstSpeed_;
 
+	// タイマーセット
+	quickBoostTimer_ = 0.0f;
+}
+
+void MechMovementComponent::QuickBoostUpdate() {
+	float t = std::clamp(quickBoostTimer_ / kQuickBoostTime_, 0.0f, 1.0f);
+	moveSpeed_ = Lerp(moveSpeed_, kMaxMoveSpeed_, t);
+	quickBoostTimer_ += MAGISYSTEM::GetDeltaTime();
+}
+
+bool MechMovementComponent::QuickBoostEndRequest() const {
+	return quickBoostTimer_ > kQuickBoostTime_;
+}
+
+bool MechMovementComponent::QuickBoostEnableCancel() const {
+	return quickBoostTimer_ > kQuickBoostCancelTime_;
 }
 
 void MechMovementComponent::Jump(MechCore* mechCore) {
@@ -66,6 +95,7 @@ void MechMovementComponent::Jump(MechCore* mechCore) {
 }
 
 void MechMovementComponent::CheckOnGround(MechCore* mechCore) {
+	// ひとまず Y0.0f を地面とする
 	if (auto it = mechCore->GetGameObject().lock()) {
 		Transform3D* trans = it->GetTransform();
 		if (trans->GetWorldPosition().y <= 0.0f) {
@@ -84,12 +114,8 @@ void MechMovementComponent::CulGravityVelocity() {
 	if (onGround_) {
 		velocity_.y = 0.0f;
 	} else {
-		velocity_.y += kGravityAcc_ * MAGISYSTEM::GetDeltaTime();
+		velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
 	}
-}
-
-void MechMovementComponent::SetMoveSpeed(float moveSpeed) {
-	moveSpeed_ = moveSpeed;
 }
 
 void MechMovementComponent::ApplyIdleFriction(float& v, float decelPerSec, float dt) {

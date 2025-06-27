@@ -5,12 +5,7 @@
 using namespace MAGIMath;
 
 DebugCamera3D::DebugCamera3D()
-	:Camera3D() {
-
-}
-
-void DebugCamera3D::Initialize() {
-	Camera3D::Initialize();
+	:Camera3D("DebugCamera") {
 }
 
 void DebugCamera3D::Update() {

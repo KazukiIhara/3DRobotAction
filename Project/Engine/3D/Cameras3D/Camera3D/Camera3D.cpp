@@ -8,29 +8,26 @@
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
-Camera3D::Camera3D() {
-	Initialize();
+Camera3D::Camera3D(const std::string& name, bool isUseYawPitch) {
+	name_ = name;
+	isUseYawPitch_ = isUseYawPitch;
+
+	eye_ = kDefaultCameraTranslate_;
+	pitch_ = kDefaultPitch_;
+
+	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
+	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
+	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
+
+	CreateCameraResource();
+	MapCameraData();
 }
 
 Camera3D::~Camera3D() {
 
 }
 
-void Camera3D::Initialize() {
-	eye_ = kDefaultCameraTranslate_;
-	// ビュー行列やらあれこれ
-	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
-	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
-	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
-
-	pitch_ = kDefaultPitch_;
-
-	CreateCameraResource();
-	MapCameraData();
-}
-
 void Camera3D::Update() {
-
 
 }
 
@@ -87,6 +84,10 @@ void Camera3D::UpdateData() {
 	ApplyShake();
 
 	UpdateCameraData();
+}
+
+void Camera3D::ApplyCurrent() {
+	MAGISYSTEM::SetCurrentCamera3D(this);
 }
 
 void Camera3D::Shake(float duration, float intensity) {
@@ -185,6 +186,10 @@ void Camera3D::TransferCameraFrustum(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, frustumResource_->GetGPUVirtualAddress());
 }
 
+const std::string& Camera3D::GetName()const {
+	return name_;
+}
+
 Matrix4x4 Camera3D::GetViewProjectionMatrix() const {
 	return viewProjectionMatrix_;
 }
@@ -223,6 +228,10 @@ void Camera3D::SetYaw(float yaw) {
 
 void Camera3D::SetPitch(float pitch) {
 	pitch_ = pitch;
+}
+
+void Camera3D::SetIsAlive(bool isAlive) {
+	isAlive_ = isAlive;
 }
 
 void Camera3D::CreateCameraResource() {

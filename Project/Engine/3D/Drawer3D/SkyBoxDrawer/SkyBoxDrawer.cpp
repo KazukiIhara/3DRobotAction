@@ -64,7 +64,7 @@ SkyBoxDrawer::~SkyBoxDrawer() {
 }
 
 void SkyBoxDrawer::Update() {
-	if (auto cucam = camera3DManager_->GetCurrentCamera().lock()) {
+	if (auto cucam = camera3DManager_->GetCurrentCamera()) {
 		Vector3 translate = cucam->GetEye();
 		float farClipRange = cucam->GetFarClipRange() * 0.9f;
 		Vector3 scale = { farClipRange,farClipRange,farClipRange };

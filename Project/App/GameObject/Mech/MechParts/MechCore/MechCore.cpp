@@ -12,12 +12,13 @@ using namespace MAGIMath;
 
 MechCore::MechCore() {
 	// レンダラーとゲームオブジェクトを作成 TODO: 引数からオブジェクトを作るようにする
-	std::shared_ptr<ModelRenderer> coreModel = std::make_shared<ModelRenderer>("PlayerMechCore", "teapot");
+	std::shared_ptr<ModelRenderer> coreModel = std::make_shared<ModelRenderer>("MechCore", "teapot");
 	coreModel->GetTransform()->SetTranslate(Vector3(0.0f, 1.0f, 0.0f));
 
-	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("PlayerMechCore", Vector3(0.0f, 50.0f, 0.0f));
+	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", Vector3(0.0f, 50.0f, 0.0f));
 	coreObject->AddModelRenderer(std::move(coreModel));
 
+	// ゲームオブジェクトマネージャに追加
 	core_ = MAGISYSTEM::AddGameObject3D(std::move(coreObject));
 
 	// パーツを作成
@@ -34,7 +35,6 @@ MechCore::MechCore() {
 
 	// コンポーネントを作成
 	movementComponent_ = std::make_unique<MechMovementComponent>();
-
 
 }
 

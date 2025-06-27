@@ -8,8 +8,6 @@ public:
 	DebugCamera3D();
 	~DebugCamera3D()override = default;
 
-	void Initialize()override;
-
 	void Update()override;
 
 	void HandleCameraRotation(const POINT& delta);

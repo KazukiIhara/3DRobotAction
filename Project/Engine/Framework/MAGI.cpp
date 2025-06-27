@@ -867,6 +867,14 @@ bool MAGISYSTEM::ReleaseMouseButton(MouseButton mouseButton) {
 	return directInput_->ReleaseMouseButton(mouseButton);
 }
 
+LONG MAGISYSTEM::GetMouseMoveDeltaX() {
+	return directInput_->GetMouseMoveDeltaX();
+}
+
+LONG MAGISYSTEM::GetMouseMoveDeltaY() {
+	return directInput_->GetMouseMoveDeltaY();
+}
+
 int64_t MAGISYSTEM::GetMouseWheelDelta() {
 	return directInput_->GetMouseWheelDelta();
 }
@@ -1330,23 +1338,15 @@ void MAGISYSTEM::ClearCamera2D() {
 	camera2DManager_->Clear();
 }
 
-std::weak_ptr<Camera3D> MAGISYSTEM::AddCamera3D(const std::string& name, std::shared_ptr<Camera3D> newCamera3D) {
-	return camera3DManager_->Add(name, std::move(newCamera3D));
+std::weak_ptr<Camera3D> MAGISYSTEM::AddCamera3D(std::shared_ptr<Camera3D> newCamera3D) {
+	return camera3DManager_->Add(std::move(newCamera3D));
 }
 
-void MAGISYSTEM::RemoveCamera3D(const std::string& cameraName) {
-	camera3DManager_->Remove(cameraName);
+void MAGISYSTEM::SetCurrentCamera3D(Camera3D* newCamera3D) {
+	camera3DManager_->SetCurrentCamera(newCamera3D);
 }
 
-std::weak_ptr<Camera3D> MAGISYSTEM::FindCamera3D(const std::string& cameraName) {
-	return camera3DManager_->Find(cameraName);
-}
-
-void MAGISYSTEM::SetCurrentCamera3D(const std::string& cameraName) {
-	camera3DManager_->SetCurrentCamera(cameraName);
-}
-
-std::weak_ptr<Camera3D> MAGISYSTEM::GetCurrentCamera3D() {
+Camera3D* MAGISYSTEM::GetCurrentCamera3D() {
 	return camera3DManager_->GetCurrentCamera();
 }
 
