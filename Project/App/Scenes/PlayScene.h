@@ -113,6 +113,8 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot");
 	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
 
+
+
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
 	//-------------------------------------------------------
