@@ -22,13 +22,22 @@ MechCore::MechCore() {
 	// 体
 	body_ = std::make_unique<MechBody>();
 
+	// 足
+	leg_ = std::make_unique<MechLeg>();
 
 
 	// パーツを親子付け
+
+	// 体
 	if (auto body = body_->GetGameObject().lock()) {
-		body->GetTransform()->SetParent(core_.lock()->GetTransform());
+		body->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
 	}
-	
+
+	// 足
+	if (auto leg = leg_->GetGameObject().lock()) {
+		leg->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
+	}
+
 
 	// コンポーネントを作成
 	movementComponent_ = std::make_unique<MechMovementComponent>();

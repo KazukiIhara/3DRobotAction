@@ -25,9 +25,7 @@ GameObject3D::GameObject3D(const std::string& name, const Vector3& translate) {
 
 void GameObject3D::Update() {
 
-	if (!camera3DComponents_.empty()) {
-
-	}
+	
 }
 
 void GameObject3D::Finalize() {

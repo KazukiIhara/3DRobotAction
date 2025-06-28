@@ -94,7 +94,7 @@ private:
 
 
 	// 足
-
+	std::unique_ptr<MechLeg> leg_ = nullptr;
 
 	// 武器系
 
