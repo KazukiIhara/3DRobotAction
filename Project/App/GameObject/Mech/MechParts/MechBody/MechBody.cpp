@@ -23,13 +23,15 @@ MechBody::MechBody() {
 
 void MechBody::Update(MechCore* mechCore) {
 	// 方向を指定
-	DirectionToCamera(mechCore);
+	DirectionToLockOnView(mechCore);
 }
 
 std::weak_ptr<GameObject3D> MechBody::GetGameObject()const {
 	return body_;
 }
 
-void MechBody::DirectionToCamera(MechCore* mechCore) {
-	
+void MechBody::DirectionToLockOnView(MechCore* mechCore) {
+	if (auto coreObj = mechCore->GetGameObject().lock()) {
+
+	}
 }

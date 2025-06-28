@@ -23,7 +23,7 @@ public:
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 
 private:
-	void DirectionToCamera(MechCore* mechCore);
+	void DirectionToLockOnView(MechCore* mechCore);
 
 private:
 	// オブジェクト

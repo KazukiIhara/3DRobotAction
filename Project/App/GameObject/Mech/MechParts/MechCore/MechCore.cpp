@@ -52,7 +52,13 @@ MechCore::MechCore() {
 
 
 	// コンポーネントを作成
+
+	// 移動
 	movementComponent_ = std::make_unique<MechMovementComponent>();
+
+	// ロックオン
+	lockOnComponent_ = std::make_unique<MechLockOnComponent>();
+
 
 	// ステートを作成
 	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
@@ -66,6 +72,10 @@ MechCore::MechCore() {
 
 void MechCore::Update() {
 	// 状態を整理 (コマンドはMechCoreの更新前に外部からセットする)
+	// ロックオン用のビュー情報も外部からセットしておく
+
+	// ロックオンコンポーネントを更新
+	lockOnComponent_->Update(this);
 
 	// 接地状態かどうかチェック
 	movementComponent_->CheckOnGround(this);
@@ -81,16 +91,16 @@ void MechCore::Update() {
 
 
 	// 体
-	body_->Update();
+	body_->Update(this);
 
 	// 腕
-	
+
 
 	// 足
 	leg_->Update(this);
 
 
-	// コンポーネントを更新
+	// 移動コンポーネントを更新
 	movementComponent_->Update(this);
 }
 

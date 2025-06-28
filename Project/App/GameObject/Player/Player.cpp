@@ -74,6 +74,8 @@ void Player::Update() {
 	// コマンドセット
 	mech_->SetInputCommand(command);
 
+	// ロックオンコンポーネント用のカメラをセット
+
 	// 機体更新
 	mech_->Update();
 

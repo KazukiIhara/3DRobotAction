@@ -12,7 +12,6 @@ void MechMovementComponent::Update(MechCore* mechCore) {
 	velocity_.x = currentMoveDir_.x * moveSpeed_;
 	velocity_.z = currentMoveDir_.y * moveSpeed_;
 
-
 	// 移動量をオブジェクトに加算
 	if (auto core = mechCore->GetGameObject().lock()) {
 		core->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
@@ -46,7 +45,6 @@ void MechMovementComponent::Move(MechCore* mechCore) {
 	}
 
 	moveSpeed_ = std::min(moveSpeed_, kMaxMoveSpeed_);
-
 }
 
 void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {

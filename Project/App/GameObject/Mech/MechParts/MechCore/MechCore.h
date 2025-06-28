@@ -15,6 +15,7 @@
 
 // コンポーネントクラス
 #include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
+#include "GameObject/Mech/MechComponents/LockOn/MechLockOnComponent.h"
 
 // 前方宣言
 class GameObject3D;
@@ -26,6 +27,20 @@ struct InputCommand {
 	bool jump = false;
 	bool quickBoost = false;
 	bool assultBoost = false;
+};
+
+/// ロックオン用の情報
+struct LockOnView {
+	// カメラの位置
+	Vector3 eye = { 0.0f,0.0f,0.0f };
+	// カメラのターゲット
+	Vector3 target = { 0.0f,0.0f,0.0f };
+	// 上方向
+	Vector3 up = { 0.0f,1.0f,0.0f };
+	// ニアクリップ距離
+	float nearClipRange = 0.1f;
+	// ファークリップ距離
+	float farClipRange = 50.0f;
 };
 
 // 状態
@@ -52,7 +67,6 @@ public:
 	const InputCommand& GetInputCommand()const;
 	MechMovementComponent* GetMovementComponent();
 
-
 	void SetInputCommand(const InputCommand& command);
 private:
 	// 対応するステートを取得
@@ -60,6 +74,9 @@ private:
 private:
 	// インプットコマンド
 	InputCommand inputCommand_;
+
+	// ロックオン用のカメラ情報
+	LockOnView lockOnView_;
 
 	// オブジェクト
 	std::weak_ptr<GameObject3D> core_;
@@ -75,9 +92,8 @@ private:
 	// 移動コンポーネント
 	std::unique_ptr<MechMovementComponent> movementComponent_;
 
-
 	// ロックオンコンポーネント
-
+	std::unique_ptr<MechLockOnComponent> lockOnComponent_;
 
 	// 攻撃コンポーネント
 
