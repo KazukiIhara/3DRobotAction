@@ -130,6 +130,10 @@ void MechMovementComponent::CulGravityVelocity() {
 	}
 }
 
+Vector2 MechMovementComponent::GetCurrentMoveDir() const {
+	return currentMoveDir_;
+}
+
 void MechMovementComponent::SetMoveSpeed(float s) {
 	moveSpeed_ = s;
 }

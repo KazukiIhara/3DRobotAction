@@ -19,8 +19,14 @@ MechCore::MechCore() {
 
 	// パーツを作成
 
+	// 頭
+
+
 	// 体
 	body_ = std::make_unique<MechBody>();
+
+	// 腕
+
 
 	// 足
 	leg_ = std::make_unique<MechLeg>();
@@ -28,10 +34,16 @@ MechCore::MechCore() {
 
 	// パーツを親子付け
 
+	// 頭
+
+
 	// 体
 	if (auto body = body_->GetGameObject().lock()) {
 		body->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
 	}
+
+	// 腕
+
 
 	// 足
 	if (auto leg = leg_->GetGameObject().lock()) {
@@ -64,6 +76,18 @@ void MechCore::Update() {
 	}
 
 	// 各パーツを更新
+
+	// 頭
+
+
+	// 体
+	body_->Update();
+
+	// 腕
+	
+
+	// 足
+	leg_->Update(this);
 
 
 	// コンポーネントを更新

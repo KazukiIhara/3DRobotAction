@@ -3,6 +3,8 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h" 
 
+#include "GameObject/Mech/MechParts/MechCore/MechCore.h"
+
 using namespace MAGIMath;
 
 MechBody::MechBody() {
@@ -19,10 +21,15 @@ MechBody::MechBody() {
 
 }
 
-void MechBody::Update() {
-
+void MechBody::Update(MechCore* mechCore) {
+	// 方向を指定
+	DirectionToCamera(mechCore);
 }
 
 std::weak_ptr<GameObject3D> MechBody::GetGameObject()const {
 	return body_;
+}
+
+void MechBody::DirectionToCamera(MechCore* mechCore) {
+	
 }

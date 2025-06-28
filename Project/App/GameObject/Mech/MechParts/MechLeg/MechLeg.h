@@ -8,15 +8,19 @@
 
 // 前方宣言
 class GameObject3D;
+class MechCore;
 
 class MechLeg {
 public:
 	MechLeg();
 	~MechLeg() = default;
 
-	void Update();
+	void Update(MechCore* mechCore);
 
 	std::weak_ptr<GameObject3D> GetGameObject()const;
+
+private:
+	void RotateAngleAsVelocity(MechCore* core);
 
 private:
 	// オブジェクト

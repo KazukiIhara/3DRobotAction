@@ -8,7 +8,9 @@
 #include "Math/Utility/MathUtility.h"
 
 // 部位ごとのクラス
+#include "GameObject/Mech/MechParts/MechHead/MechHead.h"
 #include "GameObject/Mech/MechParts/MechBody/MechBody.h"
+#include "GameObject/Mech/MechParts/MechArms/MechArms.h"
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
 // コンポーネントクラス

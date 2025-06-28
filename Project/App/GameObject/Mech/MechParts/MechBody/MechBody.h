@@ -8,6 +8,7 @@
 
 // 前方宣言
 class GameObject3D;
+class MechCore;
 
 /// <summary>
 /// 胴体
@@ -17,11 +18,12 @@ public:
 	MechBody();
 	~MechBody() = default;
 
-	void Update();
+	void Update(MechCore* mechCore);
 
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 
-
+private:
+	void DirectionToCamera(MechCore* mechCore);
 
 private:
 	// オブジェクト
