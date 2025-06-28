@@ -19,6 +19,10 @@ public:
 
 	void Update();
 
+	std::weak_ptr<GameObject3D> GetGameObject()const;
+
+
+
 private:
 	// オブジェクト
 	std::weak_ptr<GameObject3D> body_;

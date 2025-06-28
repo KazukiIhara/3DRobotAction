@@ -8,6 +8,7 @@
 #include "Math/Utility/MathUtility.h"
 
 // 部位ごとのクラス
+#include "GameObject/Mech/MechParts/MechBody/MechBody.h"
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
 // コンポーネントクラス
@@ -87,7 +88,7 @@ private:
 
 
 	// 体
-
+	std::unique_ptr<MechBody> body_ = nullptr;
 
 	// 腕
 

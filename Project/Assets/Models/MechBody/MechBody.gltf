@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.4.56",
+		"generator":"Khronos glTF Blender I/O v4.4.55",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -56,8 +56,8 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"CoreTex",
-			"uri":"CoreTex.png"
+			"name":"BodyTex",
+			"uri":"BodyTex.png"
 		}
 	],
 	"accessors":[
@@ -131,7 +131,7 @@
 	"buffers":[
 		{
 			"byteLength":840,
-			"uri":"MechCore.bin"
+			"uri":"MechBody.bin"
 		}
 	]
 }
