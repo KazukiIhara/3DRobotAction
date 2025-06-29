@@ -137,6 +137,10 @@ const LockOnView& MechCore::GetLockOnView() const {
 	return lockOnView_;
 }
 
+MechBody* MechCore::GetMechBody() {
+	return body_.get();
+}
+
 MechMovementComponent* MechCore::GetMovementComponent() {
 	return movementComponent_.get();
 }

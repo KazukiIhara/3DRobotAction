@@ -72,6 +72,8 @@ public:
 	const InputCommand& GetInputCommand()const;
 	const LockOnView& GetLockOnView()const;
 
+	MechBody* GetMechBody();
+
 	MechMovementComponent* GetMovementComponent();
 
 	//======================= 
