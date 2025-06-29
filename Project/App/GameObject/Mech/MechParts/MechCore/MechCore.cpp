@@ -129,12 +129,20 @@ const InputCommand& MechCore::GetInputCommand() const {
 	return inputCommand_;
 }
 
+const LockOnView& MechCore::GetLockOnView() const {
+	return lockOnView_;
+}
+
 MechMovementComponent* MechCore::GetMovementComponent() {
 	return movementComponent_.get();
 }
 
 void MechCore::SetInputCommand(const InputCommand& command) {
 	inputCommand_ = command;
+}
+
+void MechCore::SetLockOnView(const LockOnView& lockOnView) {
+	lockOnView_ = lockOnView;
 }
 
 std::weak_ptr<MechCoreBaseState> MechCore::GetState(MechCoreState state) {

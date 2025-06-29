@@ -12,15 +12,9 @@ Player::Player() {
 	followCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
 	followCamera->ApplyCurrent();
 
-	// ロックオン時のカメラの作成
-	std::shared_ptr<ThirdPersonCamera> lockOnCamera = std::make_shared<ThirdPersonCamera>("LockOnCamera");
-	lockOnCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
-	lockOnCamera->ApplyCurrent();
-
 	// カメラを追加
 	if (auto mechObj = mech_->GetGameObject().lock()) {
 		mechObj->AddCamera3D(followCamera);
-		mechObj->AddCamera3D(lockOnCamera);
 	}
 }
 
@@ -81,7 +75,13 @@ void Player::Update() {
 	// コマンドセット
 	mech_->SetInputCommand(command);
 
-	// ロックオンコンポーネント用のカメラをセット
+	// ロックオンコンポーネント用のカメラを作成、セット
+	LockOnView lockOnView{};
+	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("FollowCamera").lock()) {
+		lockOnView.eye = camera->GetEye();
+		lockOnView.target = camera->GetTarget();
+	}
+	mech_->SetLockOnView(lockOnView);
 
 	// 機体更新
 	mech_->Update();

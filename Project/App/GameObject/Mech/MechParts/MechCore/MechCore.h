@@ -62,12 +62,24 @@ public:
 	void Update();
 	void ChangeState(MechCoreState nextState);
 
+	//======================= 
+	// ゲッター
+	//======================= 
+
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 	const MechCoreState& GetCurrentState()const;
 	const InputCommand& GetInputCommand()const;
+	const LockOnView &GetLockOnView()const;
+
 	MechMovementComponent* GetMovementComponent();
 
+	//======================= 
+	// セッター
+	//======================= 
+
 	void SetInputCommand(const InputCommand& command);
+	void SetLockOnView(const LockOnView& lockOnView);
+
 private:
 	// 対応するステートを取得
 	std::weak_ptr<MechCoreBaseState> GetState(MechCoreState state);

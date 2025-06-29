@@ -31,7 +31,20 @@ std::weak_ptr<GameObject3D> MechBody::GetGameObject()const {
 }
 
 void MechBody::DirectionToLockOnView(MechCore* mechCore) {
-	if (auto coreObj = mechCore->GetGameObject().lock()) {
+	// ロックオン用のカメラ情報を取得
+	const LockOnView view = mechCore->GetLockOnView();
+	// カメラの前方向を計算
+	Vector3 camFwd = view.target - view.eye;
+	// 平面回転に限定するため Y を無効化
+	camFwd.y = 0.0f;
+	// 正規化
+	camFwd = Normalize(camFwd);
+	// ヨー角を取得
+	const float yaw = std::atan2(camFwd.x, camFwd.z);
+	// 回転を作成、適用
+	const Quaternion targetQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
 
+	if (auto body = body_.lock()) {
+		body->GetModelRenderer("MechBody").lock()->GetTransform()->SetQuaternion(targetQ);
 	}
 }
