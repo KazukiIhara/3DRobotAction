@@ -10,7 +10,8 @@
 // 部位ごとのクラス
 #include "GameObject/Mech/MechParts/MechHead/MechHead.h"
 #include "GameObject/Mech/MechParts/MechBody/MechBody.h"
-#include "GameObject/Mech/MechParts/MechArms/MechArms.h"
+#include "GameObject/Mech/MechParts/MechRightArm/MechRightArm.h"
+#include "GameObject/Mech/MechParts/MechRightArm/MechRightArm.h"
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
 // コンポーネントクラス
@@ -69,7 +70,7 @@ public:
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 	const MechCoreState& GetCurrentState()const;
 	const InputCommand& GetInputCommand()const;
-	const LockOnView &GetLockOnView()const;
+	const LockOnView& GetLockOnView()const;
 
 	MechMovementComponent* GetMovementComponent();
 

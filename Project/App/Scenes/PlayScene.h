@@ -117,6 +117,9 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot");
 	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
 
+	MAGISYSTEM::LoadModel("MechRightArm");
+	MAGISYSTEM::CreateModelDrawer("MechRightArm", MAGISYSTEM::FindModel("MechRightArm"));
+
 	MAGISYSTEM::LoadModel("MechBody");
 	MAGISYSTEM::CreateModelDrawer("MechBody", MAGISYSTEM::FindModel("MechBody"));
 
