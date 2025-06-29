@@ -12,6 +12,7 @@ using namespace MAGIUtility;
 // シーンオブジェクト
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
+#include "GameObject/Enemy/Enemy.h"
 #include "GameObject/Ground/Ground.h"
 
 /// <summary>
@@ -19,7 +20,7 @@ using namespace MAGIUtility;
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene :public BaseScene<Data> {
+class PlayScene:public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -42,6 +43,9 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_;
+
+	// 敵
+	std::unique_ptr<Enemy> enemy_;
 
 	std::unique_ptr<Ground> ground_ = nullptr;
 
@@ -130,6 +134,9 @@ inline void PlayScene<Data>::Initialize() {
 	// プレイヤー作成
 	player_ = std::make_unique<Player>();
 
+	// 敵作成
+	enemy_ = std::make_unique<Enemy>();
+
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
 
@@ -154,6 +161,9 @@ inline void PlayScene<Data>::Update() {
 
 	// プレイヤー更新
 	player_->Update();
+
+	// 敵更新
+	enemy_->Update();
 
 	// ポストエフェクト適用
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);

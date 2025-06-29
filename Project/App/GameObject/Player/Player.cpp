@@ -8,12 +8,19 @@ Player::Player() {
 	mech_ = std::make_unique<MechCore>();
 
 	// 三人称視点カメラの作成
-	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>("MainCamera");
-	mainCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
-	mainCamera->ApplyCurrent();
+	std::shared_ptr<ThirdPersonCamera> followCamera = std::make_shared<ThirdPersonCamera>("FollowCamera");
+	followCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
+	followCamera->ApplyCurrent();
 
+	// ロックオン時のカメラの作成
+	std::shared_ptr<ThirdPersonCamera> lockOnCamera = std::make_shared<ThirdPersonCamera>("LockOnCamera");
+	lockOnCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
+	lockOnCamera->ApplyCurrent();
+
+	// カメラを追加
 	if (auto mechObj = mech_->GetGameObject().lock()) {
-		mechObj->AddCamera3D(mainCamera);
+		mechObj->AddCamera3D(followCamera);
+		mechObj->AddCamera3D(lockOnCamera);
 	}
 }
 
@@ -81,7 +88,7 @@ void Player::Update() {
 
 	// 破壊時エフェクトテスト
 	if (ImGui::Button("PlayEffect")) {
-		breakEffect_ = std::make_unique<BreakEffect>(Vector3(0.0f, 0.0f, 0.0f));
+		breakEffect_ = std::make_unique<BreakEffect>(mech_->GetGameObject().lock()->GetTransform()->GetWorldPosition());
 	}
 
 	if (breakEffect_) {

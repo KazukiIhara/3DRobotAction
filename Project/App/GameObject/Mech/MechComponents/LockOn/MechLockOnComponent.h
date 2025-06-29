@@ -18,6 +18,7 @@ public:
 	void Update(MechCore* mechCore);
 
 private:
-	// ロックオンターゲット
-	Transform3D* target_ = nullptr;
+	// ロックオン対象の機体
+	MechCore* lockOnTarget_ = nullptr;
+
 };
