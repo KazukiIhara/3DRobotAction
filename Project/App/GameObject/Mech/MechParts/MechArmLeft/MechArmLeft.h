@@ -10,6 +10,9 @@
 class GameObject3D;
 class MechCore;
 
+/// <summary>
+/// 左腕
+/// </summary>
 class MechArmLeft {
 public:
 	MechArmLeft();
