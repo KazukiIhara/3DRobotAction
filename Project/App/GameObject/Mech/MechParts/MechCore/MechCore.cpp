@@ -40,15 +40,16 @@ MechCore::MechCore() {
 	// 体
 	if (auto body = body_->GetGameObject().lock()) {
 		body->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
+		// 足
+		if (auto leg = leg_->GetGameObject().lock()) {
+			leg->GetTransform()->SetParent(body->GetTransform(), false);
+		}
 	}
 
 	// 腕
 
 
-	// 足
-	if (auto leg = leg_->GetGameObject().lock()) {
-		leg->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
-	}
+
 
 
 	// コンポーネントを作成
