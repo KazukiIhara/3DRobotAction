@@ -44,6 +44,6 @@ void MechBody::DirectionToLockOnView(MechCore* mechCore) {
 	const Quaternion targetQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
 
 	if (auto body = body_.lock()) {
-		body->GetModelRenderer("MechBody").lock()->GetTransform()->SetQuaternion(targetQ);
+		body->GetTransform()->SetQuaternion(targetQ);
 	}
 }

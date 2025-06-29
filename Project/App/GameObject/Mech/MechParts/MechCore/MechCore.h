@@ -10,8 +10,8 @@
 // 部位ごとのクラス
 #include "GameObject/Mech/MechParts/MechHead/MechHead.h"
 #include "GameObject/Mech/MechParts/MechBody/MechBody.h"
-#include "GameObject/Mech/MechParts/MechRightArm/MechRightArm.h"
-#include "GameObject/Mech/MechParts/MechRightArm/MechRightArm.h"
+#include "GameObject/Mech/MechParts/MechArmRight/MechArmRight.h"
+#include "GameObject/Mech/MechParts/MechArmLeft/MechArmLeft.h"
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
 // コンポーネントクラス
@@ -122,8 +122,9 @@ private:
 	std::unique_ptr<MechBody> body_ = nullptr;
 
 	// 腕
-
-
+	std::unique_ptr<MechArmRight> rightArm_ = nullptr;
+	std::unique_ptr<MechArmLeft> leftArm_ = nullptr;
+	
 	// 足
 	std::unique_ptr<MechLeg> leg_ = nullptr;
 

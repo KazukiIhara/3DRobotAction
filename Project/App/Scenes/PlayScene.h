@@ -120,6 +120,9 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("MechRightArm");
 	MAGISYSTEM::CreateModelDrawer("MechRightArm", MAGISYSTEM::FindModel("MechRightArm"));
 
+	MAGISYSTEM::LoadModel("MechLeftArm");
+	MAGISYSTEM::CreateModelDrawer("MechLeftArm", MAGISYSTEM::FindModel("MechLeftArm"));
+
 	MAGISYSTEM::LoadModel("MechBody");
 	MAGISYSTEM::CreateModelDrawer("MechBody", MAGISYSTEM::FindModel("MechBody"));
 

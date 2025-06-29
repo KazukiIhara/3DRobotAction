@@ -15,7 +15,18 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Cube"
+			"name":"Cube",
+			"rotation":[
+				1,
+				0,
+				0,
+				0
+			],
+			"scale":[
+				-1,
+				-1,
+				-1
+			]
 		}
 	],
 	"materials":[
@@ -131,7 +142,7 @@
 	"buffers":[
 		{
 			"byteLength":840,
-			"uri":"MechRightArm.bin"
+			"uri":"MechLeftArm.bin"
 		}
 	]
 }

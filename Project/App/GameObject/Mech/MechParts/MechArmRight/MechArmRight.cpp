@@ -11,7 +11,7 @@ MechArmRight::MechArmRight() {
 	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<ModelRenderer> rightArmModel = std::make_shared<ModelRenderer>("MechRightArm", "MechRightArm");
 
-	std::shared_ptr<GameObject3D> rightArmObject = std::make_shared<GameObject3D>("MechRightArm", Vector3(0.5f, 0.0f, 0.0f));
+	std::shared_ptr<GameObject3D> rightArmObject = std::make_shared<GameObject3D>("MechRightArm", Vector3(0.4f, 0.2f, 0.0f));
 	rightArmObject->AddModelRenderer(std::move(rightArmModel));
 
 	// ゲームオブジェクトマネージャに追加
