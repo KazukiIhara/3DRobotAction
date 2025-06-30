@@ -44,11 +44,12 @@ void PlayerCamera::Update() {
 			} else { // ターゲットなし
 				FollowCamera(dt);
 			}
-		} else {
+		} else { // ハードロックオンオフ
 			FollowCamera(dt);
 		}
 	}
 
+	// カメラデータ更新
 	UpdateData();
 }
 
@@ -62,7 +63,7 @@ void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
 }
 
 void PlayerCamera::HardLockOnCamera(float dt) {
-	// ロックオン対象のワールド座標を取得
+	// ターゲット座標取得
 	Vector3 targetWorldPos{};
 	if (auto core = core_.lock()) {
 		if (auto tgt = core->GetLockOnComponent()->GetLockOnTarget().lock()) {
@@ -72,52 +73,54 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 		}
 	}
 
-
+	// ピボット平滑化
 	Vector3 rawPivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 	if (!followLagHorizontal_ && !followLagVertical_) {
 		smoothedPivot_ = rawPivot;
 	} else {
-		const float tH = (followLagHorizontal_ <= 0.0f)
-			? 1.0f
-			: 1.0f - std::exp(-dt / followLagHorizontal_);
-		const float tV = (followLagVertical_ <= 0.0f)
-			? 1.0f
-			: 1.0f - std::exp(-dt / followLagVertical_);
+		const float tH = followLagHorizontal_ <= 0.0f ? 1.0f : 1.0f - std::exp(-dt / followLagHorizontal_);
 
-		// 水平(XZ)
+		const float tV = followLagVertical_ <= 0.0f ? 1.0f : 1.0f - std::exp(-dt / followLagVertical_);
 		smoothedPivot_.x += (rawPivot.x - smoothedPivot_.x) * tH;
 		smoothedPivot_.z += (rawPivot.z - smoothedPivot_.z) * tH;
-		// 垂直(Y)
 		smoothedPivot_.y += (rawPivot.y - smoothedPivot_.y) * tV;
 	}
 
-	// ターゲット方向から目標 Yaw/Pitch を算出
-	Vector3 dir = targetWorldPos - smoothedPivot_;
-	if (LengthSquared(dir) < 1e-6f) dir = { 0, 0, 1 };
-	dir = Normalize(dir);
-	const float targetYaw = std::atan2(dir.x, dir.z);
-	const float targetPitch = std::atan2(-dir.y, std::sqrt(dir.x * dir.x + dir.z * dir.z));
+	// 角度追従
+	Vector3 toTarget = Normalize(
+		LengthSquared(targetWorldPos - smoothedPivot_) < 1e-6f
+		? Vector3{ 0, 0, 1 } : targetWorldPos - smoothedPivot_
+	);
 
-	// 現在の Yaw/Pitch を滑らかに追従
-	const float tYaw = (rotLagYaw_ <= 0.f) ? 1.f : 1.f - std::exp(-dt / rotLagYaw_);
-	const float tPitch = (rotLagPitch_ <= 0.f) ? 1.f : 1.f - std::exp(-dt / rotLagPitch_);
+	const float targetYaw = std::atan2(toTarget.x, toTarget.z);
+	const float targetPitch = std::atan2(-toTarget.y, std::sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z));
+
+	const float tYaw = rotLagYaw_ <= 0.0f ? 
+		1.0f : 1.0f - std::exp(-dt / rotLagYaw_);
+	const float tPitch = rotLagPitch_ <= 0.0f ? 
+		1.0f : 1.0f - std::exp(-dt / rotLagPitch_);
+
 	yaw_ = LerpAngle(yaw_, targetYaw, tYaw);
 	pitch_ = Lerp(pitch_, targetPitch, tPitch);
+	pitch_ = std::clamp(pitch_, DegreeToRadian(minPitchDegrees_), DegreeToRadian(maxPitchDegrees_));
 
-	// 制限角度へクランプ
-	const float kMax = DegreeToRadian(maxPitchDegrees_);
-	const float kMin = DegreeToRadian(minPitchDegrees_);
-	pitch_ = std::clamp(pitch_, kMin, kMax);
-
-
-	// カメラ位置を計算
+	// カメラベクトル計算
 	Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
-	Vector3 shoulder = Normalize(Cross(forward, { 0,1,0 })) * 1.5f * shoulderSign_;
+	Vector3 shoulder = Normalize(Cross(forward, { 0, 1, 0 })) * 1.5f * shoulderSign_;
 
-	eye_ = smoothedPivot_ - forward * radius_ + shoulder;
+	// eye 位置
+	Vector3 eye = smoothedPivot_ - forward * radius_ + shoulder;
+	const float minY = smoothedPivot_.y + minBoomHeight_;
+	if (eye.y < minY) {
+		eye.y = minY;
+		forward = Normalize((smoothedPivot_ + (targetWorldPos - smoothedPivot_) * focusBias_) - eye);
+		shoulder = Normalize(Cross(forward, { 0, 1, 0 })) * 1.5f * shoulderSign_;
+		eye = smoothedPivot_ - forward * radius_ + shoulder;
+	}
 
-	Vector3 focus = smoothedPivot_ + (targetWorldPos - smoothedPivot_) * focusBias_;
-	target_ = focus;
+	// 書き出し
+	eye_ = eye;
+	target_ = smoothedPivot_ + (targetWorldPos - smoothedPivot_) * focusBias_;
 }
 
 void PlayerCamera::FollowCamera(float dt) {
@@ -128,11 +131,9 @@ void PlayerCamera::FollowCamera(float dt) {
 	if (!followLagHorizontal_ && !followLagVertical_) {
 		smoothedPivot_ = rawPivot;
 	} else {
-		const float tH =
-			(followLagHorizontal_ <= 0.0f) ? 1.0f : 1.0f - std::exp(-dt / followLagHorizontal_);
+		const float tH = (followLagHorizontal_ <= 0.0f) ? 1.0f : 1.0f - std::exp(-dt / followLagHorizontal_);
 
-		const float tV =
-			(followLagVertical_ <= 0.0f) ? 1.0f : 1.0f - std::exp(-dt / followLagVertical_);
+		const float tV = (followLagVertical_ <= 0.0f) ? 1.0f : 1.0f - std::exp(-dt / followLagVertical_);
 
 		// XZ（水平）
 		smoothedPivot_.x += (rawPivot.x - smoothedPivot_.x) * tH;

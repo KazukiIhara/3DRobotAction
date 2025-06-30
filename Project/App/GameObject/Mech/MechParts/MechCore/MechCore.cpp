@@ -98,7 +98,7 @@ void MechCore::Update() {
 
 	// 腕
 	rightArm_->Update(this);
-
+	leftArm_->Update(this);
 
 	// 足
 	leg_->Update(this);
