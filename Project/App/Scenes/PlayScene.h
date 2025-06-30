@@ -153,14 +153,15 @@ inline void PlayScene<Data>::Initialize() {
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
-	ImGui::Begin("VignetteParamater");
+
+	/*ImGui::Begin("VignetteParamater");
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
 	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
 	ImGui::End();
 
 	ImGui::Begin("GaussianBlurParamater");
 	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
-	ImGui::End();
+	ImGui::End();*/
 
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
