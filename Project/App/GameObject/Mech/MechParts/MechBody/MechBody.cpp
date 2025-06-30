@@ -32,7 +32,7 @@ std::weak_ptr<GameObject3D> MechBody::GetGameObject()const {
 void MechBody::DirectionToLockOnView(MechCore* mechCore) {
 	// ロックオン用のカメラ情報を取得
 	const LockOnView view = mechCore->GetLockOnView();
-	// カメラの前方向を計算
+	// カメラの前方向を計算 
 	Vector3 camFwd = view.target - view.eye;
 	// 平面回転に限定するため Y を無効化
 	camFwd.y = 0.0f;

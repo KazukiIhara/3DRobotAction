@@ -17,6 +17,6 @@ void Enemy::Update() {
 	mech_->Update();
 }
 
-MechCore* Enemy::GetMechCore() {
-	return mech_.get();
+std::weak_ptr<MechCore> Enemy::GetMechCore() {
+	return mech_;
 }

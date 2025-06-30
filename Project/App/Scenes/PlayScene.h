@@ -146,6 +146,9 @@ inline void PlayScene<Data>::Initialize() {
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
 
+	// プレイヤーのターゲット対象に敵を追加
+	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
+
 }
 
 template<typename Data>

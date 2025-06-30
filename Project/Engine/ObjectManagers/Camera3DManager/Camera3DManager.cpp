@@ -73,9 +73,6 @@ void Camera3DManager::TransferCurrentCameraFrustum(uint32_t rootParameterIndex) 
 	}
 }
 
-//------------------------------------------------------------------------------
-// フラスタム可視化
-//------------------------------------------------------------------------------
 void Camera3DManager::DrawCurrentCameraFrustum() {
 #if defined(DEBUG) || defined(DEVELOP)
 	if (isDebugCamera_) {
@@ -88,9 +85,6 @@ void Camera3DManager::DrawCurrentCameraFrustum() {
 	}
 }
 
-//------------------------------------------------------------------------------
-// カメラシェイク
-//------------------------------------------------------------------------------
 void Camera3DManager::ShakeCurrentCamera(float duration, float intensity) {
 #if defined(DEBUG) || defined(DEVELOP)
 	if (isDebugCamera_) {
@@ -103,9 +97,6 @@ void Camera3DManager::ShakeCurrentCamera(float duration, float intensity) {
 	}
 }
 
-//------------------------------------------------------------------------------
-// カメラ登録
-//------------------------------------------------------------------------------
 std::weak_ptr<Camera3D> Camera3DManager::Add(std::shared_ptr<Camera3D> newCamera3D) {
 	MAGIAssert::Assert(newCamera3D.get(), "newCamera3D must not be null");
 	cameras3D_.push_back(std::move(newCamera3D));
@@ -117,9 +108,6 @@ void Camera3DManager::SetCurrentCamera(Camera3D* camera3D) {
 	MAGIAssert::Assert(currentCamera_, "CurrentCamera3D must not be null");
 }
 
-//------------------------------------------------------------------------------
-// 使用カメラ取得
-//------------------------------------------------------------------------------
 Camera3D* Camera3DManager::GetCurrentCamera() {
 #if defined(DEBUG) || defined(DEVELOP)
 	if (isDebugCamera_) {
@@ -129,16 +117,10 @@ Camera3D* Camera3DManager::GetCurrentCamera() {
 	return currentCamera_;
 }
 
-//------------------------------------------------------------------------------
-// デバッグカメラフラグ
-//------------------------------------------------------------------------------
 bool& Camera3DManager::GetIsDebugCamera() {
 	return isDebugCamera_;
 }
 
-//------------------------------------------------------------------------------
-// クリア
-//------------------------------------------------------------------------------
 void Camera3DManager::Clear() {
 	cameras3D_.clear();
 	currentCamera_ = nullptr;

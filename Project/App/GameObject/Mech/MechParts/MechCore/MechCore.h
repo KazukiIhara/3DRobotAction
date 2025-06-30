@@ -28,6 +28,7 @@ struct InputCommand {
 	bool jump = false;
 	bool quickBoost = false;
 	bool assultBoost = false;
+	bool switchHardLock = false;
 };
 
 /// ロックオン用の情報
@@ -75,6 +76,7 @@ public:
 	MechBody* GetMechBody();
 
 	MechMovementComponent* GetMovementComponent();
+	MechLockOnComponent* GetLockOnComponent();
 
 	//======================= 
 	// セッター

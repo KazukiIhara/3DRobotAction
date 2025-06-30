@@ -145,6 +145,10 @@ MechMovementComponent* MechCore::GetMovementComponent() {
 	return movementComponent_.get();
 }
 
+MechLockOnComponent* MechCore::GetLockOnComponent() {
+	return lockOnComponent_.get();
+}
+
 void MechCore::SetInputCommand(const InputCommand& command) {
 	inputCommand_ = command;
 }

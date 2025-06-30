@@ -16,10 +16,10 @@ public:
 	void Update();
 
 	// 機体を取得
-	MechCore* GetMechCore();
+	std::weak_ptr<MechCore> GetMechCore();
 
 private:
 	// 機体クラス
-	std::unique_ptr<MechCore> mech_ = nullptr;
+	std::shared_ptr<MechCore> mech_ = nullptr;
 
 };

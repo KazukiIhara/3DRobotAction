@@ -3,13 +3,16 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
+#include "GameObject/PlayerCamera/PlayerCamera.h"
+
 Player::Player() {
 	// 機体の作成
-	mech_ = std::make_unique<MechCore>();
+	mech_ = std::make_shared<MechCore>();
 
 	// 三人称視点カメラの作成
-	std::shared_ptr<ThirdPersonCamera> followCamera = std::make_shared<ThirdPersonCamera>("FollowCamera");
+	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera");
 	followCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
+	followCamera->SetMechCore(mech_);
 	followCamera->ApplyCurrent();
 
 	// カメラを追加
@@ -19,7 +22,6 @@ Player::Player() {
 }
 
 void Player::Update() {
-
 	InputCommand command{};
 	Vector2 stick{};
 	Vector3 forward{};
@@ -41,6 +43,9 @@ void Player::Update() {
 		// クイックブースト入力
 		command.quickBoost = MAGISYSTEM::TriggerButton(0, ButtonR);
 
+		// ロックオンモード切り替え
+		command.switchHardLock = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
+
 	} else { // パッドなしならキーボード入力解禁
 		// 移動入力
 		if (MAGISYSTEM::PushKey(DIK_W)) stick.y += 1.0f;
@@ -53,6 +58,9 @@ void Player::Update() {
 
 		// クイックブースト入力
 		command.quickBoost = MAGISYSTEM::TriggerKey(DIK_LSHIFT);
+
+		// ロックオンモード切り替え
+		command.switchHardLock = MAGISYSTEM::TriggerMouseButton(MouseButton::Middle);
 	}
 
 	// 移動入力があった場合
@@ -77,7 +85,7 @@ void Player::Update() {
 
 	// ロックオンコンポーネント用のカメラを作成、セット
 	LockOnView lockOnView{};
-	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("FollowCamera").lock()) {
+	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera").lock()) {
 		lockOnView.eye = camera->GetEye();
 		lockOnView.target = camera->GetTarget();
 	}
@@ -108,6 +116,7 @@ void Player::Draw() {
 
 }
 
-MechCore* Player::GetMechCore() {
-	return mech_.get();
+std::weak_ptr<MechCore> Player::GetMechCore() {
+	return mech_;
 }
+
