@@ -26,7 +26,7 @@ private:
 	Transform3D* followTargetTransform_ = nullptr;
 
 	// パラメータ
-	float radius_ = 5.5f;
+	float radius_ = 6.0f;
 	float yawSpeed_ = 5.0f;
 	float pitchSpeed_ = 5.0f;
 
@@ -34,7 +34,7 @@ private:
 	float mousePitchSpeed_ = 1.0f;
 
 	float maxPitchDegrees_ = 10.0f;
-	float minPitchDegrees_ = -60.0f;
+	float minPitchDegrees_ = -80.0f;
 
 	float followLagHorizontal_ = 0.2f;
 	float followLagVertical_ = 0.05f;
@@ -42,10 +42,12 @@ private:
 	float rotLagYaw_ = 0.15f;   // 水平回転ラグ (秒)
 	float rotLagPitch_ = 0.05f;   // 垂直回転ラグ (秒)
 
-	float focusBias_ = 0.2f;
+	float focusBias_ = 0.5f;
 
 	float shoulderSign_ = 0.0f;
-	Vector3 pivotOffset_ = { 0.0f, 1.8f, 0.0f };
+	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
+	float minBoomHeight_ = 1.0f;
+
 	Vector3 smoothedPivot_{};
 
 	// 機体を受け取る
