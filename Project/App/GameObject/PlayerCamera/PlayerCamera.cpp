@@ -44,11 +44,12 @@ void PlayerCamera::Update() {
 			} else { // ターゲットなし
 				FollowCamera(dt);
 			}
-		} else {
+		} else { // ハードロックオンオフ
 			FollowCamera(dt);
 		}
 	}
 
+	// カメラデータ更新
 	UpdateData();
 }
 
@@ -94,8 +95,10 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 	const float targetYaw = std::atan2(toTarget.x, toTarget.z);
 	const float targetPitch = std::atan2(-toTarget.y, std::sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z));
 
-	const float tYaw = rotLagYaw_ <= 0.0f ? 1.0f : 1.0f - std::exp(-dt / rotLagYaw_);
-	const float tPitch = rotLagPitch_ <= 0.0f ? 1.0f : 1.0f - std::exp(-dt / rotLagPitch_);
+	const float tYaw = rotLagYaw_ <= 0.0f ? 
+		1.0f : 1.0f - std::exp(-dt / rotLagYaw_);
+	const float tPitch = rotLagPitch_ <= 0.0f ? 
+		1.0f : 1.0f - std::exp(-dt / rotLagPitch_);
 
 	yaw_ = LerpAngle(yaw_, targetYaw, tYaw);
 	pitch_ = Lerp(pitch_, targetPitch, tPitch);
@@ -128,11 +131,9 @@ void PlayerCamera::FollowCamera(float dt) {
 	if (!followLagHorizontal_ && !followLagVertical_) {
 		smoothedPivot_ = rawPivot;
 	} else {
-		const float tH =
-			(followLagHorizontal_ <= 0.0f) ? 1.0f : 1.0f - std::exp(-dt / followLagHorizontal_);
+		const float tH = (followLagHorizontal_ <= 0.0f) ? 1.0f : 1.0f - std::exp(-dt / followLagHorizontal_);
 
-		const float tV =
-			(followLagVertical_ <= 0.0f) ? 1.0f : 1.0f - std::exp(-dt / followLagVertical_);
+		const float tV = (followLagVertical_ <= 0.0f) ? 1.0f : 1.0f - std::exp(-dt / followLagVertical_);
 
 		// XZ（水平）
 		smoothedPivot_.x += (rawPivot.x - smoothedPivot_.x) * tH;
