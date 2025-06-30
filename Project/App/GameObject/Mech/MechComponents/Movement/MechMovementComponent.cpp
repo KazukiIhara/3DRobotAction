@@ -29,22 +29,21 @@ void MechMovementComponent::Idle() {
 }
 
 void MechMovementComponent::Move(MechCore* mechCore) {
+	// デルタタイム
+	const float dt = MAGISYSTEM::GetDeltaTime();
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
-
-	Vector2 nOld = Normalize(currentMoveDir_);
-	Vector2 nNew = Normalize(command.moveDirection);
-	float dot = Dot(nOld, nNew);
-
-	if (dot < 0.0f) { // 90度以上
-		moveSpeed_ *= 0.2f;
-	}
 
 	// 方向を設定
 	currentMoveDir_ = command.moveDirection;
 
 	// 加速度計算
-	moveSpeed_ += kMoveAcc_ * MAGISYSTEM::GetDeltaTime();
+	if (onGround_) {
+		moveSpeed_ += kMoveAcc_ * dt;
+	} else {
+		moveSpeed_ += kMoveAccAir_ * dt;
+	}
+
 	moveSpeed_ = std::min(moveSpeed_, kMaxMoveSpeed_);
 }
 
@@ -74,6 +73,17 @@ bool MechMovementComponent::QuickBoostEndRequest() const {
 
 bool MechMovementComponent::QuickBoostEnableCancel() const {
 	return quickBoostTimer_ > kQuickBoostCancelTime_;
+}
+
+void MechMovementComponent::ReverseInputDeceleration(MechCore* mechCore) {
+	// コマンド取得
+	const InputCommand command = mechCore->GetInputCommand();
+
+	// 角度差を求める
+	float dot = Dot(currentMoveDir_, command.moveDirection);
+	if (dot < 0.0f) { // 90度以上差がある
+		moveSpeed_ = 0.5f;
+	}
 }
 
 void MechMovementComponent::Jump(MechCore* mechCore) {
@@ -116,6 +126,14 @@ void MechMovementComponent::CulGravityVelocity() {
 	} else {
 		velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
 	}
+}
+
+Vector2 MechMovementComponent::GetCurrentMoveDir() const {
+	return currentMoveDir_;
+}
+
+void MechMovementComponent::SetMoveSpeed(float s) {
+	moveSpeed_ = s;
 }
 
 void MechMovementComponent::ApplyIdleFriction(float& v, float decelPerSec, float dt) {

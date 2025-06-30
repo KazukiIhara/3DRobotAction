@@ -1,8 +1,11 @@
 #pragma once
 
+#define NOMINMAX
+
 #include <Windows.h>
 #include "Enums/XInputEnum.h"
 #include "Structs/XInputStruct.h"
+#include "Math/Types/Vector2.h"
 
 // 前方宣言
 class DeltaTimer;
@@ -28,12 +31,12 @@ public:
 	bool ReleaseButton(int controllerID, int buttonNumber) const;
 
 	// スティックやトリガーの位置取得
-	float GetLeftStickX(int controllerID) const;
-	float GetLeftStickY(int controllerID) const;
-	float GetRightStickX(int controllerID) const;
-	float GetRightStickY(int controllerID) const;
+	Vector2 GetLeftStick(int controllerID)const;
+	Vector2 GetRightStick(int controllerID)const;
+
 	float GetLeftTrigger(int controllerID) const;
 	float GetRightTrigger(int controllerID) const;
+
 
 	// 方向キー
 	bool IsPadUp(int controllerID) const;
@@ -54,6 +57,7 @@ public:
 
 private:
 	float ProcessDeadZone(float value) const;
+	Vector2 ProcessRadialDeadZone(float rawX, float rawY) const;
 private:
 	// 最大4つのコントローラの状態を管理
 	XINPUT_STATE gamepadStates[4]{};
@@ -62,7 +66,7 @@ private:
 	VibrationState vibrationStates[4];
 
 	// スティックの遊び
-	int deadZone_ = 25;
+	int deadZone_ = 30;
 
 private:
 	DeltaTimer* deltaTimer_ = nullptr;

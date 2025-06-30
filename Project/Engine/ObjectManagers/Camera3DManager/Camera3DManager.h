@@ -27,7 +27,6 @@ public:
 	void ShakeCurrentCamera(float duration, float intensity);
 
 	std::weak_ptr<Camera3D> Add(std::shared_ptr<Camera3D> newCamera3D);
-	std::weak_ptr<Camera3D> Find(const std::string& cameraName);
 
 	// 現在使用するカメラをセット
 	void SetCurrentCamera(Camera3D* camera3D);

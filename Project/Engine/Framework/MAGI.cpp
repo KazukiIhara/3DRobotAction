@@ -899,20 +899,12 @@ bool MAGISYSTEM::ReleaseButton(int controllerID, int buttonNumber) {
 	return xInput_->ReleaseButton(controllerID, buttonNumber);
 }
 
-float MAGISYSTEM::GetLeftStickX(int controllerID) {
-	return xInput_->GetLeftStickX(controllerID);
+Vector2 MAGISYSTEM::GetLeftStick(int controllerID) {
+	return xInput_->GetLeftStick(controllerID);
 }
 
-float MAGISYSTEM::GetLeftStickY(int controllerID) {
-	return xInput_->GetLeftStickY(controllerID);
-}
-
-float MAGISYSTEM::GetRightStickX(int controllerID) {
-	return xInput_->GetRightStickX(controllerID);
-}
-
-float MAGISYSTEM::GetRightStickY(int controllerID) {
-	return xInput_->GetRightStickY(controllerID);
+Vector2 MAGISYSTEM::GetRightStick(int controllerID) {
+	return xInput_->GetRightStick(controllerID);
 }
 
 float MAGISYSTEM::GetLeftTrigger(int controllerID) {

@@ -11,18 +11,56 @@
 using namespace MAGIMath;
 
 MechCore::MechCore() {
-	// レンダラーとゲームオブジェクトを作成 TODO: 引数からオブジェクトを作るようにする
-	std::shared_ptr<ModelRenderer> coreModel = std::make_shared<ModelRenderer>("MechCore", "teapot");
-	coreModel->GetTransform()->SetTranslate(Vector3(0.0f, 1.0f, 0.0f));
-
+	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", Vector3(0.0f, 50.0f, 0.0f));
-	coreObject->AddModelRenderer(std::move(coreModel));
 
 	// ゲームオブジェクトマネージャに追加
 	core_ = MAGISYSTEM::AddGameObject3D(std::move(coreObject));
 
 	// パーツを作成
 
+	// 体
+	body_ = std::make_unique<MechBody>();
+
+	// 頭
+
+
+	// 腕
+	rightArm_ = std::make_unique<MechArmRight>();
+	leftArm_ = std::make_unique<MechArmLeft>();
+
+
+	// 足
+	leg_ = std::make_unique<MechLeg>();
+
+
+	// パーツを親子付け
+
+	// 体
+	if (auto body = body_->GetGameObject().lock()) {
+		body->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
+		// 頭
+
+		// 腕
+		if (auto rightArm = rightArm_->GetGameObject().lock()) {
+			rightArm->GetTransform()->SetParent(body->GetTransform(), false);
+		}
+		if (auto leftArm = leftArm_->GetGameObject().lock()) {
+			leftArm->GetTransform()->SetParent(body->GetTransform(), false);
+		}
+		// 足
+		if (auto leg = leg_->GetGameObject().lock()) {
+			leg->GetTransform()->SetParent(body->GetTransform(), false);
+		}
+	}
+
+	// コンポーネントを作成
+
+	// 移動
+	movementComponent_ = std::make_unique<MechMovementComponent>();
+
+	// ロックオン
+	lockOnComponent_ = std::make_unique<MechLockOnComponent>();
 
 
 	// ステートを作成
@@ -33,13 +71,14 @@ MechCore::MechCore() {
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
 
-	// コンポーネントを作成
-	movementComponent_ = std::make_unique<MechMovementComponent>();
-
 }
 
 void MechCore::Update() {
 	// 状態を整理 (コマンドはMechCoreの更新前に外部からセットする)
+	// ロックオン用のビュー情報も外部からセットしておく
+
+	// ロックオンコンポーネントを更新
+	lockOnComponent_->Update(this);
 
 	// 接地状態かどうかチェック
 	movementComponent_->CheckOnGround(this);
@@ -51,8 +90,21 @@ void MechCore::Update() {
 
 	// 各パーツを更新
 
+	// 頭
 
-	// コンポーネントを更新
+
+	// 体
+	body_->Update(this);
+
+	// 腕
+	rightArm_->Update(this);
+
+
+	// 足
+	leg_->Update(this);
+
+
+	// 移動コンポーネントを更新
 	movementComponent_->Update(this);
 }
 
@@ -81,12 +133,28 @@ const InputCommand& MechCore::GetInputCommand() const {
 	return inputCommand_;
 }
 
+const LockOnView& MechCore::GetLockOnView() const {
+	return lockOnView_;
+}
+
+MechBody* MechCore::GetMechBody() {
+	return body_.get();
+}
+
 MechMovementComponent* MechCore::GetMovementComponent() {
 	return movementComponent_.get();
 }
 
+MechLockOnComponent* MechCore::GetLockOnComponent() {
+	return lockOnComponent_.get();
+}
+
 void MechCore::SetInputCommand(const InputCommand& command) {
 	inputCommand_ = command;
+}
+
+void MechCore::SetLockOnView(const LockOnView& lockOnView) {
+	lockOnView_ = lockOnView;
 }
 
 std::weak_ptr<MechCoreBaseState> MechCore::GetState(MechCoreState state) {

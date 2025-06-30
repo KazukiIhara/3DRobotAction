@@ -248,6 +248,24 @@ float MAGIMath::DegreeToRadian(float degree) {
 	return degree * (std::numbers::pi_v<float> / 180.0f);
 }
 
+float MAGIMath::WrapPi(float angle) {
+	angle = std::fmod(angle + std::numbers::pi_v<float>,
+		2.0f * std::numbers::pi_v<float>);
+	if (angle < 0) angle += 2.0f * std::numbers::pi_v<float>;
+	return angle - std::numbers::pi_v<float>;
+}
+
+float MAGIMath::LerpAngle(float a, float b, float t) {
+	a = WrapPi(a);
+	b = WrapPi(b);
+
+	float diff = b - a;
+	if (diff > std::numbers::pi_v<float>) diff -= 2.0f * std::numbers::pi_v<float>;
+	if (diff < -std::numbers::pi_v<float>) diff += 2.0f * std::numbers::pi_v<float>;
+
+	return WrapPi(a + diff * t);
+}
+
 float MAGIMath::Lerp(float a, float b, float t) {
 	return a + (b - a) * t;
 }

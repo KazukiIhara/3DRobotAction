@@ -6,13 +6,13 @@
 
 using namespace MAGIMath;
 
-void MechCoreStateIdle::Enter([[maybe_unused]] MechCore* mechCore) {
+void MechCoreStateIdle::Enter(MechCore* mechCore) {
 
 }
 
 void MechCoreStateIdle::Update(MechCore* mechCore) {
 	// コマンドを取得
-	InputCommand command = mechCore->GetInputCommand();
+	const InputCommand command = mechCore->GetInputCommand();
 
 	// 移動あり　→　移動状態に遷移
 	if (Length(command.moveDirection)) {

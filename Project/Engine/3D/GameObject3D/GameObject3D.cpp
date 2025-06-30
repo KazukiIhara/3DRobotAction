@@ -25,9 +25,7 @@ GameObject3D::GameObject3D(const std::string& name, const Vector3& translate) {
 
 void GameObject3D::Update() {
 
-	if (!camera3DComponents_.empty()) {
 
-	}
 }
 
 void GameObject3D::Finalize() {
@@ -68,7 +66,7 @@ void GameObject3D::AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer
 
 void GameObject3D::AddCamera3D(std::shared_ptr<Camera3D> camera3D) {
 	std::weak_ptr<Camera3D> ptr = MAGISYSTEM::AddCamera3D(std::move(camera3D));
-
+	camera3DComponents_.insert(std::make_pair(ptr.lock()->GetName(), ptr));
 }
 
 void GameObject3D::SetIsAlive(bool isAlive) {

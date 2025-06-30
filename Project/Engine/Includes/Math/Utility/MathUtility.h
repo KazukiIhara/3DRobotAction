@@ -147,6 +147,12 @@ namespace MAGIMath {
 	// 度数法からラジアンに変換
 	float DegreeToRadian(float degree);
 
+	/// [-π, +π] に折り返す
+	float WrapPi(float angle);
+
+	// 角度線形補間(最短経路で補間する)
+	float LerpAngle(float a, float b, float t);
+
 	// 線形補完
 	float Lerp(float a, float b, float t);
 

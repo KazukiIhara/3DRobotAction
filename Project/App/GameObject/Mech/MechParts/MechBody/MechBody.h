@@ -11,22 +11,22 @@ class GameObject3D;
 class MechCore;
 
 /// <summary>
-/// 足
+/// 胴体
 /// </summary>
-class MechLeg {
+class MechBody {
 public:
-	MechLeg();
-	~MechLeg() = default;
+	MechBody();
+	~MechBody() = default;
 
 	void Update(MechCore* mechCore);
 
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 
 private:
-	void RotateAngleAsVelocity(MechCore* core);
+	void DirectionToLockOnView(MechCore* mechCore);
 
 private:
 	// オブジェクト
-	std::weak_ptr<GameObject3D> leg_;
+	std::weak_ptr<GameObject3D> body_;
 
 };

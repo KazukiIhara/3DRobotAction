@@ -12,6 +12,7 @@ using namespace MAGIUtility;
 // シーンオブジェクト
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
+#include "GameObject/Enemy/Enemy.h"
 #include "GameObject/Ground/Ground.h"
 
 /// <summary>
@@ -19,7 +20,7 @@ using namespace MAGIUtility;
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene :public BaseScene<Data> {
+class PlayScene:public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -42,6 +43,9 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_;
+
+	// 敵
+	std::unique_ptr<Enemy> enemy_;
 
 	std::unique_ptr<Ground> ground_ = nullptr;
 
@@ -113,6 +117,17 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot");
 	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
 
+	MAGISYSTEM::LoadModel("MechRightArm");
+	MAGISYSTEM::CreateModelDrawer("MechRightArm", MAGISYSTEM::FindModel("MechRightArm"));
+
+	MAGISYSTEM::LoadModel("MechLeftArm");
+	MAGISYSTEM::CreateModelDrawer("MechLeftArm", MAGISYSTEM::FindModel("MechLeftArm"));
+
+	MAGISYSTEM::LoadModel("MechBody");
+	MAGISYSTEM::CreateModelDrawer("MechBody", MAGISYSTEM::FindModel("MechBody"));
+
+	MAGISYSTEM::LoadModel("MechLeg");
+	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
 
 
 	//-------------------------------------------------------
@@ -125,8 +140,14 @@ inline void PlayScene<Data>::Initialize() {
 	// プレイヤー作成
 	player_ = std::make_unique<Player>();
 
+	// 敵作成
+	enemy_ = std::make_unique<Enemy>();
+
 	// 地面作成
 	ground_ = std::make_unique<Ground>();
+
+	// プレイヤーのターゲット対象に敵を追加
+	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
 
 }
 
@@ -149,6 +170,9 @@ inline void PlayScene<Data>::Update() {
 
 	// プレイヤー更新
 	player_->Update();
+
+	// 敵更新
+	enemy_->Update();
 
 	// ポストエフェクト適用
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);

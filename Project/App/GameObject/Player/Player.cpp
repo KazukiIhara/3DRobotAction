@@ -3,22 +3,25 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
+#include "GameObject/PlayerCamera/PlayerCamera.h"
+
 Player::Player() {
 	// 機体の作成
-	mech_ = std::make_unique<MechCore>();
+	mech_ = std::make_shared<MechCore>();
 
 	// 三人称視点カメラの作成
-	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>("MainCamera");
-	mainCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
-	mainCamera->ApplyCurrent();
+	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera");
+	followCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
+	followCamera->SetMechCore(mech_);
+	followCamera->ApplyCurrent();
 
+	// カメラを追加
 	if (auto mechObj = mech_->GetGameObject().lock()) {
-		mechObj->AddCamera3D(mainCamera);
+		mechObj->AddCamera3D(followCamera);
 	}
 }
 
 void Player::Update() {
-
 	InputCommand command{};
 	Vector2 stick{};
 	Vector3 forward{};
@@ -32,14 +35,16 @@ void Player::Update() {
 	// パッド接続確認
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		// スティックによる移動入力
-		stick.x = MAGISYSTEM::GetLeftStickX(0);
-		stick.y = MAGISYSTEM::GetLeftStickY(0);
+		stick = MAGISYSTEM::GetLeftStick(0);
 
 		// ジャンプ入力
 		command.jump = MAGISYSTEM::PushButton(0, ButtonL);
 
 		// クイックブースト入力
 		command.quickBoost = MAGISYSTEM::TriggerButton(0, ButtonR);
+
+		// ロックオンモード切り替え
+		command.switchHardLock = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
 
 	} else { // パッドなしならキーボード入力解禁
 		// 移動入力
@@ -51,36 +56,47 @@ void Player::Update() {
 		// ジャンプ入力
 		command.jump = MAGISYSTEM::PushKey(DIK_SPACE);
 
+		// クイックブースト入力
+		command.quickBoost = MAGISYSTEM::TriggerKey(DIK_LSHIFT);
+
+		// ロックオンモード切り替え
+		command.switchHardLock = MAGISYSTEM::TriggerMouseButton(MouseButton::Middle);
 	}
 
-	//===========================
-	// コマンド作成
-	//===========================
-
-	// カメラに対しての移動方向を計算
-	if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
-		forward = cucam->GetTarget() - cucam->GetEye();
-		forward.y = 0.0f;
-		forward = Normalize(forward);
-		right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
-		Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
-		moveDir = { tempDir.x, tempDir.z };
-	} else {
-		MAGIAssert::Assert(false, "Not found SceneCamera!");
+	// 移動入力があった場合
+	if (Length(stick)) {
+		// カメラに対しての移動方向を計算
+		if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
+			forward = cucam->GetTarget() - cucam->GetEye();
+			forward.y = 0.0f;
+			forward = Normalize(forward);
+			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+			const Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
+			moveDir = { tempDir.x, tempDir.z };
+		} else {
+			MAGIAssert::Assert(false, "Not found SceneCamera!");
+		}
+		// 移動方向のコマンドをセット
+		command.moveDirection = Normalize(moveDir);
 	}
-
-	// 移動方向のコマンドをセット
-	command.moveDirection = moveDir;
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
+
+	// ロックオンコンポーネント用のカメラを作成、セット
+	LockOnView lockOnView{};
+	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera").lock()) {
+		lockOnView.eye = camera->GetEye();
+		lockOnView.target = camera->GetTarget();
+	}
+	mech_->SetLockOnView(lockOnView);
 
 	// 機体更新
 	mech_->Update();
 
 	// 破壊時エフェクトテスト
 	if (ImGui::Button("PlayEffect")) {
-		breakEffect_ = std::make_unique<BreakEffect>(Vector3(0.0f, 0.0f, 0.0f));
+		breakEffect_ = std::make_unique<BreakEffect>(mech_->GetGameObject().lock()->GetTransform()->GetWorldPosition());
 	}
 
 	if (breakEffect_) {
@@ -100,6 +116,7 @@ void Player::Draw() {
 
 }
 
-MechCore* Player::GetMechCore() {
-	return mech_.get();
+std::weak_ptr<MechCore> Player::GetMechCore() {
+	return mech_;
 }
+

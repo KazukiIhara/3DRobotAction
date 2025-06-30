@@ -1,7 +1,7 @@
 #include "MAGIXInput.h"
 
 #include <cassert>
-#include "math.h"
+#include <iostream>
 
 #include "DeltaTimer/DeltaTimer.h"
 
@@ -60,32 +60,28 @@ bool MAGIXInput::ReleaseButton(int controllerID, int buttonNumber) const {
 		!(gamepadStates[controllerID].Gamepad.wButtons & buttonNumber);
 }
 
-float MAGIXInput::GetLeftStickX(int controllerID) const {
-	float rawValue = gamepadStates[controllerID].Gamepad.sThumbLX / 32767.0f;
-	return ProcessDeadZone(rawValue);
-}
-
-float MAGIXInput::GetLeftStickY(int controllerID) const {
-	float rawValue = gamepadStates[controllerID].Gamepad.sThumbLY / 32767.0f;
-	return ProcessDeadZone(rawValue);
-}
-
-float MAGIXInput::GetRightStickX(int controllerID) const {
-	float rawValue = gamepadStates[controllerID].Gamepad.sThumbRX / 32767.0f;
-	return ProcessDeadZone(rawValue);
-}
-
-float MAGIXInput::GetRightStickY(int controllerID) const {
-	float rawValue = gamepadStates[controllerID].Gamepad.sThumbRY / 32767.0f;
-	return ProcessDeadZone(rawValue);
-}
-
 float MAGIXInput::GetLeftTrigger(int controllerID) const {
 	return gamepadStates[controllerID].Gamepad.bLeftTrigger / 255.0f;
 }
 
 float MAGIXInput::GetRightTrigger(int controllerID) const {
 	return gamepadStates[controllerID].Gamepad.bRightTrigger / 255.0f;
+}
+
+Vector2 MAGIXInput::GetLeftStick(int controllerID) const {
+	const auto& gp = gamepadStates[controllerID].Gamepad;
+	return ProcessRadialDeadZone(
+		static_cast<float>(gp.sThumbLX),
+		static_cast<float>(gp.sThumbLY)
+	);
+}
+
+Vector2 MAGIXInput::GetRightStick(int controllerID) const {
+	const auto& gp = gamepadStates[controllerID].Gamepad;
+	return ProcessRadialDeadZone(
+		static_cast<float>(gp.sThumbRX),
+		static_cast<float>(gp.sThumbRY)
+	);
 }
 
 bool MAGIXInput::IsPadUp(int controllerID) const {
@@ -152,4 +148,32 @@ float MAGIXInput::ProcessDeadZone(float value) const {
 		return (value > 0) ? (value - threshold) / (maxValue - threshold)
 			: (value + threshold) / (maxValue - threshold);
 	}
+}
+
+Vector2 MAGIXInput::ProcessRadialDeadZone(float rawX, float rawY) const {
+	constexpr float kMaxValue = 32767.0f;           // XInput 最大値
+
+	// -1.0 ～ +1.0 に正規化
+	float x = rawX / kMaxValue;
+	float y = rawY / kMaxValue;
+
+	// 現在の倒し量（長さ）
+	float mag = std::sqrt(x * x + y * y);
+
+	// 円形デッドゾーンの半径 (0.0～1.0)
+	float dz = deadZone_ * 0.01f;
+
+	// デッドゾーン内なら 0 ベクトル
+	if (mag < dz || mag < 1e-6f) {
+		return { 0.0f, 0.0f };
+	}
+
+	// デッドゾーン外 : 0.0～1.0 へ線形マッピング
+	float legalRange = 1.0f - dz;
+	float scaledMag = (mag - dz) / legalRange;
+	scaledMag = std::min(scaledMag, 1.0f);
+
+	// 方向はそのまま、長さだけを scaledMag に
+	float scale = scaledMag / mag;
+	return { x * scale, y * scale };
 }
