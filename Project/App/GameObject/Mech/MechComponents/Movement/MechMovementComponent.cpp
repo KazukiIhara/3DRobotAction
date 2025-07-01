@@ -95,6 +95,9 @@ void MechMovementComponent::Jump(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 	if (command.jump) {
+		// 重力の影響を消す
+		velocity_.y = std::max(velocity_.y, 0.0f);
+
 		if (onGround_) { 	// 接地状態の場合
 			// ジャンプの初速を与える
 			velocity_.y = kJumpFirstSpeed_;
@@ -125,11 +128,16 @@ void MechMovementComponent::CheckOnGround(MechCore* mechCore) {
 	}
 }
 
-void MechMovementComponent::CulGravityVelocity() {
+void MechMovementComponent::CulGravityVelocity(MechCore* mechCore) {
+	// コマンド取得
+	const InputCommand command = mechCore->GetInputCommand();
+
 	if (onGround_) {
 		velocity_.y = 0.0f;
 	} else {
-		velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
+		if (!command.jump) { // ジャンプ入力中は重力の影響を与えない
+			velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
+		}
 	}
 }
 

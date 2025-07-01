@@ -40,7 +40,7 @@ public:
 	// 接地判定
 	void CheckOnGround(MechCore* mechCore);
 	// 重力計算
-	void CulGravityVelocity();
+	void CulGravityVelocity(MechCore* mechCore);
 
 	//===================================
 	// ゲッター
@@ -92,9 +92,9 @@ private:
 	// ジャンプの初速度
 	const float kJumpFirstSpeed_ = 10.0f;
 	// ジャンプの最大速度
-	const float kMaxJumpSpeed_ = 30.0f;
+	const float kMaxJumpSpeed_ = 10.0f;
 	// ジャンプの秒間加速量
-	const float kJumpAcc_ = 60.0f;
+	const float kJumpAcc_ = 5.0f;
 
 
 	//===================================

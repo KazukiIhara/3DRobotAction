@@ -41,10 +41,10 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 	mechCore->GetMovementComponent()->QuickBoostUpdate();
 
 	// 重力による移動量計算
-	mechCore->GetMovementComponent()->CulGravityVelocity();
+	mechCore->GetMovementComponent()->CulGravityVelocity(mechCore);
 }
 
 void MechCoreStateQuickBoost::Exit(MechCore* mechCore) {
 	// 重力による移動量計算
-	mechCore->GetMovementComponent()->CulGravityVelocity();
+	mechCore->GetMovementComponent()->CulGravityVelocity(mechCore);
 }
