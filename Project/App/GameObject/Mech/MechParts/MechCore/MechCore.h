@@ -25,6 +25,7 @@ class MechCoreBaseState;
 // 入力コマンド
 struct InputCommand {
 	Vector2 moveDirection = { 0.0f,0.0f };
+	Vector2 cameraDirection = { 0.0f,0.0f };
 	bool jump = false;
 	bool quickBoost = false;
 	bool assultBoost = false;
@@ -128,7 +129,7 @@ private:
 	// 腕
 	std::unique_ptr<MechArmRight> rightArm_ = nullptr;
 	std::unique_ptr<MechArmLeft> leftArm_ = nullptr;
-	
+
 	// 足
 	std::unique_ptr<MechLeg> leg_ = nullptr;
 

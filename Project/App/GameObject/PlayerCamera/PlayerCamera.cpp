@@ -95,9 +95,9 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 	const float targetYaw = std::atan2(toTarget.x, toTarget.z);
 	const float targetPitch = std::atan2(-toTarget.y, std::sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z));
 
-	const float tYaw = rotLagYaw_ <= 0.0f ? 
+	const float tYaw = rotLagYaw_ <= 0.0f ?
 		1.0f : 1.0f - std::exp(-dt / rotLagYaw_);
-	const float tPitch = rotLagPitch_ <= 0.0f ? 
+	const float tPitch = rotLagPitch_ <= 0.0f ?
 		1.0f : 1.0f - std::exp(-dt / rotLagPitch_);
 
 	yaw_ = LerpAngle(yaw_, targetYaw, tYaw);
@@ -146,6 +146,10 @@ void PlayerCamera::FollowCamera(float dt) {
 	Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
 	Vector3 shoulder = Normalize(Cross(forward, { 0,1,0 })) * 1.5f * shoulderSign_; // ←任意
 	eye_ = smoothedPivot_ - forward * radius_ + shoulder;
+
+	if (eye_.y <= 0.3f) {
+		eye_.y = 0.3f;
+	}
 
 	target_ = smoothedPivot_;
 }

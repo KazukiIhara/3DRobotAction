@@ -33,7 +33,7 @@ private:
 	float mouseYawSpeed_ = 1.0f;
 	float mousePitchSpeed_ = 1.0f;
 
-	float maxPitchDegrees_ = 10.0f;
+	float maxPitchDegrees_ = 80.0f;
 	float minPitchDegrees_ = -80.0f;
 
 	float followLagHorizontal_ = 0.2f;

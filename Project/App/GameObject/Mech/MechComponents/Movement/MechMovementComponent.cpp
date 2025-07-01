@@ -7,6 +7,11 @@
 
 using namespace MAGIMath;
 
+MechMovementComponent::MechMovementComponent() {
+	// クイックブーストのアニメーションを作成
+
+}
+
 void MechMovementComponent::Update(MechCore* mechCore) {
 	// スピードと向きからこのフレームでの移動量を計算
 	velocity_.x = currentMoveDir_.x * moveSpeed_;

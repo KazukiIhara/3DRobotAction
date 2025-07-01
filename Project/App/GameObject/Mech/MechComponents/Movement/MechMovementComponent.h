@@ -2,6 +2,7 @@
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
+#include "SimpleAnimation/SimpleAnimation.h"
 
 class MechCore;
 
@@ -10,7 +11,7 @@ class MechCore;
 /// </summary>
 class MechMovementComponent {
 public:
-	MechMovementComponent() = default;
+	MechMovementComponent();
 	~MechMovementComponent() = default;
 
 	// 更新
@@ -112,6 +113,8 @@ private:
 	Vector2 quickBoostDir_ = { 0.0f,0.0f };
 	// クイックブーストのタイマー
 	float quickBoostTimer_ = 0.0f;
+	// クイックブーストの移動量アニメーション
+	SimpleAnimation<float> quickBoostSpeedAnimaion_;
 
 	// 接地フラグ
 	bool onGround_ = false;
