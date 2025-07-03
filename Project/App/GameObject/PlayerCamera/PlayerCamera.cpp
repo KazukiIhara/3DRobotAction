@@ -14,9 +14,6 @@ PlayerCamera::PlayerCamera(const std::string& name)
 void PlayerCamera::Update() {
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
-	const float kMaxLimit = DegreeToRadian(maxPitchDegrees_);
-	const float kMinLimit = DegreeToRadian(minPitchDegrees_);
-
 	if (!followTargetTransform_) return;
 
 	// 入力を反省
@@ -41,7 +38,6 @@ void PlayerCamera::Update() {
 
 void PlayerCamera::SetTargetTransform(Transform3D* target) {
 	followTargetTransform_ = target;
-	smoothedPivot_ = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 }
 
 void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
@@ -49,32 +45,30 @@ void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
 }
 
 void PlayerCamera::ApplyInput(float dt) {
-	// スティックの入力を取得
+	// ① 右スティック入力
 	Vector2 rs{};
-	if (MAGISYSTEM::IsPadConnected(0)) {
+	if (MAGISYSTEM::IsPadConnected(0))
 		rs = MAGISYSTEM::GetRightStick(0);
-	}
+	if (LengthSquared(rs) < 1e-6f) return;
 
-	// 入力がなければスキップ
-	if (!Length(rs)) return;
+	// ② 入力を角速度へ
+	yaw_ += rs.x * sensYaw_ * dt;				// Yaw : +右
+	pitch_ -= rs.y * sensPitch_ * dt;           // Pitch: +上（符号反転）
 
-	// Δ回転量を計算
-	const float dYaw = rs.x * sensYaw_ * dt;
-	const float dPitch = rs.y * sensPitch_ * dt;
+	// ③ 角度域の正規化
+	yaw_ = WrapPi(yaw_);                         // [-π, π)
+	pitch_ = std::clamp(pitch_, -kPitchLim_, kPitchLim_);
 
-	// 右軸を取得 (boomRot_ の +X 方向)
-	Vector3 rightAxis = Right(boomRot_);
+	// ④ クォータニオン合成（Yaw → Pitch 順）
+	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), yaw_);
+	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pitch_);
 
-	// Δ回転クォータニオンを生成
-	Quaternion qPitch = MakeRotateAxisAngleQuaternion(rightAxis, dPitch);
-	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), dYaw);
-
-	// 合成
-	boomRot_ = Normalize(qYaw * qPitch * boomRot_);
+	boomRot_ = Normalize(qYaw * qPitch);
 }
 
 void PlayerCamera::HardLockOnCamera(float dt) {
-	// ターゲット座標取得
+	//----------------------------------------
+	// ① ターゲット座標取得
 	Vector3 targetWorldPos{};
 	if (auto core = core_.lock()) {
 		if (auto tgt = core->GetLockOnComponent()->GetLockOnTarget().lock()) {
@@ -84,39 +78,58 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 		}
 	}
 
-	// ピボット計算
+	//----------------------------------------
+	// ② ピボットとターゲット方向
 	const Vector3 pivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
+	Vector3 toTarget = Normalize(targetWorldPos - pivot);
+	if (!Length(toTarget)) toTarget = MakeForwardVector3();
 
-	// ピボットからターゲットの方向を計算
-	Vector3 toTarget = targetWorldPos - pivot;
-	if (!Length(toTarget)) {						// 距離ゼロ対策
-		toTarget = MakeForwardVector3();            // (0,0,1)
-	}
-	toTarget = Normalize(toTarget);
+	//----------------------------------------
+	// ③ 目標 Yaw / Pitch 角を算出
+	float targetYaw = std::atan2(toTarget.x, toTarget.z);							// LH(+Z前)
+	float targetPitch = std::asin(std::clamp(toTarget.y, -1.0f, 1.0f));
+	targetPitch = std::clamp(targetPitch, -kPitchLim_, kPitchLim_);                 // 上下 ±80°
 
-	// ブーム姿勢をターゲット方向に合わせる
-	Quaternion targetRot = DirectionToQuaternion(toTarget);
+	//----------------------------------------
+	// ④ スムーズ係数
+	float t = 1.0f - std::exp(-dt / kHardLockLag_);                                 
 
-	boomRot_ = targetRot;
+	//----------------------------------------
+	// ⑤ 角度を補間して反映
+	yaw_ = LerpAngle(yaw_, targetYaw, t);
+	pitch_ = LerpAngle(pitch_, targetPitch, t);
 
-	// ブーム姿勢から軸ベクトルを取得
-	const Vector3 forward = Normalize(Transform(MakeForwardVector3(), boomRot_));
-	const Vector3 right = Normalize(Transform(MakeRightVector3(), boomRot_));
+	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), yaw_);
+	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pitch_);
+	boomRot_ = Normalize(qYaw * qPitch);
 
-	// EyeとTargetを計算
-	eye_ = pivot + forward * radius_;
-	target_ = targetWorldPos;
+	//----------------------------------------
+	// ⑥ カメラ位置補間
+	Vector3 forward = Normalize(Transform(MakeForwardVector3(), boomRot_));
+	Vector3 targetEye = pivot - forward * radius_;
+
+	eye_ = Lerp(eye_, targetEye, t);
+	target_ = Lerp(target_, targetWorldPos, t);
 }
 
 void PlayerCamera::FollowCamera(float dt) {
-	// Pivotを取得
+	//----------------------------------------
+	// ① ピボット
 	const Vector3 pivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 
-	// ブーム姿勢から各軸ベクトルを取得
-	const Vector3 forward = Normalize(Transform(MakeForwardVector3(), boomRot_)); // +Z
-	const Vector3 right = Normalize(Transform(MakeRightVector3(), boomRot_));   // +X
+	//----------------------------------------
+	// ② 現在ブーム姿勢から前方ベクトル
+	const Vector3 forward = Normalize(Transform(MakeForwardVector3(), boomRot_));
 
-	// 位置決定
-	eye_ = pivot + forward * radius_;
-	target_ = pivot;                             // 正面を常に Pivot へ
+	//----------------------------------------
+	// ③ 目標カメラ位置
+	const Vector3 targetEye = pivot - forward * radius_;
+	const Vector3 targetTarget = pivot;
+
+	//----------------------------------------
+	// ④ 補間
+	float t = 1.0f - std::exp(-dt / kFollowLag_);
+
+	eye_ = Lerp(eye_, targetEye, t);
+	target_ = Lerp(target_, targetTarget, t);
 }

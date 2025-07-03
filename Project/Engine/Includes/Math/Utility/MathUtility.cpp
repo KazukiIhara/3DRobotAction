@@ -232,6 +232,10 @@ float MAGIMath::LengthSquared(const Vector3& v) {
 	return v.x * v.x + v.y * v.y + v.z * v.z;
 }
 
+float MAGIMath::LengthSquared(const Vector2& v) {
+	return v.x * v.x + v.y * v.y;
+}
+
 float MAGIMath::DegreeToRadian(float degree) {
 	return degree * (std::numbers::pi_v<float> / 180.0f);
 }
@@ -976,7 +980,7 @@ Vector3 MAGIMath::QuaternionToEuler(const Quaternion& qIn) {
 
 Quaternion MAGIMath::DirectionToQuaternion(const Vector3& direction) {
 	Vector3 forward = Normalize(direction);
-	Vector3 baseForward = Vector3(0.0f, 0.0f, -1.0f); // Z-方向を前方とする
+	Vector3 baseForward = MakeForwardVector3();
 
 	float dot = Dot(baseForward, forward);
 	dot = std::clamp(dot, -1.0f, 1.0f); // 安全のためクランプ

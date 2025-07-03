@@ -37,22 +37,13 @@ private:
 	float sensYaw_ = 10.0f;
 	float sensPitch_ = 10.0f;
 
-	float maxPitchDegrees_ = 80.0f;
-	float minPitchDegrees_ = -80.0f;
+	// カメラ補間速度
+	const float kHardLockLag_ = 0.15f;
+	const float kFollowLag_ = 0.05f;
 
-	float followLagHorizontal_ = 0.2f;
-	float followLagVertical_ = 0.05f;
+	const float kPitchLim_ = 80.0f * std::numbers::pi_v<float> / 180.0f;
 
-	float rotLagYaw_ = 0.15f;   // 水平回転ラグ (秒)
-	float rotLagPitch_ = 0.05f;   // 垂直回転ラグ (秒)
-
-	float focusBias_ = 0.5f;
-
-	float shoulderSign_ = 0.0f;
 	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
-	float minBoomHeight_ = 1.0f;
-
-	Vector3 smoothedPivot_{};
 
 	// 機体を受け取る
 	std::weak_ptr<MechCore> core_;

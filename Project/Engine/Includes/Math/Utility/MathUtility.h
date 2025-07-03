@@ -143,6 +143,7 @@ namespace MAGIMath {
 
 	// ベクトルの長さとの二乗値
 	float LengthSquared(const Vector3& v);
+	float LengthSquared(const Vector2& v);
 
 	// 度数法からラジアンに変換
 	float DegreeToRadian(float degree);
