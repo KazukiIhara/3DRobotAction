@@ -6,7 +6,7 @@
 
 class MechCore;
 
-class PlayerCamera :public Camera3D {
+class PlayerCamera:public Camera3D {
 public:
 	PlayerCamera(const std::string& name);
 	~PlayerCamera() = default;
@@ -26,11 +26,12 @@ private:
 	// 追従対象のトランスフォーム
 	Transform3D* followTargetTransform_ = nullptr;
 
-	Quaternion boomRot_;
-
 	// 累積用変数
 	float pYaw_ = 0.0f;
 	float pPitch_ = 0.0f;
+
+	// カメラの回転
+	Quaternion cameraRotation_;
 
 	// パラメータ
 
@@ -38,14 +39,14 @@ private:
 	float radius_ = 6.0f;
 
 	// カメラの感度
-	float sensYaw_ = 10.0f;
-	float sensPitch_ = 10.0f;
+	float sensYaw_ = 8.0f;
+	float sensPitch_ = 6.0f;
 
 	// カメラ補間速度
 	const float kHardLockLag_ = 0.15f;
 	const float kFollowLag_ = 0.05f;
 
-	const float kPitchLim_ = 80.0f * std::numbers::pi_v<float> / 180.0f;
+	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
 	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
 

@@ -16,7 +16,7 @@ void PlayerCamera::Update() {
 
 	if (!followTargetTransform_) return;
 
-	// 入力を反省
+	// 入力を判定
 	ApplyInput(dt);
 
 	if (auto core = core_.lock()) {
@@ -47,28 +47,29 @@ void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
 void PlayerCamera::ApplyInput(float dt) {
 	// ① 右スティック入力
 	Vector2 rs{};
-	if (MAGISYSTEM::IsPadConnected(0))
+	if (MAGISYSTEM::IsPadConnected(0)) {
 		rs = MAGISYSTEM::GetRightStick(0);
+	}
 	if (LengthSquared(rs) < 1e-6f) return;
 
-	// ② 入力を角速度へ
-	yaw_ += rs.x * sensYaw_ * dt;				// Yaw : +右
-	pitch_ -= rs.y * sensPitch_ * dt;           // Pitch: +上（符号反転）
+	// 入力を角速度へ
+	pYaw_ += rs.x * sensYaw_ * dt;				// Yaw : +右
+	pPitch_ -= rs.y * sensPitch_ * dt;          // Pitch: +上（符号反転）
 
-	// ③ 角度域の正規化
-	yaw_ = WrapPi(yaw_);                         // [-π, π)
-	pitch_ = std::clamp(pitch_, -kPitchLim_, kPitchLim_);
+	// 角度域の正規化
+	pYaw_ = WrapPi(pYaw_);
+	pPitch_ = std::clamp(pPitch_, -kPitchLim_, kPitchLim_);
 
-	// ④ クォータニオン合成（Yaw → Pitch 順）
-	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), yaw_);
-	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pitch_);
+	// クォータニオン合成
+	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
+	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pPitch_);
 
-	boomRot_ = Normalize(qYaw * qPitch);
+	cameraRotation_ = Normalize(qYaw * qPitch);
 }
 
 void PlayerCamera::HardLockOnCamera(float dt) {
-	//----------------------------------------
-	// ① ターゲット座標取得
+
+	// ターゲット座標取得
 	Vector3 targetWorldPos{};
 	if (auto core = core_.lock()) {
 		if (auto tgt = core->GetLockOnComponent()->GetLockOnTarget().lock()) {
@@ -78,56 +79,50 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 		}
 	}
 
-	//----------------------------------------
-	// ② ピボットとターゲット方向
+	// ピボットとターゲット方向
 	const Vector3 pivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 	Vector3 toTarget = Normalize(targetWorldPos - pivot);
-	if (!Length(toTarget)) toTarget = MakeForwardVector3();
 
-	//----------------------------------------
-	// ③ 目標 Yaw / Pitch 角を算出
-	float targetYaw = std::atan2(toTarget.x, toTarget.z);							// LH(+Z前)
-	float targetPitch = std::asin(std::clamp(toTarget.y, -1.0f, 1.0f));
-	targetPitch = std::clamp(targetPitch, -kPitchLim_, kPitchLim_);                 // 上下 ±80°
+	if (!Length(toTarget)) {
+		toTarget = MakeForwardVector3();
+	}
 
-	//----------------------------------------
-	// ④ スムーズ係数
-	float t = 1.0f - std::exp(-dt / kHardLockLag_);                                 
+	// 目標 Yaw / Pitch 角を算出
+	pYaw_ = std::atan2(toTarget.x, toTarget.z);							// LH(+Z前)
+	pPitch_ = std::asin(std::clamp(toTarget.y, -1.0f, 1.0f));
+	pPitch_ = std::clamp(pPitch_, -kPitchLim_, kPitchLim_);                 // 上下 ±80°
 
-	//----------------------------------------
-	// ⑤ 角度を補間して反映
-	yaw_ = LerpAngle(yaw_, targetYaw, t);
-	pitch_ = LerpAngle(pitch_, targetPitch, t);
+	// 累積YawPitchからクオータニオンを生成
+	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
+	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pPitch_);
+	cameraRotation_ = Normalize(qYaw * qPitch);
 
-	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), yaw_);
-	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pitch_);
-	boomRot_ = Normalize(qYaw * qPitch);
-
-	//----------------------------------------
-	// ⑥ カメラ位置補間
-	Vector3 forward = Normalize(Transform(MakeForwardVector3(), boomRot_));
+	Vector3 forward = Normalize(Transform(MakeForwardVector3(), cameraRotation_));
 	Vector3 targetEye = pivot - forward * radius_;
 
+	// カメラ位置補間
+	float t = 1.0f - std::exp(-dt / kHardLockLag_);
 	eye_ = Lerp(eye_, targetEye, t);
 	target_ = Lerp(target_, targetWorldPos, t);
 }
 
 void PlayerCamera::FollowCamera(float dt) {
-	//----------------------------------------
-	// ① ピボット
+
+	// ピボット
 	const Vector3 pivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 
-	//----------------------------------------
-	// ② 現在ブーム姿勢から前方ベクトル
-	const Vector3 forward = Normalize(Transform(MakeForwardVector3(), boomRot_));
+	// 累積YawPitchからクオータニオンを生成
+	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
+	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pPitch_);
+	cameraRotation_ = Normalize(qYaw * qPitch);
 
-	//----------------------------------------
-	// ③ 目標カメラ位置
+	const Vector3 forward = Normalize(Transform(MakeForwardVector3(), cameraRotation_));
+
+	// 目標カメラ位置
 	const Vector3 targetEye = pivot - forward * radius_;
 	const Vector3 targetTarget = pivot;
 
-	//----------------------------------------
-	// ④ 補間
+	// 補間
 	float t = 1.0f - std::exp(-dt / kFollowLag_);
 
 	eye_ = Lerp(eye_, targetEye, t);
