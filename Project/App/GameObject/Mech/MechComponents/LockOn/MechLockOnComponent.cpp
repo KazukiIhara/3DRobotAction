@@ -33,6 +33,9 @@ bool MechLockOnComponent::GetEnableHardLockOn() const {
 }
 
 void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
+	// 前フレームのターゲットをリセット
+	lockOnTarget_.reset();
+	
 	// lockOnView
 	LockOnView view = mechCore->GetLockOnView();
 	const float fovY = 60.f * (std::numbers::pi_v<float> / 180.0f);
