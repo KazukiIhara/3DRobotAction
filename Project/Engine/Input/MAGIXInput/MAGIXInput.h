@@ -16,7 +16,7 @@ class DeltaTimer;
 class MAGIXInput {
 public:
 	MAGIXInput(DeltaTimer* deltaTimer);
-	~MAGIXInput();
+	~MAGIXInput() = default;
 
 	// 更新
 	void Update();

@@ -10,8 +10,6 @@ MAGIXInput::MAGIXInput(DeltaTimer* deltaTimer) {
 	deltaTimer_ = deltaTimer;
 }
 
-MAGIXInput::~MAGIXInput() {}
-
 void MAGIXInput::Update() {
 	for (int i = 0; i < 4; ++i) {
 		preGamepadStates[i] = gamepadStates[i];
