@@ -9,7 +9,7 @@ class MechCore;
 class PlayerCamera :public Camera3D {
 public:
 	PlayerCamera(const std::string& name);
-	~PlayerCamera();
+	~PlayerCamera() = default;
 
 	void Update()override;
 
@@ -32,7 +32,7 @@ private:
 
 	// オフセットの半径
 	float radius_ = 6.0f;
-	
+
 	// カメラの感度
 	float sensYaw_ = 10.0f;
 	float sensPitch_ = 10.0f;

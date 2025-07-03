@@ -11,10 +11,6 @@ PlayerCamera::PlayerCamera(const std::string& name)
 
 }
 
-PlayerCamera::~PlayerCamera() {
-
-}
-
 void PlayerCamera::Update() {
 	const float dt = MAGISYSTEM::GetDeltaTime();
 

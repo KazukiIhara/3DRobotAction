@@ -414,7 +414,7 @@ Vector3 MAGIMath::Transform(const Vector3& vector, const Quaternion& rotation) {
 }
 
 Vector4 MAGIMath::Transform(const Vector4& v, const Matrix4x4& m) {
-	Vector4 result;
+	Vector4 result{};
 	result.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + v.w * m.m[3][0];
 	result.y = v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + v.w * m.m[3][1];
 	result.z = v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + v.w * m.m[3][2];
