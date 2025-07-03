@@ -28,6 +28,10 @@ private:
 
 	Quaternion boomRot_;
 
+	// 累積用変数
+	float pYaw_ = 0.0f;
+	float pPitch_ = 0.0f;
+
 	// パラメータ
 
 	// オフセットの半径
