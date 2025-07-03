@@ -5,7 +5,7 @@
 
 // MyHedder
 #include "Effects/BreakEffect/BreakEffect.h"
-#include "GameObject/Mech/MechParts/MechCore/MechCore.h"
+#include "GameObject/Mech/MechCore/MechCore.h"
 
 /// <summary>
 /// プレイヤークラス

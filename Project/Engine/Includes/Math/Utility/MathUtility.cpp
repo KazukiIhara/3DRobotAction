@@ -193,27 +193,15 @@ bool operator==(const Quaternion& q1, const Quaternion& q2) {
 }
 
 Vector3 MAGIMath::MakeZeroVector3() {
-	Vector3 result{};
-	result.x = 0.0f;
-	result.y = 0.0f;
-	result.z = 0.0f;
-	return result;
+	return Vector3(0.0f, 0.0f, 0.0f);
 }
 
 Vector3 MAGIMath::MakeRightVector3() {
-	Vector3 result{};
-	result.x = 1.0f;
-	result.y = 0.0f;
-	result.z = 0.0f;
-	return result;
+	return Vector3(1.0f, 0.0f, 0.0f);
 }
 
 Vector3 MAGIMath::MakeUpVector3() {
-	Vector3 result{};
-	result.x = 0.0f;
-	result.y = 1.0f;
-	result.z = 0.0f;
-	return result;
+	return Vector3(0.0f, 1.0f, 0.0f);
 }
 
 Vector3 MAGIMath::MakeForwardVector3() {

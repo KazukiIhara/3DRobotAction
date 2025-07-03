@@ -6,7 +6,7 @@
 
 class MechCore;
 
-class PlayerCamera:public Camera3D {
+class PlayerCamera :public Camera3D {
 public:
 	PlayerCamera(const std::string& name);
 	~PlayerCamera();
@@ -18,6 +18,7 @@ public:
 	void SetMechCore(std::weak_ptr<MechCore> mechCore);
 
 private:
+	void ApplyInput(float dt);
 	void HardLockOnCamera(float dt);
 	void FollowCamera(float dt);
 
@@ -25,13 +26,16 @@ private:
 	// 追従対象のトランスフォーム
 	Transform3D* followTargetTransform_ = nullptr;
 
-	// パラメータ
-	float radius_ = 6.0f;
-	float yawSpeed_ = 5.0f;
-	float pitchSpeed_ = 5.0f;
+	Quaternion boomRot_;
 
-	float mouseYawSpeed_ = 1.0f;
-	float mousePitchSpeed_ = 1.0f;
+	// パラメータ
+
+	// オフセットの半径
+	float radius_ = 6.0f;
+	
+	// カメラの感度
+	float sensYaw_ = 10.0f;
+	float sensPitch_ = 10.0f;
 
 	float maxPitchDegrees_ = 80.0f;
 	float minPitchDegrees_ = -80.0f;

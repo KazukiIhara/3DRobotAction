@@ -121,7 +121,7 @@ private:
 	//=======================
 
 	// 頭
-
+	std::unique_ptr<MechHead> head_ = nullptr;
 
 	// 体
 	std::unique_ptr<MechBody> body_ = nullptr;

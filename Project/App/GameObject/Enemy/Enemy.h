@@ -3,7 +3,7 @@
 // C++
 #include <memory>
 
-#include "GameObject/Mech/MechParts/MechCore/MechCore.h"
+#include "GameObject/Mech/MechCore/MechCore.h"
 
 /// <summary>
 /// 敵クラス
