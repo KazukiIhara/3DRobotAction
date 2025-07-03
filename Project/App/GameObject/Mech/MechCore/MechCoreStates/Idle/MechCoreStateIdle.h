@@ -1,7 +1,7 @@
 #pragma once
 
 // MyHedder
-#include "GameObject/Mech/MechParts/MechCore/MechCoreStates/MechCoreBaseState.h"
+#include "GameObject/Mech/MechCore/MechCoreStates/MechCoreBaseState.h"
 
 /// <summary>
 /// 待機状態

@@ -3,7 +3,7 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h" 
 
-#include "GameObject/Mech/MechParts/MechCore/MechCore.h"
+#include "GameObject/Mech/MechCore/MechCore.h"
 
 using namespace MAGIMath;
 
@@ -16,7 +16,6 @@ MechLeg::MechLeg() {
 
 	// ゲームオブジェクトマネージャに追加
 	leg_ = MAGISYSTEM::AddGameObject3D(std::move(legObject));
-
 }
 
 void MechLeg::Update(MechCore* core) {

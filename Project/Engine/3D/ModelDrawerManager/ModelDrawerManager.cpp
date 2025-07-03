@@ -1,10 +1,7 @@
 #include "ModelDrawerManager.h"
 
-// C++
-#include <cassert>
-
 // MyHedder
-#include "Logger/Logger.h"
+#include "MAGIAssert/MAGIAssert.h"
 
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
@@ -47,7 +44,14 @@ void ModelDrawerManager::DrawModel(const std::string& modelDrawerName, const Mat
 	auto it = modelDrawers_.find(modelDrawerName);
 	if (it != modelDrawers_.end()) {
 		it->second->AddDrawCommand(worldMatrix, material);
+		return;
 	}
+
+#if defined(DEBUG)||defined(DEVELOP)
+	MAGIAssert::Assert(false, "ModelDrawer" + modelDrawerName + "が見つかりませんでした。");
+	return;
+#endif
+
 }
 
 void ModelDrawerManager::UpdateAll() {
