@@ -11,7 +11,7 @@ MechHead::MechHead() {
 	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<ModelRenderer> headModel = std::make_shared<ModelRenderer>("MechHead", "MechHead");
 
-	std::shared_ptr<GameObject3D> headObject = std::make_shared<GameObject3D>("MechHead", Vector3(0.0f, 0.6f, 0.0f));
+	std::shared_ptr<GameObject3D> headObject = std::make_shared<GameObject3D>("MechHead", Vector3(0.0f, 0.5f, 0.0f));
 	headObject->AddModelRenderer(std::move(headModel));
 
 	// ゲームオブジェクトマネージャに追加
