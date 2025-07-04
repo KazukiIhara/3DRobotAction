@@ -60,8 +60,6 @@ void Transform3D::Update() {
 
 		// ワールド行列作成
 		worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
-		// ワールド座標生成
-		worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
 
 		// 現在フレームの値を保存
 		preRotate_ = rotate_;
@@ -74,6 +72,9 @@ void Transform3D::Update() {
 		if (parent_) {
 			worldMatrix_ = worldMatrix_ * parent_->GetWorldMatrix();
 		}
+
+		// ワールド座標生成
+		worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
 
 		// もし子がいる場合
 		if (!children_.empty()) {

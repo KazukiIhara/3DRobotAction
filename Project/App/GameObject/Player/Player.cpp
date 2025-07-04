@@ -94,6 +94,7 @@ void Player::Update() {
 	// 機体更新
 	mech_->Update();
 
+
 	//// 破壊時エフェクトテスト
 	//if (ImGui::Button("PlayEffect")) {
 	//	breakEffect_ = std::make_unique<BreakEffect>(mech_->GetGameObject().lock()->GetTransform()->GetWorldPosition());
