@@ -52,10 +52,6 @@ void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
 	core_ = mechCore;
 }
 
-Vector3 PlayerCamera::GetTargetEye()const {
-	return targetEye_;
-}
-
 void PlayerCamera::ApplyInput(float dt) {
 	// 右スティック入力
 	Vector2 rs{};

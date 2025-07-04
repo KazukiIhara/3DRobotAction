@@ -17,7 +17,6 @@ public:
 
 	void SetMechCore(std::weak_ptr<MechCore> mechCore);
 
-	Vector3	GetTargetEye()const;
 private:
 	void ApplyInput(float dt);
 	void HardLockOnCamera(float dt);
