@@ -57,6 +57,8 @@ private:
 	const float kHardLockLag_ = 0.15f;
 	const float kFollowLag_ = 0.05f;
 
+	const float kCameraLag_ = 0.2f;
+
 	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
 	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };

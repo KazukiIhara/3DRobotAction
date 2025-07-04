@@ -35,6 +35,11 @@ void PlayerCamera::Update() {
 		}
 	}
 
+	// 補間
+	float t = 1.0f - std::exp(-dt / kCameraLag_);
+	eye_ = Lerp(eye_, targetEye_, t);
+	target_ = Lerp(target_, targetTarget_, t);
+
 	// カメラデータ更新
 	UpdateData();
 }
@@ -52,7 +57,7 @@ Vector3 PlayerCamera::GetTargetEye()const {
 }
 
 void PlayerCamera::ApplyInput(float dt) {
-	// ① 右スティック入力
+	// 右スティック入力
 	Vector2 rs{};
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		rs = MAGISYSTEM::GetRightStick(0);
@@ -85,27 +90,28 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 		}
 	}
 
+	Vector3 toTarget = targetWorldPos - pivot_;
+	if (!Length(toTarget)) {      // 距離ゼロ対策
+		toTarget = MakeForwardVector3();
+	}
+	Vector3 dir = Normalize(toTarget);   // 単位ベクトル
+	float lenXZ = std::sqrt(dir.x * dir.x + dir.z * dir.z);
+
+	pYaw_ = std::atan2(dir.x, dir.z);
+	pPitch_ = std::atan2(-dir.y, lenXZ);
 
 	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
 	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pPitch_);
 	cameraRotation_ = Normalize(qYaw * qPitch);
 
-	const Vector3 forward = Normalize(Transform(MakeForwardVector3(), cameraRotation_));
+	forward_ = Normalize(Transform(MakeForwardVector3(), cameraRotation_));
 
 	// 目標カメラ位置
-	targetEye_ = pivot_ - forward * radius_;
+	targetEye_ = pivot_ - forward_ * radius_;
 	targetTarget_ = targetWorldPos;
-
-	// 補間
-	float t = 1.0f - std::exp(-dt / kFollowLag_);
-
-	eye_ = Lerp(eye_, targetEye_, t);
-	target_ = Lerp(target_, targetTarget_, t);
 }
 
 void PlayerCamera::FollowCamera(float dt) {
-	// ピボット
-	const Vector3 pivot = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 
 	// 累積YawPitchからクオータニオンを生成
 	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
@@ -115,12 +121,7 @@ void PlayerCamera::FollowCamera(float dt) {
 	forward_ = Normalize(Transform(MakeForwardVector3(), cameraRotation_));
 
 	// 目標カメラ位置
-	targetEye_ = pivot - forward_ * radius_;
-	targetTarget_ = pivot;
+	targetEye_ = pivot_ - forward_ * radius_;
+	targetTarget_ = pivot_;
 
-	// 補間
-	float t = 1.0f - std::exp(-dt / kFollowLag_);
-
-	eye_ = Lerp(eye_, targetEye_, t);
-	target_ = Lerp(target_, targetTarget_, t);
 }
