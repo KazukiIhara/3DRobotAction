@@ -19,8 +19,12 @@ void PlayerCamera::Update() {
 	// 入力を判定
 	ApplyInput(dt);
 
+	// 補間
+	const float pivotT = 1.0f - std::exp(-dt / kPivotLag_);
+
 	// ピボット計算
-	pivot_ = followTargetTransform_->GetWorldPosition() + pivotOffset_;
+	targetPivot_ = followTargetTransform_->GetWorldPosition() + pivotOffset_;
+	pivot_ = Lerp(pivot_, targetPivot_, pivotT);
 
 	if (auto core = core_.lock()) {
 		// ハードロックオンオフフラグ取得
@@ -35,10 +39,8 @@ void PlayerCamera::Update() {
 		}
 	}
 
-	// 補間
-	float t = 1.0f - std::exp(-dt / kCameraLag_);
-	eye_ = Lerp(eye_, targetEye_, t);
-	target_ = Lerp(target_, targetTarget_, t);
+	eye_ = targetEye_;
+	target_ = targetTarget_;
 
 	// カメラデータ更新
 	UpdateData();
@@ -53,6 +55,7 @@ void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
 }
 
 void PlayerCamera::ApplyInput(float dt) {
+
 	// 右スティック入力
 	Vector2 rs{};
 	if (MAGISYSTEM::IsPadConnected(0)) {
@@ -73,9 +76,11 @@ void PlayerCamera::ApplyInput(float dt) {
 	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pPitch_);
 
 	cameraRotation_ = Normalize(qYaw * qPitch);
+
 }
 
 void PlayerCamera::HardLockOnCamera(float dt) {
+
 	// ターゲット座標取得
 	Vector3 targetWorldPos{};
 	if (auto core = core_.lock()) {
@@ -105,6 +110,7 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 	// 目標カメラ位置
 	targetEye_ = pivot_ - forward_ * radius_;
 	targetTarget_ = targetWorldPos;
+
 }
 
 void PlayerCamera::FollowCamera(float dt) {

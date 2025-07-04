@@ -6,7 +6,7 @@
 
 class MechCore;
 
-class PlayerCamera:public Camera3D {
+class PlayerCamera :public Camera3D {
 public:
 	PlayerCamera(const std::string& name);
 	~PlayerCamera() = default;
@@ -38,6 +38,8 @@ private:
 	// カメラの前方ベクトル
 	Vector3	forward_ = { 0.0f,0.0f,1.0f };
 
+	// 目標ピボット
+	Vector3 targetPivot_ = { 0.0f,0.0f,0.0f };
 	// 目標目線座標
 	Vector3 targetEye_ = { 0.0f,0.0f,0.0f };
 	// 目標目標座標
@@ -56,7 +58,7 @@ private:
 	const float kHardLockLag_ = 0.15f;
 	const float kFollowLag_ = 0.05f;
 
-	const float kCameraLag_ = 0.2f;
+	const float kPivotLag_ = 0.2f;
 
 	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
