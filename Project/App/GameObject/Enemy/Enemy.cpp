@@ -14,12 +14,6 @@ void Enemy::Update() {
 	InputCommand command{};
 
 	command.moveDirection = { 0.0f,1.0f };
-
-	ImGui::Begin("EnemyBodyWPos");
-	Vector3 mechBWpos = mech_->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
-	ImGui::DragFloat3("", &mechBWpos.x);
-	ImGui::End();
-	ImGui::End();
 	
 	// コマンドセット
 	mech_->SetInputCommand(command);

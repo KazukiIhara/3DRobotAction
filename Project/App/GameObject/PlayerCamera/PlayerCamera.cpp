@@ -64,9 +64,10 @@ void PlayerCamera::ApplyInput(float dt) {
 
 	// 右スティック入力
 	Vector2 rs{};
-	if (MAGISYSTEM::IsPadConnected(0)) {
-		rs = MAGISYSTEM::GetRightStick(0);
+	if (auto core = core_.lock()) {
+		rs = core->GetInputCommand().cameraRotDirection;
 	}
+
 	if (LengthSquared(rs) < 1e-6f) return;
 
 	// 入力を角速度へ
@@ -120,7 +121,7 @@ void PlayerCamera::HardLockCamera(float dt) {
 	// ターゲット設定
 	const float targetT = 1.0f - std::exp(-dt / kHardLockTargetLag_);
 
-    targetTarget_ = Lerp(targetTarget_, targetWorldPos, targetT);
+	targetTarget_ = Lerp(targetTarget_, targetWorldPos, targetT);
 
 }
 

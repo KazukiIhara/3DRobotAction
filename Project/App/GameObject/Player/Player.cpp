@@ -23,7 +23,7 @@ Player::Player() {
 
 void Player::Update() {
 	InputCommand command{};
-	Vector2 stick{};
+	Vector2 lStick{};
 	Vector3 forward{};
 	Vector3 right{};
 	Vector2 moveDir{};
@@ -35,7 +35,10 @@ void Player::Update() {
 	// パッド接続確認
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		// スティックによる移動入力
-		stick = MAGISYSTEM::GetLeftStick(0);
+		lStick = MAGISYSTEM::GetLeftStick(0);
+
+		// スティックによるカメラ入力
+		command.cameraRotDirection = MAGISYSTEM::GetRightStick(0);
 
 		// ジャンプ入力
 		command.jump = MAGISYSTEM::PushButton(0, ButtonL);
@@ -48,10 +51,10 @@ void Player::Update() {
 
 	} else { // パッドなしならキーボード入力解禁
 		// 移動入力
-		if (MAGISYSTEM::PushKey(DIK_W)) stick.y += 1.0f;
-		if (MAGISYSTEM::PushKey(DIK_A)) stick.x -= 1.0f;
-		if (MAGISYSTEM::PushKey(DIK_S)) stick.y -= 1.0f;
-		if (MAGISYSTEM::PushKey(DIK_D)) stick.x += 1.0f;
+		if (MAGISYSTEM::PushKey(DIK_W)) lStick.y += 1.0f;
+		if (MAGISYSTEM::PushKey(DIK_A)) lStick.x -= 1.0f;
+		if (MAGISYSTEM::PushKey(DIK_S)) lStick.y -= 1.0f;
+		if (MAGISYSTEM::PushKey(DIK_D)) lStick.x += 1.0f;
 
 		// ジャンプ入力
 		command.jump = MAGISYSTEM::PushKey(DIK_SPACE);
@@ -64,14 +67,14 @@ void Player::Update() {
 	}
 
 	// 移動入力があった場合
-	if (Length(stick)) {
+	if (Length(lStick)) {
 		// カメラに対しての移動方向を計算
 		if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
 			forward = cucam->GetTarget() - cucam->GetEye();
 			forward.y = 0.0f;
 			forward = Normalize(forward);
 			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
-			const Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
+			const Vector3 tempDir = Normalize(right * lStick.x + forward * lStick.y);
 			moveDir = { tempDir.x, tempDir.z };
 		} else {
 			MAGIAssert::Assert(false, "Not found SceneCamera!");

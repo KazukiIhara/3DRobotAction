@@ -25,7 +25,7 @@ class MechCoreBaseState;
 // 入力コマンド
 struct InputCommand {
 	Vector2 moveDirection = { 0.0f,0.0f };
-	Vector2 cameraDirection = { 0.0f,0.0f };
+	Vector2 cameraRotDirection = { 0.0f,0.0f };
 	bool jump = false;
 	bool quickBoost = false;
 	bool assultBoost = false;
