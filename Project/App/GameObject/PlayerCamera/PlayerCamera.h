@@ -17,6 +17,7 @@ public:
 
 	void SetMechCore(std::weak_ptr<MechCore> mechCore);
 
+	Vector3	GetTargetEye()const;
 private:
 	void ApplyInput(float dt);
 	void HardLockOnCamera(float dt);
@@ -32,6 +33,16 @@ private:
 
 	// カメラの回転
 	Quaternion cameraRotation_;
+
+	// ピボット
+	Vector3 pivot_ = { 0.0f,0.0f,0.0f };
+	// カメラの前方ベクトル
+	Vector3	forward_ = { 0.0f,0.0f,1.0f };
+
+	// 目標目線座標
+	Vector3 targetEye_ = { 0.0f,0.0f,0.0f };
+	// 目標目標座標
+	Vector3	targetTarget_ = { 0.0f,0.0f,1.0f };
 
 	// パラメータ
 

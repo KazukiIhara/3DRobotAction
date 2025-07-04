@@ -205,11 +205,11 @@ Vector3 MAGIMath::MakeUpVector3() {
 }
 
 Vector3 MAGIMath::MakeForwardVector3() {
-	Vector3 result{};
-	result.x = 0.0f;
-	result.y = 0.0f;
-	result.z = 1.0f;
-	return result;
+	return Vector3(0.0f, 0.0f, 1.0f);
+}
+
+Vector3 MAGIMath::MakeBackVector3() {
+	return Vector3(0.0f, 0.0f, -1.0f);
 }
 
 float MAGIMath::Length(const Vector2& a) {

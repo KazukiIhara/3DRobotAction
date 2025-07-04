@@ -132,6 +132,8 @@ namespace MAGIMath {
 	Vector3 MakeUpVector3();
 	// 前方のベクトル
 	Vector3 MakeForwardVector3();
+	// 後方ベクトル
+	Vector3	MakeBackVector3();
 
 	// ベクトルの長さ
 	float Length(const Vector2& a);
