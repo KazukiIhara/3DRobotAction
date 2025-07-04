@@ -444,7 +444,7 @@ public: // エンジンの機能
 	// Frustumの転送
 	static void TransferCurrentCamera3DFrustum(uint32_t rootParameterIndex);
 	// カメラシェイク
-	static void ShakeCurrentCamera3D(float duration, float intensity);
+	static void ShakeCurrentCamera3D(float duration, const Vector3& intensity);
 	// 3Dカメラ全削除
 	static void ClearCamera3D();
 #pragma endregion

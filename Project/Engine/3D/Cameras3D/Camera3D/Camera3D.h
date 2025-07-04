@@ -29,7 +29,7 @@ public:
 	void ApplyCurrent();
 
 	// カメラを揺らす
-	void Shake(float duration, float intensity);
+	void Shake(float duration, const Vector3& intensity);
 	void ApplyShake();
 
 	// カメラのデバッグ描画
@@ -111,8 +111,10 @@ protected:
 	// カメラシェイク用変数
 	float shakeTime_ = 0;
 	float shakeDuration_ = 0;
-	float shakeIntensity_ = 0.0f;
+	Vector3 shakeIntensity_ = { 0.0f,0.0f,0.0f };
 	Vector3 shakeStartTranslate_ = { 0.0f,0.0f,0.0f };
+	Vector3 shakeCumulative_ = { 0.0f,0.0f,0.0f };
+
 private:
 	// Camera用リソース
 	ComPtr<ID3D12Resource> cameraResource_ = nullptr;

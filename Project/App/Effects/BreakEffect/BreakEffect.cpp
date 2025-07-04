@@ -171,7 +171,7 @@ void BreakEffect::UpdateHaze() {
 		currentState_ = State::Explosion;
 		starEmitter_->EmitAll();
 		hazeEmitter_->GetEmitterSetting().isRepeat = false;
-		MAGISYSTEM::ShakeCurrentCamera3D(0.5f, 0.8f);
+		MAGISYSTEM::ShakeCurrentCamera3D(0.5f, Vector3(0.8f,0.8f,0.8f));
 	}
 }
 

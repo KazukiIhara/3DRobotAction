@@ -17,7 +17,6 @@ MechBody::MechBody() {
 	// ゲームオブジェクトマネージャに追加
 	body_ = MAGISYSTEM::AddGameObject3D(std::move(bodyObject));
 
-
 }
 
 void MechBody::Update(MechCore* mechCore) {

@@ -85,7 +85,7 @@ void Camera3DManager::DrawCurrentCameraFrustum() {
 	}
 }
 
-void Camera3DManager::ShakeCurrentCamera(float duration, float intensity) {
+void Camera3DManager::ShakeCurrentCamera(float duration, const Vector3& intensity) {
 #if defined(DEBUG) || defined(DEVELOP)
 	if (isDebugCamera_) {
 		debugCamera_->Shake(duration, intensity);

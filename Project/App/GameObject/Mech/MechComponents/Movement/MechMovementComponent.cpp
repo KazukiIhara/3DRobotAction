@@ -64,6 +64,9 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 
 	// タイマーセット
 	quickBoostTimer_ = 0.0f;
+
+	// カメラ横揺れ
+	MAGISYSTEM::ShakeCurrentCamera3D(kQuickBoostCancelTime_, kQuickBoostCameraShakeIntensity_);
 }
 
 void MechMovementComponent::QuickBoostUpdate() {

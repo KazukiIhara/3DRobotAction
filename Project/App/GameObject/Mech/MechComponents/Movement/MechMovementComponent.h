@@ -88,6 +88,7 @@ private:
 	const float kQuickBoostTime_ = 0.6f;
 	// クイックブーストキャンセル時間
 	const float kQuickBoostCancelTime_ = 0.3f;
+	const Vector3 kQuickBoostCameraShakeIntensity_ = { 0.0f,0.0f,0.0f };
 
 	// ジャンプの初速度
 	const float kJumpFirstSpeed_ = 10.0f;
