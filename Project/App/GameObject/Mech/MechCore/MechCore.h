@@ -43,7 +43,7 @@ struct LockOnView {
 	// ニアクリップ距離
 	float nearClipRange = 0.1f;
 	// ファークリップ距離
-	float farClipRange = 50.0f;
+	float farClipRange = 100.0f;
 };
 
 // 状態

@@ -85,7 +85,7 @@ void Player::Update() {
 
 	// ロックオンコンポーネント用のカメラを作成、セット
 	LockOnView lockOnView{};
-	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera").lock()) {
+	if (auto camera = dynamic_cast<PlayerCamera*>(mech_->GetGameObject().lock()->GetCamera3D("MainCamera").lock().get())) {
 		lockOnView.eye = camera->GetEye();
 		lockOnView.target = camera->GetTarget();
 	}

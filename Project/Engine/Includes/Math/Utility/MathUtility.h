@@ -132,6 +132,8 @@ namespace MAGIMath {
 	Vector3 MakeUpVector3();
 	// 前方のベクトル
 	Vector3 MakeForwardVector3();
+	// 後方ベクトル
+	Vector3	MakeBackVector3();
 
 	// ベクトルの長さ
 	float Length(const Vector2& a);
@@ -143,6 +145,7 @@ namespace MAGIMath {
 
 	// ベクトルの長さとの二乗値
 	float LengthSquared(const Vector3& v);
+	float LengthSquared(const Vector2& v);
 
 	// 度数法からラジアンに変換
 	float DegreeToRadian(float degree);

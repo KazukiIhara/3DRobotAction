@@ -19,14 +19,31 @@ public:
 
 private:
 	void ApplyInput(float dt);
-	void HardLockOnCamera(float dt);
-	void FollowCamera(float dt);
+	void HardLockCamera(float dt);
+	void FollowCamera();
 
 private:
 	// 追従対象のトランスフォーム
 	Transform3D* followTargetTransform_ = nullptr;
 
-	Quaternion boomRot_;
+	// 累積用変数
+	float pYaw_ = 0.0f;
+	float pPitch_ = 0.0f;
+
+	// カメラの回転
+	Quaternion cameraRotation_;
+
+	// ピボット
+	Vector3 pivot_ = { 0.0f,0.0f,0.0f };
+	// カメラの前方ベクトル
+	Vector3	forward_ = { 0.0f,0.0f,1.0f };
+
+	// 目標ピボット
+	Vector3 targetPivot_ = { 0.0f,0.0f,0.0f };
+	// 目標目線座標
+	Vector3 targetEye_ = { 0.0f,0.0f,0.0f };
+	// 目標目標座標
+	Vector3	targetTarget_ = { 0.0f,0.0f,1.0f };
 
 	// パラメータ
 
@@ -34,25 +51,21 @@ private:
 	float radius_ = 6.0f;
 
 	// カメラの感度
-	float sensYaw_ = 10.0f;
-	float sensPitch_ = 10.0f;
+	float sensYaw_ = 8.0f;
+	float sensPitch_ = 6.0f;
 
-	float maxPitchDegrees_ = 80.0f;
-	float minPitchDegrees_ = -80.0f;
+	// カメラ補間速度
+	const float kPivotLag_ = 0.2f;
 
-	float followLagHorizontal_ = 0.2f;
-	float followLagVertical_ = 0.05f;
+	// ターゲットにカメラを向ける速度
+	const float kHardLockTargetLag_ = 0.25f;
+	const float kHardLockRotLag_ = 0.25f;
 
-	float rotLagYaw_ = 0.15f;   // 水平回転ラグ (秒)
-	float rotLagPitch_ = 0.05f;   // 垂直回転ラグ (秒)
+	// ピッチの上限角度
+	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
-	float focusBias_ = 0.5f;
-
-	float shoulderSign_ = 0.0f;
+	// ピボットのオフセット
 	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
-	float minBoomHeight_ = 1.0f;
-
-	Vector3 smoothedPivot_{};
 
 	// 機体を受け取る
 	std::weak_ptr<MechCore> core_;

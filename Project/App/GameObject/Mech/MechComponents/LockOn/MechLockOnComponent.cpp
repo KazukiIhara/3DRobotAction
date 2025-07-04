@@ -35,10 +35,10 @@ bool MechLockOnComponent::GetEnableHardLockOn() const {
 void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 	// 前フレームのターゲットをリセット
 	lockOnTarget_.reset();
-	
+
 	// lockOnView
 	LockOnView view = mechCore->GetLockOnView();
-	const float fovY = 60.f * (std::numbers::pi_v<float> / 180.0f);
+	const float fovY = 65.0f * (std::numbers::pi_v<float> / 180.0f);
 	const float aspect = 16.0f / 9.0f;
 
 	// View, Projection, VP
@@ -50,6 +50,7 @@ void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 	float bestScore = std::numeric_limits<float>::max();
 	std::weak_ptr<MechCore> target;
 	Vector3 targetPos{};
+	Vector3 playerPos = mechCore->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 
 	for (auto& wpTarget : targetList_) {
 		if (auto tgtCore = wpTarget.lock()) {
@@ -62,17 +63,16 @@ void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 			// 視錐台外 or 背面
 			if (clip.w <= 0.0f) continue;                // 背面
 
+			// ロックオン距離外
+			if (Length(playerPos - targetPos) > lockOnRange_) continue;
+
+			// NDC外
 			Vector3 ndc = { clip.x, clip.y, clip.z };
 			ndc /= clip.w;
-			if (std::abs(ndc.x) > 1.f || std::abs(ndc.y) > 1.f || ndc.z < 0.f || ndc.z > 1.f)              // NDC 外
-				continue;
+			if (std::abs(ndc.x) > 1.f || std::abs(ndc.y) > 1.f || ndc.z < 0.f || ndc.z > 1.f) continue;
 
 			// 画面中心からの距離をスコアに
 			float score = Length(Vector2{ ndc.x, ndc.y });
-
-			// 距離によるブースト
-			float dist = Length(posW - view.eye);
-			score *= (1.0f + 0.1f * dist);
 
 			if (score < bestScore) {
 				bestScore = score;
