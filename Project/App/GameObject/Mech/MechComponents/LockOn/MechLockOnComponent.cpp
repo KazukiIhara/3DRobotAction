@@ -46,8 +46,9 @@ void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 	const Matrix4x4 P = MakePerspectiveFovMatrix(fovY, aspect, view.nearClipRange, view.farClipRange);
 	Matrix4x4 VP = V * P;
 
-	// 最も中央に近いターゲット探索
+	// 最も中央に近いターゲット探
 	float bestScore = std::numeric_limits<float>::max();
+
 	std::weak_ptr<MechCore> target;
 	Vector3 targetPos{};
 	Vector3 playerPos = mechCore->GetGameObject().lock()->GetTransform()->GetWorldPosition();
@@ -64,7 +65,9 @@ void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 			if (clip.w <= 0.0f) continue;                // 背面
 
 			// ロックオン距離外
-			if (Length(playerPos - targetPos) > lockOnRange_) continue;
+			if (Length(playerPos - posW) > lockOnRange_) {
+				continue;
+			}
 
 			// NDC外
 			Vector3 ndc = { clip.x, clip.y, clip.z };
