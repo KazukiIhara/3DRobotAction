@@ -19,8 +19,8 @@ public:
 
 private:
 	void ApplyInput(float dt);
-	void HardLockOnCamera(float dt);
-	void FollowCamera(float dt);
+	void HardLockCamera(float dt);
+	void FollowCamera();
 
 private:
 	// 追従対象のトランスフォーム
@@ -55,13 +55,16 @@ private:
 	float sensPitch_ = 6.0f;
 
 	// カメラ補間速度
-	const float kHardLockLag_ = 0.15f;
-	const float kFollowLag_ = 0.05f;
-
 	const float kPivotLag_ = 0.2f;
 
+	// ターゲットにカメラを向ける速度
+	const float kHardLockTargetLag_ = 0.25f;
+	const float kHardLockRotLag_ = 0.25f;
+
+	// ピッチの上限角度
 	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
+	// ピボットのオフセット
 	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
 
 	// 機体を受け取る

@@ -12,8 +12,10 @@ PlayerCamera::PlayerCamera(const std::string& name)
 }
 
 void PlayerCamera::Update() {
+	// デルタタイムを取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
+	// ターゲットがいなければ早期リターン
 	if (!followTargetTransform_) return;
 
 	// 入力を判定
@@ -30,15 +32,19 @@ void PlayerCamera::Update() {
 		// ハードロックオンオフフラグ取得
 		if (core->GetLockOnComponent()->GetEnableHardLockOn()) {
 			if (core->GetLockOnComponent()->GetLockOnTarget().lock()) { // ターゲットあり
-				HardLockOnCamera(dt);
+				HardLockCamera(dt);
 			} else { // ターゲットなし
-				FollowCamera(dt);
+				FollowCamera();
 			}
 		} else { // ハードロックオンオフ
-			FollowCamera(dt);
+			FollowCamera();
 		}
 	}
 
+	// 前方ベクトルと半径からカメラの目標座標を計算
+	targetEye_ = pivot_ - forward_ * radius_;
+
+	// ロックオン関数で計算した値を取得
 	eye_ = targetEye_;
 	target_ = targetTarget_;
 
@@ -79,7 +85,7 @@ void PlayerCamera::ApplyInput(float dt) {
 
 }
 
-void PlayerCamera::HardLockOnCamera(float dt) {
+void PlayerCamera::HardLockCamera(float dt) {
 
 	// ターゲット座標取得
 	Vector3 targetWorldPos{};
@@ -92,14 +98,18 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 	}
 
 	Vector3 toTarget = targetWorldPos - pivot_;
-	if (!Length(toTarget)) {      // 距離ゼロ対策
+	if (!Length(toTarget)) {
 		toTarget = MakeForwardVector3();
 	}
-	Vector3 dir = Normalize(toTarget);   // 単位ベクトル
+	Vector3 dir = Normalize(toTarget);
 	float lenXZ = std::sqrt(dir.x * dir.x + dir.z * dir.z);
 
-	pYaw_ = std::atan2(dir.x, dir.z);
-	pPitch_ = std::atan2(-dir.y, lenXZ);
+	const float rotT = 1.0f - std::exp(-dt / kHardLockRotLag_);
+	const float targetYaw = std::atan2(dir.x, dir.z);
+	const float targetPitch = std::atan2(-dir.y, lenXZ);
+
+	pYaw_ = LerpAngle(pYaw_, targetYaw, rotT);
+	pPitch_ = LerpAngle(pPitch_, targetPitch, rotT);
 
 	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
 	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pPitch_);
@@ -107,13 +117,14 @@ void PlayerCamera::HardLockOnCamera(float dt) {
 
 	forward_ = Normalize(Transform(MakeForwardVector3(), cameraRotation_));
 
-	// 目標カメラ位置
-	targetEye_ = pivot_ - forward_ * radius_;
-	targetTarget_ = targetWorldPos;
+	// ターゲット設定
+	const float targetT = 1.0f - std::exp(-dt / kHardLockTargetLag_);
+
+    targetTarget_ = Lerp(targetTarget_, targetWorldPos, targetT);
 
 }
 
-void PlayerCamera::FollowCamera(float dt) {
+void PlayerCamera::FollowCamera() {
 
 	// 累積YawPitchからクオータニオンを生成
 	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
@@ -122,8 +133,7 @@ void PlayerCamera::FollowCamera(float dt) {
 
 	forward_ = Normalize(Transform(MakeForwardVector3(), cameraRotation_));
 
-	// 目標カメラ位置
-	targetEye_ = pivot_ - forward_ * radius_;
+	// ターゲット設定
 	targetTarget_ = pivot_;
 
 }
