@@ -416,12 +416,13 @@ public: // エンジンの機能
 #pragma region GameObject3DManager
 	// ゲームオブジェクト3Dを追加
 	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap = true);
-
+	// ゲームオブジェクト3Dを検索して取得
+	static std::weak_ptr<GameObject3D> FindGameObject3D(const std::string& objectName);
 #pragma endregion
 
 #pragma region Camera2DManager
-	// 2Dカメラの追加
-	static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
+		// 2Dカメラの追加
+		static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
 	// 2Dカメラの取得
 	static Camera2D* FindCamera2D(const std::string& cameraName);
 	// 使用する2Dカメラのセット

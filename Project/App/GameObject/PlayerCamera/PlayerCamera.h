@@ -35,8 +35,6 @@ private:
 
 	// ピボット
 	Vector3 pivot_ = { 0.0f,0.0f,0.0f };
-	// カメラの前方ベクトル
-	Vector3	forward_ = { 0.0f,0.0f,1.0f };
 
 	// 目標ピボット
 	Vector3 targetPivot_ = { 0.0f,0.0f,0.0f };

@@ -78,7 +78,7 @@ inline void SampleScene<Data>::Initialize() {
 	// カメラ
 
 	// シーンカメラ作成
-	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>("MainCamera");
+	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>("MainCamera", true);
 	sceneCamera->ApplyCurrent();
 	// マネージャに追加
 	sceneCamera_ = MAGISYSTEM::AddCamera3D(std::move(sceneCamera));
@@ -121,6 +121,11 @@ inline void SampleScene<Data>::Update() {
 	if (ImGui::Button("Import")) {
 		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
 		MAGISYSTEM::ImportSceneData("SceneData");
+		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
+			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
+				camera->ApplyCurrent();
+			}
+		}
 	}
 	ImGui::End();
 
