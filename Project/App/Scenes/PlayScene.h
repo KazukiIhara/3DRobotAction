@@ -157,6 +157,13 @@ inline void PlayScene<Data>::Initialize() {
 template<typename Data>
 inline void PlayScene<Data>::Update() {
 
+	ImGui::Begin("SceneImport");
+	if (ImGui::Button("Import")) {
+		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
+		MAGISYSTEM::ImportSceneData("SceneData", false);
+	}
+	ImGui::End();
+
 	/*ImGui::Begin("VignetteParamater");
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
 	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
