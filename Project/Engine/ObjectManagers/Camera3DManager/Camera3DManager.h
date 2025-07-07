@@ -24,7 +24,7 @@ public:
 	void TransferCurrentCameraFrustum(uint32_t rootParameterIndex);
 
 	void DrawCurrentCameraFrustum();
-	void ShakeCurrentCamera(float duration, float intensity);
+	void ShakeCurrentCamera(float duration, const Vector3& intensity);
 
 	std::weak_ptr<Camera3D> Add(std::shared_ptr<Camera3D> newCamera3D);
 

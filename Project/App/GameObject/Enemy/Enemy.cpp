@@ -12,8 +12,6 @@ Enemy::Enemy() {
 void Enemy::Update() {
 	// コマンド
 	InputCommand command{};
-
-	command.moveDirection = { 0.0f,1.0f };
 	
 	// コマンドセット
 	mech_->SetInputCommand(command);

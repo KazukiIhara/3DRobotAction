@@ -90,19 +90,26 @@ void Camera3D::ApplyCurrent() {
 	MAGISYSTEM::SetCurrentCamera3D(this);
 }
 
-void Camera3D::Shake(float duration, float intensity) {
+void Camera3D::Shake(float duration, const Vector3& intensity) {
 	shakeTime_ = duration;
 	shakeDuration_ = duration;
 	shakeIntensity_ = intensity;
-	shakeStartTranslate_ = eye_;
+	shakeCumulative_ = { 0.0f,0.0f,0.0f };
 }
 
 void Camera3D::ApplyShake() {
 	if (shakeDuration_ > 0) {
 		float multiplyer = shakeDuration_ / shakeTime_;
 		// ランダムなシェイクオフセットを生成
-		Vector3 shakeOffset = Random::GenerateVector3(-shakeIntensity_ * multiplyer, shakeIntensity_ * multiplyer);
-		eye_ = shakeStartTranslate_ + shakeOffset;
+		Vector3 shakeOffset{};
+		shakeOffset.x = Random::GenerateFloat(-shakeIntensity_.x * multiplyer, shakeIntensity_.x * multiplyer);
+		shakeOffset.y = Random::GenerateFloat(-shakeIntensity_.y * multiplyer, shakeIntensity_.y * multiplyer);
+		shakeOffset.z = Random::GenerateFloat(-shakeIntensity_.z * multiplyer, shakeIntensity_.z * multiplyer);
+
+		// 揺らす
+		eye_ += shakeOffset;
+		// 揺らした量を累積して保持する
+		shakeCumulative_ += shakeOffset;
 
 		// シェイクの時間を減らす
 		shakeDuration_ -= MAGISYSTEM::GetDeltaTime();
@@ -110,7 +117,8 @@ void Camera3D::ApplyShake() {
 		// シェイクが終了した場合リセット
 		if (shakeDuration_ <= 0) {
 			shakeDuration_ = 0;
-			eye_ = shakeStartTranslate_;
+			// 揺らした分戻す
+			eye_ -= shakeCumulative_;
 		}
 	}
 }
