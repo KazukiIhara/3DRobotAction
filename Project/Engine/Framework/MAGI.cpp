@@ -1226,7 +1226,7 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 }
 
 void MAGISYSTEM::LoadSceneDataFromJson(const std::string& fileName) {
-	sceneDataContainer_->LoadFromJson(fileName);
+	sceneDataContainer_->LoadBlenderLevelDataFromJson(fileName);
 }
 
 Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
@@ -1239,6 +1239,10 @@ std::weak_ptr<ModelRenderer> MAGISYSTEM::AddRenderer3D(std::shared_ptr<ModelRend
 
 std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap) {
 	return gameObject3DManager_->Add(std::move(gameObjec3D), insertMap);
+}
+
+std::weak_ptr<GameObject3D> MAGISYSTEM::FindGameObject3D(const std::string& objectName) {
+	return gameObject3DManager_->Find(objectName);
 }
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {

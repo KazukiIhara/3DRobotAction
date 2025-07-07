@@ -5,7 +5,8 @@
 using namespace MAGIMath;
 
 ThirdPersonCamera::ThirdPersonCamera(const std::string& name)
-	:Camera3D(name, false) {}
+	:Camera3D(name, false) {
+}
 
 ThirdPersonCamera::~ThirdPersonCamera() {
 

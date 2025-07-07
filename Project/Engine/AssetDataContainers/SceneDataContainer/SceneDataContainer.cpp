@@ -20,7 +20,7 @@ SceneDataContainer::~SceneDataContainer() {
 	Logger::Log("SceneDataContainer Finalize\n");
 }
 
-void SceneDataContainer::LoadFromJson(const std::string& fileName) {
+void SceneDataContainer::LoadBlenderLevelDataFromJson(const std::string& fileName) {
 	// 今回ぶち込むシーンデータ
 	SceneData newSceneData;
 	newSceneData.name = fileName;
@@ -85,6 +85,30 @@ void SceneDataContainer::LoadFromJson(const std::string& fileName) {
 			newObject.translate.z = static_cast<float>(transform["translate"][2]);
 
 			newSceneData.objects.push_back(newObject);
+
+		} else if (type.compare("CAMERA") == 0) {
+
+			SceneCameraData newCamera;
+
+			nlohmann::json& cameraData = object["camera_data"];
+
+			newCamera.name = object["name"];
+
+			newCamera.eye.x = static_cast<float>(cameraData["eye"][0]);
+			newCamera.eye.y = static_cast<float>(cameraData["eye"][1]);
+			newCamera.eye.z = static_cast<float>(cameraData["eye"][2]);
+
+			newCamera.target.x = static_cast<float>(cameraData["target"][0]);
+			newCamera.target.y = static_cast<float>(cameraData["target"][1]);
+			newCamera.target.z = static_cast<float>(cameraData["target"][2]);
+
+			newCamera.fovY = static_cast<float>(cameraData["fovY"]);
+
+			newCamera.nearClip = static_cast<float>(cameraData["nearClip"]);
+			newCamera.farClip = static_cast<float>(cameraData["farClip"]);
+
+			newSceneData.cameras.push_back(newCamera);
+
 		}
 
 	}

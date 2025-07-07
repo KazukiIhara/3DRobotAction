@@ -9,6 +9,16 @@
 #include "Math/Types/Vector3.h"
 #include "Math/Types/Quaternion.h"
 
+struct SceneCameraData {
+	std::string name;
+	Vector3 eye;
+	Vector3 target;
+	Vector3 up = { 0,1,0 };
+	float fovY;
+	float nearClip;
+	float farClip;
+};
+
 struct SceneObjectData {
 	std::string objectName;
 	std::string modelName;
@@ -20,6 +30,7 @@ struct SceneObjectData {
 struct SceneData {
 	std::string name;
 	std::vector<SceneObjectData> objects;
+	std::vector<SceneCameraData> cameras;
 };
 
 /// <summary>
@@ -31,7 +42,7 @@ public:
 	~SceneDataContainer();
 
 	// シーンデータをロード
-	void LoadFromJson(const std::string& fileName);
+	void LoadBlenderLevelDataFromJson(const std::string& fileName);
 
 	// シーンデータを取得
 	const SceneData& GetData(const std::string& dataName);

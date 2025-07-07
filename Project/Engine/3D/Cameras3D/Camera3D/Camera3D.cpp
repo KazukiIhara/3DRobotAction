@@ -15,6 +15,49 @@ Camera3D::Camera3D(const std::string& name, bool isUseYawPitch) {
 	eye_ = kDefaultCameraTranslate_;
 	pitch_ = kDefaultPitch_;
 
+	if (isUseYawPitch_) {
+		const Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
+		target_ = eye_ + forward;
+	}
+
+	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
+	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
+	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
+
+	CreateCameraResource();
+	MapCameraData();
+
+}
+
+Camera3D::Camera3D(const std::string& name, const Vector3& eye, float yaw, float pitch) {
+	name_ = name;
+	isUseYawPitch_ = true;
+
+	eye_ = eye;
+	yaw_ = yaw;
+	pitch_ = pitch;
+
+	if (isUseYawPitch_) {
+		const Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
+		target_ = eye_ + forward;
+	}
+
+	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
+	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
+	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
+
+	CreateCameraResource();
+	MapCameraData();
+}
+
+Camera3D::Camera3D(const std::string& name, const Vector3& eye, const Vector3& target, const Vector3& up) {
+	name_ = name;
+	isUseYawPitch_ = false;
+
+	eye_ = eye;
+	target_ = target;
+	up_ = up;
+
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
