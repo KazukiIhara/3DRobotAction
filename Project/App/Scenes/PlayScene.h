@@ -160,7 +160,7 @@ inline void PlayScene<Data>::Update() {
 	ImGui::Begin("SceneImport");
 	if (ImGui::Button("Import")) {
 		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-		MAGISYSTEM::ImportSceneData("SceneData", false);
+		MAGISYSTEM::ImportSceneData("SceneData", fals);
 	}
 	ImGui::End();
 
