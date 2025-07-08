@@ -19,4 +19,4 @@ enum class ShadowPipelineStateType {
 };
 
 // パイプラインの種類の数 
-inline constexpr uint32_t kShadowPipelineStateNum = static_cast<uint32_t>(ShadowPipelineStateType::Num);
+static const uint32_t kShadowPipelineStateNum = static_cast<uint32_t>(ShadowPipelineStateType::Num);
