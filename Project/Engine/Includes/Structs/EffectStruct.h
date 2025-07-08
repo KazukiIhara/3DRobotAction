@@ -42,11 +42,11 @@ struct EffectAnimation {
 	T GetCurrentValue(float currentTime) {
 		// アニメーションしないため動かさない
 		if (!isAnimated) {
-			return 0.0f;
+			animation.GetValue(0.0f);
 		}
 		// まだ開始前
 		if (currentTime < startTime) {
-			return 0.0f;
+			animation.GetValue(0.0f);
 		}
 
 		// アニメーション区間内
@@ -89,6 +89,10 @@ struct PlaneEffectParam {
 
 	// アニメーション時間
 	float totalTime = 1.0f;
+
+	void Initialize() {
+
+	}
 };
 
 /// <summary>
@@ -100,5 +104,4 @@ struct PlaneEffect {
 	MaterialData3D currentMaterial;				// 現在のマテリアル
 	PlaneData3D currentShape;					// 現在の形状データ
 	float currentTime = 0.0f;					// アニメーションの経過時間
-	bool isActive = true;						// 有効フラグ
 };

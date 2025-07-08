@@ -95,6 +95,11 @@ std::unique_ptr<ModelDrawerManager> MAGISYSTEM::modelDrawerManager_ = nullptr;
 std::unique_ptr<SkyBoxDrawer> MAGISYSTEM::skyBoxDrawer_ = nullptr;
 
 //
+// EffectManager
+//
+std::unique_ptr<PlaneEffectManager> MAGISYSTEM::planeEffectManager_ = nullptr;
+
+//
 // AppSystem
 //
 std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
@@ -232,6 +237,9 @@ void MAGISYSTEM::Initialize() {
 	// SkyBoxDrawer
 	skyBoxDrawer_ = std::make_unique<SkyBoxDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
+	// PlaneEffectManager
+	planeEffectManager_ = std::make_unique<PlaneEffectManager>(deltaTimer_.get(), transformManager_.get(), planeDrawer3D_.get());
+
 	// RenderPipelineController
 	renderController_ = std::make_unique<RenderController>(
 		dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(),
@@ -287,6 +295,11 @@ void MAGISYSTEM::Finalize() {
 	// RenderController
 	if (renderController_) {
 		renderController_.reset();
+	}
+
+	// PlaneEffectManager
+	if (planeEffectManager_) {
+		planeEffectManager_.reset();
 	}
 
 	// SkyBoxDrawer
@@ -558,6 +571,11 @@ void MAGISYSTEM::Update() {
 	// シーンの更新処理
 	sceneManager_->Update();
 
+	// エフェクトマネージャの更新
+
+	// 板ポリ
+	planeEffectManager_->Update();
+
 	// トランスフォームコンポーネントの更新
 	transformManager_->Update();
 
@@ -607,6 +625,11 @@ void MAGISYSTEM::Draw() {
 
 	// 3D描画オブジェクトマネージャー
 	renderer3DManager_->Draw();
+
+	// 3Dエフェクト描画
+
+	// 板ポリ
+	planeEffectManager_->Draw();
 
 	//==============================================
 	// 描画クラスの更新
@@ -1384,6 +1407,10 @@ void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix
 
 void MAGISYSTEM::SetSkyBoxTextureIndex(uint32_t skyBoxTextureIndex) {
 	skyBoxDrawer_->SetTextureIndex(skyBoxTextureIndex);
+}
+
+void MAGISYSTEM::AddPlaneEffect(const PlaneEffectParam& param) {
+	planeEffectManager_->Add(param);
 }
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {

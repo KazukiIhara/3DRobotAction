@@ -1,7 +1,7 @@
 #pragma once
 
 // C++
-#include <array>
+#include <vector>
 
 // MyHedder
 #include "Structs/EffectStruct.h"
@@ -26,9 +26,11 @@ public:
 
 private:
 	// 板ポリエフェクトのリスト
-	std::array<PlaneEffect, kMaxEffectNum> effects_;
+	std::vector<PlaneEffect> effects_;
 	// 現在のインデックス
 	uint32_t currentIndex_ = 0;
+	// インスタンスの数
+	uint32_t instanceCount_ = 0;
 
 private:
 	DeltaTimer* deltaTimer_ = nullptr;

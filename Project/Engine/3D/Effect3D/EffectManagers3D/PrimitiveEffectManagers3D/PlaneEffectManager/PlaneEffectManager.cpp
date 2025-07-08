@@ -26,9 +26,6 @@ PlaneEffectManager::~PlaneEffectManager() {
 }
 
 void PlaneEffectManager::Add(const PlaneEffectParam& param) {
-	// 追加する場所の参照
-	PlaneEffect& writeEffect = effects_[currentIndex_];
-
 	// トランスフォームを作成
 	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(
 		param.scale.animation.GetStartValue(),
@@ -39,7 +36,7 @@ void PlaneEffectManager::Add(const PlaneEffectParam& param) {
 	Transform3D* trans = transformManager_->Add(std::move(transform));
 
 	// リストに追加するエフェクト
-	writeEffect = PlaneEffect{
+	PlaneEffect	newEffect{
 		.param = param,
 		.currentTrans = trans,
 		.currentMaterial = MaterialData3D{
@@ -48,55 +45,60 @@ void PlaneEffectManager::Add(const PlaneEffectParam& param) {
 			.uvTranslate = param.uvTranslate.animation.GetStartValue(),
 			.uvScale = param.uvScale.animation.GetStartValue(),
 			.uvRotate = param.uvRotate.animation.GetStartValue(),
-			.blendMode = param.blendMode,
-		}
+			.blendMode = param.blendMode
+			},
+		.currentShape = param.shape.animation.GetStartValue(),
+		.currentTime = 0.0f,
 	};
 
-	// 現在インデックスをインクリメント
-	currentIndex_++;
+	// コンテナに追加
+	effects_.push_back(newEffect);
 }
 
 void PlaneEffectManager::Update() {
 	MAGIAssert::Assert(currentIndex_ <= kMaxEffectNum, "PlaneEffect Over MaxSize !");
-	currentIndex_ = 0;
-	for (auto& effect : effects_) {
+
+	for (size_t i = 0; i < effects_.size();) {
+
+		// 参照
+		auto& e = effects_[i];
 
 		// 経過時間を超えたら
-		if (effect.currentTime > effect.param.totalTime) {
-			effect.isActive = false;
+		if (e.currentTime <= e.param.totalTime) {
+			// スケールを求める
+			const Vector3 scale = e.param.scale.GetCurrentValue(e.currentTime);
+			// 回転を求める
+			const Vector3 rotate = e.param.rotate.GetCurrentValue(e.currentTime);
+			// 移動量を求める
+			const Vector3 translate = e.param.translate.GetCurrentValue(e.currentTime);
+
+			// 値をセット
+			e.currentTrans->SetScale(scale);
+			e.currentTrans->SetRotate(rotate);
+			e.currentTrans->SetTranslate(translate);
+
+			// デルタタイムを加算
+			e.currentTime += deltaTimer_->GetDeltaTime();
+
+			// インクリメント
+			++i;
 			continue;
 		}
 
-		// スケールを求める
-		const Vector3 scale = effect.param.scale.GetCurrentValue(effect.currentTime);
-		// 回転を求める
-		const Vector3 rotate = effect.param.rotate.GetCurrentValue(effect.currentTime);
-		// 移動量を求める
-		const Vector3 translate = effect.param.translate.GetCurrentValue(effect.currentTime);
+		// トランスフォームの生存フラグを切る
+		e.currentTrans->SetIsAlive(false);
 
-		// 値をセット
-		effect.currentTrans->SetScale(scale);
-		effect.currentTrans->SetRotate(rotate);
-		effect.currentTrans->SetTranslate(translate);
+		// 最後尾と入れ替えて削除
+		e = std::move(effects_.back());
+		effects_.pop_back();
 
 		// デルタタイムを加算
-		effect.currentTime += deltaTimer_->GetDeltaTime();
+		e.currentTime += deltaTimer_->GetDeltaTime();
 	}
-
 }
 
 void PlaneEffectManager::Draw() {
-	for (auto& effect : effects_) {
-		if (effect.isActive) {
-			planeDrawer_->AddPlane(effect.currentTrans->GetWorldMatrix(), effect.currentShape, effect.currentMaterial);
-		}
-	}
-}
-
-void PlaneEffectManager::DeleteGarbage() {
-	for (auto& effect : effects_) {
-		if (!effect.isActive) {
-
-		}
+	for (size_t i = 0; i < effects_.size(); i++) {
+		planeDrawer_->AddPlane(effects_[i].currentTrans->GetWorldMatrix(), effects_[i].currentShape, effects_[i].currentMaterial);
 	}
 }

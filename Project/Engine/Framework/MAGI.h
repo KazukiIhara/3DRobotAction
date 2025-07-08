@@ -91,6 +91,11 @@
 
 #include "3D/Drawer3D/SkyBoxDrawer/SkyBoxDrawer.h"
 
+//
+// EffectManager
+//
+#include "Effect3D/EffectManagers3D/PrimitiveEffectManagers3D/PlaneEffectManager/PlaneEffectManager.h"
+
 
 // 
 // GameManager
@@ -570,6 +575,13 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region PlaneEffectManager
+	// 板ポリエフェクトを追加
+	static void AddPlaneEffect(const PlaneEffectParam& param);
+
+#pragma endregion
+
+
 #pragma region CollisionManager
 
 
@@ -707,6 +719,11 @@ protected:
 	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
 
 	static std::unique_ptr<SkyBoxDrawer> skyBoxDrawer_;
+
+	//
+	// EffectManager
+	//
+	static std::unique_ptr<PlaneEffectManager> planeEffectManager_;
 
 	//
 	// AppSystems
