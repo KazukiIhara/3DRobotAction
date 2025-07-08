@@ -204,6 +204,9 @@ inline void PlayScene<Data>::Draw() {
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
+
+	MAGISYSTEM::DrawBox3D(MakeIdentityMatrix4x4(), BoxData3D{}, MaterialData3D{});
+
 }
 
 template<typename Data>

@@ -113,34 +113,35 @@ void BoxDrawer3D::AddBox(const Matrix4x4& worldMatrix, const BoxData3D& data, co
 	std::string textureName = material.textureName;
 
 	// 設定されていなければデフォルトのテクスチャを設定
-	if (textureName == "") {
+	if (textureName.empty()) {
 		textureName = "EngineAssets/Images/uvChecker.png";
 	}
 
-	BoxData3DForGPU newBoxData{
-		.worldMatrix = worldMatrix,
-		.worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix),
-		.offsets = {
-			Vector4(data.verticesOffsets[0].x, data.verticesOffsets[0].y, data.verticesOffsets[0].z, 1.0f),
-			Vector4(data.verticesOffsets[1].x, data.verticesOffsets[1].y, data.verticesOffsets[1].z, 1.0f),
-			Vector4(data.verticesOffsets[2].x, data.verticesOffsets[2].y, data.verticesOffsets[2].z, 1.0f),
-			Vector4(data.verticesOffsets[3].x, data.verticesOffsets[3].y, data.verticesOffsets[3].z, 1.0f),
+	// 書き込み先を持ってくる
+	BoxData3DForGPU& writeBoxData = instancingData_[blendIndex][currentIndex_[blendIndex]];
+	PrimitiveMaterialData3DForGPU& writeMatData = materialData_[blendIndex][currentIndex_[blendIndex]];
 
-			Vector4(data.verticesOffsets[4].x, data.verticesOffsets[4].y, data.verticesOffsets[4].z, 1.0f),
-			Vector4(data.verticesOffsets[5].x, data.verticesOffsets[5].y, data.verticesOffsets[5].z, 1.0f),
-			Vector4(data.verticesOffsets[6].x, data.verticesOffsets[6].y, data.verticesOffsets[6].z, 1.0f),
-			Vector4(data.verticesOffsets[7].x, data.verticesOffsets[7].y, data.verticesOffsets[7].z, 1.0f),
-		}
+	writeBoxData = BoxData3DForGPU{
+	  .worldMatrix = worldMatrix,
+	  .worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix),
+	  .offsets = {
+		  Vector4(data.verticesOffsets[0].x, data.verticesOffsets[0].y, data.verticesOffsets[0].z, 1.0f),
+		  Vector4(data.verticesOffsets[1].x, data.verticesOffsets[1].y, data.verticesOffsets[1].z, 1.0f),
+		  Vector4(data.verticesOffsets[2].x, data.verticesOffsets[2].y, data.verticesOffsets[2].z, 1.0f),
+		  Vector4(data.verticesOffsets[3].x, data.verticesOffsets[3].y, data.verticesOffsets[3].z, 1.0f),
+
+		  Vector4(data.verticesOffsets[4].x, data.verticesOffsets[4].y, data.verticesOffsets[4].z, 1.0f),
+		  Vector4(data.verticesOffsets[5].x, data.verticesOffsets[5].y, data.verticesOffsets[5].z, 1.0f),
+		  Vector4(data.verticesOffsets[6].x, data.verticesOffsets[6].y, data.verticesOffsets[6].z, 1.0f),
+		  Vector4(data.verticesOffsets[7].x, data.verticesOffsets[7].y, data.verticesOffsets[7].z, 1.0f),
+	  }
 	};
 
-	PrimitiveMaterialData3DForGPU newMaterialData{
-		.textureIndex = MAGISYSTEM::GetTextureIndex(textureName),
-		.baseColor = material.baseColor,
-		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate),
+	writeMatData = PrimitiveMaterialData3DForGPU{
+	   .textureIndex = MAGISYSTEM::GetTextureIndex(textureName),
+	   .baseColor = material.baseColor,
+	   .uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate),
 	};
-
-	instancingData_[blendIndex][currentIndex_[blendIndex]] = newBoxData;
-	materialData_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
 
 	currentIndex_[blendIndex]++;
 }
