@@ -142,6 +142,14 @@ void Camera3D::AddTargetControlPoint(const Vector3& target) {
 	targetControlPoints_.push_back(target);
 }
 
+void Camera3D::SetEyeControlPoints(const std::vector<Vector3>& eyeCps) {
+	eyeControlPoints_ = eyeCps;
+}
+
+void Camera3D::SetTargetControlPoints(const std::vector<Vector3>& targetCps) {
+	targetControlPoints_ = targetCps;
+}
+
 void Camera3D::StartEyeAnimation() {
 	isAnimatedEye_ = true;
 	animationEyeT_ = 0.0f;
@@ -161,7 +169,7 @@ void Camera3D::StopTargetAnimation() {
 }
 
 void Camera3D::PlayAnimation() {
-	if (isAnimatedEye_) {
+	if (isAnimatedEye_ && !eyeControlPoints_.empty()) {
 		// 目線を補間
 		eye_ = CatmullRomSpline(eyeControlPoints_, animationEyeT_ / animationEyeTime_);
 
@@ -172,7 +180,7 @@ void Camera3D::PlayAnimation() {
 		}
 	}
 
-	if (animationTargetT_) {
+	if (isAnimatedTarget_ && !targetControlPoints_.empty()) {
 		// 注視点を補完
 		target_ = CatmullRomSpline(targetControlPoints_, animationTargetT_ / animationTargetTime_);
 
@@ -334,6 +342,10 @@ void Camera3D::SetPitch(float pitch) {
 
 void Camera3D::SetIsAlive(bool isAlive) {
 	isAlive_ = isAlive;
+}
+
+void Camera3D::SetIsUnique(bool isUnique) {
+	isUnique_ = isUnique;
 }
 
 void Camera3D::CreateCameraResource() {

@@ -13,7 +13,7 @@ MechBody::MechBody() {
 
 	std::shared_ptr<GameObject3D> bodyObject = std::make_shared<GameObject3D>("MechBody", Vector3(0.0f, 1.0f, 0.0f));
 	bodyObject->AddModelRenderer(std::move(bodyModel));
-
+	bodyObject->SetIsUnique(true);
 	// ゲームオブジェクトマネージャに追加
 	body_ = MAGISYSTEM::AddGameObject3D(std::move(bodyObject));
 

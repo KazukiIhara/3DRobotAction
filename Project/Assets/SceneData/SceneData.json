@@ -6,43 +6,21 @@
             "name": "Camera",
             "camera_data": {
                 "target": [
-                    17.472148895263672,
-                    7.939984321594238,
-                    -24.25484275817871
+                    35.70448303222656,
+                    22.057662963867188,
+                    -49.44028854370117
                 ],
                 "eye": [
-                    18.054523468017578,
-                    8.0,
-                    -25.06554412841797
+                    36.49475860595703,
+                    22.30704116821289,
+                    -50.0
                 ],
                 "fovY": 0.4710899591445923,
                 "nearClip": 0.10000000149011612,
                 "farClip": 100.0
             },
-            "identifier": "CAMERA_EYE"
-        },
-        {
-            "type": "EMPTY",
-            "name": "CP.001",
-            "transform": {
-                "translate": [
-                    30.210458755493164,
-                    8.0,
-                    -0.9059925079345703
-                ],
-                "rotate": [
-                    -0.0,
-                    -0.0,
-                    -0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "identifier": "CAMERA_EYE"
+            "identifier": "CAMERA_EYE",
+            "order": 0
         },
         {
             "type": "MESH",
@@ -66,7 +44,9 @@
                 ]
             },
             "model_name": "Ground",
-            "identifier": "CAMERA_EYE"
+            "visible": true,
+            "identifier": "CAMERA_EYE",
+            "order": 0
         },
         {
             "type": "MESH",
@@ -90,7 +70,9 @@
                 ]
             },
             "model_name": "StageObj0",
-            "identifier": "CAMERA_EYE"
+            "visible": true,
+            "identifier": "CAMERA_EYE",
+            "order": 0
         },
         {
             "type": "MESH",
@@ -114,16 +96,18 @@
                 ]
             },
             "model_name": "StageObj0",
-            "identifier": "CAMERA_EYE"
+            "visible": false,
+            "identifier": "CAMERA_EYE",
+            "order": 0
         },
         {
             "type": "EMPTY",
             "name": "CP",
             "transform": {
                 "translate": [
-                    18.054523468017578,
-                    8.0,
-                    -25.06554412841797
+                    36.49475860595703,
+                    22.30699920654297,
+                    -50.0
                 ],
                 "rotate": [
                     -0.0,
@@ -137,16 +121,43 @@
                     1.0
                 ]
             },
-            "identifier": "CAMERA_EYE"
+            "identifier": "CAMERA_EYE",
+            "order": 0,
+            "camera_name": "Camera"
+        },
+        {
+            "type": "EMPTY",
+            "name": "CP.001",
+            "transform": {
+                "translate": [
+                    36.49475860595703,
+                    22.30704116821289,
+                    -40.0
+                ],
+                "rotate": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    1.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "identifier": "CAMERA_EYE",
+            "order": 1,
+            "camera_name": "Camera"
         },
         {
             "type": "EMPTY",
             "name": "CP.002",
             "transform": {
                 "translate": [
-                    22.39373207092285,
-                    8.0,
-                    24.153757095336914
+                    36.49475860595703,
+                    22.30704116821289,
+                    -30.0
                 ],
                 "rotate": [
                     -0.0,
@@ -160,16 +171,18 @@
                     1.0
                 ]
             },
-            "identifier": "CAMERA_EYE"
+            "identifier": "CAMERA_EYE",
+            "order": 2,
+            "camera_name": "Camera"
         },
         {
             "type": "EMPTY",
             "name": "CP.003",
             "transform": {
                 "translate": [
-                    0.29357004165649414,
-                    8.0,
-                    30.987428665161133
+                    36.49475860595703,
+                    22.30704116821289,
+                    -20.0
                 ],
                 "rotate": [
                     -0.0,
@@ -183,16 +196,18 @@
                     1.0
                 ]
             },
-            "identifier": "CAMERA_EYE"
+            "identifier": "CAMERA_EYE",
+            "order": 3,
+            "camera_name": "Camera"
         },
         {
             "type": "EMPTY",
             "name": "CP.004",
             "transform": {
                 "translate": [
-                    -21.986976623535156,
-                    8.0,
-                    17.77524757385254
+                    36.49475860595703,
+                    22.30704116821289,
+                    -10.0
                 ],
                 "rotate": [
                     -0.0,
@@ -206,53 +221,9 @@
                     1.0
                 ]
             },
-            "identifier": "CAMERA_EYE"
-        },
-        {
-            "type": "EMPTY",
-            "name": "CP.005",
-            "transform": {
-                "translate": [
-                    -27.700658798217773,
-                    8.0,
-                    -5.751928329467773
-                ],
-                "rotate": [
-                    -0.0,
-                    -0.0,
-                    -0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "identifier": "CAMERA_EYE"
-        },
-        {
-            "type": "EMPTY",
-            "name": "CP.006",
-            "transform": {
-                "translate": [
-                    -10.911989212036133,
-                    8.0,
-                    -29.51777458190918
-                ],
-                "rotate": [
-                    -0.0,
-                    -0.0,
-                    -0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "identifier": "CAMERA_EYE"
+            "identifier": "CAMERA_EYE",
+            "order": 4,
+            "camera_name": "Camera"
         }
     ]
 }

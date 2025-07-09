@@ -13,7 +13,7 @@ MechArmLeft::MechArmLeft() {
 
 	std::shared_ptr<GameObject3D> leftArmObject = std::make_shared<GameObject3D>("MechLeftArm", Vector3(-0.4f, 0.2f, 0.0f));
 	leftArmObject->AddModelRenderer(std::move(leftArmModel));
-
+	leftArmObject->SetIsUnique(true);
 	// ゲームオブジェクトマネージャに追加
 	leftArm_ = MAGISYSTEM::AddGameObject3D(std::move(leftArmObject));
 

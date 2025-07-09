@@ -17,6 +17,11 @@ void Camera3DManager::Initialize() {
 #if defined(DEBUG) || defined(DEVELOP)
 	debugCamera_ = std::make_unique<DebugCamera3D>();
 #endif
+	defaultCamera_ = std::make_unique<Camera3D>("DefaultCamera", false);
+	defaultCamera_->SetIsUnique(true);
+
+	// デフォルトカメラをセット
+	currentCamera_ = debugCamera_.get();
 }
 
 void Camera3DManager::Update() {
@@ -124,5 +129,9 @@ bool& Camera3DManager::GetIsDebugCamera() {
 
 void Camera3DManager::Clear() {
 	cameras3D_.clear();
-	currentCamera_ = nullptr;
+	currentCamera_ = defaultCamera_.get();
+}
+
+void Camera3DManager::ClearWithOutUnique() {
+
 }

@@ -33,6 +33,9 @@ public:
 	void AddEyeControlPoint(const Vector3& eye);
 	void AddTargetControlPoint(const Vector3& target);
 
+	void SetEyeControlPoints(const std::vector<Vector3>& eyeCps);
+	void SetTargetControlPoints(const std::vector<Vector3>& targetCps);
+
 	// アニメーション開始
 	void StartEyeAnimation();
 	void StartTargetAnimation();
@@ -71,6 +74,7 @@ public:
 	void SetYaw(float yaw);
 	void SetPitch(float pitch);
 	void SetIsAlive(bool isAlive);
+	void SetIsUnique(bool isUnique);
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
@@ -116,6 +120,8 @@ protected:
 	bool isUseYawPitch_ = true;
 	// 生存フラグ
 	bool isAlive_ = true;
+	// ユニークフラグ
+	bool isUnique_ = false;
 
 	// カメラシェイク用変数
 	float shakeTime_ = 0;

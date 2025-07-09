@@ -19,7 +19,7 @@ using namespace MAGIUtility;
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene :public BaseScene<Data> {
+class PlayScene:public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -167,18 +167,21 @@ inline void PlayScene<Data>::Initialize() {
 template<typename Data>
 inline void PlayScene<Data>::Update() {
 
-	ImGui::Begin("SceneImport");
-	if (ImGui::Button("Import")) {
+	ImGui::Begin("Scene");
+	if (ImGui::Button("SceneImport")) {
 		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-		MAGISYSTEM::ImportSceneData("SceneData", false);
+		MAGISYSTEM::ImportSceneData("SceneData", true);
 		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
 			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
+				camera->SetTarget(Vector3(0.0f, 0.0f, 0.0f));
 				camera->ApplyCurrent();
-				camera->SetTarget(Vector3(0.0f, 1.0f, 0.0f));
-				camera->AddEyeControlPoint(Vector3(0.0f, 3.0f, -5.0f));
-				camera->AddEyeControlPoint(Vector3(2.0f, 3.0f, -5.0f));
-				camera->AddEyeControlPoint(Vector3(4.0f, 3.0f, -5.0f));
-				camera->AddEyeControlPoint(Vector3(6.0f, 3.0f, -5.0f));
+			}
+		}
+	}
+
+	if (ImGui::Button("PlayCameraAnimation")) {
+		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
+			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
 				camera->StartEyeAnimation();
 			}
 		}

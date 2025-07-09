@@ -37,11 +37,13 @@ public:
 
 	void SetIsAlive(bool isAlive);
 	void SetIsActive(bool isActive);
+	void SetIsUnique(bool isUnique);
 
 	[[nodiscard]] const std::string& GetName()const;
 
 	[[nodiscard]] bool GetIsAlive()const;
 	[[nodiscard]] bool GetIsActive()const;
+	[[nodiscard]] bool GetIsUnique()const;
 
 	[[nodiscard]] Transform3D* GetTransform();
 	[[nodiscard]] std::weak_ptr<ModelRenderer> GetModelRenderer(const std::string& rendererName);
@@ -54,6 +56,8 @@ private:
 	bool isAlive_ = true;
 	// 有効フラグ
 	bool isActive_ = true;
+	// ユニークフラグ(シーンインポートの際にクリアされない)
+	bool isUnique_ = false;
 
 	//=======================
 	// コンポーネント
