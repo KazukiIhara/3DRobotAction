@@ -7,6 +7,9 @@
 
 using namespace MAGIMath;
 
+/// <summary>
+/// ループタイプ
+/// </summary>
 enum class LoopType {
 	Restart,
 	PingPong
@@ -19,7 +22,6 @@ enum class LoopType {
 template<typename T>
 class SimpleAnimation {
 public:
-
 	SimpleAnimation(
 		const T& start = T{},
 		const T& end = T{},
@@ -34,13 +36,28 @@ public:
 		loopType_ = loopType;
 	}
 
+	// 
+	// ゲッター
+	// 
+
 	T GetValue(float t) const {
 		float u = NormalizeTime(t);
 		float easedT = Easing::Apply(easing_, u);
-        return Lerp(startValue_, endValue_, easedT);
+		return Lerp(startValue_, endValue_, easedT);
 	}
 
+	T GetStartValue() const {
+		return startValue_;
+	}
+
+	T GetEndValue() const {
+		return endValue_;
+	}
+
+	// 
 	// セッター
+	// 
+
 	void SetStart(const T& v) {
 		startValue_ = v;
 	}

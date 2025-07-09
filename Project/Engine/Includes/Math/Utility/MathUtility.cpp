@@ -266,6 +266,14 @@ Vector2 MAGIMath::Lerp(const Vector2& v1, const Vector2& v2, float t) {
 	return v1 + (v2 - v1) * t;
 }
 
+Vector3 MAGIMath::Lerp(const Vector3& v1, const Vector3& v2, float t) {
+	return v1 + (v2 - v1) * t;
+}
+
+Vector4 MAGIMath::Lerp(const Vector4& v1, const Vector4& v2, float t) {
+	return v1 + (v2 - v1) * t;
+}
+
 Vector2 MAGIMath::Normalize(const Vector2& v) {
 	float length = Length(v);
 	Vector2 normalizedVector{};
@@ -360,10 +368,6 @@ Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
 	float roll = 0.0f;
 
 	return Vector3(pitch, yaw, roll); // X=Pitch, Y=Yaw, Z=Roll
-}
-
-Vector3 MAGIMath::Lerp(const Vector3& v1, const Vector3& v2, float t) {
-	return v1 + (v2 - v1) * t;
 }
 
 Vector3 MAGIMath::CatmullRomSpline(const std::vector<Vector3>& controlPoints, float t) {

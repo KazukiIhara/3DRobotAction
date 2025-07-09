@@ -63,6 +63,8 @@ private:
 
 	PlaneData3D planeData_;
 	MaterialData3D planeMaterial_;
+
+	PlaneEffectParam planeEffect_;
 };
 
 template<typename Data>
@@ -152,6 +154,16 @@ inline void PlayScene<Data>::Initialize() {
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
 
+
+	planeEffect_.Initialize();
+	planeEffect_.blendMode = BlendMode::Normal;
+	planeEffect_.translate.isAnimated = true;
+	planeEffect_.translate.startTime = 0.0f;
+	planeEffect_.translate.animation.SetEasing(EasingType::EaseInCubic);
+	planeEffect_.translate.animation.SetEnd(Vector3(0.0f, 0.5f, 0.0f));
+	planeEffect_.color.isAnimated = true;
+	planeEffect_.color.animation.SetEnd(Vector4(1.0f, 1.0f, 1.0f, 0.0f));
+
 }
 
 template<typename Data>
@@ -166,6 +178,12 @@ inline void PlayScene<Data>::Update() {
 				camera->ApplyCurrent();
 			}
 		}
+	}
+	ImGui::End();
+
+	ImGui::Begin("AddEffect");
+	if (ImGui::Button("Plane")) {
+		MAGISYSTEM::AddPlaneEffect(planeEffect_);
 	}
 	ImGui::End();
 
@@ -203,6 +221,7 @@ inline void PlayScene<Data>::Draw() {
 
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
+
 
 }
 
