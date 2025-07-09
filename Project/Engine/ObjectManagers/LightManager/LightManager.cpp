@@ -28,7 +28,7 @@ LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	CreateDirectionalLightFrustumResource();
 	MapDirectionalLightFrustumData();
 
-	lightProj_ = MakeOrthographicMatrix(100.0f, 100.0f, nearClipRange_, farClipRange_);
+	lightProj_ = MakeOrthographicMatrix(200.0f, 200.0f, nearClipRange_, farClipRange_);
 
 	Logger::Log("LightManager Initialize\n");
 }

@@ -133,6 +133,13 @@ void Camera3D::ApplyCurrent() {
 	MAGISYSTEM::SetCurrentCamera3D(this);
 }
 
+void Camera3D::PlayAnimation() {
+	if (isAnimated_) {
+
+
+	}
+}
+
 void Camera3D::Shake(float duration, const Vector3& intensity) {
 	shakeTime_ = duration;
 	shakeDuration_ = duration;
@@ -283,6 +290,10 @@ void Camera3D::SetPitch(float pitch) {
 
 void Camera3D::SetIsAlive(bool isAlive) {
 	isAlive_ = isAlive;
+}
+
+void Camera3D::SetIsAnimated(bool isAnimated) {
+	isAnimated_ = isAnimated;
 }
 
 void Camera3D::CreateCameraResource() {

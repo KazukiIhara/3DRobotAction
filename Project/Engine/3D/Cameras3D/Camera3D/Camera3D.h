@@ -29,6 +29,9 @@ public:
 	// このカメラを現在のカメラに適用
 	void ApplyCurrent();
 
+	// アニメーションさせる
+	void PlayAnimation();
+
 	// カメラを揺らす
 	void Shake(float duration, const Vector3& intensity);
 	void ApplyShake();
@@ -40,7 +43,7 @@ public:
 	void TransferCamera(uint32_t rootParameterIndex);
 	void TransferCameraInv(uint32_t rootParameterIndex);
 	void TransferCameraFrustum(uint32_t rootParameterIndex);
-
+	
 
 	const std::string& GetName()const;
 	Matrix4x4 GetViewProjectionMatrix()const;
@@ -57,6 +60,7 @@ public:
 	void SetYaw(float yaw);
 	void SetPitch(float pitch);
 	void SetIsAlive(bool isAlive);
+	void SetIsAnimated(bool isAnimated);
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
@@ -93,6 +97,28 @@ protected:
 	Matrix4x4 projectionMatrix_{};
 	// ビュープロジェクションマトリックス
 	Matrix4x4 viewProjectionMatrix_{};
+
+	// ビルボード行列
+	Matrix4x4 billboardMatrix_{};
+	// frustumPlane
+	Vector4 frustumPlanes_[6];
+	// yawPicthを使うかどうか
+	bool isUseYawPitch_ = true;
+	// 生存フラグ
+	bool isAlive_ = true;
+
+	// カメラシェイク用変数
+	float shakeTime_ = 0;
+	float shakeDuration_ = 0;
+	Vector3 shakeIntensity_ = { 0.0f,0.0f,0.0f };
+	Vector3 shakeStartTranslate_ = { 0.0f,0.0f,0.0f };
+	Vector3 shakeCumulative_ = { 0.0f,0.0f,0.0f };
+
+
+	//
+	// パラメータ
+	//
+
 	// 垂直視野角(度数法)
 	float fovYDegrees_ = 65.0f;
 	// 垂直方向視野角
@@ -103,22 +129,17 @@ protected:
 	float nearClipRange_ = 0.1f;
 	// ファークリップ距離
 	float farClipRange_ = 10000.0f;
-	// ビルボード行列
-	Matrix4x4 billboardMatrix_{};
-	// frustumPlane
-	Vector4 frustumPlanes_[6];
-	// yawPicthを使うかどうか
-	bool isUseYawPitch_ = true;
-	// 生存フラグ
-	bool isAlive_ = true;
 
+	// 
+	// カメラアニメーション変数
+	// 
 
-	// カメラシェイク用変数
-	float shakeTime_ = 0;
-	float shakeDuration_ = 0;
-	Vector3 shakeIntensity_ = { 0.0f,0.0f,0.0f };
-	Vector3 shakeStartTranslate_ = { 0.0f,0.0f,0.0f };
-	Vector3 shakeCumulative_ = { 0.0f,0.0f,0.0f };
+	// 視点のコントロールポイント
+	std::vector<Vector3> eyeControlPoints_;
+	// アニメーション再生
+	bool isAnimated_ = false;
+	// アニメーション用t
+	bool animetionT_ = 0.0f;
 
 private:
 	// Camera用リソース

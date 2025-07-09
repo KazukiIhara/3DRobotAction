@@ -13,7 +13,6 @@ using namespace MAGIUtility;
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
 #include "GameObject/Enemy/Enemy.h"
-#include "GameObject/Ground/Ground.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -47,8 +46,6 @@ private:
 	// 敵
 	std::unique_ptr<Enemy> enemy_;
 
-	std::unique_ptr<Ground> ground_ = nullptr;
-
 	// ポストエフェクトの用の変数
 	float vignetteScale_ = 18.0f;
 	float vignetteFalloff_ = 0.8f;
@@ -60,9 +57,6 @@ private:
 	// デバッグ用
 	// 
 
-
-	PlaneData3D planeData_;
-	MaterialData3D planeMaterial_;
 
 	PlaneEffectParam planeEffect_;
 };
@@ -119,6 +113,12 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot");
 	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
 
+	MAGISYSTEM::LoadModel("StageObj0");
+	MAGISYSTEM::CreateModelDrawer("StageObj0", MAGISYSTEM::FindModel("StageObj0"));
+
+	MAGISYSTEM::LoadModel("Ground");
+	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
+
 	MAGISYSTEM::LoadModel("MechHead");
 	MAGISYSTEM::CreateModelDrawer("MechHead", MAGISYSTEM::FindModel("MechHead"));
 
@@ -148,8 +148,6 @@ inline void PlayScene<Data>::Initialize() {
 	// 敵作成
 	enemy_ = std::make_unique<Enemy>();
 
-	// 地面作成
-	ground_ = std::make_unique<Ground>();
 
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
@@ -173,11 +171,11 @@ inline void PlayScene<Data>::Update() {
 	if (ImGui::Button("Import")) {
 		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
 		MAGISYSTEM::ImportSceneData("SceneData", false);
-		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
+	/*	if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
 			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
 				camera->ApplyCurrent();
 			}
-		}
+		}*/
 	}
 	ImGui::End();
 
@@ -199,8 +197,6 @@ inline void PlayScene<Data>::Update() {
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
-	// 床更新
-	ground_->Update();
 
 	// プレイヤー更新
 	player_->Update();
@@ -216,8 +212,6 @@ inline void PlayScene<Data>::Update() {
 
 template<typename Data>
 inline void PlayScene<Data>::Draw() {
-	// 床描画
-	ground_->Draw();
 
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
