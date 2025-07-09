@@ -29,6 +29,17 @@ public:
 	// このカメラを現在のカメラに適用
 	void ApplyCurrent();
 
+	// アニメーション用のコントロールポイント追加
+	void AddEyeControlPoint(const Vector3& eye);
+	void AddTargetControlPoint(const Vector3& target);
+
+	// アニメーション開始
+	void StartEyeAnimation();
+	void StartTargetAnimation();
+	// アニメーション停止
+	void StopEyeAnimation();
+	void StopTargetAnimation();
+
 	// アニメーションさせる
 	void PlayAnimation();
 
@@ -43,7 +54,7 @@ public:
 	void TransferCamera(uint32_t rootParameterIndex);
 	void TransferCameraInv(uint32_t rootParameterIndex);
 	void TransferCameraFrustum(uint32_t rootParameterIndex);
-	
+
 
 	const std::string& GetName()const;
 	Matrix4x4 GetViewProjectionMatrix()const;
@@ -60,7 +71,6 @@ public:
 	void SetYaw(float yaw);
 	void SetPitch(float pitch);
 	void SetIsAlive(bool isAlive);
-	void SetIsAnimated(bool isAnimated);
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
@@ -136,10 +146,19 @@ protected:
 
 	// 視点のコントロールポイント
 	std::vector<Vector3> eyeControlPoints_;
+	// 注視点のコントロールポイント
+	std::vector<Vector3> targetControlPoints_;
+
 	// アニメーション再生
-	bool isAnimated_ = false;
+	bool isAnimatedEye_ = false;
+	bool isAnimatedTarget_ = false;
+
 	// アニメーション用t
-	bool animetionT_ = 0.0f;
+	float animationEyeTime_ = 5.0f;
+	float animationTargetTime_ = 5.0f;
+
+	float animationEyeT_ = 0.0f;
+	float animationTargetT_ = 0.0f;
 
 private:
 	// Camera用リソース

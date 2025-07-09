@@ -171,11 +171,17 @@ inline void PlayScene<Data>::Update() {
 	if (ImGui::Button("Import")) {
 		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
 		MAGISYSTEM::ImportSceneData("SceneData", false);
-	/*	if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
+		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
 			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
 				camera->ApplyCurrent();
+				camera->SetTarget(Vector3(0.0f, 1.0f, 0.0f));
+				camera->AddEyeControlPoint(Vector3(0.0f, 3.0f, -5.0f));
+				camera->AddEyeControlPoint(Vector3(2.0f, 3.0f, -5.0f));
+				camera->AddEyeControlPoint(Vector3(4.0f, 3.0f, -5.0f));
+				camera->AddEyeControlPoint(Vector3(6.0f, 3.0f, -5.0f));
+				camera->StartEyeAnimation();
 			}
-		}*/
+		}
 	}
 	ImGui::End();
 

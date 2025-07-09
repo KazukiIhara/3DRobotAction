@@ -75,7 +75,8 @@ void Camera3D::Update() {
 }
 
 void Camera3D::UpdateData() {
-	if (isUseYawPitch_) {
+	// ヨーピッチ使用フラグがオン、かつアニメーション状態じゃなければ
+	if (isUseYawPitch_ && !isAnimatedTarget_) {
 		// yaw/pitch から target を再生成
 		Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
 		target_ = eye_ + forward;
@@ -133,10 +134,53 @@ void Camera3D::ApplyCurrent() {
 	MAGISYSTEM::SetCurrentCamera3D(this);
 }
 
+void Camera3D::AddEyeControlPoint(const Vector3& eye) {
+	eyeControlPoints_.push_back(eye);
+}
+
+void Camera3D::AddTargetControlPoint(const Vector3& target) {
+	targetControlPoints_.push_back(target);
+}
+
+void Camera3D::StartEyeAnimation() {
+	isAnimatedEye_ = true;
+	animationEyeT_ = 0.0f;
+}
+
+void Camera3D::StartTargetAnimation() {
+	isAnimatedTarget_ = true;
+	animationTargetT_ = 0.0f;
+}
+
+void Camera3D::StopEyeAnimation() {
+	isAnimatedEye_ = false;
+}
+
+void Camera3D::StopTargetAnimation() {
+	isAnimatedTarget_ = false;
+}
+
 void Camera3D::PlayAnimation() {
-	if (isAnimated_) {
+	if (isAnimatedEye_) {
+		// 目線を補間
+		eye_ = CatmullRomSpline(eyeControlPoints_, animationEyeT_ / animationEyeTime_);
 
+		animationEyeT_ += MAGISYSTEM::GetDeltaTime();
 
+		if (animationEyeT_ >= animationEyeTime_) {
+			isAnimatedEye_ = false;
+		}
+	}
+
+	if (animationTargetT_) {
+		// 注視点を補完
+		target_ = CatmullRomSpline(targetControlPoints_, animationTargetT_ / animationTargetTime_);
+
+		animationTargetT_ += MAGISYSTEM::GetDeltaTime();
+
+		if (animationTargetT_ >= animationTargetTime_) {
+			isAnimatedTarget_ = false;
+		}
 	}
 }
 
@@ -290,10 +334,6 @@ void Camera3D::SetPitch(float pitch) {
 
 void Camera3D::SetIsAlive(bool isAlive) {
 	isAlive_ = isAlive;
-}
-
-void Camera3D::SetIsAnimated(bool isAnimated) {
-	isAnimated_ = isAnimated;
 }
 
 void Camera3D::CreateCameraResource() {

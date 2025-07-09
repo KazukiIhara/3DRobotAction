@@ -22,6 +22,7 @@ void Camera3DManager::Initialize() {
 void Camera3DManager::Update() {
 	if (currentCamera_) {
 		currentCamera_->Update();
+		currentCamera_->PlayAnimation();
 		currentCamera_->UpdateData();
 	}
 
