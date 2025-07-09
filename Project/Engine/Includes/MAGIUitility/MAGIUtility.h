@@ -12,6 +12,7 @@
 
 #include "Structs/AnimationStruct.h"
 #include "Structs/ColorStruct.h"
+#include "Structs/Primitive3DStruct.h"
 
 /// <summary>
 /// 便利関数
@@ -31,4 +32,5 @@ namespace MAGIUtility {
 	uint32_t DivRoundUp(uint32_t num, uint32_t den);
 
 	Vector4 NormalizePlane(const Vector4& plane);
+
 }

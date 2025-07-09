@@ -63,19 +63,54 @@ void PlaneEffectManager::Update() {
 		// 参照
 		auto& e = effects_[i];
 
-		// 経過時間を超えたら
+		// 現在時間
+		const float currentTime = e.currentTime;
+
+		// 経過時間内なら
 		if (e.currentTime <= e.param.totalTime) {
 			// スケールを求める
-			const Vector3 scale = e.param.scale.GetCurrentValue(e.currentTime);
+			const Vector3 scale = e.param.scale.GetCurrentValue(currentTime);
 			// 回転を求める
-			const Vector3 rotate = e.param.rotate.GetCurrentValue(e.currentTime);
+			const Vector3 rotate = e.param.rotate.GetCurrentValue(currentTime);
 			// 移動量を求める
-			const Vector3 translate = e.param.translate.GetCurrentValue(e.currentTime);
+			const Vector3 translate = e.param.translate.GetCurrentValue(currentTime);
+
+			// カラーをセット
+			const Vector4 color = e.param.color.GetCurrentValue(currentTime);
+			// uv移動量
+			const Vector2 uvTranslate = e.param.uvTranslate.GetCurrentValue(currentTime);
+			// uvスケール
+			const Vector2 uvScale = e.param.uvScale.GetCurrentValue(currentTime);
+			// uv回転量
+			const float uvRotate = e.param.uvRotate.GetCurrentValue(currentTime);
+
+			// 形状
+			const PlaneData3D shape = e.param.shape.GetCurrentValue(currentTime);
 
 			// 値をセット
+
+			//
+			// トランスフォーム
+			//
+
 			e.currentTrans->SetScale(scale);
 			e.currentTrans->SetRotate(rotate);
 			e.currentTrans->SetTranslate(translate);
+
+			//
+			// マテリアル
+			//
+
+			e.currentMaterial.baseColor = color;
+			e.currentMaterial.uvTranslate = uvTranslate;
+			e.currentMaterial.uvScale = uvScale;
+			e.currentMaterial.uvRotate = uvRotate;
+
+			//
+			// 形状
+			//
+
+			e.currentShape = shape;
 
 			// デルタタイムを加算
 			e.currentTime += deltaTimer_->GetDeltaTime();

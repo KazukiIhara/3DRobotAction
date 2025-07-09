@@ -150,9 +150,12 @@ namespace MAGIMath {
 
 	// 線形補完
 	float Lerp(float a, float b, float t);
-
 	// 線形補完
 	Vector2 Lerp(const Vector2& v1, const Vector2& v2, float t);
+	// 線形補完
+	Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+	// 線形補完
+	Vector4 Lerp(const Vector4& v1, const Vector4& v2, float t);
 
 	// 正規化
 	Vector2 Normalize(const Vector2& v);
@@ -174,9 +177,6 @@ namespace MAGIMath {
 
 	// 向きから回転を取得
 	Vector3 DirectionToEuler(const Vector3& dir);
-
-	// 線形補完
-	Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 
 	// キャットロムスプライン
 	Vector3 CatmullRomSpline(const std::vector<Vector3>& controlPoints, float t);

@@ -22,6 +22,9 @@ enum class EffectPhase {
 	Phase2,
 };
 
+// 線形補完
+PlaneData3D Lerp(const PlaneData3D& p0, const PlaneData3D& p1, float t);
+
 /// <summary>
 /// エフェクトアニメーション構造体
 /// </summary>
@@ -39,14 +42,14 @@ struct EffectAnimation {
 	SimpleAnimation<T> animation;
 
 	// Tの値を求める
-	T GetCurrentValue(float currentTime) {
+	inline T GetCurrentValue(float currentTime) {
 		// アニメーションしないため動かさない
 		if (!isAnimated) {
-			animation.GetValue(0.0f);
+			return animation.GetValue(0.0f);
 		}
 		// まだ開始前
 		if (currentTime < startTime) {
-			animation.GetValue(0.0f);
+			return animation.GetValue(0.0f);
 		}
 
 		// アニメーション区間内
@@ -79,7 +82,7 @@ struct PlaneEffectParam {
 	EffectAnimation<Vector2> uvTranslate;
 	EffectAnimation<Vector4> color;
 	std::string textureName;
-	BlendMode blendMode = BlendMode::None;
+	BlendMode blendMode = BlendMode::Normal;
 
 	// 
 	// 形状
@@ -90,9 +93,7 @@ struct PlaneEffectParam {
 	// アニメーション時間
 	float totalTime = 1.0f;
 
-	void Initialize() {
-
-	}
+	void Initialize();
 };
 
 /// <summary>
