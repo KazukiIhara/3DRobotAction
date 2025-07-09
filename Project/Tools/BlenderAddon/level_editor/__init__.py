@@ -7,6 +7,8 @@ import copy
 import mathutils
 import json
 
+from mathutils import Vector
+
 # ブレンダーに登録するアドオン情報
 bl_info = {
     "name": "レベルエディタ",
@@ -21,13 +23,36 @@ bl_info = {
     "category": "Object"
 }
 
+identifier_items = [
+    ('CAMERA_EYE',    'CameraEyeControlPoint',    'カメラの Eye'),
+    ('CAMERA_TARGET', 'CameraTargetControlPoint', 'カメラの Target'),
+]
+
+bpy.types.Object.cp_order = bpy.props.IntProperty(
+    name="Order",
+    description="カメラコントロールポイントの並び順（0,1,2…）",
+    default=0,
+    min=0,
+)
+
+# モジュールのインポート
+from .stretch_vertex import MYADDON_OT_stretch_vertex
+
 #Add-on有効化時コールバック
 def register():
+    #列挙プロパティを追加
+    bpy.types.Object.empty_identifier = bpy.props.EnumProperty(
+        name="Identifier",
+        description="EMPTY の識別子",
+        items=identifier_items,
+        default='CAMERA_EYE',
+    )
+
     #Blenderにクラスを登録
     for cls in classes:
         bpy.utils.register_class(cls)
 
-    # メニューに項目を追加
+    #メニューに項目を追加
     bpy.types.TOPBAR_MT_editor_menus.append(TOPBAR_MT_my_menu.submenu)
     #3Dビューに描画関数を追加
     DrawCollider.handle = bpy.types.SpaceView3D.draw_handler_add(DrawCollider.draw_collider, (),"WINDOW", "POST_VIEW")
@@ -35,6 +60,8 @@ def register():
 
 #Add-on無効化時コールバック
 def unregister():
+    # 先にプロパティを削除
+    del bpy.types.Object.empty_identifier
     # メニューから項目を削除
     bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_my_menu.submenu)
     #3Dビューから描画関数を削除
@@ -80,29 +107,12 @@ class TOPBAR_MT_my_menu(bpy.types.Menu):
         self.layout.operator(MYADDON_OT_export_scene.bl_idname,
             text = MYADDON_OT_export_scene.bl_label)
 
-
-
-
     #既存のメニューにサブメニューを追加
     def submenu(self, context):
 
         #ID指定でサブメニューを追加
         self.layout.menu(TOPBAR_MT_my_menu.bl_idname)
 
-class MYADDON_OT_stretch_vertex(bpy.types.Operator):
-    bl_idname = "myaddon.myaddon_ot_stretch_vertex"
-    bl_label = "頂点を伸ばす"
-    bl_description = "頂点座標を引っ張って伸ばす"
-    #リドゥ、アンドゥ可能オプション
-    bl_options = {'REGISTER','UNDO'}
-
-    #メニューを実行したときに呼ばれるコールバック関数
-    def execute(self,context):
-        bpy.data.objects["Cube"].data.vertices[0].co.x += 1.0
-        print("頂点を伸ばしました。")
-
-        #オペレータの命令終了を通知
-        return{'FINISHED'}
 
 #オペレータ　ICO球生成
 class MYADDON_OT_create_ico_sphere(bpy.types.Operator):
@@ -208,20 +218,43 @@ class MYADDON_OT_export_scene(bpy.types.Operator,bpy_extras.io_utils.ExportHelpe
         #オブジェクト名
         json_object["name"] = object.name
 
-        #その他情報をパック
-        #オブジェクトのローカルトランスフォームから
-        #平行移動、回転、スケールを抽出
-        trans, rot_q, scale = object.matrix_local.decompose()
-        rot_q_xyzw = (-rot_q.x,-rot_q.z,-rot_q.y,rot_q.w)   # ← Blender は wxyz なので並べ替え
+        if object.type == "CAMERA":
+            # eye（Blender ローカル位置）
+            loc = object.matrix_local.to_translation()
+            eye = (loc.x, loc.z, loc.y)          # x z y に並び替え
 
-        transform = {
-            "translate": (trans.x, trans.z, trans.y), # 座標系ここで変換
-            "rotate": rot_q_xyzw,                
-            "scale": (scale.x, scale.z,scale.y)
-        }   
+            # forward ベクトル = ローカルの -Z を親空間へ
+            forward = (object.matrix_local.to_3x3() @ Vector((0.0, 0.0, -1.0))).normalized()
+            tgt = loc + forward                   # 1m 先を注視点とする
+            target = (tgt.x, tgt.z, tgt.y)       # x z y に並び替え
+            
+            camData = object.data
 
-        #まとめて1個分のjsonオブジェクトに登録
-        json_object["transform"] = transform
+            camera = {
+                "target": (target[0],target[1],target[2]),
+                "eye": (eye[0],eye[1],eye[2]),         
+                "fovY": camData.angle_y,
+                "nearClip": camData.clip_start,
+                "farClip": camData.clip_end
+            }
+
+            json_object["camera_data"] = camera
+
+        else:
+            #その他情報をパック
+            #オブジェクトのローカルトランスフォームから
+            #平行移動、回転、スケールを抽出
+            trans, rot_q, scale = object.matrix_local.decompose()
+            rot_q_xyzw = (-rot_q.x,-rot_q.z,-rot_q.y,rot_q.w)   # Blender は wxyz なので並べ替え
+
+            transform = {
+                "translate": (trans.x, trans.z, trans.y), # 座標系ここで変換
+                "rotate": rot_q_xyzw,                
+                "scale": (scale.x, scale.z,scale.y)
+            }   
+
+            #まとめて1個分のjsonオブジェクトに登録
+            json_object["transform"] = transform
 
         #カスタムプロパティ'file name'
         if "model_name" in object:
@@ -234,6 +267,10 @@ class MYADDON_OT_export_scene(bpy.types.Operator,bpy_extras.io_utils.ExportHelpe
             collider["center"] =object["collider_center"].to_list()
             collider["size"] =object["collider_size"].to_list()
             json_object["collider"] =collider
+    
+        # 'empty_identifier' の書き込み
+        if hasattr(object, "empty_identifier") and object.empty_identifier:
+            json_object["identifier"] = object.empty_identifier
 
         #1個分のjsonオブジェクトを親オブジェクトに登録
         data_parent.append(json_object)
@@ -256,6 +293,12 @@ class OBJECT_PT_model_name(bpy.types.Panel):
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
     bl_context = "object"
+
+    #表示条件を指定
+    @classmethod
+    def poll(cls, context):
+        obj = context.object
+        return obj is not None and obj.type == 'MESH'
 
     #サブメニューの描画
     def draw(self,context):
@@ -281,6 +324,22 @@ class MYADDON_OT_add_modelname(bpy.types.Operator):
         context.object["model_name"] = ""
 
         return {"FINISHED"}
+
+class OBJECT_PT_empty_identifier(bpy.types.Panel):
+    bl_idname = "OBJECT_PT_empty_identifier"
+    bl_label = "Identifier"
+    bl_space_type = "PROPERTIES"
+    bl_region_type = "WINDOW"
+    bl_context = "object"
+
+    @classmethod
+    def poll(cls, context):
+        obj = context.object
+        return obj is not None and obj.type == 'EMPTY'
+
+    def draw(self, context):
+        self.layout.prop(context.object, "empty_identifier", text=self.bl_label)
+
 
 #コライダー描画
 class DrawCollider:
@@ -414,11 +473,8 @@ class OBJECT_PT_collider(bpy.types.Panel):
 #Blenderに登録するクラスリスト
 classes =(
     MYADDON_OT_export_scene,
-    MYADDON_OT_create_ico_sphere,
-    MYADDON_OT_stretch_vertex, 
     TOPBAR_MT_my_menu,
     MYADDON_OT_add_modelname,
     OBJECT_PT_model_name,
-    MYADDON_OT_add_collider,
-    OBJECT_PT_collider
+    OBJECT_PT_empty_identifier,
 )
