@@ -383,7 +383,7 @@ public: // エンジンの機能
 
 #pragma region AnimationDataContainer
 	// アニメーションの読み込み
-	static void LoadAnimation(const std::string& animationFileName, bool isInSameDirectoryAsModel = true);
+	static void LoadAnimation(const std::string& animationFileName);
 	// 読み込み済みアニメーションの検索
 	static AnimationData FindAnimation(const std::string& animationName);
 #pragma endregion
@@ -426,8 +426,8 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region Camera2DManager
-		// 2Dカメラの追加
-		static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
+	// 2Dカメラの追加
+	static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
 	// 2Dカメラの取得
 	static Camera2D* FindCamera2D(const std::string& cameraName);
 	// 使用する2Dカメラのセット
@@ -554,8 +554,8 @@ public: // エンジンの機能
 	);
 #pragma endregion
 
-#pragma region ModelDrawer3D
-	// Drawer追加
+#pragma region ModelDrawerManager
+	// ModelDrawer追加
 	static void CreateModelDrawer(
 		const std::string& name,
 		const ModelData& modelData
@@ -567,6 +567,20 @@ public: // エンジンの機能
 		const Matrix4x4& worldMatrix,
 		const ModelMaterial& material
 	);
+
+	// SkinModelDrawer追加
+	static void CreateSkinModelDrawer(
+		const std::string& name,
+		const ModelData& modelData
+	);
+
+	// スキンモデル描画
+	static void DrawSkinModel(
+		const std::string& name,
+		const Matrix4x4& worldMatrix,
+		const ModelMaterial& material
+	);
+
 #pragma endregion
 
 #pragma region SkyBoxDrawer

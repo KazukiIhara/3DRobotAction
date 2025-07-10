@@ -17,7 +17,7 @@
 class SkinMeshDrawer {
 public:
 	SkinMeshDrawer(const MeshData& meshData);
-	~SkinMeshDrawer();
+	~SkinMeshDrawer() = default;
 
 	void Skinning(const uint32_t& paletteSrvIndex);
 	void Draw(uint32_t instanceCount);

@@ -19,7 +19,7 @@ using namespace MAGIUtility;
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene:public BaseScene<Data> {
+class PlayScene :public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -57,7 +57,10 @@ private:
 	// デバッグ用
 	// 
 
+	// トランスフォーム
+	std::array<Transform3D*, 10> transform_;
 
+	// 板ポリエフェクトのパラメータ
 	PlaneEffectParam planeEffect_;
 };
 
@@ -134,6 +137,14 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("MechLeg");
 	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
 
+	MAGISYSTEM::LoadModel("Mutant");
+	MAGISYSTEM::CreateModelDrawer("Mutant", MAGISYSTEM::FindModel("Mutant"));
+
+	//===================================
+	// アニメーションのロード
+	//===================================
+
+	/*MAGISYSTEM::LoadAnimation("Mutant_Capoeira");*/
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
@@ -162,22 +173,29 @@ inline void PlayScene<Data>::Initialize() {
 	planeEffect_.color.isAnimated = true;
 	planeEffect_.color.animation.SetEnd(Vector4(1.0f, 1.0f, 1.0f, 0.0f));
 
+
+	//-------------------------------------------------------
+	// シーンデータのロード
+	//-------------------------------------------------------
+
+	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
+	MAGISYSTEM::ImportSceneData("SceneData", true);
+
+	// 
+	// デバッグ用トランスフォーム
+	// 
+
+	for (size_t i = 0; i < 10; i++) {
+		std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(float(i), 0.0f, -2.0f));
+		transform_[i] = MAGISYSTEM::AddTransform3D(std::move(transform));
+	}
+
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
 
 	ImGui::Begin("Scene");
-	if (ImGui::Button("SceneImport")) {
-		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-		MAGISYSTEM::ImportSceneData("SceneData", true);
-		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
-			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
-				camera->SetTarget(Vector3(0.0f, 0.0f, 0.0f));
-			}
-		}
-	}
-
 	if (ImGui::Button("PlayCameraAnimation")) {
 		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
 			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
@@ -224,7 +242,9 @@ inline void PlayScene<Data>::Draw() {
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
-
+	for (size_t i = 0; i < 10; i++) {
+		MAGISYSTEM::DrawModel("Mutant", transform_[i]->GetWorldMatrix(), ModelMaterial{});
+	}
 }
 
 template<typename Data>

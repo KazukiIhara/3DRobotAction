@@ -22,7 +22,7 @@ public:
 	~AnimationDataContainer();
 
 	void Initialize();
-	void Load(const std::string& animationFileName, bool isInSameDirectoryAsModel);
+	void Load(const std::string& animationFileName);
 
 	AnimationData FindAnimationData(const std::string& animationName);
 private:
