@@ -58,7 +58,7 @@ private:
 	// 
 
 	// トランスフォーム
-	std::array<Transform3D*, 10> transform_;
+	std::array<Transform3D*, 10000> transform_;
 
 	// 板ポリエフェクトのパラメータ
 	PlaneEffectParam planeEffect_;
@@ -138,7 +138,7 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
 
 	MAGISYSTEM::LoadModel("Mutant");
-	MAGISYSTEM::CreateModelDrawer("Mutant", MAGISYSTEM::FindModel("Mutant"));
+	MAGISYSTEM::CreateSkinModelDrawer("Mutant", MAGISYSTEM::FindModel("Mutant"));
 
 	//===================================
 	// アニメーションのロード
@@ -185,7 +185,7 @@ inline void PlayScene<Data>::Initialize() {
 	// デバッグ用トランスフォーム
 	// 
 
-	for (size_t i = 0; i < 10; i++) {
+	for (size_t i = 0; i < 10000; i++) {
 		std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(float(i), 0.0f, -2.0f));
 		transform_[i] = MAGISYSTEM::AddTransform3D(std::move(transform));
 	}
@@ -242,8 +242,8 @@ inline void PlayScene<Data>::Draw() {
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
-	for (size_t i = 0; i < 10; i++) {
-		MAGISYSTEM::DrawModel("Mutant", transform_[i]->GetWorldMatrix(), ModelMaterial{});
+	for (size_t i = 0; i < 10000; i++) {
+		MAGISYSTEM::DrawSkinModel("Mutant", transform_[i]->GetWorldMatrix(), ModelMaterial{});
 	}
 }
 

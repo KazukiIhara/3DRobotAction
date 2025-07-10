@@ -90,12 +90,6 @@ void SkinningMesh::Skinning(const uint32_t& paletteSrvIndex) {
 	// コマンド発行
 	commandList->Dispatch(UINT(meshData_.vertices.size() + 1023) / 1024, 1, 1);
 
-	D3D12_RESOURCE_BARRIER barrier{};
-	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
-	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	barrier.UAV.pResource = skinningVertexResource_.Get();
-	commandList->ResourceBarrier(1, &barrier);
-
 	// コマンド実行
 	MAGISYSTEM::KickCommand();
 	MAGISYSTEM::WaitGPU();

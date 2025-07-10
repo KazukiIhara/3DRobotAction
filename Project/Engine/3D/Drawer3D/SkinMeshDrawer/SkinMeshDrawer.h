@@ -22,6 +22,13 @@ public:
 	void Skinning(const uint32_t& paletteSrvIndex);
 	void Draw(uint32_t instanceCount);
 	void DrawShadow(uint32_t instanceCount);
+	// 影響度の参照を渡す
+	std::span<VertexInfluenceJoints>& GetMappdInfluence();
+private:
+	void TransirionSkinResource(
+		ID3D12GraphicsCommandList* cmd,
+		D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after
+	);
 
 private:
 	// 頂点
@@ -53,4 +60,23 @@ private:
 	// マテリアル
 	ComPtr<ID3D12Resource> materialBuffer_;
 	ModelMaterialDataForGPU* material_ = nullptr;
+
+	// スキニング後用頂点
+	ComPtr<ID3D12Resource> skinnedVertexBuffer_;
+	VertexData3D* skinnedVertexData_ = nullptr;
+	uint32_t skinnedVertexUavIdx_ = 0;
+	uint32_t skinnedVertexSrvIdx_ = 0;
+	D3D12_RESOURCE_STATES skinnedVertexResourceState_ = D3D12_RESOURCE_STATE_COMMON;
+
+	// スキニング影響度のリソース
+	ComPtr<ID3D12Resource> influenceResource_;
+	// スキニング影響度
+	std::span<VertexInfluenceJoints> mappedInfluence_;
+	// スキニング影響度srvインデックス
+	uint32_t influenceSrvIndex = 0;
+
+	// スキニング用の情報リソース
+	ComPtr<ID3D12Resource> skinningInformationResource_;
+	// スキニング用の情報データ
+	SkinningInformationForGPU* skiningInformationData_ = nullptr;
 };

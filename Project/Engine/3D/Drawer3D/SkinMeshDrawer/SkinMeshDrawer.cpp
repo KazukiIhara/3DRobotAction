@@ -106,6 +106,16 @@ SkinMeshDrawer::SkinMeshDrawer(const MeshData& meshData) {
 		vertexBuffer_->Unmap(0, nullptr);
 	}
 
+	// スキニング後の頂点編
+	skinnedVertexBuffer_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexData3D) * vertexCount_, true);
+
+	// srv
+	skinnedVertexSrvIdx_ = MAGISYSTEM::SrvUavAllocate();
+	MAGISYSTEM::CreateSrvStructuredBuffer(skinnedVertexSrvIdx_, skinnedVertexBuffer_.Get(), vertexCount_, sizeof(VertexData3D));
+	// uav
+	skinnedVertexUavIdx_ = MAGISYSTEM::SrvUavAllocate();
+	MAGISYSTEM::CreateUavStructuredBuffer(skinnedVertexUavIdx_, skinnedVertexBuffer_.Get(), vertexCount_, sizeof(VertexData3D));
+
 
 	// メシュレット編
 	meshletBuffer_ = MAGISYSTEM::CreateBufferResource(sizeof(DirectX::Meshlet) * static_cast<uint32_t>(meshlets.size()));
@@ -186,9 +196,59 @@ SkinMeshDrawer::SkinMeshDrawer(const MeshData& meshData) {
 		.uvMatrix = meshData.material.uvMatrix,
 	};
 	materialBuffer_->Unmap(0, nullptr);
+
+	//
+	// スキニング用
+	//
+
+	skinningInformationResource_ = MAGISYSTEM::CreateBufferResource(sizeof(SkinningInformationForGPU));
+
+	skinningInformationResource_->Map(0, nullptr, reinterpret_cast<void**>(&skiningInformationData_));
+	skiningInformationData_->numVertices = static_cast<uint32_t>(meshData.vertices.size());
+
+	// リソースを確保
+	influenceResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexInfluenceJoints) * meshData.vertices.size());
+	VertexInfluenceJoints* mappedInfluence = nullptr;
+	influenceResource_->Map(0, nullptr, reinterpret_cast<void**>(&mappedInfluence));
+	std::memset(mappedInfluence, 0, sizeof(VertexInfluenceJoints) * meshData.vertices.size());
+	mappedInfluence_ = { mappedInfluence, meshData.vertices.size() };
+	// インデックス割り当て
+	influenceSrvIndex = MAGISYSTEM::SrvUavAllocate();
+	// srv作成
+	MAGISYSTEM::CreateSrvStructuredBuffer(influenceSrvIndex, influenceResource_.Get(), static_cast<uint32_t>(meshData.vertices.size()), sizeof(VertexInfluenceJoints));
+	
+
 }
 
 void SkinMeshDrawer::Skinning(const uint32_t& paletteSrvIndex) {
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
+
+	// リソースステート遷移
+	TransirionSkinResource(commandList, skinnedVertexResourceState_, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+
+	// パイプライン設定
+	commandList->SetComputeRootSignature(MAGISYSTEM::GetComputeRootSignature(ComputePipelineStateType::Skinning));
+	commandList->SetPipelineState(MAGISYSTEM::GetComputePipelineState(ComputePipelineStateType::Skinning));
+
+	// コマンドを積む
+	commandList->SetComputeRootDescriptorTable(0, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(paletteSrvIndex));
+	commandList->SetComputeRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexSrvIdx_));
+	commandList->SetComputeRootDescriptorTable(2, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(influenceSrvIndex));
+	commandList->SetComputeRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(skinnedVertexUavIdx_));
+	commandList->SetComputeRootConstantBufferView(4, skinningInformationResource_->GetGPUVirtualAddress());
+
+	// コマンド発行
+	commandList->Dispatch(UINT(vertexCount_ + 1023) / 1024, 1, 1);
+
+	// UAV 完了保証
+	D3D12_RESOURCE_BARRIER uavBarrier{};
+	uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrier.UAV.pResource = skinnedVertexBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrier);
+
+	// 描画用 UAV → ALL_SHADER_RESOURCE へ遷移
+	TransirionSkinResource(commandList, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
 
 }
 
@@ -198,7 +258,7 @@ void SkinMeshDrawer::Draw(uint32_t instanceCount) {
 	auto* cmd = MAGISYSTEM::GetDirectXCommandList6();
 
 	cmd->SetGraphicsRootConstantBufferView(2, materialBuffer_->GetGPUVirtualAddress());
-	cmd->SetGraphicsRootDescriptorTable(4, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexSrvIdx_));
+	cmd->SetGraphicsRootDescriptorTable(4, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(skinnedVertexSrvIdx_));
 	cmd->SetGraphicsRootDescriptorTable(5, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(meshletSrvIdx_));
 	cmd->SetGraphicsRootShaderResourceView(6, meshletUniqueVertIB_->GetGPUVirtualAddress());
 	cmd->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(primSrvIdx_));
@@ -217,7 +277,7 @@ void SkinMeshDrawer::DrawShadow(uint32_t instanceCount) {
 
 	auto* cmd = MAGISYSTEM::GetDirectXCommandList6();
 
-	cmd->SetGraphicsRootDescriptorTable(2, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexSrvIdx_));
+	cmd->SetGraphicsRootDescriptorTable(2, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(skinnedVertexSrvIdx_));
 	cmd->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(meshletSrvIdx_));
 	cmd->SetGraphicsRootShaderResourceView(4, meshletUniqueVertIB_->GetGPUVirtualAddress());
 	cmd->SetGraphicsRootDescriptorTable(5, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(primSrvIdx_));
@@ -230,5 +290,23 @@ void SkinMeshDrawer::DrawShadow(uint32_t instanceCount) {
 	cmd->SetGraphicsRoot32BitConstants(7, 2, &info, 0);
 
 	cmd->DispatchMesh(DivRoundUp(meshletCount_, AS_GROUP_SIZE), instanceCount, 1);
+}
+
+std::span<VertexInfluenceJoints>& SkinMeshDrawer::GetMappdInfluence() {
+	return mappedInfluence_;
+}
+
+void SkinMeshDrawer::TransirionSkinResource(ID3D12GraphicsCommandList* cmd, D3D12_RESOURCE_STATES before, D3D12_RESOURCE_STATES after) {
+	if (skinnedVertexResourceState_ == after) return;
+
+	D3D12_RESOURCE_BARRIER barrier{};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = skinnedVertexBuffer_.Get();
+	barrier.Transition.StateBefore = before;
+	barrier.Transition.StateAfter = after;
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	cmd->ResourceBarrier(1, &barrier);
+
+	skinnedVertexResourceState_ = after;
 }
 
