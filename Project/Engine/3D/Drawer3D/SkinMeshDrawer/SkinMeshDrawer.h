@@ -1,4 +1,5 @@
 #pragma once
+
 // DirectX
 #include <d3d12.h>
 
@@ -10,16 +11,17 @@
 #include "Structs/ModelStruct.h"
 #include "Structs/Primitive3DStruct.h"
 
-/// <summary>メッシュ描画クラス（Mesh Shader + Meshlet）</summary>
-class MeshDrawer {
+/// <summary>
+/// スキンメッシュ描画クラス
+/// </summary>
+class SkinMeshDrawer {
 public:
-	MeshDrawer(const MeshData& meshData);
-	~MeshDrawer();
+	SkinMeshDrawer(const MeshData& meshData);
+	~SkinMeshDrawer();
 
+	void Skinning(const uint32_t& paletteSrvIndex);
 	void Draw(uint32_t instanceCount);
 	void DrawShadow(uint32_t instanceCount);
-
-	void DrawBoundingSphere();
 
 private:
 	// 頂点

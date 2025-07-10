@@ -86,8 +86,6 @@ struct ModelDataForGPU {
 	Matrix4x4 worldMatrix;
 	Matrix4x4 WorldInverseTransepose;
 	Vector4 color;
-	uint32_t isMakeShadow;
-	float padding0[3];
 };
 
 /// <summary>
@@ -96,7 +94,6 @@ struct ModelDataForGPU {
 struct ModelMaterial {
 	BlendMode blendMode = BlendMode::None;
 	Vector4 color = Color::White;
-	bool isMakeShadow = true;
 };
 
 /// <summary>

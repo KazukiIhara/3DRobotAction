@@ -191,9 +191,6 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 }
 
 MeshDrawer::~MeshDrawer() = default;
-void MeshDrawer::Update() {
-	DrawBoundingSphere();
-}
 
 // -----------------------------------------------------------------------------
 void MeshDrawer::Draw(uint32_t instanceCount) {

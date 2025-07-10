@@ -1,4 +1,4 @@
-#include "ModelDrawer.h"
+#include "SkinModelDrawer.h"
 
 // C++
 #include <cassert>
@@ -10,14 +10,14 @@
 
 using namespace MAGIMath;
 
-ModelDrawer::ModelDrawer(const ModelData& modelData) {
+SkinModelDrawer::SkinModelDrawer(const ModelData& modelData) {
 	// モデルのメッシュの数を取得
 	const uint32_t meshSize = static_cast<uint32_t>(modelData.meshes.size());
 
 	// メッシュを作成
 	for (uint32_t i = 0; i < meshSize; i++) {
-		std::unique_ptr<MeshDrawer> newMesh = std::make_unique<MeshDrawer>(modelData.meshes[i]);
-		meshes_.push_back(std::move(newMesh));
+		std::unique_ptr<SkinMeshDrawer> newMesh = std::make_unique<SkinMeshDrawer>(modelData.meshes[i]);
+		skinMeshes_.push_back(std::move(newMesh));
 	}
 
 	// 描画用のリソースを準備
@@ -33,11 +33,11 @@ ModelDrawer::ModelDrawer(const ModelData& modelData) {
 
 }
 
-ModelDrawer::~ModelDrawer() {
+SkinModelDrawer::~SkinModelDrawer() {
 
 }
 
-void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material) {
+void SkinModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
 #if defined(DEBUG) || defined(DEVELOP)
@@ -59,7 +59,7 @@ void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMateri
 	currentIndex_[blendIndex]++;
 }
 
-void ModelDrawer::Update() {
+void SkinModelDrawer::Update() {
 	for (uint32_t i = 0; i < kBlendModeNum; i++) {
 		assert(currentIndex_[i] <= kNumMaxInstance);
 		instanceCount_[i] = currentIndex_[i];
@@ -67,7 +67,7 @@ void ModelDrawer::Update() {
 	}
 }
 
-void ModelDrawer::Draw(BlendMode mode) {
+void SkinModelDrawer::Draw(BlendMode mode) {
 	const uint32_t blendIndex = static_cast<uint32_t>(mode);
 	if (instanceCount_[blendIndex] == 0) return;
 	ID3D12GraphicsCommandList6* commandList = MAGISYSTEM::GetDirectXCommandList6();
@@ -88,12 +88,13 @@ void ModelDrawer::Draw(BlendMode mode) {
 	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(0));
 
 	// 各メッシュの描画
-	for (auto& mesh : meshes_) {
+	for (auto& mesh : skinMeshes_) {
 		mesh->Draw(instanceCount_[blendIndex]);
 	}
+
 }
 
-void ModelDrawer::DrawShadow(BlendMode mode) {
+void SkinModelDrawer::DrawShadow(BlendMode mode) {
 	const uint32_t blendIndex = static_cast<uint32_t>(mode);
 	if (instanceCount_[blendIndex] == 0) return;
 	ID3D12GraphicsCommandList6* commandList = MAGISYSTEM::GetDirectXCommandList6();
@@ -112,7 +113,7 @@ void ModelDrawer::DrawShadow(BlendMode mode) {
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));
 
 	// 各メッシュの描画
-	for (auto& mesh : meshes_) {
+	for (auto& mesh : skinMeshes_) {
 		mesh->DrawShadow(instanceCount_[blendIndex]);
 	}
 }

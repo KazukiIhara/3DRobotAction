@@ -174,7 +174,6 @@ inline void PlayScene<Data>::Update() {
 		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
 			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
 				camera->SetTarget(Vector3(0.0f, 0.0f, 0.0f));
-				camera->ApplyCurrent();
 			}
 		}
 	}

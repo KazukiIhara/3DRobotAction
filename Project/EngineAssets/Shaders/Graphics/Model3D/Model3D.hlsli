@@ -39,8 +39,6 @@ struct ModelDataForGPU
     float4x4 world;
     float4x4 worldInverseTranspose;
     float4 color;
-    uint isMakeShadow;
-    float3 _pad;
 };
 
 // αありのインスタンスデータ
