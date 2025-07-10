@@ -18,7 +18,7 @@
 class SkinModelDrawer {
 public:
 	SkinModelDrawer(const ModelData& modelData);
-	~SkinModelDrawer();
+	~SkinModelDrawer() = default;
 
 	void AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material);
 	void Update();

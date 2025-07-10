@@ -190,9 +190,6 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 
 }
 
-MeshDrawer::~MeshDrawer() = default;
-
-// -----------------------------------------------------------------------------
 void MeshDrawer::Draw(uint32_t instanceCount) {
 	if (!instanceCount) return;
 

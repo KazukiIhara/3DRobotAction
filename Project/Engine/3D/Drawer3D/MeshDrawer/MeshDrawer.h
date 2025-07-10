@@ -10,11 +10,13 @@
 #include "Structs/ModelStruct.h"
 #include "Structs/Primitive3DStruct.h"
 
-/// <summary>メッシュ描画クラス（Mesh Shader + Meshlet）</summary>
+/// <summary>
+/// メッシュ描画クラス
+/// </summary>
 class MeshDrawer {
 public:
 	MeshDrawer(const MeshData& meshData);
-	~MeshDrawer();
+	~MeshDrawer() = default;
 
 	void Draw(uint32_t instanceCount);
 	void DrawShadow(uint32_t instanceCount);

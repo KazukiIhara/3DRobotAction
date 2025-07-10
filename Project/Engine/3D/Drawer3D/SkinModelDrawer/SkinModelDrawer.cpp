@@ -30,11 +30,6 @@ SkinModelDrawer::SkinModelDrawer(const ModelData& modelData) {
 		currentIndex_[i] = 0;
 		instanceCount_[i] = 0;
 	}
-
-}
-
-SkinModelDrawer::~SkinModelDrawer() {
-
 }
 
 void SkinModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material) {
@@ -91,7 +86,6 @@ void SkinModelDrawer::Draw(BlendMode mode) {
 	for (auto& mesh : skinMeshes_) {
 		mesh->Draw(instanceCount_[blendIndex]);
 	}
-
 }
 
 void SkinModelDrawer::DrawShadow(BlendMode mode) {

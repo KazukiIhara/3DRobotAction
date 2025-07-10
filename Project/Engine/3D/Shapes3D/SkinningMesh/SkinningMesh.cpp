@@ -1,7 +1,6 @@
 #include "SkinningMesh.h"
 
 #include "Framework/MAGI.h"
-#include "SkinMeshDrawer.h"
 
 SkinningMesh::SkinningMesh(const MeshData& meshData)
 	:Mesh(meshData) {
