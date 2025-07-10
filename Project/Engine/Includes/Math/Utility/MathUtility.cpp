@@ -372,6 +372,7 @@ Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
 
 Vector3 MAGIMath::CatmullRomSpline(const std::vector<Vector3>& controlPoints, float t) {
 	int numPoints = static_cast<int>(controlPoints.size());
+	
 	if (numPoints < 4) {
 		// 4つ未満のポイントではCatmull-Romスプラインが機能しないため、直接返す
 		return controlPoints[0];

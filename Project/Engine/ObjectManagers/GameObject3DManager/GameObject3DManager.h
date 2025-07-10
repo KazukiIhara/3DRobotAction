@@ -20,6 +20,7 @@ public:
 	std::weak_ptr<GameObject3D> Find(const std::string& objectName);
 	void DeleteGarbage();
 	void Clear();
+	void ClearWithOutUnique();
 
 private:
 	std::vector<std::shared_ptr<GameObject3D>> gameObjects_;

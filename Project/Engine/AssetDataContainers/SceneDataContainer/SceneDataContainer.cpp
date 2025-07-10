@@ -53,6 +53,12 @@ void SceneDataContainer::LoadBlenderLevelDataFromJson(const std::string& fileNam
 	// 正しいレベルデータファイルかチェック
 	assert(name.compare("scene") == 0);
 
+	std::unordered_map<std::string, size_t> camIndex;
+
+	using CPBuf = std::vector<std::pair<int, Vector3>>;
+	std::unordered_map<std::string, CPBuf> pendingEye;
+	std::unordered_map<std::string, CPBuf> pendingTgt;
+
 	// "objects"の全オブジェクトを走査
 	for (nlohmann::json& object : deserialized["objects"]) {
 		assert(object.contains("type"));
@@ -70,6 +76,8 @@ void SceneDataContainer::LoadBlenderLevelDataFromJson(const std::string& fileNam
 
 			newObject.objectName = object["name"];
 			newObject.modelName = object["model_name"];
+
+			newObject.isVisible = object["visible"];
 
 			newObject.scale.x = static_cast<float>(transform["scale"][0]);
 			newObject.scale.y = static_cast<float>(transform["scale"][1]);
@@ -109,8 +117,48 @@ void SceneDataContainer::LoadBlenderLevelDataFromJson(const std::string& fileNam
 
 			newSceneData.cameras.push_back(newCamera);
 
+		} else if (type == "EMPTY") {
+
+			if (!object.contains("identifier") ||
+				!object.contains("order") ||
+				!object.contains("camera_name") ||
+				!object.contains("transform"))
+				continue;   // 情報不足 → 無視
+
+			const std::string id = object["identifier"];
+			const int ord = object["order"];
+			const std::string cam = object["camera_name"];
+
+			Vector3 pos{
+				object["transform"]["translate"][0],
+				object["transform"]["translate"][1],
+				object["transform"]["translate"][2]
+			};
+
+			if (id == "CAMERA_EYE")
+				pendingEye[cam].emplace_back(ord, pos);
+			else if (id == "CAMERA_TARGET")
+				pendingTgt[cam].emplace_back(ord, pos);
 		}
 
+	}
+
+
+	// コントロールポイントを一時保存リストからカメラに追加
+	auto sortByOrder = [](auto& a, auto& b) { return a.first < b.first; };
+
+	for (auto& cam : newSceneData.cameras) {
+		auto& eyeBuf = pendingEye[cam.name];
+		auto& tgtBuf = pendingTgt[cam.name];
+
+		std::sort(eyeBuf.begin(), eyeBuf.end(), sortByOrder);
+		std::sort(tgtBuf.begin(), tgtBuf.end(), sortByOrder);
+
+		cam.eyeControlPoints.reserve(eyeBuf.size());
+		cam.targetControlPoints.reserve(tgtBuf.size());
+
+		for (auto& [o, p] : eyeBuf) cam.eyeControlPoints.push_back(p);
+		for (auto& [o, p] : tgtBuf) cam.targetControlPoints.push_back(p);
 	}
 
 	// コンテナに登録

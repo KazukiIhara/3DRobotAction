@@ -13,7 +13,7 @@ using namespace MAGIMath;
 MechCore::MechCore() {
 	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", Vector3(0.0f, 0.0f, 0.0f));
-
+	coreObject->SetIsUnique(true);
 	// ゲームオブジェクトマネージャに追加
 	core_ = MAGISYSTEM::AddGameObject3D(std::move(coreObject));
 

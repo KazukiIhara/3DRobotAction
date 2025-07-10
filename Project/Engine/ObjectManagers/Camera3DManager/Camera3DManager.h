@@ -7,7 +7,6 @@
 
 // MyHedder
 #include "3D/Cameras3D/DebugCamera3D/DebugCamera3D.h"
-#include "Cameras3D/ThirdPersonCamera/ThirdPersonCamera.h"
 
 /// <summary>
 /// 3D描画用カメラのマネージャ
@@ -38,6 +37,7 @@ public:
 	bool& GetIsDebugCamera();
 
 	void Clear();
+	void ClearWithOutUnique();
 
 private:
 	// デバッグカメラ切り替え変数
@@ -46,6 +46,8 @@ private:
 	std::vector<std::shared_ptr<Camera3D>> cameras3D_;
 	// デバッグカメラ
 	std::unique_ptr<DebugCamera3D> debugCamera_;
+	// デフォルトカメラ
+	std::unique_ptr<Camera3D> defaultCamera_;
 	// 現在使用中のカメラ
 	Camera3D* currentCamera_;
 };

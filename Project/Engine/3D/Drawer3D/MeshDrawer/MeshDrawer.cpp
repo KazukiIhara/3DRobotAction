@@ -184,7 +184,7 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 	*material_ = {
 		.textureIndex = MAGISYSTEM::GetTextureIndex(meshData.material.textureFilePath),
 		.baseColor = meshData.material.color,
-		.uvMatrix = MAGIMath::MakeIdentityMatrix4x4(),
+		.uvMatrix = meshData.material.uvMatrix,
 	};
 	materialBuffer_->Unmap(0, nullptr);
 

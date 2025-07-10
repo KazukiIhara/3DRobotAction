@@ -13,7 +13,7 @@ MechLeg::MechLeg() {
 
 	std::shared_ptr<GameObject3D> legObject = std::make_shared<GameObject3D>("MechLeg", Vector3(0.0f, -0.6f, 0.0f));
 	legObject->AddModelRenderer(std::move(legModel));
-
+	legObject->SetIsUnique(true);
 	// ゲームオブジェクトマネージャに追加
 	leg_ = MAGISYSTEM::AddGameObject3D(std::move(legObject));
 }

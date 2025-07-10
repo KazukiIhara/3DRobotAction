@@ -8,9 +8,10 @@
 Player::Player() {
 	// 機体の作成
 	mech_ = std::make_shared<MechCore>();
-
+	
 	// 三人称視点カメラの作成
 	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera");
+	followCamera->SetIsUnique(true);
 	followCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
 	followCamera->SetMechCore(mech_);
 	followCamera->ApplyCurrent();

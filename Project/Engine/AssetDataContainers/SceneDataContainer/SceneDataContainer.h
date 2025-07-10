@@ -17,6 +17,8 @@ struct SceneCameraData {
 	float fovY;
 	float nearClip;
 	float farClip;
+	std::vector<Vector3> eyeControlPoints;
+	std::vector<Vector3> targetControlPoints;
 };
 
 struct SceneObjectData {
@@ -25,6 +27,7 @@ struct SceneObjectData {
 	Vector3 scale;
 	Quaternion rotate;
 	Vector3 translate;
+	bool isVisible;
 };
 
 struct SceneData {

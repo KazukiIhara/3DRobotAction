@@ -29,6 +29,23 @@ public:
 	// このカメラを現在のカメラに適用
 	void ApplyCurrent();
 
+	// アニメーション用のコントロールポイント追加
+	void AddEyeControlPoint(const Vector3& eye);
+	void AddTargetControlPoint(const Vector3& target);
+
+	void SetEyeControlPoints(const std::vector<Vector3>& eyeCps);
+	void SetTargetControlPoints(const std::vector<Vector3>& targetCps);
+
+	// アニメーション開始
+	void StartEyeAnimation();
+	void StartTargetAnimation();
+	// アニメーション停止
+	void StopEyeAnimation();
+	void StopTargetAnimation();
+
+	// アニメーションさせる
+	void PlayAnimation();
+
 	// カメラを揺らす
 	void Shake(float duration, const Vector3& intensity);
 	void ApplyShake();
@@ -57,6 +74,7 @@ public:
 	void SetYaw(float yaw);
 	void SetPitch(float pitch);
 	void SetIsAlive(bool isAlive);
+	void SetIsUnique(bool isUnique);
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
@@ -93,6 +111,30 @@ protected:
 	Matrix4x4 projectionMatrix_{};
 	// ビュープロジェクションマトリックス
 	Matrix4x4 viewProjectionMatrix_{};
+
+	// ビルボード行列
+	Matrix4x4 billboardMatrix_{};
+	// frustumPlane
+	Vector4 frustumPlanes_[6];
+	// yawPicthを使うかどうか
+	bool isUseYawPitch_ = true;
+	// 生存フラグ
+	bool isAlive_ = true;
+	// ユニークフラグ
+	bool isUnique_ = false;
+
+	// カメラシェイク用変数
+	float shakeTime_ = 0;
+	float shakeDuration_ = 0;
+	Vector3 shakeIntensity_ = { 0.0f,0.0f,0.0f };
+	Vector3 shakeStartTranslate_ = { 0.0f,0.0f,0.0f };
+	Vector3 shakeCumulative_ = { 0.0f,0.0f,0.0f };
+
+
+	//
+	// パラメータ
+	//
+
 	// 垂直視野角(度数法)
 	float fovYDegrees_ = 65.0f;
 	// 垂直方向視野角
@@ -103,22 +145,26 @@ protected:
 	float nearClipRange_ = 0.1f;
 	// ファークリップ距離
 	float farClipRange_ = 10000.0f;
-	// ビルボード行列
-	Matrix4x4 billboardMatrix_{};
-	// frustumPlane
-	Vector4 frustumPlanes_[6];
-	// yawPicthを使うかどうか
-	bool isUseYawPitch_ = true;
-	// 生存フラグ
-	bool isAlive_ = true;
 
+	// 
+	// カメラアニメーション変数
+	// 
 
-	// カメラシェイク用変数
-	float shakeTime_ = 0;
-	float shakeDuration_ = 0;
-	Vector3 shakeIntensity_ = { 0.0f,0.0f,0.0f };
-	Vector3 shakeStartTranslate_ = { 0.0f,0.0f,0.0f };
-	Vector3 shakeCumulative_ = { 0.0f,0.0f,0.0f };
+	// 視点のコントロールポイント
+	std::vector<Vector3> eyeControlPoints_;
+	// 注視点のコントロールポイント
+	std::vector<Vector3> targetControlPoints_;
+
+	// アニメーション再生
+	bool isAnimatedEye_ = false;
+	bool isAnimatedTarget_ = false;
+
+	// アニメーション用t
+	float animationEyeTime_ = 5.0f;
+	float animationTargetTime_ = 5.0f;
+
+	float animationEyeT_ = 0.0f;
+	float animationTargetT_ = 0.0f;
 
 private:
 	// Camera用リソース

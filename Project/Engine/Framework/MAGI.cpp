@@ -254,7 +254,7 @@ void MAGISYSTEM::Initialize() {
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();
 	// SceneDataImporter
-	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get(), renderer3DManager_.get(), transformManager_.get());
+	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get(), camera3DManager_.get(), renderer3DManager_.get(), transformManager_.get());
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());

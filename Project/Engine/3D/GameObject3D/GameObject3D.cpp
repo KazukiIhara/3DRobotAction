@@ -49,7 +49,7 @@ void GameObject3D::Finalize() {
 		if (!camera3DComponents_.empty()) {
 			for (auto& camera3D : camera3DComponents_) {
 				if (auto it = camera3D.second.lock()) {
-					it;
+					it->SetIsAlive(false);
 				}
 			}
 		}
@@ -77,6 +77,10 @@ void GameObject3D::SetIsActive(bool isActive) {
 	isActive_ = isActive;
 }
 
+void GameObject3D::SetIsUnique(bool isUnique) {
+	isUnique_ = isUnique;
+}
+
 const std::string& GameObject3D::GetName()const {
 	return name_;
 }
@@ -87,6 +91,10 @@ bool GameObject3D::GetIsAlive()const {
 
 bool GameObject3D::GetIsActive() const {
 	return isActive_;
+}
+
+bool GameObject3D::GetIsUnique() const {
+	return isUnique_;
 }
 
 Transform3D* GameObject3D::GetTransform() {
