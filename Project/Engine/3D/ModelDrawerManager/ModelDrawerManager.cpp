@@ -58,8 +58,8 @@ bool ModelDrawerManager::ApplyAnimationSkinModel(const std::string& modelDrawerN
 
 #if defined(DEBUG)||defined(DEVELOP)
 	MAGIAssert::Assert(false, "SkinModelDrawer" + modelDrawerName + "が見つかりませんでした。");
-	return false;
 #endif
+	return false;
 }
 
 void ModelDrawerManager::DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
@@ -71,8 +71,8 @@ void ModelDrawerManager::DrawModel(const std::string& modelDrawerName, const Mat
 
 #if defined(DEBUG)||defined(DEVELOP)
 	MAGIAssert::Assert(false, "ModelDrawer" + modelDrawerName + "が見つかりませんでした。");
-	return;
 #endif
+	return;
 }
 
 void ModelDrawerManager::DrawSkinModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
@@ -84,8 +84,8 @@ void ModelDrawerManager::DrawSkinModel(const std::string& modelDrawerName, const
 
 #if defined(DEBUG)||defined(DEVELOP)
 	MAGIAssert::Assert(false, "SkinModelDrawer" + modelDrawerName + "が見つかりませんでした。");
-	return;
 #endif
+	return;
 }
 
 void ModelDrawerManager::UpdateAll() {
