@@ -28,6 +28,9 @@ struct MaterialData {
 	std::string normalMapTextureFilePath;
 	Matrix4x4 uvMatrix;
 	Vector4 color;
+
+	bool hasDiffuse = false;
+	bool hasNormalMap = false;
 };
 
 /// <summary>
@@ -104,6 +107,8 @@ struct ModelMaterialDataForGPU {
 	float padding0[3];
 	Vector4 baseColor;
 	Matrix4x4 uvMatrix;
+	uint32_t hasDiffuse;
+	float padding1[3];
 };
 
 struct MeshInfo {

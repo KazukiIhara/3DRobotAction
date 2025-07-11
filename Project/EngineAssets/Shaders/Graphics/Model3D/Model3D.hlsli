@@ -54,6 +54,8 @@ struct MaterialData3D
     float3 _pad;
     float4 baseColor;
     float4x4 uvMatrix;
+    uint hasDiffuse;
+    float3 _pad1;
 };
 
 // カメラデータ

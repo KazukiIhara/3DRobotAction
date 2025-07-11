@@ -118,6 +118,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 			// 通常の Diffuse テクスチャ読み込み
 			materialData.textureFilePath = fileDirectoryPath + "/" + diffuseTexName;
 			textureDataContainer_->Load(materialData.textureFilePath);
+			materialData.hasDiffuse = true;
 
 			// normalMapのテクスチャが割り当てられている場合
 			aiString normalMapPath;
@@ -129,19 +130,24 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 
 			}
 
-			// UVスケール情報の取得
-			aiUVTransform uvTransform;
-			if (material->Get(AI_MATKEY_UVTRANSFORM(aiTextureType_DIFFUSE, 0), uvTransform) == AI_SUCCESS) {
-				Vector2 scale = { uvTransform.mScaling.x, uvTransform.mScaling.y };
-				float rotateZ = uvTransform.mRotation; // Z軸回転
-				Vector2 translate = { uvTransform.mTranslation.x, uvTransform.mTranslation.y };
+		} else {
+			// テクスチャがない倍はデフォルトテクスチャのパスを設定
+			materialData.textureFilePath = "EngineAssets/Images/uvChecker.png";
+			materialData.hasDiffuse = false;
+		}
 
-				// UVマトリックスを構築
-				materialData.uvMatrix = MakeUVMatrix(scale, rotateZ, translate);
-			} else {
-				// UV変換が見つからない場合は単位行列を設定
-				materialData.uvMatrix = MakeIdentityMatrix4x4();
-			}
+		// UVスケール情報の取得
+		aiUVTransform uvTransform;
+		if (material->Get(AI_MATKEY_UVTRANSFORM(aiTextureType_DIFFUSE, 0), uvTransform) == AI_SUCCESS) {
+			Vector2 scale = { uvTransform.mScaling.x, uvTransform.mScaling.y };
+			float rotateZ = uvTransform.mRotation; // Z軸回転
+			Vector2 translate = { uvTransform.mTranslation.x, uvTransform.mTranslation.y };
+
+			// UVマトリックスを構築
+			materialData.uvMatrix = MakeUVMatrix(scale, rotateZ, translate);
+		} else {
+			// UV変換が見つからない場合は単位行列を設定
+			materialData.uvMatrix = MakeIdentityMatrix4x4();
 		}
 
 		aiColor4D baseColor;
@@ -167,83 +173,81 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 		MeshData meshData;
 		meshData.material = materials[mesh->mMaterialIndex];
 
+		// 最初に頂点数分のメモリを確保
+		meshData.vertices.resize(mesh->mNumVertices);
 
-		if (mesh->HasTextureCoords(0)) { // UVあり
+		// 頂点解析
+		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
+			const aiVector3D& position = mesh->mVertices[vertexIndex];
+			const aiVector3D& normal = mesh->mNormals[vertexIndex];
 
-			// 最初に頂点数分のメモリを確保
-			meshData.vertices.resize(mesh->mNumVertices);
+			meshData.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
+			meshData.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
 
-			// 頂点解析
-			for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
-				aiVector3D& position = mesh->mVertices[vertexIndex];
-				aiVector3D& normal = mesh->mNormals[vertexIndex];
-				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-
-				meshData.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
-				meshData.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
+			if (mesh->HasTextureCoords(0)) {
+				const aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
 				meshData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
-
-				// Tangentの追加
-				if (mesh->HasTangentsAndBitangents()) {
-					aiVector3D& tangent = mesh->mTangents[vertexIndex];
-					meshData.vertices[vertexIndex].tangent = { -tangent.x, tangent.y, tangent.z };
-				} else {
-					// Tangentがない場合はデフォルト値を設定
-					meshData.vertices[vertexIndex].tangent = { 1.0f, 0.0f, 0.0f };
-				}
-			}
-			// index解析
-			for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
-				aiFace& face = mesh->mFaces[faceIndex];
-				assert(face.mNumIndices == 3);
-
-				for (uint32_t element = 0; element < face.mNumIndices; ++element) {
-					uint32_t vertexIndex = face.mIndices[element];
-					meshData.indices.push_back(vertexIndex);
-				}
+			} else {
+				meshData.vertices[vertexIndex].texcoord = { 0.0f, 0.0f };
 			}
 
-			// ボーン解析
-			if (mesh->HasBones()) {
-				for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
-					aiBone* bone = mesh->mBones[boneIndex];
+			// Tangentの追加
+			if (mesh->HasTangentsAndBitangents()) {
+				const aiVector3D& tangent = mesh->mTangents[vertexIndex];
+				meshData.vertices[vertexIndex].tangent = { -tangent.x, tangent.y, tangent.z };
+			} else {
+				// Tangentがない場合はデフォルト値を設定
+				meshData.vertices[vertexIndex].tangent = { 1.0f, 0.0f, 0.0f };
+			}
+		}
+		// index解析
+		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
+			aiFace& face = mesh->mFaces[faceIndex];
+			assert(face.mNumIndices == 3);
 
-					std::string jointName = bone->mName.C_Str();
+			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
+				uint32_t vertexIndex = face.mIndices[element];
+				meshData.indices.push_back(vertexIndex);
+			}
+		}
 
-					// 既存 or 新規作成する JointWeightData を取得
-					JointWeightData& jointWeightData = newModelData.skinClusterData[jointName];
+		// ボーン解析
+		if (mesh->HasBones()) {
+			for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+				aiBone* bone = mesh->mBones[boneIndex];
 
-					aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix;
-					aiVector3D scale, translate;
-					aiQuaternion rotate;
-					bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+				std::string jointName = bone->mName.C_Str();
 
-					// X反転
-					Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
-						{ scale.x, scale.y, scale.z },
-						{ rotate.x, -rotate.y, -rotate.z, rotate.w },
-						{ -translate.x, translate.y, translate.z }
-					);
+				// 既存 or 新規作成する JointWeightData を取得
+				JointWeightData& jointWeightData = newModelData.skinClusterData[jointName];
 
-					jointWeightData.inverseBindPoseMatrix = bindPoseMatrix;
+				aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix;
+				aiVector3D scale, translate;
+				aiQuaternion rotate;
+				bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
 
-					// 頂点ウェイトの登録
-					for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
-						float w = bone->mWeights[weightIndex].mWeight;
-						int32_t localVtxId = bone->mWeights[weightIndex].mVertexId;
+				// X反転
+				Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
+					{ scale.x, scale.y, scale.z },
+					{ rotate.x, -rotate.y, -rotate.z, rotate.w },
+					{ -translate.x, translate.y, translate.z }
+				);
 
-						jointWeightData.jointToVertexWeights.push_back({
-							w,
-							meshIndex,        // このメッシュ番号
-							localVtxId        // メッシュ内ローカル頂点インデックス
-							});
-					}
+				jointWeightData.inverseBindPoseMatrix = bindPoseMatrix;
+
+				// 頂点ウェイトの登録
+				for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
+					float w = bone->mWeights[weightIndex].mWeight;
+					int32_t localVtxId = bone->mWeights[weightIndex].mVertexId;
+
+					jointWeightData.jointToVertexWeights.push_back({
+						w,
+						meshIndex,        // このメッシュ番号
+						localVtxId        // メッシュ内ローカル頂点インデックス
+						});
 				}
-
 			}
 
-		} else {
-			assert(false && "Warning: Not Found UV");
 		}
 
 		newModelData.meshes.push_back(meshData);
