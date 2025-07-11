@@ -139,14 +139,14 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("MechLeg");
 	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
 
-	MAGISYSTEM::LoadModel("Mutant");
-	MAGISYSTEM::CreateSkinModelDrawer("Mutant", MAGISYSTEM::FindModel("Mutant"));
+	MAGISYSTEM::LoadModel("Paradin");
+	MAGISYSTEM::CreateSkinModelDrawer("Paradin", MAGISYSTEM::FindModel("Paradin"));
 
 	//===================================
 	// アニメーションのロード
 	//===================================
 
-	MAGISYSTEM::LoadAnimation("Mutant_Walking");
+	MAGISYSTEM::LoadAnimation("Paradin_Walking");
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
@@ -216,7 +216,7 @@ inline void PlayScene<Data>::Update() {
 
 	mutantT += MAGISYSTEM::GetDeltaTime();
 
-	MAGISYSTEM::ApplyAnimationSkinModel("Mutant", MAGISYSTEM::FindAnimation("Mutant_Walking"), mutantT, true);
+	MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Walking"), mutantT, true);
 
 	/*ImGui::Begin("VignetteParamater");
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
@@ -250,7 +250,7 @@ inline void PlayScene<Data>::Draw() {
 	player_->Draw();
 
 	for (size_t i = 0; i < 10000; i++) {
-		MAGISYSTEM::DrawSkinModel("Mutant", transform_[i]->GetWorldMatrix(), ModelMaterial{});
+		MAGISYSTEM::DrawSkinModel("Paradin", transform_[i]->GetWorldMatrix(), ModelMaterial{});
 	}
 }
 
