@@ -1219,8 +1219,8 @@ ModelData MAGISYSTEM::FindModel(const std::string& modelName) {
 	return modelDataContainer_->FindModelData(modelName);
 }
 
-void MAGISYSTEM::LoadAnimation(const std::string& animationFileName, bool isInSameDirectoryAsModel) {
-	animationDataContainer_->Load(animationFileName, isInSameDirectoryAsModel);
+void MAGISYSTEM::LoadAnimation(const std::string& animationFileName) {
+	animationDataContainer_->Load(animationFileName);
 }
 
 AnimationData MAGISYSTEM::FindAnimation(const std::string& animationName) {
@@ -1234,7 +1234,6 @@ void MAGISYSTEM::LoadWaveSound(const std::string& fileName) {
 void MAGISYSTEM::PlayWaveSound(const std::string& fileName) {
 	soundDataContainer_->PlayWave(fileName);
 }
-
 
 void MAGISYSTEM::PlayLoopWaveSound(const std::string& fileName) {
 	soundDataContainer_->PlayWaveLoop(fileName);
@@ -1403,6 +1402,18 @@ void MAGISYSTEM::CreateModelDrawer(const std::string& name, const ModelData& mod
 
 void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
 	modelDrawerManager_->DrawModel(name, worldMatrix, material);
+}
+
+void MAGISYSTEM::CreateSkinModelDrawer(const std::string& name, const ModelData& modelData) {
+	modelDrawerManager_->CreateSkinModelDrawer(name, modelData);
+}
+
+void MAGISYSTEM::ApplyAnimationSkinModel(const std::string& name, const AnimationData& animation, float animationTime, bool loopFrag) {
+	modelDrawerManager_->ApplyAnimationSkinModel(name, animation, animationTime, loopFrag);
+}
+
+void MAGISYSTEM::DrawSkinModel(const std::string& name, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
+	modelDrawerManager_->DrawSkinModel(name, worldMatrix, material);
 }
 
 void MAGISYSTEM::SetSkyBoxTextureIndex(uint32_t skyBoxTextureIndex) {

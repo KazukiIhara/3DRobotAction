@@ -9,9 +9,9 @@ StructuredBuffer<CullData> gCullData : register(t5);
 
 [shader("amplification")]
 [numthreads(AS_GROUP_SIZE, 1, 1)]
-void main(uint3 dtid : SV_DispatchThreadID, uint3 gid : SV_GroupID)
+void main(uint3 dtid : SV_DispatchThreadID)
 {
-    uint meshletID = gid.x * AS_GROUP_SIZE + dtid.x;
+    uint meshletID = dtid.x;
     uint instanceID = dtid.y;
     
     bool visible = false;

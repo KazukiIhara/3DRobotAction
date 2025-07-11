@@ -10,6 +10,7 @@
 #include "Math/Utility/MathUtility.h"
 #include "MAGIUitility/MAGIUtility.h"
 #include "3D/Drawer3D/ModelDrawer/ModelDrawer.h"
+#include "3D/Drawer3D/SkinModelDrawer/SkinModelDrawer.h"
 
 // 前方宣言
 class DXGI;
@@ -35,7 +36,12 @@ public:
 	~ModelDrawerManager();
 
 	void CreateModelDrawer(const std::string& modelDrawerName, const ModelData& modelData);
+	void CreateSkinModelDrawer(const std::string& modelDrawerName, const ModelData& modelData);
+	void ApplyAnimationSkinModel(const std::string& modelDrawerName, const AnimationData& animation, float animationTime, bool loopFrag);
+
 	void DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material);
+	void DrawSkinModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material);
+
 	void UpdateAll();
 	void DrawAll(BlendMode mode);
 
@@ -52,6 +58,7 @@ private:
 private:
 	// 描画クラスのコンテナ
 	std::unordered_map<std::string, std::unique_ptr<ModelDrawer>> modelDrawers_;
+	std::unordered_map<std::string, std::unique_ptr<SkinModelDrawer>> skinModelDrawers_;
 
 private:
 	DXGI* dxgi_ = nullptr;

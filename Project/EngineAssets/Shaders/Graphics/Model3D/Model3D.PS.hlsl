@@ -23,7 +23,16 @@ GBufferOutput main(MeshOutput input)
     // --- アルベド出力 ---
     float2 uv = mul(float4(input.uv, 0.0f, 1.0f), gMaterialData.uvMatrix).xy;
     float4 texColor = gTextures[gMaterialData.texIdx].Sample(gSampler, uv);
-    output.albedo = texColor * gMaterialData.baseColor * input.color;
+    
+    if (gMaterialData.hasDiffuse)
+    {
+        output.albedo = texColor * gMaterialData.baseColor * input.color;
+    }
+    else
+    {
+        output.albedo = gMaterialData.baseColor * input.color;
+    }
+    
 
     // --- 法線出力 ---
     float3 normal = normalize(input.normal); // 念のため正規化

@@ -185,17 +185,12 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 		.textureIndex = MAGISYSTEM::GetTextureIndex(meshData.material.textureFilePath),
 		.baseColor = meshData.material.color,
 		.uvMatrix = meshData.material.uvMatrix,
+		.hasDiffuse = meshData.material.hasDiffuse,
 	};
 	materialBuffer_->Unmap(0, nullptr);
 
 }
 
-MeshDrawer::~MeshDrawer() = default;
-void MeshDrawer::Update() {
-	DrawBoundingSphere();
-}
-
-// -----------------------------------------------------------------------------
 void MeshDrawer::Draw(uint32_t instanceCount) {
 	if (!instanceCount) return;
 

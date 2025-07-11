@@ -51,7 +51,6 @@ void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMateri
 		.worldMatrix = worldMatrix,
 		.WorldInverseTransepose = MakeInverseTransposeMatrix(worldMatrix),
 		.color = material.color,
-		.isMakeShadow = material.isMakeShadow,
 	};
 
 	// コンテナに挿入
@@ -65,11 +64,6 @@ void ModelDrawer::Update() {
 		assert(currentIndex_[i] <= kNumMaxInstance);
 		instanceCount_[i] = currentIndex_[i];
 		currentIndex_[i] = 0;
-	}
-
-	// 各メッシュの更新
-	for (auto& mesh : meshes_) {
-		mesh->Update();
 	}
 }
 

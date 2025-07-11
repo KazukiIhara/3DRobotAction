@@ -28,6 +28,9 @@ struct MaterialData {
 	std::string normalMapTextureFilePath;
 	Matrix4x4 uvMatrix;
 	Vector4 color;
+
+	bool hasDiffuse = false;
+	bool hasNormalMap = false;
 };
 
 /// <summary>
@@ -86,8 +89,6 @@ struct ModelDataForGPU {
 	Matrix4x4 worldMatrix;
 	Matrix4x4 WorldInverseTransepose;
 	Vector4 color;
-	uint32_t isMakeShadow;
-	float padding0[3];
 };
 
 /// <summary>
@@ -96,7 +97,6 @@ struct ModelDataForGPU {
 struct ModelMaterial {
 	BlendMode blendMode = BlendMode::None;
 	Vector4 color = Color::White;
-	bool isMakeShadow = true;
 };
 
 /// <summary>
@@ -107,6 +107,8 @@ struct ModelMaterialDataForGPU {
 	float padding0[3];
 	Vector4 baseColor;
 	Matrix4x4 uvMatrix;
+	uint32_t hasDiffuse;
+	float padding1[3];
 };
 
 struct MeshInfo {

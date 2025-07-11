@@ -22,7 +22,7 @@ void AnimationDataContainer::Initialize() {
 	animationDatas_.clear();
 }
 
-void AnimationDataContainer::Load(const std::string& animationFileName, bool isInSameDirectoryAsModel) {
+void AnimationDataContainer::Load(const std::string& animationFileName) {
 	// すでに読み込んだファイルかチェック
 	auto it = std::find(loadedAnimationFileNames_.begin(), loadedAnimationFileNames_.end(), animationFileName);
 	if (it != loadedAnimationFileNames_.end()) {
@@ -36,11 +36,8 @@ void AnimationDataContainer::Load(const std::string& animationFileName, bool isI
 	std::vector<std::string> supportedExtensions = { ".gltf" };
 
 	// ディレクトリパスを作成
-	const std::string modelDirectoryPath = "Assets/Models/";
 	const std::string animationDirectoryPath = "Assets/Animations/";
-	std::string fileDirectoryPath = isInSameDirectoryAsModel
-		? (modelDirectoryPath + animationFileName)
-		: (animationDirectoryPath + animationFileName);
+	std::string fileDirectoryPath = animationDirectoryPath + animationFileName;
 
 	// ファイル探索
 	std::filesystem::path baseDir(fileDirectoryPath);
@@ -126,7 +123,7 @@ void AnimationDataContainer::Load(const std::string& animationFileName, bool isI
 		}
 
 		// アニメーションをコンテナに格納
-		animationDatas_[animationData.name] = animationData;
+		animationDatas_[animationFileName] = animationData;
 	}
 
 	// 読み込み完了したファイル名をリストに追加
