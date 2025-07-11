@@ -12,9 +12,14 @@
 
 using namespace MAGIUtility;
 
+enum class ParadinState {
+	Idle,
+	Walk,
+};
+
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -52,6 +57,11 @@ private:
 
 	// Paradin
 	Transform3D* paradinTrans_ = nullptr;
+	float paradinIdleT_ = 0.0f;
+	float paradinWalkT_ = 0.0f;
+	ParadinState curParadinState_ = ParadinState::Idle;
+	float paradinSpeed_ = 2.0f;
+
 
 	// BrainStem
 	static const uint32_t brainStemNum_ = 3;
@@ -92,6 +102,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	// アニメーション
 	MAGISYSTEM::LoadAnimation("Paradin_Walking");
+	MAGISYSTEM::LoadAnimation("Paradin_Idle");
 	MAGISYSTEM::LoadAnimation("BrainStem");
 
 	//
@@ -101,7 +112,7 @@ inline void SampleScene<Data>::Initialize() {
 	// 踊ってるやつ作成
 
 	for (uint32_t i = 0; i < brainStemNum_; i++) {
-		std::unique_ptr<Transform3D> brainStemTransform = std::make_unique<Transform3D>(Vector3(float(i), 0.0f, 2.0f));
+		std::unique_ptr<Transform3D> brainStemTransform = std::make_unique<Transform3D>(Vector3(float(i * 2), 0.0f, 2.0f));
 		brainStemTrans_[i] = MAGISYSTEM::AddTransform3D(std::move(brainStemTransform));
 	}
 
@@ -184,7 +195,66 @@ inline void SampleScene<Data>::Update() {
 		MAGISYSTEM::ApplyPostEffectRadialBlur(radialBlurCenter_, radialBlurWidth_);
 	}
 
+	// パラディン操作
+	if (MAGISYSTEM::IsPadConnected(0)) {
+		Vector2 ls = MAGISYSTEM::GetLeftStick(0);
+		Vector3 velocity{};
+		switch (curParadinState_) {
+			case ParadinState::Idle:
+				if (Length(ls)) {
+					curParadinState_ = ParadinState::Walk;
+					paradinIdleT_ = 0.0f;
+					paradinWalkT_ = 0.0f;
+					break;
+				}
+				break;
+			case ParadinState::Walk:
+				if (!Length(ls)) {
+					curParadinState_ = ParadinState::Idle;
+					paradinIdleT_ = 0.0f;
+					paradinWalkT_ = 0.0f;
+					break;
+				}
 
+				// 移動方向をカメラの方向に向ける
+				if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
+					Vector3 forward = cucam->GetTarget() - cucam->GetEye();
+					forward.y = 0.0f;
+					forward = Normalize(forward);
+					Vector3 right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+
+					// 移動方向決定
+					const Vector3 dir = Normalize(right * ls.x + forward * ls.y);
+
+					// 移動量決定
+					velocity = dir * paradinSpeed_ * MAGISYSTEM::GetDeltaTime();
+
+					// 移動方向にキャラを向ける
+					float yaw = std::atan2(dir.x, dir.z);
+					const Quaternion dirQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
+					paradinTrans_->SetQuaternion(dirQ);
+				}
+				break;
+		}
+
+		paradinTrans_->AddTranslate(velocity);
+	}
+
+	// パラディン
+	switch (curParadinState_) {
+		case ParadinState::Idle:
+			paradinIdleT_ += MAGISYSTEM::GetDeltaTime();
+			MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Idle"), paradinIdleT_, true);
+			break;
+		case ParadinState::Walk:
+			paradinWalkT_ += MAGISYSTEM::GetDeltaTime();
+			MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Walking"), paradinWalkT_, true);
+			break;
+		default:
+			break;
+	}
+
+	// 踊ってるやつら
 	brainStemT_ += MAGISYSTEM::GetDeltaTime();
 	MAGISYSTEM::ApplyAnimationSkinModel("BrainStem", MAGISYSTEM::FindAnimation("BrainStem"), brainStemT_, true);
 
