@@ -292,8 +292,9 @@ inline void SampleScene<Data>::Update() {
 			break;
 		}
 
-		paradinTrans_->AddTranslate(velocity);
 	}
+
+	paradinTrans_->AddTranslate(velocity);
 
 	// 踊ってるやつら
 	brainStemT_ += MAGISYSTEM::GetDeltaTime();
