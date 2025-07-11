@@ -1408,8 +1408,8 @@ void MAGISYSTEM::CreateSkinModelDrawer(const std::string& name, const ModelData&
 	modelDrawerManager_->CreateSkinModelDrawer(name, modelData);
 }
 
-void MAGISYSTEM::ApplyAnimationSkinModel(const std::string& name, const AnimationData& animation, float animationTime, bool loopFrag) {
-	modelDrawerManager_->ApplyAnimationSkinModel(name, animation, animationTime, loopFrag);
+bool MAGISYSTEM::ApplyAnimationSkinModel(const std::string& name, const AnimationData& animation, float animationTime, bool loopFrag) {
+	return modelDrawerManager_->ApplyAnimationSkinModel(name, animation, animationTime, loopFrag);
 }
 
 void MAGISYSTEM::DrawSkinModel(const std::string& name, const Matrix4x4& worldMatrix, const ModelMaterial& material) {

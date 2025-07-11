@@ -574,8 +574,8 @@ public: // エンジンの機能
 		const ModelData& modelData
 	);
 
-	// SkinModelDrawerにアニメーションを追加
-	static void ApplyAnimationSkinModel(
+	// SkinModelDrawerのアニメーションを再生　戻り値は再生中かどうか
+	static bool ApplyAnimationSkinModel(
 		const std::string& name,
 		const AnimationData& animation,
 		float animationTime,
