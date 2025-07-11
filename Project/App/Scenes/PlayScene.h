@@ -234,7 +234,6 @@ inline void PlayScene<Data>::Update() {
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
-
 	// プレイヤー更新
 	player_->Update();
 

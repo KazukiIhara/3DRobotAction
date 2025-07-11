@@ -8,6 +8,8 @@
 
 #include "SimpleAnimation/SimpleAnimation.h"
 
+#include "3D/Cameras3D/ThirdPersonCamera/ThirdPersonCamera.h"
+
 using namespace MAGIUtility;
 
 // サンプルシーン
@@ -24,10 +26,9 @@ public:
 
 private:
 	// カメラ
-	std::weak_ptr<Camera3D> sceneCamera_;
+	std::weak_ptr<Camera3D> mainCamera_;
 	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
-	float yaw_ = 0.0f;
-	float pitch_ = -0.5f;
+
 
 	// 
 	// ポストエフェクト用変数
@@ -49,7 +50,12 @@ private:
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
-	std::weak_ptr<GameObject3D> teapot_;
+	// Paradin
+	Transform3D* paradinTrans_ = nullptr;
+
+	// BrainStem
+	static const uint32_t brainStemNum_ = 3;
+	std::array<Transform3D*, brainStemNum_> brainStemTrans_ = nullptr;
 };
 
 template<typename Data>
@@ -64,24 +70,52 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("gradationLine.png");
 	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
 
-	// モデル
-	MAGISYSTEM::LoadModel("teapot");
-
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
 	MAGISYSTEM::LoadWaveSound("coin.wav");
+
+	// モデル
+	MAGISYSTEM::LoadModel("teapot");
+
+	MAGISYSTEM::LoadModel("StageObj0");
+	MAGISYSTEM::CreateModelDrawer("StageObj0", MAGISYSTEM::FindModel("StageObj0"));
+
+	MAGISYSTEM::LoadModel("Ground");
+	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
+
+	MAGISYSTEM::LoadModel("Paradin");
+	MAGISYSTEM::CreateSkinModelDrawer("Paradin", MAGISYSTEM::FindModel("Paradin"));
+
+	MAGISYSTEM::LoadModel("BrainStem");
+	MAGISYSTEM::CreateSkinModelDrawer("BrainStem", MAGISYSTEM::FindModel("BrainStem"));
+
+	// アニメーション
+	MAGISYSTEM::LoadAnimation("Paradin_Walking");
+	MAGISYSTEM::LoadAnimation("BrainStem");
 
 	//
 	// オブジェクトの作成
 	//
 
-	// カメラ
+	// 踊ってるやつ作成
+
+	for (uint32_t i = 0; i < brainStemNum_; i++) {
+		std::unique_ptr<Transform3D> brainStemTransform = std::make_unique<Transform3D>(Vector3(float(i), 0.0f, 0.0f));
+		brainStemTrans_[i] = MAGISYSTEM::AddTransform3D(std::move(brainStemTransform));
+	}
+
+	// プレイヤー作成
+	std::unique_ptr<Transform3D> paradinTransform = std::make_unique<Transform3D>();
+	paradinTrans_ = MAGISYSTEM::AddTransform3D(std::move(paradinTransform));
 
 	// シーンカメラ作成
-	std::shared_ptr<Camera3D> sceneCamera = std::make_shared<Camera3D>("MainCamera", true);
-	sceneCamera->ApplyCurrent();
+	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>("MainCamera");
+	// 現在のカメラに設定
+	mainCamera->ApplyCurrent();
+	// 追従対象を設定
+	mainCamera->SetTargetTransform(paradinTrans_);
 	// マネージャに追加
-	sceneCamera_ = MAGISYSTEM::AddCamera3D(std::move(sceneCamera));
+	mainCamera_ = MAGISYSTEM::AddCamera3D(std::move(mainCamera));
 
 	// 2Dカメラ作成
 	sceneCamera2D_ = std::make_unique<Camera2D>("SpriteCamera");
@@ -93,41 +127,16 @@ inline void SampleScene<Data>::Initialize() {
 	// スカイボックスの設定
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
-	// ModelDrawer
-	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
+	// シーンデータをインポート
+	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
+	MAGISYSTEM::ImportSceneData("SceneData");
 
-	std::shared_ptr<ModelRenderer> teapot = std::make_shared<ModelRenderer>("teapot", "teapot");
-
-	std::shared_ptr<GameObject3D> object = std::make_shared<GameObject3D>("teapot", Vector3(1.0f, 0.0f, 0.0f));
-	object->AddModelRenderer(std::move(teapot));
-
-	teapot_ = MAGISYSTEM::AddGameObject3D(std::move(object));
+	// 平行光源の設定
+	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-
-	ImGui::Begin("ObjectManagerTest");
-	if (ImGui::Button("DeleteTeapot")) {
-		if (auto obj = teapot_.lock()) {
-			if (auto rdr = obj->GetModelRenderer("teapot").lock()) {
-				rdr->SetIsRender(!rdr->GetIsRender());
-			}
-		}
-	}
-	ImGui::End();
-
-	ImGui::Begin("SceneImport");
-	if (ImGui::Button("Import")) {
-		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-		MAGISYSTEM::ImportSceneData("SceneData");
-		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
-			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
-				camera->ApplyCurrent();
-			}
-		}
-	}
-	ImGui::End();
 
 	ImGui::Begin("GrayscaleParamater");
 	ImGui::Checkbox("On", &isOnGrayscale_);
@@ -157,17 +166,6 @@ inline void SampleScene<Data>::Update() {
 	ImGui::ColorEdit3("Color", &directionalLight_.color.x);
 	ImGui::End();
 
-	ImGui::Begin("SceneCamera");
-	ImGui::DragFloat("Yaw", &yaw_, 0.01f);
-	ImGui::DragFloat("Pitch", &pitch_, 0.01f);
-	ImGui::End();
-
-	if (auto sc = sceneCamera_.lock()) {
-		sc->SetYaw(yaw_);
-		sc->SetPitch(pitch_);
-	}
-
-
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// ポストエフェクトをかける
@@ -184,11 +182,14 @@ inline void SampleScene<Data>::Update() {
 	if (isRadialBlur_) {
 		MAGISYSTEM::ApplyPostEffectRadialBlur(radialBlurCenter_, radialBlurWidth_);
 	}
+
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-
+	for (uint32_t i = 0; i < brainStemNum_; i++) {
+		MAGISYSTEM::DrawSkinModel("BrainStem", brainStemTrans_[i]->GetWorldMatrix(), ModelMaterial{});
+	}
 }
 
 template<typename Data>

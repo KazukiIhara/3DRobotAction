@@ -3,27 +3,29 @@
 #include "Cameras3D/Camera3D/Camera3D.h"
 #include "Transform3D/Transform3D.h"
 
-class MechCore;
-
-class PlayerCamera :public Camera3D {
+/// <summary>
+/// 三人称カメラ
+/// </summary>
+class ThirdPersonCamera :public Camera3D {
 public:
-	PlayerCamera(const std::string& name);
-	~PlayerCamera() = default;
+	ThirdPersonCamera(const std::string& name);
+	~ThirdPersonCamera() = default;
 
 	void Update()override;
 
 	void SetTargetTransform(Transform3D* target);
-
-	void SetMechCore(std::weak_ptr<MechCore> mechCore);
 
 private:
 	void ApplyInput(float dt);
 	void HardLockCamera(float dt);
 	void FollowCamera();
 
+
 private:
 	// 追従対象のトランスフォーム
 	Transform3D* followTargetTransform_ = nullptr;
+	// ロックオン対象のトランスフォーム
+	Transform3D* lockonTargetTransform_ = nullptr;
 
 	// 累積用変数
 	float pYaw_ = 0.0f;
@@ -63,8 +65,5 @@ private:
 
 	// ピボットのオフセット
 	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
-
-	// 機体を受け取る
-	std::weak_ptr<MechCore> core_;
 
 };

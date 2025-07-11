@@ -1,18 +1,15 @@
-#include "PlayerCamera.h"
+#include "ThirdPersonCamera.h"
 
 #include "MAGI.h"
 
-#include "GameObject/Mech/MechCore/MechCore.h"
-
-
 using namespace MAGIMath;
 
-PlayerCamera::PlayerCamera(const std::string& name)
+ThirdPersonCamera::ThirdPersonCamera(const std::string& name)
 	:Camera3D(name, false) {
 
 }
 
-void PlayerCamera::Update() {
+void ThirdPersonCamera::Update() {
 	// デルタタイムを取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
@@ -29,17 +26,12 @@ void PlayerCamera::Update() {
 	targetPivot_ = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 	pivot_ = Lerp(pivot_, targetPivot_, pivotT);
 
-	if (auto core = core_.lock()) {
-		// ハードロックオンオフフラグ取得
-		if (core->GetLockOnComponent()->GetEnableHardLockOn()) {
-			if (core->GetLockOnComponent()->GetLockOnTarget().lock()) { // ターゲットあり
-				HardLockCamera(dt);
-			} else { // ターゲットなし
-				FollowCamera();
-			}
-		} else { // ハードロックオンオフ
-			FollowCamera();
-		}
+	// ハードロックオンオフフラグ取得
+
+	if (lockonTargetTransform_) { // ターゲットあり
+		HardLockCamera(dt);
+	} else { // ターゲットなし
+		FollowCamera();
 	}
 
 	// 前方ベクトルと半径からカメラの目標座標を計算
@@ -51,24 +43,19 @@ void PlayerCamera::Update() {
 
 	// カメラデータ更新
 	UpdateData();
+
 }
 
-void PlayerCamera::SetTargetTransform(Transform3D* target) {
+void ThirdPersonCamera::SetTargetTransform(Transform3D* target) {
 	followTargetTransform_ = target;
 }
 
-void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
-	core_ = mechCore;
-}
-
-void PlayerCamera::ApplyInput(float dt) {
-
+void ThirdPersonCamera::ApplyInput(float dt) {
 	// 右スティック入力
 	Vector2 rs{};
-	if (auto core = core_.lock()) {
-		rs = core->GetInputCommand().cameraRotDirection;
+	if (MAGISYSTEM::IsPadConnected(0)) {
+		rs = MAGISYSTEM::GetRightStick(0);
 	}
-
 	if (LengthSquared(rs) < 1e-6f) return;
 
 	// 入力を角速度へ
@@ -87,16 +74,12 @@ void PlayerCamera::ApplyInput(float dt) {
 
 }
 
-void PlayerCamera::HardLockCamera(float dt) {
+void ThirdPersonCamera::HardLockCamera(float dt) {
 
 	// ターゲット座標取得
 	Vector3 targetWorldPos{};
-	if (auto core = core_.lock()) {
-		if (auto tgt = core->GetLockOnComponent()->GetLockOnTarget().lock()) {
-			if (auto obj = tgt->GetMechBody()->GetGameObject().lock()) {
-				targetWorldPos = obj->GetTransform()->GetWorldPosition();
-			}
-		}
+	if (lockonTargetTransform_) {
+		targetWorldPos = lockonTargetTransform_->GetWorldPosition();
 	}
 
 	Vector3 toTarget = targetWorldPos - pivot_;
@@ -126,7 +109,7 @@ void PlayerCamera::HardLockCamera(float dt) {
 
 }
 
-void PlayerCamera::FollowCamera() {
+void ThirdPersonCamera::FollowCamera() {
 
 	// 累積YawPitchからクオータニオンを生成
 	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
