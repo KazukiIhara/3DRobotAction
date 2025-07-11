@@ -81,10 +81,6 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("gradationLine.png");
 	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
 
-	// サウンド
-	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
-	MAGISYSTEM::LoadWaveSound("coin.wav");
-
 	// モデル
 	MAGISYSTEM::LoadModel("teapot");
 
