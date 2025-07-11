@@ -205,24 +205,52 @@ void SkinModelDrawer::DrawShadow(BlendMode mode) {
 	}
 }
 
-void SkinModelDrawer::ApplyAnimation(const AnimationData& animation, float animationTime) {
-	for (Joint& joint : skeleton_->joints) {
-		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
+bool SkinModelDrawer::ApplyAnimation(const AnimationData& animation, float animationTime) {
+	if (animationTime == 0.0f) {
+		lerpJoints_ = skeleton_->joints;
+	}
+
+	for (uint32_t i = 0; i < skeleton_->joints.size(); i++) {
+
+		if (auto it = animation.nodeAnimations.find(skeleton_->joints[i].name); it != animation.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
-			joint.transform.translate = CalculateValue(rootNodeAnimation.translate, animationTime);
-			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
-			joint.transform.scale = CalculateValue(rootNodeAnimation.scale, animationTime);
+			skeleton_->joints[i].transform.translate = CalculateValue(rootNodeAnimation.translate, animationTime);
+			skeleton_->joints[i].transform.rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
+			skeleton_->joints[i].transform.scale = CalculateValue(rootNodeAnimation.scale, animationTime);
+
+
+			if (animationTime <= animationLerpTime_) {
+				skeleton_->joints[i].transform.translate = Lerp(lerpJoints_[i].transform.translate, skeleton_->joints[i].transform.translate, animationTime / animationLerpTime_);
+				skeleton_->joints[i].transform.rotate = Slerp(lerpJoints_[i].transform.rotate, skeleton_->joints[i].transform.rotate, animationTime / animationLerpTime_);
+				skeleton_->joints[i].transform.scale = Lerp(lerpJoints_[i].transform.scale, skeleton_->joints[i].transform.scale, animationTime / animationLerpTime_);
+			}
 		}
 	}
+
+	// 再生中かどうか
+	return animation.duration >= animationTime;
 }
 
-void SkinModelDrawer::ApplyAnimationLoop(const AnimationData& animation, float animationTime) {
-	for (Joint& joint : skeleton_->joints) {
-		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
+bool SkinModelDrawer::ApplyAnimationLoop(const AnimationData& animation, float animationTime) {
+	if (animationTime == 0.0f) {
+		lerpJoints_ = skeleton_->joints;
+	}
+
+	for (uint32_t i = 0; i < skeleton_->joints.size(); i++) {
+
+		if (auto it = animation.nodeAnimations.find(skeleton_->joints[i].name); it != animation.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
-			joint.transform.translate = CalculateLoopValue(rootNodeAnimation.translate, animationTime);
-			joint.transform.rotate = CalculateLoopValue(rootNodeAnimation.rotate, animationTime);
-			joint.transform.scale = CalculateLoopValue(rootNodeAnimation.scale, animationTime);
+			skeleton_->joints[i].transform.translate = CalculateLoopValue(rootNodeAnimation.translate, animationTime);
+			skeleton_->joints[i].transform.rotate = CalculateLoopValue(rootNodeAnimation.rotate, animationTime);
+			skeleton_->joints[i].transform.scale = CalculateLoopValue(rootNodeAnimation.scale, animationTime);
+
+			if (animationTime <= animationLerpTime_) {
+				skeleton_->joints[i].transform.translate = Lerp(lerpJoints_[i].transform.translate, skeleton_->joints[i].transform.translate, animationTime / animationLerpTime_);
+				skeleton_->joints[i].transform.rotate = Slerp(lerpJoints_[i].transform.rotate, skeleton_->joints[i].transform.rotate, animationTime / animationLerpTime_);
+				skeleton_->joints[i].transform.scale = Lerp(lerpJoints_[i].transform.scale, skeleton_->joints[i].transform.scale, animationTime / animationLerpTime_);
+			}
 		}
 	}
+
+	return true;
 }

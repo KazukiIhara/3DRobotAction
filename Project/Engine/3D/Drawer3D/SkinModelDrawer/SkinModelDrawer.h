@@ -25,8 +25,8 @@ public:
 	void Update();
 	void Draw(BlendMode mode);
 	void DrawShadow(BlendMode mode);
-	void ApplyAnimation(const AnimationData& animation, float animationTime);
-	void ApplyAnimationLoop(const AnimationData& animation, float animationTime);
+	bool ApplyAnimation(const AnimationData& animation, float animationTime);
+	bool ApplyAnimationLoop(const AnimationData& animation, float animationTime);
 private:
 	// インスタンスの最大数
 	static const uint32_t kNumMaxInstance = 65536;
@@ -48,6 +48,10 @@ private:
 
 	// スケルトン
 	std::unique_ptr<Skeleton> skeleton_ = nullptr;
+	// 補完用ジョイント
+	std::vector<Joint> lerpJoints_;
+	// アニメーション遷移時間
+	float animationLerpTime_ = 0.3f;
 
 	// パレットのリソース
 	ComPtr<ID3D12Resource> paletteResource_ = nullptr;

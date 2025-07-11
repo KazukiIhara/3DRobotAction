@@ -15,6 +15,8 @@ using namespace MAGIUtility;
 enum class ParadinState {
 	Idle,
 	Walk,
+	AtkSword,
+	AtkKick,
 };
 
 // サンプルシーン
@@ -40,16 +42,16 @@ private:
 	// 
 
 	float vignetteScale_ = 16.0f;
-	float vignetteFalloff_ = 0.8f;
+	float vignetteFalloff_ = 0.4f;
 
-	float gaussianSigma_ = 0.5f;
+	float gaussianSigma_ = 0.4f;
 
 	Vector2 radialBlurCenter_ = { 0.5f,0.5f };
 	float radialBlurWidth_ = 0.01f;
 
 	bool isOnGrayscale_ = false;
-	bool isOnGaussian_ = false;
-	bool isOnVignette_ = false;
+	bool isOnGaussian_ = true;
+	bool isOnVignette_ = true;
 	bool isRadialBlur_ = false;
 
 	// DirectionalLight
@@ -57,11 +59,9 @@ private:
 
 	// Paradin
 	Transform3D* paradinTrans_ = nullptr;
-	float paradinIdleT_ = 0.0f;
-	float paradinWalkT_ = 0.0f;
+	float paradinAnimationT_ = 0.0f;
 	ParadinState curParadinState_ = ParadinState::Idle;
 	float paradinSpeed_ = 2.0f;
-
 
 	// BrainStem
 	static const uint32_t brainStemNum_ = 3;
@@ -103,6 +103,8 @@ inline void SampleScene<Data>::Initialize() {
 	// アニメーション
 	MAGISYSTEM::LoadAnimation("Paradin_Walking");
 	MAGISYSTEM::LoadAnimation("Paradin_Idle");
+	MAGISYSTEM::LoadAnimation("Paradin_Attack_Sword_0");
+	MAGISYSTEM::LoadAnimation("Paradin_Attack_Kick_0");
 	MAGISYSTEM::LoadAnimation("BrainStem");
 
 	//
@@ -150,33 +152,33 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	ImGui::Begin("GrayscaleParamater");
-	ImGui::Checkbox("On", &isOnGrayscale_);
-	ImGui::End();
+	//ImGui::Begin("GrayscaleParamater");
+	//ImGui::Checkbox("On", &isOnGrayscale_);
+	//ImGui::End();
 
-	ImGui::Begin("VignetteParamater");
-	ImGui::Checkbox("On", &isOnVignette_);
-	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
-	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
-	ImGui::End();
+	//ImGui::Begin("VignetteParamater");
+	//ImGui::Checkbox("On", &isOnVignette_);
+	//ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
+	//ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
+	//ImGui::End();
 
-	ImGui::Begin("GaussianBlurParamater");
-	ImGui::Checkbox("On", &isOnGaussian_);
-	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
-	ImGui::End();
+	//ImGui::Begin("GaussianBlurParamater");
+	//ImGui::Checkbox("On", &isOnGaussian_);
+	//ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
+	//ImGui::End();
 
-	ImGui::Begin("RadialBlurParamater");
-	ImGui::Checkbox("On", &isRadialBlur_);
-	ImGui::DragFloat2("Center", &radialBlurCenter_.x, 0.01f);
-	ImGui::DragFloat("BlurWidth", &radialBlurWidth_, 0.001f);
-	ImGui::End();
+	//ImGui::Begin("RadialBlurParamater");
+	//ImGui::Checkbox("On", &isRadialBlur_);
+	//ImGui::DragFloat2("Center", &radialBlurCenter_.x, 0.01f);
+	//ImGui::DragFloat("BlurWidth", &radialBlurWidth_, 0.001f);
+	//ImGui::End();
 
-	ImGui::Begin("DirectionalLight");
-	ImGui::DragFloat3("Direction", &directionalLight_.direction.x, 0.01f);
-	directionalLight_.direction = MAGIMath::Normalize(directionalLight_.direction);
-	ImGui::DragFloat("Intensity", &directionalLight_.intensity, 0.01f);
-	ImGui::ColorEdit3("Color", &directionalLight_.color.x);
-	ImGui::End();
+	//ImGui::Begin("DirectionalLight");
+	//ImGui::DragFloat3("Direction", &directionalLight_.direction.x, 0.01f);
+	//directionalLight_.direction = MAGIMath::Normalize(directionalLight_.direction);
+	//ImGui::DragFloat("Intensity", &directionalLight_.intensity, 0.01f);
+	//ImGui::ColorEdit3("Color", &directionalLight_.color.x);
+	//ImGui::End();
 
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
@@ -198,24 +200,39 @@ inline void SampleScene<Data>::Update() {
 	// パラディン操作
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		Vector2 ls = MAGISYSTEM::GetLeftStick(0);
+		bool attackButton = MAGISYSTEM::TriggerButton(0, ButtonR);
+
 		Vector3 velocity{};
 		switch (curParadinState_) {
 			case ParadinState::Idle:
+			{
 				if (Length(ls)) {
 					curParadinState_ = ParadinState::Walk;
-					paradinIdleT_ = 0.0f;
-					paradinWalkT_ = 0.0f;
+					paradinAnimationT_ = 0.0f;
 					break;
 				}
-				break;
-			case ParadinState::Walk:
-				if (!Length(ls)) {
-					curParadinState_ = ParadinState::Idle;
-					paradinIdleT_ = 0.0f;
-					paradinWalkT_ = 0.0f;
+				if (attackButton) {
+					curParadinState_ = ParadinState::AtkSword;
+					paradinAnimationT_ = 0.0f;
 					break;
 				}
 
+				MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Idle"), paradinAnimationT_, true);
+				paradinAnimationT_ += MAGISYSTEM::GetDeltaTime();
+			}
+			break;
+			case ParadinState::Walk:
+			{
+				if (!Length(ls)) {
+					curParadinState_ = ParadinState::Idle;
+					paradinAnimationT_ = 0.0f;
+					break;
+				}
+				if (attackButton) {
+					curParadinState_ = ParadinState::AtkSword;
+					paradinAnimationT_ = 0.0f;
+					break;
+				}
 				// 移動方向をカメラの方向に向ける
 				if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
 					Vector3 forward = cucam->GetTarget() - cucam->GetEye();
@@ -234,24 +251,51 @@ inline void SampleScene<Data>::Update() {
 					const Quaternion dirQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
 					paradinTrans_->SetQuaternion(dirQ);
 				}
-				break;
+
+				MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Walking"), paradinAnimationT_, true);
+				paradinAnimationT_ += MAGISYSTEM::GetDeltaTime();
+			}
+			break;
+			case ParadinState::AtkSword:
+			{
+				const float attackCancelTime = 1.0f;
+				const float aniSpdMul = 1.5f;
+
+				if (paradinAnimationT_ > attackCancelTime) {
+					if (attackButton) {
+						curParadinState_ = ParadinState::AtkKick;
+						paradinAnimationT_ = 0.0f;
+						break;
+					}
+				}
+
+				bool playAnimation = MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Attack_Sword_0"), paradinAnimationT_, false);
+				paradinAnimationT_ += MAGISYSTEM::GetDeltaTime() * aniSpdMul;
+
+				if (!playAnimation) {
+					curParadinState_ = ParadinState::Idle;
+					paradinAnimationT_ = 0.0f;
+					break;
+				}
+			}
+			break;
+			case ParadinState::AtkKick:
+			{
+				const float aniSpdMul = 1.2f;
+
+				bool playAnimation = MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Attack_Kick_0"), paradinAnimationT_, false);
+				paradinAnimationT_ += MAGISYSTEM::GetDeltaTime() * aniSpdMul;
+
+				if (!playAnimation) {
+					curParadinState_ = ParadinState::Idle;
+					paradinAnimationT_ = 0.0f;
+					break;
+				}
+			}
+			break;
 		}
 
 		paradinTrans_->AddTranslate(velocity);
-	}
-
-	// パラディン
-	switch (curParadinState_) {
-		case ParadinState::Idle:
-			paradinIdleT_ += MAGISYSTEM::GetDeltaTime();
-			MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Idle"), paradinIdleT_, true);
-			break;
-		case ParadinState::Walk:
-			paradinWalkT_ += MAGISYSTEM::GetDeltaTime();
-			MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Walking"), paradinWalkT_, true);
-			break;
-		default:
-			break;
 	}
 
 	// 踊ってるやつら

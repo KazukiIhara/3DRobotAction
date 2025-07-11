@@ -46,20 +46,19 @@ void ModelDrawerManager::CreateSkinModelDrawer(const std::string& modelDrawerNam
 	skinModelDrawers_.insert(std::make_pair(modelDrawerName, std::move(newModelDrawer)));
 }
 
-void ModelDrawerManager::ApplyAnimationSkinModel(const std::string& modelDrawerName, const AnimationData& animation, float animationTime, bool loopFrag) {
+bool ModelDrawerManager::ApplyAnimationSkinModel(const std::string& modelDrawerName, const AnimationData& animation, float animationTime, bool loopFrag) {
 	auto it = skinModelDrawers_.find(modelDrawerName);
 	if (it != skinModelDrawers_.end()) {
 		if (loopFrag) {
-			it->second->ApplyAnimationLoop(animation, animationTime);
+			return it->second->ApplyAnimationLoop(animation, animationTime);
 		} else {
-			it->second->ApplyAnimation(animation, animationTime);
+			return it->second->ApplyAnimation(animation, animationTime);
 		}
-		return;
 	}
 
 #if defined(DEBUG)||defined(DEVELOP)
 	MAGIAssert::Assert(false, "SkinModelDrawer" + modelDrawerName + "が見つかりませんでした。");
-	return;
+	return false;
 #endif
 }
 
