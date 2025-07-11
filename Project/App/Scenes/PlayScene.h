@@ -19,7 +19,7 @@ using namespace MAGIUtility;
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene:public BaseScene<Data> {
+class PlayScene :public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -142,11 +142,15 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("Paradin");
 	MAGISYSTEM::CreateSkinModelDrawer("Paradin", MAGISYSTEM::FindModel("Paradin"));
 
+	MAGISYSTEM::LoadModel("BrainStem");
+	MAGISYSTEM::CreateSkinModelDrawer("BrainStem", MAGISYSTEM::FindModel("BrainStem"));
+
 	//===================================
 	// アニメーションのロード
 	//===================================
 
 	MAGISYSTEM::LoadAnimation("Paradin_Walking");
+	MAGISYSTEM::LoadAnimation("BrainStem");
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
@@ -216,7 +220,7 @@ inline void PlayScene<Data>::Update() {
 
 	mutantT += MAGISYSTEM::GetDeltaTime();
 
-	MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Walking"), mutantT, true);
+	MAGISYSTEM::ApplyAnimationSkinModel("BrainStem", MAGISYSTEM::FindAnimation("BrainStem"), mutantT, true);
 
 	/*ImGui::Begin("VignetteParamater");
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
@@ -250,7 +254,7 @@ inline void PlayScene<Data>::Draw() {
 	player_->Draw();
 
 	for (size_t i = 0; i < 10000; i++) {
-		MAGISYSTEM::DrawSkinModel("Paradin", transform_[i]->GetWorldMatrix(), ModelMaterial{});
+		MAGISYSTEM::DrawSkinModel("BrainStem", transform_[i]->GetWorldMatrix(), ModelMaterial{});
 	}
 }
 
