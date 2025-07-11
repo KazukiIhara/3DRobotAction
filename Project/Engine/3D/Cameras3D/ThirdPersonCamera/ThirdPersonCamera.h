@@ -42,12 +42,12 @@ private:
 	// 目標目線座標
 	Vector3 targetEye_ = { 0.0f,0.0f,0.0f };
 	// 目標目標座標
-	Vector3	targetTarget_ = { 0.0f,0.0f,1.0f };
+	Vector3	targetTarget_ = { 0.0f,0.0f,0.8f };
 
 	// パラメータ
 
 	// オフセットの半径
-	float radius_ = 6.0f;
+	float radius_ = 3.0f;
 
 	// カメラの感度
 	float sensYaw_ = 8.0f;

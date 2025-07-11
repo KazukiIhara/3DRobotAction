@@ -78,14 +78,16 @@ void Camera3D::UpdateData() {
 	// ヨーピッチ使用フラグがオン、かつアニメーション状態じゃなければ
 	if (isUseYawPitch_ && !isAnimatedTarget_) {
 		// yaw/pitch から target を再生成
-		Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
-		target_ = eye_ + forward;
+		forward_ = DirectionFromYawPitch(yaw_, pitch_);
+		target_ = eye_ + forward_;
 	}
 
 	// ビュー行列作成
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
+	const Vector3 culEye = eye_ - forward_;
+	const Matrix4x4 CullingFrustumVM = MakeLookAtMatrix(culEye, target_, up_);
 	const Matrix4x4& m = viewProjectionMatrix_;
 
 	// 各平面の抽出（行ベクトル形式）

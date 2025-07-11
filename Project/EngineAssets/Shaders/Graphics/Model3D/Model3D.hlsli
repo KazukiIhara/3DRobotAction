@@ -126,9 +126,9 @@ float4 UnpackCone(uint packed)
     return v;
 }
 
-bool IsVisible(CullData c, float4x4 world, float3 viewPos,float4 planes[6])
+bool IsVisible(CullData c, float4x4 world, float3 viewPos, float4 planes[6])
 {
-    // Do a cull test of the bounding sphere against the view frustum planes.
+    // バウンディングスフィアを視錐台の 6 平面とテストしてカリングする
     float4 center = mul(float4(c.BoundingSphere.xyz, 1), world);
     float radius = c.BoundingSphere.w;
 
@@ -136,31 +136,58 @@ bool IsVisible(CullData c, float4x4 world, float3 viewPos,float4 planes[6])
     {
         if (dot(center, planes[i]) < -radius)
         {
-            return false;
+            return false; // 半径分オフセットしても平面の外側にある場合は不可視
         }
     }
 
-    // Do normal cone culling
+    // 法線コーンが退化（開きすぎ）している場合の早期退出
     if (IsConeDegenerate(c))
-        return true; // Cone is degenerate - spread is wider than a hemisphere.
+        return true; // コーンが半球以上に広がっているため、常に可視とみなす
 
-    // Unpack the normal cone from its 8-bit uint compression
+    // 8 bit に圧縮された法線コーンを展開
     float4 normalCone = UnpackCone(c.NormalCone);
 
-    // Transform axis to world space
+    // コーン軸をワールド空間に変換
     float3 axis = normalize(mul(float4(normalCone.xyz, 0), world)).xyz;
 
-    // Offset the normal cone axis from the meshlet center-point - make sure to account for world scaling
+    // メシュレット中心から軸方向にオフセット（ワールドスケールを考慮）
     float3 apex = center.xyz - axis * c.ApexOffset;
     float3 view = normalize(viewPos - apex);
 
-    // The normal cone w-component stores -cos(angle + 90 deg)
-    // This is the min dot product along the inverted axis from which all the meshlet's triangles are backface
+    // normalCone.w には「角度＋90°」の負の余弦が格納されている  
+    // これは、反転軸方向に対する最小ドット積（＝すべての三角形が背面向きになる境界）を示す
     if (dot(view, -axis) > normalCone.w)
     {
-        return false;
+        return false; // 視線方向がこの閾値を超える場合は背面のみなので描画不要
     }
 
-    // All tests passed - it will merit pixels
+    // すべてのテストを通過したのでピクセルが生成される
+    return true;
+}
+
+bool IsVisibleBackface(CullData c, float4x4 world, float3 viewPos)
+{
+    // 8bit 圧縮から展開
+    float4 normalCone = UnpackCone(c.NormalCone);
+
+    // コーン軸（法線平均方向）をワールド空間へ
+    float3 axis = normalize(mul(float4(normalCone.xyz, 0), world)).xyz;
+
+    // メシュレット中心をワールド空間で取得
+    float3 center = mul(float4(c.BoundingSphere.xyz, 1), world).xyz;
+
+    // 頂点 (apex) = center - axis * ApexOffset  ※スケール込み
+    float3 apex = center - axis * c.ApexOffset;
+
+    // apex からカメラへ向かう正規化ベクトル
+    float3 view = normalize(viewPos - apex);
+
+    // 背面判定：コーン軸の反対（-axis）とのドット積が閾値 normalCone.w を超えたら背面
+    if (dot(view, -axis) > normalCone.w)
+    {
+        return false; // 視線方向がこの閾値を超える場合は背面のみなので描画不要
+    }
+    
+    // テストを通過したのでピクセルが生成される
     return true;
 }

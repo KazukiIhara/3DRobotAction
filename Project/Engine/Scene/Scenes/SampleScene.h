@@ -56,6 +56,7 @@ private:
 	// BrainStem
 	static const uint32_t brainStemNum_ = 3;
 	std::array<Transform3D*, brainStemNum_> brainStemTrans_ = nullptr;
+	float brainStemT_ = 0.0f;
 };
 
 template<typename Data>
@@ -100,7 +101,7 @@ inline void SampleScene<Data>::Initialize() {
 	// 踊ってるやつ作成
 
 	for (uint32_t i = 0; i < brainStemNum_; i++) {
-		std::unique_ptr<Transform3D> brainStemTransform = std::make_unique<Transform3D>(Vector3(float(i), 0.0f, 0.0f));
+		std::unique_ptr<Transform3D> brainStemTransform = std::make_unique<Transform3D>(Vector3(float(i), 0.0f, 2.0f));
 		brainStemTrans_[i] = MAGISYSTEM::AddTransform3D(std::move(brainStemTransform));
 	}
 
@@ -183,6 +184,10 @@ inline void SampleScene<Data>::Update() {
 		MAGISYSTEM::ApplyPostEffectRadialBlur(radialBlurCenter_, radialBlurWidth_);
 	}
 
+
+	brainStemT_ += MAGISYSTEM::GetDeltaTime();
+	MAGISYSTEM::ApplyAnimationSkinModel("BrainStem", MAGISYSTEM::FindAnimation("BrainStem"), brainStemT_, true);
+
 }
 
 template<typename Data>
@@ -190,6 +195,8 @@ inline void SampleScene<Data>::Draw() {
 	for (uint32_t i = 0; i < brainStemNum_; i++) {
 		MAGISYSTEM::DrawSkinModel("BrainStem", brainStemTrans_[i]->GetWorldMatrix(), ModelMaterial{});
 	}
+
+	MAGISYSTEM::DrawSkinModel("Paradin", paradinTrans_->GetWorldMatrix(), ModelMaterial{});
 }
 
 template<typename Data>

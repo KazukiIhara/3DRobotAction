@@ -109,6 +109,7 @@ protected:
 	Matrix4x4 viewMatrix_{};
 	// プロジェクション行列
 	Matrix4x4 projectionMatrix_{};
+
 	// ビュープロジェクションマトリックス
 	Matrix4x4 viewProjectionMatrix_{};
 
@@ -139,6 +140,9 @@ protected:
 	float fovYDegrees_ = 65.0f;
 	// 垂直方向視野角
 	float fovY_ = fovYDegrees_ * (std::numbers::pi_v<float> / 180.0f);
+	// カリング用の垂直方向視野角
+	float culFovY_ = 90.0f * (std::numbers::pi_v<float> / 180.0f);
+
 	// アスペクト比
 	float aspectRaito_ = 16.0f / 9.0f;
 	// ニアクリップ距離
