@@ -11,6 +11,7 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "3D/Drawer3D/SkinMeshDrawer/SkinMeshDrawer.h"
 #include "3D/Skeleton/Skeleton.h"
+#include "Structs/AnimationStruct.h"
 
 /// <summary>
 /// スキンモデル描画クラス
@@ -24,7 +25,8 @@ public:
 	void Update();
 	void Draw(BlendMode mode);
 	void DrawShadow(BlendMode mode);
-
+	void ApplyAnimation(const AnimationData& animation, float animationTime);
+	void ApplyAnimationLoop(const AnimationData& animation, float animationTime);
 private:
 	// インスタンスの最大数
 	static const uint32_t kNumMaxInstance = 65536;

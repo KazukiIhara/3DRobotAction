@@ -574,6 +574,14 @@ public: // エンジンの機能
 		const ModelData& modelData
 	);
 
+	// SkinModelDrawerにアニメーションを追加
+	static void ApplyAnimationSkinModel(
+		const std::string& name,
+		const AnimationData& animation,
+		float animationTime,
+		bool loopFrag
+	);
+
 	// スキンモデル描画
 	static void DrawSkinModel(
 		const std::string& name,

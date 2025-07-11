@@ -46,9 +46,9 @@ void SkinningModel::ApplyAnimation(const AnimationData& animation, float animati
 	for (Joint& joint : skeleton_->joints) {
 		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
-			joint.transform.translate = CalculateVelue(rootNodeAnimation.translate, animationTime);
+			joint.transform.translate = CalculateValue(rootNodeAnimation.translate, animationTime);
 			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
-			joint.transform.scale = CalculateVelue(rootNodeAnimation.scale, animationTime);
+			joint.transform.scale = CalculateValue(rootNodeAnimation.scale, animationTime);
 		}
 	}
 }

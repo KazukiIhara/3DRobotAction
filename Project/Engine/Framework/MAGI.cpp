@@ -1235,7 +1235,6 @@ void MAGISYSTEM::PlayWaveSound(const std::string& fileName) {
 	soundDataContainer_->PlayWave(fileName);
 }
 
-
 void MAGISYSTEM::PlayLoopWaveSound(const std::string& fileName) {
 	soundDataContainer_->PlayWaveLoop(fileName);
 }
@@ -1407,6 +1406,10 @@ void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix
 
 void MAGISYSTEM::CreateSkinModelDrawer(const std::string& name, const ModelData& modelData) {
 	modelDrawerManager_->CreateSkinModelDrawer(name, modelData);
+}
+
+void MAGISYSTEM::ApplyAnimationSkinModel(const std::string& name, const AnimationData& animation, float animationTime, bool loopFrag) {
+	modelDrawerManager_->ApplyAnimationSkinModel(name, animation, animationTime, loopFrag);
 }
 
 void MAGISYSTEM::DrawSkinModel(const std::string& name, const Matrix4x4& worldMatrix, const ModelMaterial& material) {

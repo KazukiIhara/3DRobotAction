@@ -37,6 +37,7 @@ public:
 
 	void CreateModelDrawer(const std::string& modelDrawerName, const ModelData& modelData);
 	void CreateSkinModelDrawer(const std::string& modelDrawerName, const ModelData& modelData);
+	void ApplyAnimationSkinModel(const std::string& modelDrawerName, const AnimationData& animation, float animationTime, bool loopFrag);
 
 	void DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material);
 	void DrawSkinModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material);

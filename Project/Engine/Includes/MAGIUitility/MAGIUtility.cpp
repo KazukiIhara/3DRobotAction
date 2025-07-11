@@ -4,7 +4,7 @@
 
 using namespace MAGIMath;
 
-Vector3 MAGIUtility::CalculateVelue(const std::vector<KeyframeVector3>& keyframes, float time) {
+Vector3 MAGIUtility::CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time) {
 	assert(!keyframes.empty());
 
 	if (keyframes.size() == 1 || time <= keyframes[0].time) {
@@ -42,6 +42,42 @@ Quaternion MAGIUtility::CalculateValue(const std::vector<KeyframeQuaternion>& ke
 	}
 
 	return (*keyframes.rbegin()).value;
+}
+
+Vector3 MAGIUtility::CalculateLoopValue(const std::vector<KeyframeVector3>& keyframes, float time) {
+	assert(!keyframes.empty());
+
+	// アニメーション全体の長さ
+	const float duration = keyframes.back().time;
+
+	// duration <= 0 のときは異常系。とりあえず先頭キーを返す
+	if (duration <= 0.0f) {
+		return keyframes.front().value;
+	}
+
+	// fmod で time を [0, duration) に巻き取る
+	time = std::fmod(time, duration);
+	if (time < 0.0f) {      // 負の値にも対応
+		time += duration;
+	}
+
+	return CalculateValue(keyframes, time);
+}
+
+Quaternion MAGIUtility::CalculateLoopValue(const std::vector<KeyframeQuaternion>& keyframes, float time) {
+	assert(!keyframes.empty());
+
+	const float duration = keyframes.back().time;
+	if (duration <= 0.0f) {
+		return keyframes.front().value;
+	}
+
+	time = std::fmod(time, duration);
+	if (time < 0.0f) {
+		time += duration;
+	}
+
+	return CalculateValue(keyframes, time);
 }
 
 std::array<float, 7> MAGIUtility::GenerateGaussianWeights(float sigma) {

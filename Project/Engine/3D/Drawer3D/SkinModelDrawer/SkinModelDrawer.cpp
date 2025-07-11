@@ -9,6 +9,7 @@
 #include "Math/Utility/MathUtility.h"
 
 using namespace MAGIMath;
+using namespace MAGIUtility;
 
 SkinModelDrawer::SkinModelDrawer(const ModelData& modelData) {
 	// モデルのメッシュの数を取得
@@ -201,5 +202,27 @@ void SkinModelDrawer::DrawShadow(BlendMode mode) {
 	// 各メッシュの描画
 	for (auto& mesh : skinMeshes_) {
 		mesh->DrawShadow(instanceCount_[blendIndex]);
+	}
+}
+
+void SkinModelDrawer::ApplyAnimation(const AnimationData& animation, float animationTime) {
+	for (Joint& joint : skeleton_->joints) {
+		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
+			const NodeAnimation& rootNodeAnimation = (*it).second;
+			joint.transform.translate = CalculateValue(rootNodeAnimation.translate, animationTime);
+			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
+			joint.transform.scale = CalculateValue(rootNodeAnimation.scale, animationTime);
+		}
+	}
+}
+
+void SkinModelDrawer::ApplyAnimationLoop(const AnimationData& animation, float animationTime) {
+	for (Joint& joint : skeleton_->joints) {
+		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
+			const NodeAnimation& rootNodeAnimation = (*it).second;
+			joint.transform.translate = CalculateLoopValue(rootNodeAnimation.translate, animationTime);
+			joint.transform.rotate = CalculateLoopValue(rootNodeAnimation.rotate, animationTime);
+			joint.transform.scale = CalculateLoopValue(rootNodeAnimation.scale, animationTime);
+		}
 	}
 }

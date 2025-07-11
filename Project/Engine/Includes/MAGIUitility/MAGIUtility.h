@@ -22,9 +22,12 @@ namespace MAGIUtility {
 	constexpr uint32_t AS_GROUP_SIZE = 32;
 
 	// Vector3のキーフレーム補間
-	Vector3 CalculateVelue(const std::vector<KeyframeVector3>& keyframes, float time);
+	Vector3 CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time);
 	// Quaternionのキーフレーム補間
 	Quaternion CalculateValue(const std::vector<KeyframeQuaternion>& keyframes, float time);
+
+	Vector3 CalculateLoopValue(const std::vector<KeyframeVector3>& keyframes, float time);
+	Quaternion CalculateLoopValue(const std::vector<KeyframeQuaternion>& keyframes, float time);
 
 	// ガウスの重みを生成する
 	std::array<float, 7> GenerateGaussianWeights(float sigma);

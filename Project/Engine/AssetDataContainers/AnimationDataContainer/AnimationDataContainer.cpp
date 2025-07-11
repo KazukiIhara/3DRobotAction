@@ -123,7 +123,7 @@ void AnimationDataContainer::Load(const std::string& animationFileName) {
 		}
 
 		// アニメーションをコンテナに格納
-		animationDatas_[animationData.name] = animationData;
+		animationDatas_[animationFileName] = animationData;
 	}
 
 	// 読み込み完了したファイル名をリストに追加

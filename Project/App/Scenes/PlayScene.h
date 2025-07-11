@@ -19,7 +19,7 @@ using namespace MAGIUtility;
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene :public BaseScene<Data> {
+class PlayScene:public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -62,6 +62,8 @@ private:
 
 	// 板ポリエフェクトのパラメータ
 	PlaneEffectParam planeEffect_;
+
+	float mutantT = 0.0f;
 };
 
 template<typename Data>
@@ -144,7 +146,7 @@ inline void PlayScene<Data>::Initialize() {
 	// アニメーションのロード
 	//===================================
 
-	/*MAGISYSTEM::LoadAnimation("Mutant_Capoeira");*/
+	MAGISYSTEM::LoadAnimation("Mutant_Walking");
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
@@ -210,6 +212,11 @@ inline void PlayScene<Data>::Update() {
 		MAGISYSTEM::AddPlaneEffect(planeEffect_);
 	}
 	ImGui::End();
+
+
+	mutantT += MAGISYSTEM::GetDeltaTime();
+
+	MAGISYSTEM::ApplyAnimationSkinModel("Mutant", MAGISYSTEM::FindAnimation("Mutant_Walking"), mutantT, true);
 
 	/*ImGui::Begin("VignetteParamater");
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
