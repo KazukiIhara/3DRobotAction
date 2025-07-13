@@ -32,6 +32,11 @@ MechCore::MechCore() {
 	// 足
 	leg_ = std::make_unique<MechLeg>();
 
+	// 左手武器
+	leftHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
+
+	// 右手武器
+	rightHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
 
 	// パーツを親子付け
 
@@ -42,12 +47,23 @@ MechCore::MechCore() {
 		if (auto head = head_->GetGameObject().lock()) {
 			head->GetTransform()->SetParent(body->GetTransform(), false);
 		}
-		// 腕
+		// 右腕
 		if (auto rightArm = rightArm_->GetGameObject().lock()) {
 			rightArm->GetTransform()->SetParent(body->GetTransform(), false);
+
+			// 右手武器
+			if (auto rightHandWeapon = rightHandWeapon_->GetGameObject().lock()) {
+				rightHandWeapon->GetTransform()->SetParent(rightArm->GetTransform(), false);
+			}
 		}
+		// 左腕
 		if (auto leftArm = leftArm_->GetGameObject().lock()) {
 			leftArm->GetTransform()->SetParent(body->GetTransform(), false);
+
+			// 左手武器
+			if (auto leftHandWeapon = leftHandWeapon_->GetGameObject().lock()) {
+				leftHandWeapon->GetTransform()->SetParent(leftArm->GetTransform(), false);
+			}
 		}
 		// 足
 		if (auto leg = leg_->GetGameObject().lock()) {
@@ -142,12 +158,24 @@ MechBody* MechCore::GetMechBody() {
 	return body_.get();
 }
 
+BaseMechWeapon* MechCore::GetLeftHandWeapon() {
+	return leftHandWeapon_.get();
+}
+
+BaseMechWeapon* MechCore::GetRightHandWeapon() {
+	return rightHandWeapon_.get();
+}
+
 MechMovementComponent* MechCore::GetMovementComponent() {
 	return movementComponent_.get();
 }
 
 MechLockOnComponent* MechCore::GetLockOnComponent() {
 	return lockOnComponent_.get();
+}
+
+MechAttackComponent* MechCore::GetAttackComponent() {
+	return attackComponent_.get();
 }
 
 void MechCore::SetInputCommand(const InputCommand& command) {

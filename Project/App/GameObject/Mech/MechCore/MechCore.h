@@ -14,9 +14,13 @@
 #include "GameObject/Mech/MechParts/MechArmLeft/MechArmLeft.h"
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
+// 武器クラス
+#include "GameObject/Mech/MechWeapons/MechWeaponAssultRifle/MechWeaponAssultRifle.h"
+
 // コンポーネントクラス
 #include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
 #include "GameObject/Mech/MechComponents/LockOn/MechLockOnComponent.h"
+#include "GameObject/Mech/MechComponents/Attack/MechAttackComponent.h"
 
 // 前方宣言
 class GameObject3D;
@@ -30,6 +34,8 @@ struct InputCommand {
 	bool quickBoost = false;
 	bool assultBoost = false;
 	bool switchHardLock = false;
+	bool leftHandWeapon = false;
+	bool rightHandWeapon = false;
 };
 
 /// ロックオン用の情報
@@ -51,7 +57,8 @@ enum class MechCoreState {
 	Idle,
 	Move,
 	QuickBoost,
-	AssultBoost
+	AssultBoost,
+	Melee,
 };
 
 /// <summary>
@@ -76,8 +83,12 @@ public:
 
 	MechBody* GetMechBody();
 
+	BaseMechWeapon* GetLeftHandWeapon();
+	BaseMechWeapon* GetRightHandWeapon();
+
 	MechMovementComponent* GetMovementComponent();
 	MechLockOnComponent* GetLockOnComponent();
+	MechAttackComponent* GetAttackComponent();
 
 	//======================= 
 	// セッター
@@ -114,7 +125,7 @@ private:
 	std::unique_ptr<MechLockOnComponent> lockOnComponent_;
 
 	// 攻撃コンポーネント
-
+	std::unique_ptr<MechAttackComponent> attackComponent_;
 
 	//======================= 
 	// 各パーツ
@@ -133,7 +144,10 @@ private:
 	// 足
 	std::unique_ptr<MechLeg> leg_ = nullptr;
 
-	// 武器系
+	// 左手武器
+	std::unique_ptr<BaseMechWeapon> leftHandWeapon_ = nullptr;
 
+	// 右手武器
+	std::unique_ptr<BaseMechWeapon> rightHandWeapon_ = nullptr;
 
 };
