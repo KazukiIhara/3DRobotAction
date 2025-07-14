@@ -28,11 +28,11 @@ void MechArmRight::Update(MechCore* mechCore) {
 			const Vector3 targetBodyPos = targetBodyObj->GetTransform()->GetWorldPosition();
 			if (auto obj = rightArm_.lock()) {
 				// 前方ベクトルを計算、正規化
-				Vector3 fwd = targetBodyPos - obj->GetTransform()->GetWorldPosition();
-				fwd = Normalize(fwd);
+				forward_ = targetBodyPos - obj->GetTransform()->GetWorldPosition();
+				forward_ = Normalize(forward_);
 				// ヨー角を取得
-				const float yaw = std::atan2(fwd.x, fwd.z);
-				const float pitch = std::atan2(-fwd.y, std::sqrt(fwd.x * fwd.x + fwd.z * fwd.z));
+				const float yaw = std::atan2(forward_.x, forward_.z);
+				const float pitch = std::atan2(-forward_.y, std::sqrt(forward_.x * forward_.x + forward_.z * forward_.z));
 
 				// 回転を作成
 				Quaternion qYaw = MakeRotateAxisAngleQuaternion({ 0,1,0 }, yaw);
@@ -58,3 +58,8 @@ void MechArmRight::Update(MechCore* mechCore) {
 std::weak_ptr<GameObject3D> MechArmRight::GetGameObject()const {
 	return rightArm_;
 }
+
+const Vector3& MechArmRight::GetForward() const {
+	return forward_;
+}
+

@@ -8,16 +8,28 @@ Bullet::Bullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Ve
 	lifeTime_ = 10.0f;
 	dir_ = dir;
 	speed_ = speed;
+
+	ModelMaterial material{};
+	material.blendMode = BlendMode::Add;
+
+	// レンダラーを作成
+	std::shared_ptr<ModelRenderer> bulletRenderer = std::make_shared<ModelRenderer>("Bullet", "Bullet", material);
+
 	// ゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> bullet = std::make_shared<GameObject3D>("Bullet", wPos);
+	bullet->AddModelRenderer(bulletRenderer);
 	bullet_ = MAGISYSTEM::AddGameObject3D(std::move(bullet));
 
 }
 
 void Bullet::Update() {
+	// 進行方向に向ける
+	const Quaternion targetQ = DirectionToQuaternion(dir_);
 	// 指定方向に移動
 	const Vector3 velocity = dir_ * speed_ * MAGISYSTEM::GetDeltaTime();
+
 	if (auto obj = bullet_.lock()) {
+		obj->GetTransform()->SetQuaternion(targetQ);
 		obj->GetTransform()->AddTranslate(velocity);
 	}
 
@@ -30,11 +42,7 @@ void Bullet::Update() {
 }
 
 void Bullet::Draw() {
-	if (isAlive_) {
-		if (auto obj = bullet_.lock()) {
-			MAGISYSTEM::DrawBox3D(obj->GetTransform()->GetWorldMatrix(), BoxData3D{}, MaterialData3D{});
-		}
-	}
+
 }
 
 void Bullet::Finalize() {

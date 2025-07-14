@@ -50,6 +50,13 @@ void Player::Update() {
 		// ロックオンモード切り替え
 		command.switchHardLock = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
 
+		// 左手武器攻撃
+		command.leftHandWeapon = MAGISYSTEM::GetLeftTrigger(0) >= 0.3f;
+
+		// 右手武器攻撃
+		command.rightHandWeapon = MAGISYSTEM::GetRightTrigger(0) >= 0.3f;
+
+
 	} else { // パッドなしならキーボード入力解禁
 		// 移動入力
 		if (MAGISYSTEM::PushKey(DIK_W)) lStick.y += 1.0f;

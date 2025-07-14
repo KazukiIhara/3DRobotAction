@@ -14,8 +14,9 @@ public:
 	void Update(MechCore* mechCore)override;
 
 	// 射撃時に弾が発射される座標を取得
-	Vector3 GetFireWorldPosition();
+	Vector3 GetFireWorldPosition()override;
 private:
-
-	Vector3 fireLocalPosition_ = { 0.0f,0.0f,0.0f };
+	Vector3 fireLocalPosition_ = { 0.0f,0.24f,1.3f };
+	Matrix4x4 fireLocalTranslateMatrix_;
+	Vector3 fireWorldPosition_ = { 0.0f,0.0f,0.0f };
 };

@@ -149,6 +149,9 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("AssultRifle");
 	MAGISYSTEM::CreateModelDrawer("AssultRifle", MAGISYSTEM::FindModel("AssultRifle"));
 
+	MAGISYSTEM::LoadModel("Bullet");
+	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
+
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
@@ -236,6 +239,10 @@ inline void PlayScene<Data>::Update() {
 	// 敵更新
 	enemy_->Update();
 
+	// 弾マネージャ更新
+	bulletManger_->Update();
+
+
 	// ポストエフェクト適用
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
@@ -248,6 +255,8 @@ inline void PlayScene<Data>::Draw() {
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
+	// 弾マネージャ描画
+	bulletManger_->Draw();
 }
 
 template<typename Data>

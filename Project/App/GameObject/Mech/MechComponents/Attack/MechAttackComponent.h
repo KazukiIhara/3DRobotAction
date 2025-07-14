@@ -11,6 +11,8 @@ public:
 	MechAttackComponent(BulletManager* bulletManager);
 	~MechAttackComponent() = default;
 
+	void Update(MechCore* mechCore);
+
 	// 攻撃
 	void AttackLeftHand(MechCore* mechCore);
 	void AttackRightHand(MechCore* mechCore);

@@ -75,9 +75,10 @@ MechCore::MechCore(BulletManager* bulletManager) {
 
 	// 移動
 	movementComponent_ = std::make_unique<MechMovementComponent>();
-
 	// ロックオン
 	lockOnComponent_ = std::make_unique<MechLockOnComponent>();
+	// 攻撃
+	attackComponent_ = std::make_unique<MechAttackComponent>(bulletManager);
 
 
 	// ステートを作成
@@ -125,6 +126,12 @@ void MechCore::Update() {
 	// 足
 	leg_->Update(this);
 
+	// 武器を更新
+	rightHandWeapon_->Update(this);
+	leftHandWeapon_->Update(this);
+
+	// 攻撃コンポーネントを更新
+	attackComponent_->Update(this);
 
 	// 移動コンポーネントを更新
 	movementComponent_->Update(this);
