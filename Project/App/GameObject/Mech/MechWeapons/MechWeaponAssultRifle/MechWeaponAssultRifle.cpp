@@ -5,6 +5,7 @@
 
 MechWeaponAssultRifle::MechWeaponAssultRifle()
 	:BaseMechWeapon("AssultRifle", WeaponType::AssultRifle) {
+	// 初期座標を設定
 	if (auto obj = weapon_.lock()) {
 		obj->GetTransform()->SetTranslateZ(0.6f);
 	}
