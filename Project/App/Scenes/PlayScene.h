@@ -14,12 +14,15 @@ using namespace MAGIUtility;
 #include "GameObject/Player/Player.h"
 #include "GameObject/Enemy/Enemy.h"
 
+
+#include "GameObject/BulletManager/BulletManager.h"
+
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene:public BaseScene<Data> {
+class PlayScene :public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -45,6 +48,14 @@ private:
 
 	// 敵
 	std::unique_ptr<Enemy> enemy_;
+
+	//----------------------------------------- 
+	// マネージャ
+	//-----------------------------------------
+
+	// 弾のマネージャ
+	std::unique_ptr<BulletManager> bulletManger_;
+
 
 	// ポストエフェクトの用の変数
 	float vignetteScale_ = 18.0f;
@@ -146,15 +157,26 @@ inline void PlayScene<Data>::Initialize() {
 	// スカイボックスを設定
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
+	//===========================
+	// マネージャの初期化
+	//===========================
+	bulletManger_ = std::make_unique<BulletManager>();
+
+
 	// プレイヤー作成
-	player_ = std::make_unique<Player>();
+	player_ = std::make_unique<Player>(bulletManger_.get());
 
 	// 敵作成
-	enemy_ = std::make_unique<Enemy>();
+	enemy_ = std::make_unique<Enemy>(bulletManger_.get());
 
 
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
+
+
+	//===========================
+	// 以下ほぼほぼデバッグ用
+	//===========================
 
 
 	planeEffect_.Initialize();

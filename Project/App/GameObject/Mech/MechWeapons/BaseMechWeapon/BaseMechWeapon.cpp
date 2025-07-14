@@ -27,3 +27,7 @@ std::weak_ptr<GameObject3D> BaseMechWeapon::GetGameObject()const {
 const WeaponType& BaseMechWeapon::GetType() const {
 	return type_;
 }
+
+Vector3 BaseMechWeapon::GetFireWorldPosition() {
+	return Vector3();
+}

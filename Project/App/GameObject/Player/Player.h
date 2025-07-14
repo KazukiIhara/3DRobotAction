@@ -7,12 +7,15 @@
 #include "Effects/BreakEffect/BreakEffect.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
 
+// 前方宣言
+class BulletManager;
+
 /// <summary>
 /// プレイヤークラス
 /// </summary>
 class Player {
 public:
-	Player();
+	Player(BulletManager* bulletManager);
 	~Player() = default;
 
 	void Update();

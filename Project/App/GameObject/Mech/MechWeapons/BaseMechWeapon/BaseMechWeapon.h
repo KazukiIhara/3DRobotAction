@@ -4,6 +4,8 @@
 #include <memory>
 #include <string>
 
+#include "Math/Types/AllMathTypes.h"
+
 // 前方宣言
 class MechCore;
 class GameObject3D;
@@ -25,6 +27,8 @@ public:
 	virtual void Update(MechCore* mechCore) = 0;
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 	const WeaponType& GetType()const;
+
+	virtual Vector3 GetFireWorldPosition();
 
 protected:
 	// 武器タイプ

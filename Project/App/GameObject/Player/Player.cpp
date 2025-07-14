@@ -5,10 +5,10 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
-Player::Player() {
+Player::Player(BulletManager* bulletManager) {
 	// 機体の作成
-	mech_ = std::make_shared<MechCore>();
-	
+	mech_ = std::make_shared<MechCore>(bulletManager);
+
 	// 三人称視点カメラの作成
 	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera");
 	followCamera->SetIsUnique(true);

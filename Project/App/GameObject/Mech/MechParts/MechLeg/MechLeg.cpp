@@ -33,7 +33,7 @@ void MechLeg::RotateAngleAsVelocity(MechCore* core) {
 	float yaw = std::atan2(currentDir.x, currentDir.y);
 	const Quaternion dirQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
 	const Quaternion bodyQ = core->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
-	const Quaternion targetQ = Inverse(bodyQ) * dirQ;
+	const Quaternion targetQ = dirQ * Inverse(bodyQ);
 
 	if (auto leg = leg_.lock()) {
 		leg->GetTransform()->SetQuaternion(targetQ);

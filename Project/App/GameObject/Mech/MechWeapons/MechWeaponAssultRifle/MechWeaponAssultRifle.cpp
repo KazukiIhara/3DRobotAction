@@ -12,5 +12,10 @@ MechWeaponAssultRifle::MechWeaponAssultRifle()
 }
 
 void MechWeaponAssultRifle::Update(MechCore* mechCore) {
+	
 
+}
+
+Vector3 MechWeaponAssultRifle::GetFireWorldPosition() {
+	return Vector3();
 }

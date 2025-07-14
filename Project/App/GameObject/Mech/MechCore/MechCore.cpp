@@ -10,7 +10,7 @@
 
 using namespace MAGIMath;
 
-MechCore::MechCore() {
+MechCore::MechCore(BulletManager* bulletManager) {
 	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", Vector3(0.0f, 0.0f, 0.0f));
 	coreObject->SetIsUnique(true);
@@ -88,6 +88,11 @@ MechCore::MechCore() {
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
 
+	//===========================
+	// マネージャをセット
+	//===========================
+	MAGIAssert::Assert(bulletManager, "BulletManager must not be null");
+
 }
 
 void MechCore::Update() {
@@ -156,6 +161,14 @@ const LockOnView& MechCore::GetLockOnView() const {
 
 MechBody* MechCore::GetMechBody() {
 	return body_.get();
+}
+
+MechArmLeft* MechCore::GetMechArmLeft() {
+	return leftArm_.get();
+}
+
+MechArmRight* MechCore::GetMechArmRight() {
+	return rightArm_.get();
 }
 
 BaseMechWeapon* MechCore::GetLeftHandWeapon() {

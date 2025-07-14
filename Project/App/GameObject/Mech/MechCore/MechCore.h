@@ -25,6 +25,7 @@
 // 前方宣言
 class GameObject3D;
 class MechCoreBaseState;
+class BulletManager;
 
 // 入力コマンド
 struct InputCommand {
@@ -66,7 +67,7 @@ enum class MechCoreState {
 /// </summary>
 class MechCore {
 public:
-	MechCore();
+	MechCore(BulletManager* bulletManager);
 	~MechCore() = default;
 
 	void Update();
@@ -82,6 +83,9 @@ public:
 	const LockOnView& GetLockOnView()const;
 
 	MechBody* GetMechBody();
+	MechArmLeft* GetMechArmLeft();
+	MechArmRight* GetMechArmRight();
+
 
 	BaseMechWeapon* GetLeftHandWeapon();
 	BaseMechWeapon* GetRightHandWeapon();

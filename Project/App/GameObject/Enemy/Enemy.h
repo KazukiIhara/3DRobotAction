@@ -5,12 +5,15 @@
 
 #include "GameObject/Mech/MechCore/MechCore.h"
 
+// 前方宣言
+class BulletManager;
+
 /// <summary>
 /// 敵クラス
 /// </summary>
 class Enemy {
 public:
-	Enemy();
+	Enemy(BulletManager* bulletManager);
 	~Enemy() = default;
 
 	void Update();
