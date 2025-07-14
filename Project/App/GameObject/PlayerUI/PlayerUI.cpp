@@ -25,15 +25,18 @@ PlayerUI::PlayerUI() {
 }
 
 void PlayerUI::Update(MechCore* mechCore) {
+	// ロックオン状態などに応じてUIの座標を更新
 
 }
 
 void PlayerUI::Draw() {
+	// ロックオンUIの描画
 	DrawLockonUI();
 }
 
 void PlayerUI::DrawLockonUI() {
 
 	MAGISYSTEM::DrawSprite(lockonGrayData_, lockonGrayMat_);
+
 	MAGISYSTEM::DrawSprite(lockonRedData_, lockonRedMat_);
 }
