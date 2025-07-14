@@ -49,6 +49,9 @@ public:
 	// 現在の進行方向を取得
 	Vector2 GetCurrentMoveDir()const;
 
+	// 現在の移動量を取得
+	Vector3 GetCurrentVelocity()const;
+
 	//===================================
 	// セッター
 	//===================================

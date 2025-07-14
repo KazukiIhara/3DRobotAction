@@ -31,3 +31,11 @@ const WeaponType& BaseMechWeapon::GetType() const {
 Vector3 BaseMechWeapon::GetFireWorldPosition() {
 	return Vector3();
 }
+
+bool BaseMechWeapon::IsReloading() const {
+	return isReloading_;
+}
+
+bool BaseMechWeapon::IsCoolTime() const {
+	return isCoolTime_;
+}

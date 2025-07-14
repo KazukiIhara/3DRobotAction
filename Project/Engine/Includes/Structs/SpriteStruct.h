@@ -4,6 +4,9 @@
 #include <cstdint>
 #include <string>
 
+// DirectX
+#include <d3d12.h>
+
 #include "DirectX-Headers/include/directx/d3dx12_pipeline_state_stream.h"
 
 // 数学ヘッダ

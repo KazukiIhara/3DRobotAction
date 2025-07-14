@@ -48,9 +48,14 @@ void MechArmLeft::Update(MechCore* mechCore) {
 		}
 	} else {
 		if (auto obj = leftArm_.lock()) {
-			const float pitch = std::numbers::pi_v<float>*0.2f;
-			Quaternion targetQ = MakeRotateAxisAngleQuaternion({ 1,0,0 }, pitch);
-			obj->GetTransform()->SetQuaternion(targetQ);
+			const float pitch = 0.0f;
+			const Quaternion localQ{};
+			const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
+			const Quaternion targetQ = localQ * bodyQ;
+			forward_ = Normalize(Transform(MakeForwardVector3(), targetQ));
+
+			// ローカルのクオータニオンをセット
+			obj->GetTransform()->SetQuaternion(localQ);
 		}
 	}
 }

@@ -148,6 +148,10 @@ Vector2 MechMovementComponent::GetCurrentMoveDir() const {
 	return currentMoveDir_;
 }
 
+Vector3 MechMovementComponent::GetCurrentVelocity() const {
+	return velocity_;
+}
+
 void MechMovementComponent::SetMoveSpeed(float s) {
 	moveSpeed_ = s;
 }

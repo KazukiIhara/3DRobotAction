@@ -13,10 +13,31 @@ MechWeaponAssultRifle::MechWeaponAssultRifle()
 }
 
 void MechWeaponAssultRifle::Update(MechCore* mechCore) {
-	const Matrix4x4 wMat = fireLocalTranslateMatrix_ * weapon_.lock()->GetTransform()->GetWorldMatrix();
-	fireWorldPosition_ = ExtractionWorldPos(wMat);
+	if (auto weapon = weapon_.lock()) {
+		// 弾の発射位置を計算
+		const Matrix4x4 wMat = fireLocalTranslateMatrix_ * weapon->GetTransform()->GetWorldMatrix();
+		fireWorldPosition_ = ExtractionWorldPos(wMat);
+	}
+
+	// クールタイム中かどうか
+	if (coolTimer_ > 0.0f) {
+		coolTimer_ -= MAGISYSTEM::GetDeltaTime();
+		isCoolTime_ = true;
+	} else {
+		coolTimer_ = 0.0f;
+		isCoolTime_ = false;
+	}
+
 }
 
 Vector3 MechWeaponAssultRifle::GetFireWorldPosition() {
 	return fireWorldPosition_;
+}
+
+void MechWeaponAssultRifle::SetReloadTime() {
+
+}
+
+void MechWeaponAssultRifle::SetCoolTime() {
+	coolTimer_ = coolTime_;
 }

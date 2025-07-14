@@ -6,6 +6,7 @@
 // MyHedder
 #include "Effects/BreakEffect/BreakEffect.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
+#include "GameObject/PlayerUI/PlayerUI.h"
 
 // 前方宣言
 class BulletManager;
@@ -28,6 +29,9 @@ public:
 private:
 	// 機体クラス
 	std::shared_ptr<MechCore> mech_ = nullptr;
+
+	// プレイヤーUIクラス
+	std::unique_ptr<PlayerUI> playerUI_ = nullptr;
 
 	// 破壊時のエフェクト
 	std::unique_ptr<BreakEffect> breakEffect_ = nullptr;

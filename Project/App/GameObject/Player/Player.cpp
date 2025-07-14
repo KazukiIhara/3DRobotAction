@@ -20,6 +20,11 @@ Player::Player(BulletManager* bulletManager) {
 	if (auto mechObj = mech_->GetGameObject().lock()) {
 		mechObj->AddCamera3D(followCamera);
 	}
+
+
+	// プレイヤーUIクラス作成
+	playerUI_ = std::make_unique<PlayerUI>();
+
 }
 
 void Player::Update() {
@@ -106,6 +111,10 @@ void Player::Update() {
 	mech_->Update();
 
 
+	// UI更新
+	playerUI_->Update(mech_.get());
+
+
 	//// 破壊時エフェクトテスト
 	//if (ImGui::Button("PlayEffect")) {
 	//	breakEffect_ = std::make_unique<BreakEffect>(mech_->GetGameObject().lock()->GetTransform()->GetWorldPosition());
@@ -122,6 +131,9 @@ void Player::Update() {
 }
 
 void Player::Draw() {
+	// UI描画
+	playerUI_->Draw();
+
 	if (breakEffect_) {
 		breakEffect_->Draw();
 	}

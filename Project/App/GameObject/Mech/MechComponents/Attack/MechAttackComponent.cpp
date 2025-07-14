@@ -32,20 +32,28 @@ void MechAttackComponent::AttackLeftHand(MechCore* mechCore) {
 	const WeaponType type = mechCore->GetLeftHandWeapon()->GetType();
 
 	switch (type) {
-	case WeaponType::AssultRifle:
-		// 敵味方の識別を取得
-		const FriendlyTag tag = FriendlyTag::Player;
-		// 腕の向きを取得(弾の発射向きになる)
-		const Vector3 armDir = mechCore->GetMechArmLeft()->GetForward();
-		// 速度を決定
-		const float bulletSpeed = 100.0f;
-		// 対象武器の弾発射位置を取得
-		const Vector3 fireWPos = mechCore->GetLeftHandWeapon()->GetFireWorldPosition();
+		case WeaponType::AssultRifle:
+			// クールタイム中なら早期リターン
+			if (mechCore->GetLeftHandWeapon()->IsCoolTime()) {
+				return;
+			}
 
-		// 弾を追加
-		bulletManager_->AddBullet(tag, armDir, bulletSpeed, fireWPos);
+			// 敵味方の識別を取得
+			const FriendlyTag tag = FriendlyTag::Player;
+			// 腕の向きを取得(弾の発射向きになる)
+			const Vector3 armDir = mechCore->GetMechArmLeft()->GetForward();
+			// 速度を決定
+			const float bulletSpeed = 100.0f;
+			// 対象武器の弾発射位置を取得
+			const Vector3 fireWPos = mechCore->GetLeftHandWeapon()->GetFireWorldPosition();
 
-		break;
+			// 弾を追加
+			bulletManager_->AddBullet(tag, armDir, bulletSpeed, fireWPos);
+
+			// クールタイムにする
+			mechCore->GetLeftHandWeapon()->SetCoolTime();
+
+			break;
 	}
 
 }
@@ -55,19 +63,27 @@ void MechAttackComponent::AttackRightHand(MechCore* mechCore) {
 	const WeaponType type = mechCore->GetRightHandWeapon()->GetType();
 
 	switch (type) {
-	case WeaponType::AssultRifle:
-		// 敵味方の識別を取得
-		const FriendlyTag tag = FriendlyTag::Player;
-		// 腕の向きを取得(弾の発射向きになる)
-		const Vector3 armFwd = mechCore->GetMechArmRight()->GetForward();
-		// 速度を決定
-		const float bulletSpeed = 100.0f;
-		// 対象武器の弾発射位置を取得
-		const Vector3 fireWPos = mechCore->GetRightHandWeapon()->GetFireWorldPosition();
+		case WeaponType::AssultRifle:
+			// クールタイム中なら早期リターン
+			if (mechCore->GetRightHandWeapon()->IsCoolTime()) {
+				return;
+			}
 
-		// 弾を追加
-		bulletManager_->AddBullet(tag, armFwd, bulletSpeed, fireWPos);
+			// 敵味方の識別を取得
+			const FriendlyTag tag = FriendlyTag::Player;
+			// 腕の向きを取得(弾の発射向きになる)
+			const Vector3 armFwd = mechCore->GetMechArmRight()->GetForward();
+			// 速度を決定
+			const float bulletSpeed = 100.0f;
+			// 対象武器の弾発射位置を取得
+			const Vector3 fireWPos = mechCore->GetRightHandWeapon()->GetFireWorldPosition();
 
-		break;
+			// 弾を追加
+			bulletManager_->AddBullet(tag, armFwd, bulletSpeed, fireWPos);
+
+			// クールタイムにする
+			mechCore->GetRightHandWeapon()->SetCoolTime();
+
+			break;
 	}
 }
