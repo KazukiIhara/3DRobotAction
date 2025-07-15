@@ -3,3 +3,7 @@
 AttackCollisionManager::AttackCollisionManager() {
 
 }
+
+void AttackCollisionManager::Draw() {
+
+}

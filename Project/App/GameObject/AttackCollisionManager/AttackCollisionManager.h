@@ -11,6 +11,8 @@ public:
 	AttackCollisionManager();
 	~AttackCollisionManager() = default;
 
+	void Draw();
+
 private:
 	// 機体のリスト
 
