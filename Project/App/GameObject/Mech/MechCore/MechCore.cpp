@@ -10,12 +10,15 @@
 
 using namespace MAGIMath;
 
-MechCore::MechCore(BulletManager* bulletManager) {
+MechCore::MechCore(FriendlyTag tag, BulletManager* bulletManager) {
 	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", Vector3(0.0f, 0.0f, 0.0f));
 	coreObject->SetIsUnique(true);
 	// ゲームオブジェクトマネージャに追加
 	core_ = MAGISYSTEM::AddGameObject3D(std::move(coreObject));
+
+	// タグをセット
+	tag_ = tag;
 
 	// パーツを作成
 
@@ -164,6 +167,10 @@ const InputCommand& MechCore::GetInputCommand() const {
 
 const LockOnView& MechCore::GetLockOnView() const {
 	return lockOnView_;
+}
+
+const FriendlyTag& MechCore::GetFriendlyTag() const {
+	return tag_;
 }
 
 MechBody* MechCore::GetMechBody() {

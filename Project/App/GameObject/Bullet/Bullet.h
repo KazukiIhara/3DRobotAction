@@ -5,15 +5,10 @@
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
-
+#include "GameCommon/GameCommon.h"
 
 // 前方宣言
 class GameObject3D;
-
-/// <summary>
-/// 識別タグ
-/// </summary>
-enum class FriendlyTag;
 
 /// <summary>
 /// 弾

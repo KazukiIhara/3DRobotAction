@@ -7,6 +7,9 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
+// アプリ用汎用ヘッダ
+#include "GameCommon/GameCommon.h"
+
 // 部位ごとのクラス
 #include "GameObject/Mech/MechParts/MechHead/MechHead.h"
 #include "GameObject/Mech/MechParts/MechBody/MechBody.h"
@@ -27,33 +30,10 @@ class GameObject3D;
 class MechCoreBaseState;
 class BulletManager;
 
-// 入力コマンド
-struct InputCommand {
-	Vector2 moveDirection = { 0.0f,0.0f };
-	Vector2 cameraRotDirection = { 0.0f,0.0f };
-	bool jump = false;
-	bool quickBoost = false;
-	bool assultBoost = false;
-	bool switchHardLock = false;
-	bool leftHandWeapon = false;
-	bool rightHandWeapon = false;
-};
 
-/// ロックオン用の情報
-struct LockOnView {
-	// カメラの位置
-	Vector3 eye = { 0.0f,0.0f,0.0f };
-	// カメラのターゲット
-	Vector3 target = { 0.0f,0.0f,0.0f };
-	// 上方向
-	Vector3 up = { 0.0f,1.0f,0.0f };
-	// ニアクリップ距離
-	float nearClipRange = 0.1f;
-	// ファークリップ距離
-	float farClipRange = 100.0f;
-};
-
-// 状態
+/// <summary>
+/// 機体の状態
+/// </summary>
 enum class MechCoreState {
 	Idle,
 	Move,
@@ -62,18 +42,12 @@ enum class MechCoreState {
 	Melee,
 };
 
-// 識別タグ
-enum class FriendlyTag {
-	Player,
-	Enemy
-};
-
 /// <summary>
 /// 機体制御クラス
 /// </summary>
 class MechCore {
 public:
-	MechCore(BulletManager* bulletManager);
+	MechCore(FriendlyTag tag, BulletManager* bulletManager);
 	~MechCore() = default;
 
 	void Update();
@@ -88,10 +62,11 @@ public:
 	const InputCommand& GetInputCommand()const;
 	const LockOnView& GetLockOnView()const;
 
+	const FriendlyTag& GetFriendlyTag()const;
+
 	MechBody* GetMechBody();
 	MechArmLeft* GetMechArmLeft();
 	MechArmRight* GetMechArmRight();
-
 
 	BaseMechWeapon* GetLeftHandWeapon();
 	BaseMechWeapon* GetRightHandWeapon();
@@ -116,6 +91,9 @@ private:
 
 	// ロックオン用のカメラ情報
 	LockOnView lockOnView_;
+
+	// 友好タグ
+	FriendlyTag tag_;
 
 	// オブジェクト
 	std::weak_ptr<GameObject3D> core_;
