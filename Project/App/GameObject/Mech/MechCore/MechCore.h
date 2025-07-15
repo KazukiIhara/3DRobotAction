@@ -62,6 +62,12 @@ enum class MechCoreState {
 	Melee,
 };
 
+// 識別タグ
+enum class FriendlyTag {
+	Player,
+	Enemy
+};
+
 /// <summary>
 /// 機体制御クラス
 /// </summary>

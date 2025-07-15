@@ -13,10 +13,7 @@ class GameObject3D;
 /// <summary>
 /// 識別タグ
 /// </summary>
-enum class FriendlyTag {
-	Player,
-	Enemy
-};
+enum class FriendlyTag;
 
 /// <summary>
 /// 弾
