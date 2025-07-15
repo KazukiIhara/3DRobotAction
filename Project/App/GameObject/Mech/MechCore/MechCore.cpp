@@ -10,12 +10,15 @@
 
 using namespace MAGIMath;
 
-MechCore::MechCore() {
+MechCore::MechCore(FriendlyTag tag, BulletManager* bulletManager) {
 	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", Vector3(0.0f, 0.0f, 0.0f));
 	coreObject->SetIsUnique(true);
 	// ゲームオブジェクトマネージャに追加
 	core_ = MAGISYSTEM::AddGameObject3D(std::move(coreObject));
+
+	// タグをセット
+	tag_ = tag;
 
 	// パーツを作成
 
@@ -32,6 +35,11 @@ MechCore::MechCore() {
 	// 足
 	leg_ = std::make_unique<MechLeg>();
 
+	// 左手武器
+	leftHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
+
+	// 右手武器
+	rightHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
 
 	// パーツを親子付け
 
@@ -42,12 +50,23 @@ MechCore::MechCore() {
 		if (auto head = head_->GetGameObject().lock()) {
 			head->GetTransform()->SetParent(body->GetTransform(), false);
 		}
-		// 腕
+		// 右腕
 		if (auto rightArm = rightArm_->GetGameObject().lock()) {
 			rightArm->GetTransform()->SetParent(body->GetTransform(), false);
+
+			// 右手武器
+			if (auto rightHandWeapon = rightHandWeapon_->GetGameObject().lock()) {
+				rightHandWeapon->GetTransform()->SetParent(rightArm->GetTransform(), false);
+			}
 		}
+		// 左腕
 		if (auto leftArm = leftArm_->GetGameObject().lock()) {
 			leftArm->GetTransform()->SetParent(body->GetTransform(), false);
+
+			// 左手武器
+			if (auto leftHandWeapon = leftHandWeapon_->GetGameObject().lock()) {
+				leftHandWeapon->GetTransform()->SetParent(leftArm->GetTransform(), false);
+			}
 		}
 		// 足
 		if (auto leg = leg_->GetGameObject().lock()) {
@@ -59,9 +78,10 @@ MechCore::MechCore() {
 
 	// 移動
 	movementComponent_ = std::make_unique<MechMovementComponent>();
-
 	// ロックオン
 	lockOnComponent_ = std::make_unique<MechLockOnComponent>();
+	// 攻撃
+	attackComponent_ = std::make_unique<MechAttackComponent>(bulletManager);
 
 
 	// ステートを作成
@@ -71,6 +91,11 @@ MechCore::MechCore() {
 
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
+
+	//===========================
+	// マネージャをセット
+	//===========================
+	MAGIAssert::Assert(bulletManager, "BulletManager must not be null");
 
 }
 
@@ -104,6 +129,12 @@ void MechCore::Update() {
 	// 足
 	leg_->Update(this);
 
+	// 武器を更新
+	rightHandWeapon_->Update(this);
+	leftHandWeapon_->Update(this);
+
+	// 攻撃コンポーネントを更新
+	attackComponent_->Update(this);
 
 	// 移動コンポーネントを更新
 	movementComponent_->Update(this);
@@ -138,8 +169,28 @@ const LockOnView& MechCore::GetLockOnView() const {
 	return lockOnView_;
 }
 
+const FriendlyTag& MechCore::GetFriendlyTag() const {
+	return tag_;
+}
+
 MechBody* MechCore::GetMechBody() {
 	return body_.get();
+}
+
+MechArmLeft* MechCore::GetMechArmLeft() {
+	return leftArm_.get();
+}
+
+MechArmRight* MechCore::GetMechArmRight() {
+	return rightArm_.get();
+}
+
+BaseMechWeapon* MechCore::GetLeftHandWeapon() {
+	return leftHandWeapon_.get();
+}
+
+BaseMechWeapon* MechCore::GetRightHandWeapon() {
+	return rightHandWeapon_.get();
 }
 
 MechMovementComponent* MechCore::GetMovementComponent() {
@@ -148,6 +199,10 @@ MechMovementComponent* MechCore::GetMovementComponent() {
 
 MechLockOnComponent* MechCore::GetLockOnComponent() {
 	return lockOnComponent_.get();
+}
+
+MechAttackComponent* MechCore::GetAttackComponent() {
+	return attackComponent_.get();
 }
 
 void MechCore::SetInputCommand(const InputCommand& command) {

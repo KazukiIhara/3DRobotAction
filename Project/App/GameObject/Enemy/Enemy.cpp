@@ -3,16 +3,16 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
-Enemy::Enemy() {
+Enemy::Enemy(BulletManager* bulletManager) {
 	// 機体の作成
-	mech_ = std::make_unique<MechCore>();
+	mech_ = std::make_unique<MechCore>(bulletManager);
 
 }
 
 void Enemy::Update() {
 	// コマンド
 	InputCommand command{};
-	
+
 	// コマンドセット
 	mech_->SetInputCommand(command);
 

@@ -7,6 +7,9 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
+// アプリ用汎用ヘッダ
+#include "GameCommon/GameCommon.h"
+
 // 部位ごとのクラス
 #include "GameObject/Mech/MechParts/MechHead/MechHead.h"
 #include "GameObject/Mech/MechParts/MechBody/MechBody.h"
@@ -14,44 +17,29 @@
 #include "GameObject/Mech/MechParts/MechArmLeft/MechArmLeft.h"
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
+// 武器クラス
+#include "GameObject/Mech/MechWeapons/MechWeaponAssultRifle/MechWeaponAssultRifle.h"
+
 // コンポーネントクラス
 #include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
 #include "GameObject/Mech/MechComponents/LockOn/MechLockOnComponent.h"
+#include "GameObject/Mech/MechComponents/Attack/MechAttackComponent.h"
 
 // 前方宣言
 class GameObject3D;
 class MechCoreBaseState;
+class BulletManager;
 
-// 入力コマンド
-struct InputCommand {
-	Vector2 moveDirection = { 0.0f,0.0f };
-	Vector2 cameraRotDirection = { 0.0f,0.0f };
-	bool jump = false;
-	bool quickBoost = false;
-	bool assultBoost = false;
-	bool switchHardLock = false;
-};
 
-/// ロックオン用の情報
-struct LockOnView {
-	// カメラの位置
-	Vector3 eye = { 0.0f,0.0f,0.0f };
-	// カメラのターゲット
-	Vector3 target = { 0.0f,0.0f,0.0f };
-	// 上方向
-	Vector3 up = { 0.0f,1.0f,0.0f };
-	// ニアクリップ距離
-	float nearClipRange = 0.1f;
-	// ファークリップ距離
-	float farClipRange = 100.0f;
-};
-
-// 状態
+/// <summary>
+/// 機体の状態
+/// </summary>
 enum class MechCoreState {
 	Idle,
 	Move,
 	QuickBoost,
-	AssultBoost
+	AssultBoost,
+	Melee,
 };
 
 /// <summary>
@@ -59,7 +47,7 @@ enum class MechCoreState {
 /// </summary>
 class MechCore {
 public:
-	MechCore();
+	MechCore(FriendlyTag tag, BulletManager* bulletManager);
 	~MechCore() = default;
 
 	void Update();
@@ -74,10 +62,18 @@ public:
 	const InputCommand& GetInputCommand()const;
 	const LockOnView& GetLockOnView()const;
 
+	const FriendlyTag& GetFriendlyTag()const;
+
 	MechBody* GetMechBody();
+	MechArmLeft* GetMechArmLeft();
+	MechArmRight* GetMechArmRight();
+
+	BaseMechWeapon* GetLeftHandWeapon();
+	BaseMechWeapon* GetRightHandWeapon();
 
 	MechMovementComponent* GetMovementComponent();
 	MechLockOnComponent* GetLockOnComponent();
+	MechAttackComponent* GetAttackComponent();
 
 	//======================= 
 	// セッター
@@ -95,6 +91,9 @@ private:
 
 	// ロックオン用のカメラ情報
 	LockOnView lockOnView_;
+
+	// 友好タグ
+	FriendlyTag tag_;
 
 	// オブジェクト
 	std::weak_ptr<GameObject3D> core_;
@@ -114,7 +113,7 @@ private:
 	std::unique_ptr<MechLockOnComponent> lockOnComponent_;
 
 	// 攻撃コンポーネント
-
+	std::unique_ptr<MechAttackComponent> attackComponent_;
 
 	//======================= 
 	// 各パーツ
@@ -133,7 +132,10 @@ private:
 	// 足
 	std::unique_ptr<MechLeg> leg_ = nullptr;
 
-	// 武器系
+	// 左手武器
+	std::unique_ptr<BaseMechWeapon> leftHandWeapon_ = nullptr;
 
+	// 右手武器
+	std::unique_ptr<BaseMechWeapon> rightHandWeapon_ = nullptr;
 
 };

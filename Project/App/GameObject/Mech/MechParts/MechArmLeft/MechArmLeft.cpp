@@ -20,9 +20,50 @@ MechArmLeft::MechArmLeft() {
 }
 
 void MechArmLeft::Update(MechCore* mechCore) {
+	// ロックオン対象がいるなら
+	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+		// 対象の胴体を取得
+		if (auto targetBodyObj = target->GetMechBody()->GetGameObject().lock()) {
+			// ロックオン対象の胴体のワールド座標を取得
+			const Vector3 targetBodyPos = targetBodyObj->GetTransform()->GetWorldPosition();
+			if (auto obj = leftArm_.lock()) {
+				// 前方ベクトルを計算、正規化
+				forward_ = targetBodyPos - obj->GetTransform()->GetWorldPosition();
+				forward_ = Normalize(forward_);
+				// ヨー角を取得
+				const float yaw = std::atan2(forward_.x, forward_.z);
+				const float pitch = std::atan2(-forward_.y, std::sqrt(forward_.x * forward_.x + forward_.z * forward_.z));
 
+				// 回転を作成
+				Quaternion qYaw = MakeRotateAxisAngleQuaternion({ 0,1,0 }, yaw);
+				Quaternion qPitch = MakeRotateAxisAngleQuaternion({ 1,0,0 }, pitch);
+				Quaternion worldQ = Normalize(qPitch * qYaw);
+
+				// 胴体の回転の逆行列をかける
+				const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
+				const Quaternion targetQ = worldQ * Inverse(bodyQ);
+				obj->GetTransform()->SetQuaternion(targetQ);
+			}
+
+		}
+	} else {
+		if (auto obj = leftArm_.lock()) {
+			const float pitch = 0.0f;
+			const Quaternion localQ{};
+			const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
+			const Quaternion targetQ = localQ * bodyQ;
+			forward_ = Normalize(Transform(MakeForwardVector3(), targetQ));
+
+			// ローカルのクオータニオンをセット
+			obj->GetTransform()->SetQuaternion(localQ);
+		}
+	}
 }
 
 std::weak_ptr<GameObject3D> MechArmLeft::GetGameObject()const {
 	return leftArm_;
+}
+
+const Vector3& MechArmLeft::GetForward() const {
+	return forward_;
 }

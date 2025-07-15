@@ -14,12 +14,15 @@ using namespace MAGIUtility;
 #include "GameObject/Player/Player.h"
 #include "GameObject/Enemy/Enemy.h"
 
+
+#include "GameObject/BulletManager/BulletManager.h"
+
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene :public BaseScene<Data> {
+class PlayScene:public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -46,6 +49,14 @@ private:
 	// 敵
 	std::unique_ptr<Enemy> enemy_;
 
+	//----------------------------------------- 
+	// マネージャ
+	//-----------------------------------------
+
+	// 弾のマネージャ
+	std::unique_ptr<BulletManager> bulletManger_;
+
+
 	// ポストエフェクトの用の変数
 	float vignetteScale_ = 18.0f;
 	float vignetteFalloff_ = 0.8f;
@@ -57,13 +68,9 @@ private:
 	// デバッグ用
 	// 
 
-	// トランスフォーム
-	std::array<Transform3D*, 10000> transform_;
-
 	// 板ポリエフェクトのパラメータ
 	PlaneEffectParam planeEffect_;
 
-	float mutantT = 0.0f;
 };
 
 template<typename Data>
@@ -89,6 +96,10 @@ inline void PlayScene<Data>::Initialize() {
 	//===================================
 	// テクスチャのロード
 	//===================================
+
+	// ロックオン用テクスチャ
+	MAGISYSTEM::LoadTexture("LockonUIGray.png");
+	MAGISYSTEM::LoadTexture("LockonUIRed.png");
 
 	// 円形テクスチャ
 	MAGISYSTEM::LoadTexture("Circle2.png");
@@ -139,18 +150,12 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("MechLeg");
 	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
 
-	MAGISYSTEM::LoadModel("Paradin");
-	MAGISYSTEM::CreateSkinModelDrawer("Paradin", MAGISYSTEM::FindModel("Paradin"));
+	MAGISYSTEM::LoadModel("AssultRifle");
+	MAGISYSTEM::CreateModelDrawer("AssultRifle", MAGISYSTEM::FindModel("AssultRifle"));
 
-	MAGISYSTEM::LoadModel("BrainStem");
-	MAGISYSTEM::CreateSkinModelDrawer("BrainStem", MAGISYSTEM::FindModel("BrainStem"));
+	MAGISYSTEM::LoadModel("Bullet");
+	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
 
-	//===================================
-	// アニメーションのロード
-	//===================================
-
-	MAGISYSTEM::LoadAnimation("Paradin_Walking");
-	MAGISYSTEM::LoadAnimation("BrainStem");
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
@@ -159,15 +164,26 @@ inline void PlayScene<Data>::Initialize() {
 	// スカイボックスを設定
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
+	//===========================
+	// マネージャの初期化
+	//===========================
+	bulletManger_ = std::make_unique<BulletManager>();
+
+
 	// プレイヤー作成
-	player_ = std::make_unique<Player>();
+	player_ = std::make_unique<Player>(bulletManger_.get());
 
 	// 敵作成
-	enemy_ = std::make_unique<Enemy>();
+	enemy_ = std::make_unique<Enemy>(bulletManger_.get());
 
 
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
+
+
+	//===========================
+	// 以下ほぼほぼデバッグ用
+	//===========================
 
 
 	planeEffect_.Initialize();
@@ -186,15 +202,6 @@ inline void PlayScene<Data>::Initialize() {
 
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
 	MAGISYSTEM::ImportSceneData("SceneData", true);
-
-	// 
-	// デバッグ用トランスフォーム
-	// 
-
-	for (size_t i = 0; i < 10000; i++) {
-		std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(float(i), 0.0f, -2.0f));
-		transform_[i] = MAGISYSTEM::AddTransform3D(std::move(transform));
-	}
 
 }
 
@@ -218,10 +225,6 @@ inline void PlayScene<Data>::Update() {
 	ImGui::End();
 
 
-	mutantT += MAGISYSTEM::GetDeltaTime();
-
-	MAGISYSTEM::ApplyAnimationSkinModel("BrainStem", MAGISYSTEM::FindAnimation("BrainStem"), mutantT, true);
-
 	/*ImGui::Begin("VignetteParamater");
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
 	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
@@ -240,6 +243,10 @@ inline void PlayScene<Data>::Update() {
 	// 敵更新
 	enemy_->Update();
 
+	// 弾マネージャ更新
+	bulletManger_->Update();
+
+
 	// ポストエフェクト適用
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
@@ -252,9 +259,8 @@ inline void PlayScene<Data>::Draw() {
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
-	for (size_t i = 0; i < 10000; i++) {
-		MAGISYSTEM::DrawSkinModel("BrainStem", transform_[i]->GetWorldMatrix(), ModelMaterial{});
-	}
+	// 弾マネージャ描画
+	bulletManger_->Draw();
 }
 
 template<typename Data>

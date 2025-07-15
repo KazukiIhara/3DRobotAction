@@ -5,10 +5,10 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
-Player::Player() {
+Player::Player(BulletManager* bulletManager) {
 	// 機体の作成
-	mech_ = std::make_shared<MechCore>();
-	
+	mech_ = std::make_shared<MechCore>(bulletManager);
+
 	// 三人称視点カメラの作成
 	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera");
 	followCamera->SetIsUnique(true);
@@ -20,6 +20,11 @@ Player::Player() {
 	if (auto mechObj = mech_->GetGameObject().lock()) {
 		mechObj->AddCamera3D(followCamera);
 	}
+
+
+	// プレイヤーUIクラス作成
+	playerUI_ = std::make_unique<PlayerUI>();
+
 }
 
 void Player::Update() {
@@ -49,6 +54,13 @@ void Player::Update() {
 
 		// ロックオンモード切り替え
 		command.switchHardLock = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
+
+		// 左手武器攻撃
+		command.leftHandWeapon = MAGISYSTEM::GetLeftTrigger(0) >= 0.3f;
+
+		// 右手武器攻撃
+		command.rightHandWeapon = MAGISYSTEM::GetRightTrigger(0) >= 0.3f;
+
 
 	} else { // パッドなしならキーボード入力解禁
 		// 移動入力
@@ -99,6 +111,10 @@ void Player::Update() {
 	mech_->Update();
 
 
+	// UI更新
+	playerUI_->Update(mech_.get());
+
+
 	//// 破壊時エフェクトテスト
 	//if (ImGui::Button("PlayEffect")) {
 	//	breakEffect_ = std::make_unique<BreakEffect>(mech_->GetGameObject().lock()->GetTransform()->GetWorldPosition());
@@ -115,6 +131,9 @@ void Player::Update() {
 }
 
 void Player::Draw() {
+	// UI描画
+	playerUI_->Draw();
+
 	if (breakEffect_) {
 		breakEffect_->Draw();
 	}

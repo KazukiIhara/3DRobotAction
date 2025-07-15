@@ -21,9 +21,8 @@ void main(uint3 dtid : SV_DispatchThreadID)
     
     if (dtid.x < gMeshInfo.MeshletCount)
     {
-        // スキニングモデルはGPUカリングを行わないようにする(ひとまず全部切る)
-        visible = true;
-        // IsVisible(gCullData[meshletID], gInstance[instanceID].world, gCamera.worldPosition, gFrustum.planes);      
+        // スキニングモデルはGPUカリングを行わないようにする
+        visible = IsVisible(gCullData[meshletID], gInstance[instanceID].world, gCamera.worldPosition, gFrustum.planes);
     }
     
     if (visible)
