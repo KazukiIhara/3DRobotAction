@@ -12,5 +12,9 @@ public:
 	~AttackCollisionManager() = default;
 
 private:
+	// 機体のリスト
+
+	// 攻撃コライダーのリスト
+
 
 };
