@@ -5,7 +5,7 @@
 
 Enemy::Enemy(BulletManager* bulletManager) {
 	// 機体の作成
-	mech_ = std::make_unique<MechCore>(bulletManager);
+	mech_ = std::make_unique<MechCore>(FriendlyTag::EnemySide, bulletManager);
 
 }
 
