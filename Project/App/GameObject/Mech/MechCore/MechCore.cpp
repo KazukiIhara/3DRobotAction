@@ -10,7 +10,7 @@
 
 using namespace MAGIMath;
 
-MechCore::MechCore(FriendlyTag tag, BulletManager* bulletManager) {
+MechCore::MechCore(FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn) {
 	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", Vector3(0.0f, 0.0f, 0.0f));
 	coreObject->SetIsUnique(true);
@@ -79,7 +79,7 @@ MechCore::MechCore(FriendlyTag tag, BulletManager* bulletManager) {
 	// 移動
 	movementComponent_ = std::make_unique<MechMovementComponent>();
 	// ロックオン
-	lockOnComponent_ = std::make_unique<MechLockOnComponent>();
+	lockOnComponent_ = std::make_unique<MechLockOnComponent>(enableHardlockOn);
 	// 攻撃
 	attackComponent_ = std::make_unique<MechAttackComponent>(bulletManager);
 

@@ -25,10 +25,11 @@ void Camera3DManager::Initialize() {
 }
 
 void Camera3DManager::Update() {
-	if (currentCamera_) {
-		currentCamera_->Update();
-		currentCamera_->PlayAnimation();
-		currentCamera_->UpdateData();
+
+	for (auto& camera : cameras3D_) {
+		camera->Update();
+		camera->PlayAnimation();
+		camera->UpdateData();
 	}
 
 #if defined(DEBUG) || defined(DEVELOP)
@@ -36,8 +37,8 @@ void Camera3DManager::Update() {
 		debugCamera_->Update();
 		debugCamera_->UpdateData();
 
-		if (currentCamera_) {
-			currentCamera_->DrawFrustum();
+		for (auto& camera : cameras3D_) {
+			camera->DrawFrustum();
 		}
 	}
 #endif

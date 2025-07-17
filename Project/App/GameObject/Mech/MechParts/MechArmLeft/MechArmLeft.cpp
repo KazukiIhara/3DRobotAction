@@ -48,7 +48,6 @@ void MechArmLeft::Update(MechCore* mechCore) {
 		}
 	} else {
 		if (auto obj = leftArm_.lock()) {
-			const float pitch = 0.0f;
 			const Quaternion localQ{};
 			const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
 			const Quaternion targetQ = localQ * bodyQ;

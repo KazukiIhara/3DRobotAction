@@ -15,7 +15,7 @@ class Transform3D;
 /// </summary>
 class MechLockOnComponent {
 public:
-	MechLockOnComponent() = default;
+	MechLockOnComponent(bool enableHardLockOn);
 	~MechLockOnComponent() = default;
 
 	// 更新

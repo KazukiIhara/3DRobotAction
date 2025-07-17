@@ -7,6 +7,11 @@
 
 using namespace MAGIMath;
 
+
+MechLockOnComponent::MechLockOnComponent(bool enableHardLockOn) {
+	enableHardLockOn_ = enableHardLockOn;
+}
+
 void MechLockOnComponent::Update(MechCore* mechCore) {
 	// コマンドを取得
 	const InputCommand command = mechCore->GetInputCommand();

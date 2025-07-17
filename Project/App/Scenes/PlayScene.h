@@ -22,7 +22,7 @@ using namespace MAGIUtility;
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene:public BaseScene<Data> {
+class PlayScene :public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -179,6 +179,9 @@ inline void PlayScene<Data>::Initialize() {
 
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
+
+	// エネミーのターゲット対象にプレイヤーを追加
+	enemy_->GetMechCore().lock()->GetLockOnComponent()->AddMech(player_->GetMechCore());
 
 
 	//===========================
