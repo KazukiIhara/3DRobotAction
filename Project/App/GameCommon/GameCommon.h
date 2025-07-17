@@ -8,9 +8,6 @@ enum class FriendlyTag {
 	EnemySide,
 };
 
-
-
-
 /// <summary>
 /// ロックオンカメラ
 /// </summary>
