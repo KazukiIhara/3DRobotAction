@@ -14,7 +14,7 @@ using namespace MAGIUtility;
 #include "GameObject/Player/Player.h"
 #include "GameObject/Enemy/Enemy.h"
 
-
+#include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/BulletManager/BulletManager.h"
 
 /// <summary>
@@ -52,6 +52,9 @@ private:
 	//----------------------------------------- 
 	// マネージャ
 	//-----------------------------------------
+
+	// 攻撃判定マネージャ
+	std::unique_ptr<AttackCollisionManager> attackCollisionManager_;
 
 	// 弾のマネージャ
 	std::unique_ptr<BulletManager> bulletManger_;
@@ -169,9 +172,10 @@ inline void PlayScene<Data>::Initialize() {
 	//===========================
 
 	// 攻撃コリジョンマネージャ
-	
+	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
+
 	// 弾マネージャ
-	bulletManger_ = std::make_unique<BulletManager>();
+	bulletManger_ = std::make_unique<BulletManager>(attackCollisionManager_.get());
 
 
 	// プレイヤー作成
@@ -180,13 +184,15 @@ inline void PlayScene<Data>::Initialize() {
 	// 敵作成
 	enemy_ = std::make_unique<Enemy>(bulletManger_.get());
 
-
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
-
 	// エネミーのターゲット対象にプレイヤーを追加
 	enemy_->GetMechCore().lock()->GetLockOnComponent()->AddMech(player_->GetMechCore());
 
+
+	// 攻撃コリジョンマネージャにワールドに存在するmechを追加
+	attackCollisionManager_->AddMech(player_->GetMechCore());
+	attackCollisionManager_->AddMech(enemy_->GetMechCore());
 
 	//===========================
 	// 以下ほぼほぼデバッグ用
