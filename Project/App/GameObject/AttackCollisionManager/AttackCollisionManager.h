@@ -27,6 +27,9 @@ public:
 	std::weak_ptr<AttackCollider> AddAttackCollider(std::shared_ptr<AttackCollider> collider);
 
 private:
+	bool IsCollisionAABB(const Vector3& minA, const Vector3& maxA, const Vector3& minB, const Vector3& maxB);
+
+private:
 	// 機体のリスト
 	std::vector<std::weak_ptr<MechCore>> mechs_;
 	// 攻撃コライダーのリスト

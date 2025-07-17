@@ -12,6 +12,14 @@ enum class FriendlyTag {
 };
 
 /// <summary>
+/// 攻撃の種類
+/// </summary>
+enum class AttackType {
+	Bullet,
+	Melee,
+};
+
+/// <summary>
 /// ロックオンカメラ
 /// </summary>
 struct LockOnView {
@@ -39,9 +47,4 @@ struct InputCommand {
 	bool switchHardLock = false;
 	bool leftHandWeapon = false;
 	bool rightHandWeapon = false;
-};
-
-struct AABBCollider {
-	Vector3 min;
-	Vector3 max;
 };

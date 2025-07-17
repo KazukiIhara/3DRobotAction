@@ -26,6 +26,7 @@ public:
 
 	bool GetIsAlive()const;
 	HitInfo GetHitInfo()const;
+	AttackType GetType()const;
 
 	void SetWorldPos(const Vector3& posW);
 	void SetIsAlive(bool isAlve);
@@ -34,6 +35,9 @@ public:
 private:
 	// 識別タグ
 	FriendlyTag tag_;
+
+	// この攻撃の種類
+	AttackType type_;
 
 	// 衝突インフォ
 	HitInfo hitInfo_;

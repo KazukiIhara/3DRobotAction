@@ -29,7 +29,14 @@ void Bullet::Update() {
 	// ここで自分が持っているコライダーの衝突状況を取得できる
 	// 自身の削除フラグを立てて衝突エフェクトの発火などをここで行ってもよいかも
 	if (auto collider = collider_.lock()) {
-		collider->GetHitInfo().isHit_;
+		if (collider->GetHitInfo().isHit_) {
+			// もし衝突してたらコライダーを消す
+			collider->SetIsAlive(false);
+			// 弾も消す
+			Finalize();
+
+			return;
+		}
 	}
 
 	// 進行方向に向ける

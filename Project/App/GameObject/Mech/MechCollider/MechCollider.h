@@ -10,7 +10,8 @@ class MechCollider {
 public:
 	// 衝突に関するデータ
 	struct HitInfo {
-		bool isHit_ = false;
+		bool isHit = false;
+		AttackType type;
 	};
 
 	MechCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);

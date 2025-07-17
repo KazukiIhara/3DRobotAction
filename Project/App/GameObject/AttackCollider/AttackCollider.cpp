@@ -5,6 +5,9 @@
 AttackCollider::AttackCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL) {
 	tag_ = tag;
 
+	// 一旦弾
+	type_ = AttackType::Bullet;
+
 	posW_ = posW;
 	minL_ = minL;
 	maxL_ = maxL;
@@ -13,6 +16,9 @@ AttackCollider::AttackCollider(const FriendlyTag& tag, const Vector3& posW, cons
 }
 
 void AttackCollider::Update() {
+	// 衝突情報をリセット
+	hitInfo_ = AttackCollider::HitInfo{};
+
 	minW_ = posW_ + minL_;
 	maxW_ = posW_ + maxL_;
 }
@@ -36,6 +42,10 @@ bool AttackCollider::GetIsAlive()const {
 
 AttackCollider::HitInfo AttackCollider::GetHitInfo() const {
 	return hitInfo_;
+}
+
+AttackType AttackCollider::GetType()const {
+	return type_;
 }
 
 void AttackCollider::SetWorldPos(const Vector3& posW) {

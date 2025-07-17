@@ -13,6 +13,8 @@ MechCollider::MechCollider(const FriendlyTag& tag, const Vector3& posW, const Ve
 }
 
 void MechCollider::Update() {
+	// 衝突情報をリセット
+	hitInfo_ = MechCollider::HitInfo{};
 	minW_ = posW_ + minL_;
 	maxW_ = posW_ + maxL_;
 }
