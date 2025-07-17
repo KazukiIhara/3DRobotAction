@@ -167,6 +167,10 @@ inline void PlayScene<Data>::Initialize() {
 	//===========================
 	// マネージャの初期化
 	//===========================
+
+	// 攻撃コリジョンマネージャ
+	
+	// 弾マネージャ
 	bulletManger_ = std::make_unique<BulletManager>();
 
 

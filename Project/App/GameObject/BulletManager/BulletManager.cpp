@@ -1,7 +1,13 @@
 #include "BulletManager.h"
 
-BulletManager::BulletManager() {
+#include "MAGIAssert/MAGIAssert.h"
+
+#include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
+
+BulletManager::BulletManager(AttackCollisionManager* attackColliderManager) {
 	bullets_.clear();
+	MAGIAssert::Assert(attackColliderManager,"AttackColliderManager is Null");
+	atkColliderManager_ = attackColliderManager;
 }
 
 void BulletManager::Update() {
