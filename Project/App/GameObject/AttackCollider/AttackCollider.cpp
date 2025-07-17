@@ -2,7 +2,9 @@
 
 #include "MAGI.h"
 
-AttackCollider::AttackCollider(const Vector3& posW, const Vector3& minL, const Vector3& maxL) {
+AttackCollider::AttackCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL) {
+	tag_ = tag;
+
 	posW_ = posW;
 	minL_ = minL;
 	maxL_ = maxL;
@@ -20,8 +22,20 @@ void AttackCollider::Draw() {
 	MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Crimson);
 }
 
+const Vector3& AttackCollider::GetMinW() const {
+	return minW_;
+}
+
+const Vector3& AttackCollider::GetMaxW() const {
+	return maxW_;
+}
+
 bool AttackCollider::GetIsAlive()const {
 	return isAlive_;
+}
+
+HitInfo AttackCollider::GetHitInfo() const {
+	return hitInfo_;
 }
 
 void AttackCollider::SetWorldPos(const Vector3& posW) {
@@ -30,4 +44,8 @@ void AttackCollider::SetWorldPos(const Vector3& posW) {
 
 void AttackCollider::SetIsAlive(bool isAlive) {
 	isAlive_ = isAlive;
+}
+
+void AttackCollider::SetHitInfo(HitInfo hitInfo) {
+	hitInfo_ = hitInfo;
 }

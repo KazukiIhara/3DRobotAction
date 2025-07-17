@@ -21,6 +21,8 @@ public:
 	void Update();
 	void Draw();
 
+	void CheckCollision();
+
 	void AddMech(std::weak_ptr<MechCore> mechCore);
 	std::weak_ptr<AttackCollider> AddAttackCollider(std::shared_ptr<AttackCollider> collider);
 

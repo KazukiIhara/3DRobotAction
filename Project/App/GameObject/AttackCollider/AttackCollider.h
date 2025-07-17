@@ -4,24 +4,40 @@
 #include "Math/Utility/MathUtility.h"
 #include "GameCommon/GameCommon.h"
 
+// 衝突に関するデータ
+struct HitInfo {
+	bool isHit_ = false;
+};
+
 /// <summary>
 /// 攻撃コライダー
 /// </summary>
 class AttackCollider {
 public:
-	AttackCollider(const Vector3& posW, const Vector3& minL, const Vector3& maxL);
+	AttackCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
 	~AttackCollider() = default;
 
 	void Update();
 
 	void Draw();
 
+	const Vector3& GetMinW()const;
+	const Vector3& GetMaxW()const;
+
 	bool GetIsAlive()const;
+	HitInfo GetHitInfo()const;
 
 	void SetWorldPos(const Vector3& posW);
 	void SetIsAlive(bool isAlve);
+	void SetHitInfo(HitInfo hitInfo);
 
 private:
+	// 識別タグ
+	FriendlyTag tag_;
+
+	// 衝突インフォ
+	HitInfo hitInfo_;
+
 	// ワールド上の座標
 	Vector3 posW_;
 

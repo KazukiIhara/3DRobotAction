@@ -26,6 +26,12 @@ Bullet::Bullet(const Vector3& dir, float speed, const Vector3& wPos, std::weak_p
 }
 
 void Bullet::Update() {
+	// ここで自分が持っているコライダーの衝突状況を取得できる
+	// 自身の削除フラグを立てて衝突エフェクトの発火などをここで行ってもよいかも
+	if (auto collider = collider_.lock()) {
+		collider->GetHitInfo();
+	}
+
 	// 進行方向に向ける
 	const Quaternion targetQ = DirectionToQuaternion(dir_);
 	// 指定方向に移動
@@ -48,6 +54,11 @@ void Bullet::Update() {
 	if (lifeTime_ <= 0.0f) {
 		isAlive_ = false;
 		Finalize();
+
+		// コライダーを消す
+		if (auto collider = collider_.lock()) {
+			collider->SetIsAlive(false);
+		}
 	}
 
 }
@@ -60,9 +71,6 @@ void Bullet::Finalize() {
 	// オブジェクトを消す
 	if (auto obj = bullet_.lock()) {
 		obj->SetIsAlive(false);
-	}
-	if (auto collider = collider_.lock()) {
-		collider->SetIsAlive(false);
 	}
 }
 
