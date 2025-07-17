@@ -27,6 +27,9 @@ void MechBody::Update(MechCore* mechCore) {
 
 	// コライダーを更新
 	UpdateCollider();
+
+	// コライダーのデバッグ描画
+	DrawCollider();
 }
 
 std::weak_ptr<GameObject3D> MechBody::GetGameObject()const {
@@ -63,4 +66,8 @@ void MechBody::UpdateCollider() {
 		collider_.min = worldPos + kMin_;
 		collider_.max = worldPos + kMax_;
 	}
+}
+
+void MechBody::DrawCollider() {
+	MAGISYSTEM::DrawLineAABB(collider_.min, collider_.max, Color::Blue);
 }

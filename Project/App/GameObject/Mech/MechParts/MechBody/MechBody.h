@@ -28,6 +28,8 @@ public:
 private:
 	void DirectionToLockOnView(MechCore* mechCore);
 	void UpdateCollider();
+
+	void DrawCollider();
 private:
 	// オブジェクト
 	std::weak_ptr<GameObject3D> body_;
@@ -36,6 +38,6 @@ private:
 	AABBCollider collider_;
 
 	const Vector3 kMin_ = { -0.5f,-1.0f,-0.5f };
-	const Vector3 kMax_ = { 0.5f,1.0f,0.5f };
+	const Vector3 kMax_ = { 0.5f,0.8f,0.5f };
 
 };
