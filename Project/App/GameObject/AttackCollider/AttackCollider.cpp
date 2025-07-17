@@ -34,7 +34,7 @@ bool AttackCollider::GetIsAlive()const {
 	return isAlive_;
 }
 
-HitInfo AttackCollider::GetHitInfo() const {
+AttackCollider::HitInfo AttackCollider::GetHitInfo() const {
 	return hitInfo_;
 }
 

@@ -1,21 +1,20 @@
 #pragma once
 
-
 #include "Math/Utility/MathUtility.h"
 #include "GameCommon/GameCommon.h"
 
 /// <summary>
-/// 攻撃コライダー
+/// 機体のコライダー
 /// </summary>
-class AttackCollider {
+class MechCollider {
 public:
 	// 衝突に関するデータ
 	struct HitInfo {
 		bool isHit_ = false;
 	};
 
-	AttackCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
-	~AttackCollider() = default;
+	MechCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
+	~MechCollider() = default;
 
 	void Update();
 
@@ -51,4 +50,5 @@ private:
 
 	// 生存フラグ
 	bool isAlive_ = true;
+
 };

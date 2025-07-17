@@ -205,6 +205,10 @@ MechAttackComponent* MechCore::GetAttackComponent() {
 	return attackComponent_.get();
 }
 
+MechCollider MechCore::GetCollider() {
+	return collider_;
+}
+
 void MechCore::SetInputCommand(const InputCommand& command) {
 	inputCommand_ = command;
 }
