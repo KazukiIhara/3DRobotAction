@@ -78,7 +78,7 @@ public:
 	MechLockOnComponent* GetLockOnComponent();
 	MechAttackComponent* GetAttackComponent();
 
-	MechCollider GetCollider();
+	MechCollider* GetCollider();
 
 	//======================= 
 	// セッター
@@ -153,6 +153,9 @@ private:
 	//=======================
 
 	// ひとまず体
-	MechCollider collider_;
+	std::unique_ptr<MechCollider> collider_;
+
+	const Vector3 kColliderMin_ = { -0.5f,-1.0f,-0.5f };
+	const Vector3 kColliderMax_ = { 0.5f,0.8f, 0.5f };
 
 };
