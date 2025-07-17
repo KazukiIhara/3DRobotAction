@@ -17,15 +17,24 @@ MechBody::MechBody() {
 	// ゲームオブジェクトマネージャに追加
 	body_ = MAGISYSTEM::AddGameObject3D(std::move(bodyObject));
 
+	// コライダーを更新
+	UpdateCollider();
 }
 
 void MechBody::Update(MechCore* mechCore) {
 	// 方向を指定
 	DirectionToLockOnView(mechCore);
+
+	// コライダーを更新
+	UpdateCollider();
 }
 
 std::weak_ptr<GameObject3D> MechBody::GetGameObject()const {
 	return body_;
+}
+
+AABBCollider MechBody::GetCollider() const {
+	return collider_;
 }
 
 void MechBody::DirectionToLockOnView(MechCore* mechCore) {
@@ -44,5 +53,14 @@ void MechBody::DirectionToLockOnView(MechCore* mechCore) {
 
 	if (auto body = body_.lock()) {
 		body->GetTransform()->SetQuaternion(targetQ);
+	}
+}
+
+void MechBody::UpdateCollider() {
+	// コライダーを更新
+	if (auto body = body_.lock()) {
+		const Vector3 worldPos = body->GetTransform()->GetWorldPosition();
+		collider_.min = worldPos + kMin_;
+		collider_.max = worldPos + kMax_;
 	}
 }

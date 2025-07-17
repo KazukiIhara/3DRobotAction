@@ -29,7 +29,7 @@ void Bullet::Update() {
 	// ここで自分が持っているコライダーの衝突状況を取得できる
 	// 自身の削除フラグを立てて衝突エフェクトの発火などをここで行ってもよいかも
 	if (auto collider = collider_.lock()) {
-		collider->GetHitInfo();
+		collider->GetHitInfo().isHit_;
 	}
 
 	// 進行方向に向ける
@@ -52,7 +52,6 @@ void Bullet::Update() {
 	// 生存時間を減算
 	lifeTime_ -= MAGISYSTEM::GetDeltaTime();
 	if (lifeTime_ <= 0.0f) {
-		isAlive_ = false;
 		Finalize();
 
 		// コライダーを消す
@@ -68,6 +67,8 @@ void Bullet::Draw() {
 }
 
 void Bullet::Finalize() {
+	// 生存フラグをオフに
+	isAlive_ = false;
 	// オブジェクトを消す
 	if (auto obj = bullet_.lock()) {
 		obj->SetIsAlive(false);

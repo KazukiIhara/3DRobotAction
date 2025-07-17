@@ -1,5 +1,8 @@
 #pragma once
 
+// 数学ヘッダ
+#include "Math/Utility/MathUtility.h"
+
 /// <summary>
 /// 識別タグ
 /// </summary>
@@ -36,4 +39,9 @@ struct InputCommand {
 	bool switchHardLock = false;
 	bool leftHandWeapon = false;
 	bool rightHandWeapon = false;
+};
+
+struct AABBCollider {
+	Vector3 min;
+	Vector3 max;
 };
