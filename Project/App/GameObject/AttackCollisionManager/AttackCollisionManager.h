@@ -22,7 +22,7 @@ public:
 	void Draw();
 
 	void AddMech(std::weak_ptr<MechCore> mechCore);
-	void AddAttackCollider(std::shared_ptr<AttackCollider> collider);
+	std::weak_ptr<AttackCollider> AddAttackCollider(std::shared_ptr<AttackCollider> collider);
 
 private:
 	// 機体のリスト

@@ -6,7 +6,7 @@
 
 BulletManager::BulletManager(AttackCollisionManager* attackColliderManager) {
 	bullets_.clear();
-	MAGIAssert::Assert(attackColliderManager,"AttackColliderManager is Null");
+	MAGIAssert::Assert(attackColliderManager, "AttackColliderManager is Null");
 	atkColliderManager_ = attackColliderManager;
 }
 
@@ -29,6 +29,11 @@ void BulletManager::Draw() {
 }
 
 void BulletManager::AddBullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos) {
-	Bullet newBullet = Bullet(tag, dir, speed, wPos);
+	// コライダーを作成
+	std::shared_ptr<AttackCollider> bulletCollider = std::make_unique<AttackCollider>(wPos, Vector3(-0.4f, -0.4f, -0.4f), Vector3(0.4f, 0.4f, 0.4f));
+	// コリジョンマネージャに追加
+	std::weak_ptr<AttackCollider> temp = atkColliderManager_->AddAttackCollider(std::move(bulletCollider));
+
+	Bullet newBullet = Bullet(dir, speed, wPos, temp);
 	bullets_.push_back(newBullet);
 }

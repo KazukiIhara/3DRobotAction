@@ -177,7 +177,6 @@ inline void PlayScene<Data>::Initialize() {
 	// 弾マネージャ
 	bulletManger_ = std::make_unique<BulletManager>(attackCollisionManager_.get());
 
-
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(bulletManger_.get());
 
@@ -259,6 +258,8 @@ inline void PlayScene<Data>::Update() {
 	// 弾マネージャ更新
 	bulletManger_->Update();
 
+	// 攻撃判定更新
+	attackCollisionManager_->Update();
 
 	// ポストエフェクト適用
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
@@ -274,6 +275,10 @@ inline void PlayScene<Data>::Draw() {
 
 	// 弾マネージャ描画
 	bulletManger_->Draw();
+
+	// 攻撃判定マネージャ描画
+	attackCollisionManager_->Draw();
+
 }
 
 template<typename Data>

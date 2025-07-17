@@ -2,8 +2,9 @@
 
 #include "MAGI.h"
 
-Bullet::Bullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos) {
-	tag_ = tag;
+#include "GameObject/AttackCollider/AttackCollider.h"
+
+Bullet::Bullet(const Vector3& dir, float speed, const Vector3& wPos, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
 	lifeTime_ = 10.0f;
 	dir_ = dir;
@@ -20,6 +21,8 @@ Bullet::Bullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Ve
 	bullet->AddModelRenderer(bulletRenderer);
 	bullet_ = MAGISYSTEM::AddGameObject3D(std::move(bullet));
 
+	// 攻撃コライダーを設定
+	collider_ = attackCollider;
 }
 
 void Bullet::Update() {
@@ -31,6 +34,13 @@ void Bullet::Update() {
 	if (auto obj = bullet_.lock()) {
 		obj->GetTransform()->SetQuaternion(targetQ);
 		obj->GetTransform()->AddTranslate(velocity);
+
+		// コライダーにポジションをセット	
+		if (auto collider = collider_.lock()) {
+			// ワールドポジションの場合まだ更新されていないためトランスレートをセット(親子付けしない前提)
+			collider->SetWorldPos(obj->GetTransform()->GetTranslate());
+		}
+
 	}
 
 	// 生存時間を減算
@@ -39,6 +49,7 @@ void Bullet::Update() {
 		isAlive_ = false;
 		Finalize();
 	}
+
 }
 
 void Bullet::Draw() {

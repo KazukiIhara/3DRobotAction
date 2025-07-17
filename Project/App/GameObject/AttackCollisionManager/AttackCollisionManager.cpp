@@ -21,6 +21,7 @@ void AttackCollisionManager::AddMech(std::weak_ptr<MechCore> mech) {
 	mechs_.push_back(mech);
 }
 
-void AttackCollisionManager::AddAttackCollider(std::shared_ptr<AttackCollider> collider) {
-	attackColliders_.push_back(collider);
+std::weak_ptr<AttackCollider> AttackCollisionManager::AddAttackCollider(std::shared_ptr<AttackCollider> collider) {
+	attackColliders_.push_back(std::move(collider));
+	return attackColliders_.back();
 }
