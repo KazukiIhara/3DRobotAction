@@ -20,6 +20,14 @@ void AttackCollider::Draw() {
 	MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Crimson);
 }
 
+bool AttackCollider::GetIsAlive()const {
+	return isAlive_;
+}
+
 void AttackCollider::SetWorldPos(const Vector3& posW) {
 	posW_ = posW;
+}
+
+void AttackCollider::SetIsAlive(bool isAlive) {
+	isAlive_ = isAlive;
 }

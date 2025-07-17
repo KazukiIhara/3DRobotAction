@@ -9,6 +9,12 @@ void AttackCollisionManager::Update() {
 	for (auto& collider : attackColliders_) {
 		collider->Update();
 	}
+
+	// 死亡フラグの立っている弾をまとめて除去
+	attackColliders_.erase(
+		std::remove_if(attackColliders_.begin(), attackColliders_.end(),
+			[](auto& b) { return !b->GetIsAlive(); }),
+		attackColliders_.end());
 }
 
 void AttackCollisionManager::Draw() {

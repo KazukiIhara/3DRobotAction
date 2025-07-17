@@ -61,6 +61,9 @@ void Bullet::Finalize() {
 	if (auto obj = bullet_.lock()) {
 		obj->SetIsAlive(false);
 	}
+	if (auto collider = collider_.lock()) {
+		collider->SetIsAlive(false);
+	}
 }
 
 bool Bullet::GetIsAlive()const {

@@ -16,7 +16,10 @@ public:
 
 	void Draw();
 
+	bool GetIsAlive()const;
+
 	void SetWorldPos(const Vector3& posW);
+	void SetIsAlive(bool isAlve);
 
 private:
 	// ワールド上の座標
@@ -29,4 +32,7 @@ private:
 	// ローカルのminmax
 	Vector3 minL_;
 	Vector3 maxL_;
+
+	// 生存フラグ
+	bool isAlive_ = true;
 };
