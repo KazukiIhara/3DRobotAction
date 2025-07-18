@@ -85,6 +85,8 @@ MechCore::MechCore(FriendlyTag tag, BulletManager* bulletManager, bool enableHar
 	lockOnComponent_ = std::make_unique<MechLockOnComponent>(enableHardlockOn);
 	// 攻撃
 	attackComponent_ = std::make_unique<MechAttackComponent>(bulletManager);
+	// ステータス値管理
+	statusComponent_ = std::make_unique<MechStatusComponent>();
 
 	// ステートを作成
 	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
@@ -216,7 +218,7 @@ MechAttackComponent* MechCore::GetAttackComponent() {
 }
 
 MechStatusComponent* MechCore::GetStatusComponent() {
-	return mechStatusComponent_.get();
+	return statusComponent_.get();
 }
 
 MechCollider* MechCore::GetCollider() {

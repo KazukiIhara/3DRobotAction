@@ -147,7 +147,7 @@ private:
 	// 攻撃コンポーネント
 	std::unique_ptr<MechAttackComponent> attackComponent_;
 	// ステータス値管理コンポーネント
-	std::unique_ptr<MechStatusComponent> mechStatusComponent_;
+	std::unique_ptr<MechStatusComponent> statusComponent_;
 
 	//======================= 
 	// 各パーツ

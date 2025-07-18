@@ -14,10 +14,11 @@ public:
 
 	void Update(MechCore* mechCore);
 
-	void Draw();
+	void Draw(MechCore* mechCore);
 
 	void DrawLockonUI();
 
+	void DrawDebugUI(MechCore* mechCore);
 private:
 	// LockonUIのスプライトデータ
 	SpriteData lockonGrayData_{};

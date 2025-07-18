@@ -50,14 +50,35 @@ void PlayerUI::Update(MechCore* mechCore) {
 
 }
 
-void PlayerUI::Draw() {
+void PlayerUI::Draw(MechCore* mechCore) {
 	// ロックオンUIの描画
 	DrawLockonUI();
+
+#if defined(DEBUG) || defined(DEVELOP)
+	DrawDebugUI(mechCore);
+#endif
 }
+
 
 void PlayerUI::DrawLockonUI() {
 
 	MAGISYSTEM::DrawSprite(lockonGrayData_, lockonGrayMat_);
 
 	MAGISYSTEM::DrawSprite(lockonRedData_, lockonRedMat_);
+}
+
+void PlayerUI::DrawDebugUI(MechCore* mechCore) {
+	// 描画したいパラメータ
+	Vector3 worldPosition{};
+	int hp = mechCore->GetStatusComponent()->GetHp();
+
+
+	if (auto obj = mechCore->GetGameObject().lock()) {
+		worldPosition = obj->GetTransform()->GetWorldPosition();
+	}
+
+	ImGui::Begin("PlayerDebugUI");
+	ImGui::InputFloat3("WorldPosition", &worldPosition.x);
+	ImGui::InputInt("HP", &hp);
+	ImGui::End();
 }

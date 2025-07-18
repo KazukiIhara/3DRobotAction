@@ -132,7 +132,7 @@ void Player::Update() {
 
 void Player::Draw() {
 	// UI描画
-	playerUI_->Draw();
+	playerUI_->Draw(mech_.get());
 
 	if (breakEffect_) {
 		breakEffect_->Draw();
