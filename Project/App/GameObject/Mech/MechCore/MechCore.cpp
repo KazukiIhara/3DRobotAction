@@ -215,6 +215,10 @@ MechAttackComponent* MechCore::GetAttackComponent() {
 	return attackComponent_.get();
 }
 
+MechStatusComponent* MechCore::GetStatusComponent() {
+	return mechStatusComponent_.get();
+}
+
 MechCollider* MechCore::GetCollider() {
 	return collider_.get();
 }

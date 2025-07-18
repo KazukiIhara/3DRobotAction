@@ -4,6 +4,7 @@
 #include "Math/Utility/MathUtility.h"
 #include "SimpleAnimation/SimpleAnimation.h"
 
+// 前方宣言
 class MechCore;
 
 /// <summary>
