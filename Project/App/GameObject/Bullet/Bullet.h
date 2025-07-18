@@ -5,7 +5,7 @@
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
-#include "GameCommon/GameCommon.h"
+#include "GameObject/AttackCollider/AttackCollider.h"
 
 // 前方宣言
 class GameObject3D;
@@ -15,7 +15,11 @@ class GameObject3D;
 /// </summary>
 class Bullet {
 public:
-	Bullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos);
+	Bullet(const Vector3& dir,
+		float speed,
+		const Vector3& wPos,
+		std::weak_ptr<AttackCollider> attackCollider);
+
 	~Bullet() = default;
 
 	void Update();
@@ -28,8 +32,6 @@ public:
 private:
 	// ゲームオブジェクト
 	std::weak_ptr<GameObject3D> bullet_;
-	// 識別タグ
-	FriendlyTag tag_;
 	// 弾の向き
 	Vector3 dir_ = { 0.0f,0.0f,0.0f };
 	// 弾の速度
@@ -39,4 +41,7 @@ private:
 	float lifeTime_ = 10.0f;
 	// 生存フラグ
 	bool isAlive_ = false;
+
+	// 攻撃コライダー
+	std::weak_ptr<AttackCollider> collider_;
 };

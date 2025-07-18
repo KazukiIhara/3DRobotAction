@@ -1,21 +1,21 @@
 #pragma once
 
-
 #include "Math/Utility/MathUtility.h"
 #include "GameCommon/GameCommon.h"
 
 /// <summary>
-/// 攻撃コライダー
+/// 機体のコライダー
 /// </summary>
-class AttackCollider {
+class MechCollider {
 public:
 	// 衝突に関するデータ
 	struct HitInfo {
-		bool isHit_ = false;
+		bool isHit = false;
+		AttackType type;
 	};
 
-	AttackCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
-	~AttackCollider() = default;
+	MechCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
+	~MechCollider() = default;
 
 	void Update();
 
@@ -26,7 +26,6 @@ public:
 
 	bool GetIsAlive()const;
 	HitInfo GetHitInfo()const;
-	AttackType GetType()const;
 
 	void SetWorldPos(const Vector3& posW);
 	void SetIsAlive(bool isAlve);
@@ -35,9 +34,6 @@ public:
 private:
 	// 識別タグ
 	FriendlyTag tag_;
-
-	// この攻撃の種類
-	AttackType type_;
 
 	// 衝突インフォ
 	HitInfo hitInfo_;
@@ -55,4 +51,5 @@ private:
 
 	// 生存フラグ
 	bool isAlive_ = true;
+
 };

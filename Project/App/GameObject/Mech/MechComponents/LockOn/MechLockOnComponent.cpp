@@ -4,6 +4,7 @@
 
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
+#include "GameObject/AttackCollider/AttackCollider.h"
 
 using namespace MAGIMath;
 
@@ -22,7 +23,6 @@ void MechLockOnComponent::Update(MechCore* mechCore) {
 
 	// ロックオン対象の捜索してロックオン
 	LockOnTarget(mechCore);
-
 }
 
 void MechLockOnComponent::AddMech(std::weak_ptr<MechCore> mech) {

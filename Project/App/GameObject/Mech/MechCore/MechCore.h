@@ -25,6 +25,9 @@
 #include "GameObject/Mech/MechComponents/LockOn/MechLockOnComponent.h"
 #include "GameObject/Mech/MechComponents/Attack/MechAttackComponent.h"
 
+// コライダー
+#include "GameObject/Mech/MechCollider/MechCollider.h"
+
 // 前方宣言
 class GameObject3D;
 class MechCoreBaseState;
@@ -75,6 +78,8 @@ public:
 	MechLockOnComponent* GetLockOnComponent();
 	MechAttackComponent* GetAttackComponent();
 
+	MechCollider* GetCollider();
+
 	//======================= 
 	// セッター
 	//======================= 
@@ -85,6 +90,13 @@ public:
 private:
 	// 対応するステートを取得
 	std::weak_ptr<MechCoreBaseState> GetState(MechCoreState state);
+
+	// コライダーの更新
+	void UpdateCollider();
+
+	// コライダーの描画
+	void DrawCollider();
+
 private:
 	// インプットコマンド
 	InputCommand inputCommand_;
@@ -108,10 +120,8 @@ private:
 
 	// 移動コンポーネント
 	std::unique_ptr<MechMovementComponent> movementComponent_;
-
 	// ロックオンコンポーネント
 	std::unique_ptr<MechLockOnComponent> lockOnComponent_;
-
 	// 攻撃コンポーネント
 	std::unique_ptr<MechAttackComponent> attackComponent_;
 
@@ -137,5 +147,15 @@ private:
 
 	// 右手武器
 	std::unique_ptr<BaseMechWeapon> rightHandWeapon_ = nullptr;
+
+	//=======================
+	// コライダー
+	//=======================
+
+	// ひとまず体
+	std::unique_ptr<MechCollider> collider_;
+
+	const Vector3 kColliderMin_ = { -0.5f,-1.0f,-0.5f };
+	const Vector3 kColliderMax_ = { 0.5f,0.8f, 0.5f };
 
 };

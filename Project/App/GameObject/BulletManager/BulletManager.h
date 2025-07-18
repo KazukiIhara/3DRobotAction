@@ -1,15 +1,20 @@
 #pragma once
 
+// C++
 #include <vector>
 
+// 弾
 #include "GameObject/Bullet/Bullet.h"
 
+// 前方宣言
+class AttackCollisionManager;
+
 /// <summary>
-/// 弾のマネージャ
+/// 弾のマネージャ (弾だけでなく今後攻撃全般のマネージャになりそう)
 /// </summary>
 class BulletManager {
 public:
-	BulletManager();
+	BulletManager(AttackCollisionManager* attackColliderManager);
 	~BulletManager() = default;
 
 	void Update();
@@ -20,5 +25,8 @@ public:
 private:
 	// 弾のリスト
 	std::vector<Bullet> bullets_;
+
+private:
+	AttackCollisionManager* atkColliderManager_ = nullptr;
 
 };

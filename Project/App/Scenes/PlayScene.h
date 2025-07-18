@@ -14,7 +14,7 @@ using namespace MAGIUtility;
 #include "GameObject/Player/Player.h"
 #include "GameObject/Enemy/Enemy.h"
 
-
+#include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/BulletManager/BulletManager.h"
 
 /// <summary>
@@ -52,6 +52,9 @@ private:
 	//----------------------------------------- 
 	// マネージャ
 	//-----------------------------------------
+
+	// 攻撃判定マネージャ
+	std::unique_ptr<AttackCollisionManager> attackCollisionManager_;
 
 	// 弾のマネージャ
 	std::unique_ptr<BulletManager> bulletManger_;
@@ -167,8 +170,12 @@ inline void PlayScene<Data>::Initialize() {
 	//===========================
 	// マネージャの初期化
 	//===========================
-	bulletManger_ = std::make_unique<BulletManager>();
 
+	// 攻撃コリジョンマネージャ
+	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
+
+	// 弾マネージャ
+	bulletManger_ = std::make_unique<BulletManager>(attackCollisionManager_.get());
 
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(bulletManger_.get());
@@ -176,13 +183,15 @@ inline void PlayScene<Data>::Initialize() {
 	// 敵作成
 	enemy_ = std::make_unique<Enemy>(bulletManger_.get());
 
-
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
-
 	// エネミーのターゲット対象にプレイヤーを追加
 	enemy_->GetMechCore().lock()->GetLockOnComponent()->AddMech(player_->GetMechCore());
 
+
+	// 攻撃コリジョンマネージャにワールドに存在するmechを追加
+	attackCollisionManager_->AddMech(player_->GetMechCore());
+	attackCollisionManager_->AddMech(enemy_->GetMechCore());
 
 	//===========================
 	// 以下ほぼほぼデバッグ用
@@ -249,6 +258,8 @@ inline void PlayScene<Data>::Update() {
 	// 弾マネージャ更新
 	bulletManger_->Update();
 
+	// 攻撃判定更新
+	attackCollisionManager_->Update();
 
 	// ポストエフェクト適用
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
@@ -264,6 +275,10 @@ inline void PlayScene<Data>::Draw() {
 
 	// 弾マネージャ描画
 	bulletManger_->Draw();
+
+	// 攻撃判定マネージャ描画
+	attackCollisionManager_->Draw();
+
 }
 
 template<typename Data>

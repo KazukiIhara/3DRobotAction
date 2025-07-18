@@ -2,8 +2,9 @@
 
 #include "MAGI.h"
 
-Bullet::Bullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos) {
-	tag_ = tag;
+#include "GameObject/AttackCollider/AttackCollider.h"
+
+Bullet::Bullet(const Vector3& dir, float speed, const Vector3& wPos, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
 	lifeTime_ = 10.0f;
 	dir_ = dir;
@@ -20,9 +21,24 @@ Bullet::Bullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Ve
 	bullet->AddModelRenderer(bulletRenderer);
 	bullet_ = MAGISYSTEM::AddGameObject3D(std::move(bullet));
 
+	// 攻撃コライダーを設定
+	collider_ = attackCollider;
 }
 
 void Bullet::Update() {
+	// ここで自分が持っているコライダーの衝突状況を取得できる
+	// 自身の削除フラグを立てて衝突エフェクトの発火などをここで行ってもよいかも
+	if (auto collider = collider_.lock()) {
+		if (collider->GetHitInfo().isHit_) {
+			// もし衝突してたらコライダーを消す
+			collider->SetIsAlive(false);
+			// 弾も消す
+			Finalize();
+
+			return;
+		}
+	}
+
 	// 進行方向に向ける
 	const Quaternion targetQ = DirectionToQuaternion(dir_);
 	// 指定方向に移動
@@ -31,14 +47,26 @@ void Bullet::Update() {
 	if (auto obj = bullet_.lock()) {
 		obj->GetTransform()->SetQuaternion(targetQ);
 		obj->GetTransform()->AddTranslate(velocity);
+
+		// コライダーにポジションをセット	
+		if (auto collider = collider_.lock()) {
+			// ワールドポジションの場合まだ更新されていないためトランスレートをセット(親子付けしない前提)
+			collider->SetWorldPos(obj->GetTransform()->GetTranslate());
+		}
+
 	}
 
 	// 生存時間を減算
 	lifeTime_ -= MAGISYSTEM::GetDeltaTime();
 	if (lifeTime_ <= 0.0f) {
-		isAlive_ = false;
 		Finalize();
+
+		// コライダーを消す
+		if (auto collider = collider_.lock()) {
+			collider->SetIsAlive(false);
+		}
 	}
+
 }
 
 void Bullet::Draw() {
@@ -46,6 +74,8 @@ void Bullet::Draw() {
 }
 
 void Bullet::Finalize() {
+	// 生存フラグをオフに
+	isAlive_ = false;
 	// オブジェクトを消す
 	if (auto obj = bullet_.lock()) {
 		obj->SetIsAlive(false);

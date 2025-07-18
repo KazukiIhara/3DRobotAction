@@ -5,6 +5,7 @@
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
+#include "GameCommon/GameCommon.h"
 
 // 前方宣言
 class GameObject3D;
@@ -24,7 +25,6 @@ public:
 
 private:
 	void DirectionToLockOnView(MechCore* mechCore);
-
 private:
 	// オブジェクト
 	std::weak_ptr<GameObject3D> body_;

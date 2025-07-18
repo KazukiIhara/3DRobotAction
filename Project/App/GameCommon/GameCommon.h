@@ -1,5 +1,8 @@
 #pragma once
 
+// 数学ヘッダ
+#include "Math/Utility/MathUtility.h"
+
 /// <summary>
 /// 識別タグ
 /// </summary>
@@ -8,8 +11,13 @@ enum class FriendlyTag {
 	EnemySide,
 };
 
-
-
+/// <summary>
+/// 攻撃の種類
+/// </summary>
+enum class AttackType {
+	Bullet,
+	Melee,
+};
 
 /// <summary>
 /// ロックオンカメラ

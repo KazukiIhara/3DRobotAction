@@ -46,6 +46,9 @@ MechCore::MechCore(FriendlyTag tag, BulletManager* bulletManager, bool enableHar
 	// 体
 	if (auto body = body_->GetGameObject().lock()) {
 		body->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
+		// コライダーを作成
+		collider_ = std::make_unique<MechCollider>(tag_, body->GetTransform()->GetWorldPosition(), kColliderMin_, kColliderMax_);
+
 		// 頭
 		if (auto head = head_->GetGameObject().lock()) {
 			head->GetTransform()->SetParent(body->GetTransform(), false);
@@ -82,7 +85,6 @@ MechCore::MechCore(FriendlyTag tag, BulletManager* bulletManager, bool enableHar
 	lockOnComponent_ = std::make_unique<MechLockOnComponent>(enableHardlockOn);
 	// 攻撃
 	attackComponent_ = std::make_unique<MechAttackComponent>(bulletManager);
-
 
 	// ステートを作成
 	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
@@ -138,6 +140,14 @@ void MechCore::Update() {
 
 	// 移動コンポーネントを更新
 	movementComponent_->Update(this);
+
+
+	// コライダーの更新
+	UpdateCollider();
+
+	// コライダーのデバッグ描画
+	DrawCollider();
+
 }
 
 void MechCore::ChangeState(MechCoreState nextState) {
@@ -205,6 +215,10 @@ MechAttackComponent* MechCore::GetAttackComponent() {
 	return attackComponent_.get();
 }
 
+MechCollider* MechCore::GetCollider() {
+	return collider_.get();
+}
+
 void MechCore::SetInputCommand(const InputCommand& command) {
 	inputCommand_ = command;
 }
@@ -221,4 +235,19 @@ std::weak_ptr<MechCoreBaseState> MechCore::GetState(MechCoreState state) {
 
 	MAGIAssert::Assert(false, "Not find MechCoreState!");
 	return {};
+}
+
+void MechCore::UpdateCollider() {
+	// ひとまずBodyに追従させる
+	if (auto bodyObj = body_->GetGameObject().lock()) {
+		// 体のワールド座標を取得
+		const Vector3 bodyWorldPos = bodyObj->GetTransform()->GetWorldPosition();
+		collider_->SetWorldPos(bodyWorldPos);
+	}
+	// コライダー更新
+	collider_->Update();
+}
+
+void MechCore::DrawCollider() {
+	collider_->Draw();
 }

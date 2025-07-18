@@ -1372,6 +1372,34 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const Vect
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
+void MAGISYSTEM::DrawLineAABB(const Vector3& min, const Vector3& max, const Vector4& color) {
+	// 8 つの頂点を生成
+	Vector3 v000{ min.x, min.y, min.z }; // 左下手前
+	Vector3 v100{ max.x, min.y, min.z }; // 右下手前
+	Vector3 v010{ min.x, max.y, min.z }; // 左上手前
+	Vector3 v110{ max.x, max.y, min.z }; // 右上手前
+
+	Vector3 v001{ min.x, min.y, max.z }; // 左下奥
+	Vector3 v101{ max.x, min.y, max.z }; // 右下奥
+	Vector3 v011{ min.x, max.y, max.z }; // 左上奥
+	Vector3 v111{ max.x, max.y, max.z }; // 右上奥
+
+	lineDrawer3D_->AddLine(v000, v100, color); // 下辺
+	lineDrawer3D_->AddLine(v100, v110, color); // 右辺
+	lineDrawer3D_->AddLine(v110, v010, color); // 上辺
+	lineDrawer3D_->AddLine(v010, v000, color); // 左辺
+
+	lineDrawer3D_->AddLine(v001, v101, color); // 下辺
+	lineDrawer3D_->AddLine(v101, v111, color); // 右辺
+	lineDrawer3D_->AddLine(v111, v011, color); // 上辺
+	lineDrawer3D_->AddLine(v011, v001, color); // 左辺
+
+	lineDrawer3D_->AddLine(v000, v001, color); // 左下
+	lineDrawer3D_->AddLine(v100, v101, color); // 右下
+	lineDrawer3D_->AddLine(v110, v111, color); // 右上
+	lineDrawer3D_->AddLine(v010, v011, color); // 左上
+}
+
 void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const MaterialData3D& material) {
 	triangleDrawer3D_->AddTriangle(worldMatrix, data, material);
 }
