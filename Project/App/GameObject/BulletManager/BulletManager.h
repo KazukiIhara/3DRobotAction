@@ -20,7 +20,12 @@ public:
 	void Update();
 	void Draw();
 
-	void AddBullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos);
+	void AddBullet(
+		const FriendlyTag& tag,
+		const Vector3& dir,
+		float speed,
+		const Vector3& wPos,
+		int32_t damage);
 
 private:
 	// 弾のリスト

@@ -48,9 +48,11 @@ void MechAttackComponent::AttackLeftHand(MechCore* mechCore) {
 		const float bulletSpeed = 100.0f;
 		// 対象武器の弾発射位置を取得
 		const Vector3 fireWPos = mechCore->GetLeftHandWeapon()->GetFireWorldPosition();
+		// ダメージを参照
+		const int32_t damage = mechCore->GetLeftHandWeapon()->GetDamage();
 
 		// 弾を追加
-		bulletManager_->AddBullet(tag, armDir, bulletSpeed, fireWPos);
+		bulletManager_->AddBullet(tag, armDir, bulletSpeed, fireWPos, damage);
 
 		// クールタイムにする
 		mechCore->GetLeftHandWeapon()->SetCoolTime();
@@ -79,9 +81,11 @@ void MechAttackComponent::AttackRightHand(MechCore* mechCore) {
 		const float bulletSpeed = 100.0f;
 		// 対象武器の弾発射位置を取得
 		const Vector3 fireWPos = mechCore->GetRightHandWeapon()->GetFireWorldPosition();
+		// ダメージを参照
+		const int32_t damage = mechCore->GetRightHandWeapon()->GetDamage();
 
 		// 弾を追加
-		bulletManager_->AddBullet(tag, armFwd, bulletSpeed, fireWPos);
+		bulletManager_->AddBullet(tag, armFwd, bulletSpeed, fireWPos, damage);
 
 		// クールタイムにする
 		mechCore->GetRightHandWeapon()->SetCoolTime();

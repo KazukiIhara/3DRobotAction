@@ -14,7 +14,13 @@ public:
 		bool isHit_ = false;
 	};
 
-	AttackCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
+	AttackCollider(
+		const FriendlyTag& tag,
+		const Vector3& posW,
+		const Vector3& minL,
+		const Vector3& maxL,
+		int32_t damage);
+
 	~AttackCollider() = default;
 
 	void Update();
@@ -27,6 +33,7 @@ public:
 	bool GetIsAlive()const;
 	HitInfo GetHitInfo()const;
 	AttackType GetType()const;
+	int32_t GetDamage()const;
 
 	void SetWorldPos(const Vector3& posW);
 	void SetIsAlive(bool isAlve);
@@ -52,6 +59,9 @@ private:
 	// ローカルのminmax
 	Vector3 minL_;
 	Vector3 maxL_;
+
+	// ダメージ
+	int32_t damage_ = 0;
 
 	// 生存フラグ
 	bool isAlive_ = true;
