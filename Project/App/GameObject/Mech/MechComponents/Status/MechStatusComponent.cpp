@@ -10,7 +10,7 @@ MechStatusComponent::MechStatusComponent() {
 void MechStatusComponent::Update(MechCore* mechCore) {
 	// 衝突情報を取得
 	std::vector<MechCollider::HitInfo> infos = mechCore->GetCollider()->GetHitInfo();
-	// 
+	// 衝突情報を順番に処理
 	for (auto& info : infos) {
 		if (info.isHit) {
 			switch (info.type) {
