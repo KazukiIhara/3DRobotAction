@@ -70,15 +70,21 @@ void PlayerUI::DrawLockonUI() {
 void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	// 描画したいパラメータ
 	Vector3 worldPosition{};
-	int hp = mechCore->GetStatusComponent()->GetHp();
-
-
+	int hp;
+	int targetHP;
 	if (auto obj = mechCore->GetGameObject().lock()) {
 		worldPosition = obj->GetTransform()->GetWorldPosition();
+	}
+
+	hp = mechCore->GetStatusComponent()->GetHp();
+
+	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+		targetHP = target->GetStatusComponent()->GetHp();
 	}
 
 	ImGui::Begin("PlayerDebugUI");
 	ImGui::InputFloat3("WorldPosition", &worldPosition.x);
 	ImGui::InputInt("HP", &hp);
+	ImGui::InputInt("TargetHP", &targetHP);
 	ImGui::End();
 }

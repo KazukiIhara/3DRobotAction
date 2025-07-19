@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Math/Utility/MathUtility.h"
 #include "GameCommon/GameCommon.h"
 
@@ -12,6 +14,7 @@ public:
 	struct HitInfo {
 		bool isHit = false;
 		AttackType type;
+		int32_t damage;
 	};
 
 	MechCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
@@ -24,19 +27,20 @@ public:
 	const Vector3& GetMinW()const;
 	const Vector3& GetMaxW()const;
 
+	void AddHitInfo(const HitInfo& info);
+
 	bool GetIsAlive()const;
-	HitInfo GetHitInfo()const;
+	std::vector<MechCollider::HitInfo> GetHitInfo()const;
 
 	void SetWorldPos(const Vector3& posW);
 	void SetIsAlive(bool isAlve);
-	void SetHitInfo(HitInfo hitInfo);
 
 private:
 	// 識別タグ
 	FriendlyTag tag_;
 
 	// 衝突インフォ
-	HitInfo hitInfo_;
+	std::vector<HitInfo> hitInfos_;
 
 	// ワールド上の座標
 	Vector3 posW_;

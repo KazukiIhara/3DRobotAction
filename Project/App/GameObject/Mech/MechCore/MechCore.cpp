@@ -143,6 +143,8 @@ void MechCore::Update() {
 	// 移動コンポーネントを更新
 	movementComponent_->Update(this);
 
+	// 状態パラメータコンポーネントを更新
+	statusComponent_->Update(this);
 
 	// コライダーの更新
 	UpdateCollider();

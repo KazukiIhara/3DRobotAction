@@ -21,7 +21,6 @@ struct DirectionalLightForGPU {
 	float padding;
 };
 
-struct DirectionalLightFrustumForGPU
-{
-    Vector4 planes[6];   // Left, Right, Bottom, Top, Near, Far
+struct DirectionalLightFrustumForGPU {
+	Vector4 planes[6];   // Left, Right, Bottom, Top, Near, Far
 };

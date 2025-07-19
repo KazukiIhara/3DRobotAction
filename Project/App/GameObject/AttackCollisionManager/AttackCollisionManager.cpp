@@ -48,8 +48,9 @@ void AttackCollisionManager::CheckCollision() {
 					MechCollider::HitInfo mInfo = {
 						true,
 						atkCollider->GetType(),
+						atkCollider->GetDamage(),
 					};
-					m->GetCollider()->SetHitInfo(mInfo);
+					m->GetCollider()->AddHitInfo(mInfo);
 
 					AttackCollider::HitInfo aInfo = {
 						true

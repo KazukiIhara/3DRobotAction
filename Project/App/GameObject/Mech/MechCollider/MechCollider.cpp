@@ -14,7 +14,7 @@ MechCollider::MechCollider(const FriendlyTag& tag, const Vector3& posW, const Ve
 
 void MechCollider::Update() {
 	// 衝突情報をリセット
-	hitInfo_ = MechCollider::HitInfo{};
+	hitInfos_.clear();
 	minW_ = posW_ + minL_;
 	maxW_ = posW_ + maxL_;
 }
@@ -32,12 +32,16 @@ const Vector3& MechCollider::GetMaxW() const {
 	return maxW_;
 }
 
+void MechCollider::AddHitInfo(const HitInfo& info) {
+	hitInfos_.push_back(info);
+}
+
 bool MechCollider::GetIsAlive()const {
 	return isAlive_;
 }
 
-MechCollider::HitInfo MechCollider::GetHitInfo() const {
-	return hitInfo_;
+std::vector<MechCollider::HitInfo> MechCollider::GetHitInfo() const {
+	return hitInfos_;
 }
 
 void MechCollider::SetWorldPos(const Vector3& posW) {
@@ -46,8 +50,4 @@ void MechCollider::SetWorldPos(const Vector3& posW) {
 
 void MechCollider::SetIsAlive(bool isAlive) {
 	isAlive_ = isAlive;
-}
-
-void MechCollider::SetHitInfo(HitInfo hitInfo) {
-	hitInfo_ = hitInfo;
 }

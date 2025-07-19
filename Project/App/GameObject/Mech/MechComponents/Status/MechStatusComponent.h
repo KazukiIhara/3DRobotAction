@@ -15,8 +15,7 @@ public:
 	MechStatusComponent();
 	~MechStatusComponent() = default;
 
-	// ダメージを与える
-	void AddDamage(int32_t damage);
+	void Update(MechCore* mechCore);
 
 	// HPを取得
 	const int32_t& GetHp()const;
