@@ -104,6 +104,10 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("LockonUIGray.png");
 	MAGISYSTEM::LoadTexture("LockonUIRed.png");
 
+	// APUI用テクスチャ
+	MAGISYSTEM::LoadTexture("ApGauge.png");
+
+
 	// 円形テクスチャ
 	MAGISYSTEM::LoadTexture("Circle2.png");
 

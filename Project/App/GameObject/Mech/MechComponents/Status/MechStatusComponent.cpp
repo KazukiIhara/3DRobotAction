@@ -30,3 +30,7 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 const int32_t& MechStatusComponent::GetHp() const {
 	return hp_;
 }
+
+const int32_t& MechStatusComponent::GetMaxHp() const {
+	return kMaxHP_;
+}

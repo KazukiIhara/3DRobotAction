@@ -19,6 +19,7 @@ public:
 
 	// HPを取得
 	const int32_t& GetHp()const;
+	const int32_t& GetMaxHp()const;
 
 private:
 	// 機体の耐久力
