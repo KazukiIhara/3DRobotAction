@@ -19,7 +19,6 @@ InputCommand EnemyAI::Update(MechCore* mechCore) {
 	// 
 	// ずっと攻撃
 	// 
-	command.leftHandWeapon = true;
 
 
 	// 
