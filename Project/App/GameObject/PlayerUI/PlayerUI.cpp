@@ -14,7 +14,6 @@ PlayerUI::PlayerUI() {
 
 	lockonGrayMat_.anchorPoint = { 0.5f,0.5f };
 	lockonGrayMat_.textureName = "LockonUIGray.png";
-	lockonGrayMat_.blendmode = BlendMode::Normal;
 
 	// 射撃盤用のスプライト設定
 	lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
@@ -22,20 +21,36 @@ PlayerUI::PlayerUI() {
 
 	lockonRedMat_.anchorPoint = { 0.5f,0.5f };
 	lockonRedMat_.textureName = "LockonUIRed.png";
-	lockonRedMat_.blendmode = BlendMode::Normal;
+
+	// APバー用のスプライト設定
+	apBarData_.position = Vector2(98.0f, 900.0f);
+
+	apBarMaterialData_.anchorPoint = { 0.0f,0.5f };
+	apBarMaterialData_.textureName = "ApBar.png";
 
 	// APゲージ用のスプライト設定
 	apGaugeData_.position = Vector2(100.0f, 900.0f);
-	apGaugeData_.size = { kAPSpriteWidth_,16.0f };
 
 	apGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
 	apGaugeMaterialData_.textureName = "ApGauge.png";
 
-	// APバー用のスプライト設定
+	// ボスAPバー用のスプライト設定
+	bossApBarData_.position = Vector2(WindowApp::kClientWidth * 0.5f - kBossAPBarWidth_ * 0.5f, 100.0f);
+
+	bossApBarMaterialData_.anchorPoint = { 0.0f,0.5f };
+	bossApBarMaterialData_.textureName = "BossApBar.png";
 
 
-	// APUI用のスプライト設定
+	// ボスAPゲージ用のスプライト設定
+	bossApGaugeData_.position = Vector2(WindowApp::kClientWidth * 0.5f - kBossApGaugeWidth_ * 0.5f, 100.0f);
 
+	bossApGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
+	bossApGaugeMaterialData_.textureName = "BossApGauge.png";
+
+}
+
+void PlayerUI::SetBoss(std::weak_ptr<MechCore> bossMechCore) {
+	bossMech_ = bossMechCore;
 }
 
 void PlayerUI::Update(MechCore* mechCore) {
@@ -92,7 +107,19 @@ void PlayerUI::UpdateAPUI(MechCore* mechCore) {
 	const int32_t maxHp = mechCore->GetStatusComponent()->GetMaxHp();
 
 	// APゲージの長さを設定
-	apGaugeData_.size.x = currentHp;
+	apGaugeData_.size.x = kAPSpriteWidth_ * (static_cast<float>(currentHp) / static_cast<float>(maxHp));
+
+	// ボスにあたる敵がいる場合
+	if (auto bossM = bossMech_.lock()) {
+		// 現在のHpを取得
+		const int32_t bossCurrentHp = bossM->GetStatusComponent()->GetHp();
+		// Hpの最大値を取得
+		const int32_t bossMaxHp = bossM->GetStatusComponent()->GetMaxHp();
+
+		// APゲージの長さを設定
+		bossApGaugeData_.size.x = (static_cast<float>(bossCurrentHp) / static_cast<float>(bossMaxHp)) * kBossApGaugeWidth_;
+
+	}
 
 }
 
@@ -105,10 +132,18 @@ void PlayerUI::DrawLockonUI() {
 }
 
 void PlayerUI::DrawAPUI() {
-
-
+	// APバー
+	MAGISYSTEM::DrawSprite(apBarData_, apBarMaterialData_);
 	// APゲージ
 	MAGISYSTEM::DrawSprite(apGaugeData_, apGaugeMaterialData_);
+
+	// ボスにあたる敵がいる場合
+	if (bossMech_.lock()) {
+		// ボスのAPバー
+		MAGISYSTEM::DrawSprite(bossApBarData_, bossApBarMaterialData_);
+		// ボスのゲージ
+		MAGISYSTEM::DrawSprite(bossApGaugeData_, bossApGaugeMaterialData_);
+	}
 }
 
 void PlayerUI::DrawDebugUI(MechCore* mechCore) {

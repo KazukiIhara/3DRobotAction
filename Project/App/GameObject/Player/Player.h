@@ -23,6 +23,8 @@ public:
 
 	void Draw();
 
+	void SetBossMech(std::weak_ptr<MechCore> bossMechCore);
+
 	// 機体を取得
 	std::weak_ptr<MechCore> GetMechCore();
 

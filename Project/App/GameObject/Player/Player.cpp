@@ -140,6 +140,10 @@ void Player::Draw() {
 
 }
 
+void Player::SetBossMech(std::weak_ptr<MechCore> bossMechCore) {
+	playerUI_->SetBoss(bossMechCore);
+}
+
 std::weak_ptr<MechCore> Player::GetMechCore() {
 	return mech_;
 }

@@ -106,7 +106,10 @@ inline void PlayScene<Data>::Initialize() {
 
 	// APUI用テクスチャ
 	MAGISYSTEM::LoadTexture("ApGauge.png");
+	MAGISYSTEM::LoadTexture("ApBar.png");
 
+	MAGISYSTEM::LoadTexture("BossApBar.png");
+	MAGISYSTEM::LoadTexture("BossApGauge.png");
 
 	// 円形テクスチャ
 	MAGISYSTEM::LoadTexture("Circle2.png");
@@ -191,6 +194,9 @@ inline void PlayScene<Data>::Initialize() {
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
 	// エネミーのターゲット対象にプレイヤーを追加
 	enemy_->GetMechCore().lock()->GetLockOnComponent()->AddMech(player_->GetMechCore());
+
+	// プレイヤーのボス対象にエネミーを追加
+	player_->SetBossMech(enemy_->GetMechCore());
 
 
 	// 攻撃コリジョンマネージャにワールドに存在するmechを追加

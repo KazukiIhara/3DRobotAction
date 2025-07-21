@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "Structs/SpriteStruct.h"
 
 class MechCore;
@@ -11,6 +12,8 @@ class PlayerUI {
 public:
 	PlayerUI();
 	~PlayerUI() = default;
+
+	void SetBoss(std::weak_ptr<MechCore> bossMechCore);
 
 	void Update(MechCore* mechCore);
 
@@ -25,6 +28,9 @@ private:
 
 	void DrawDebugUI(MechCore* mechCore);
 private:
+	// ボスがいる際のMechCoreのポインタ
+	std::weak_ptr<MechCore> bossMech_;
+
 	// LockonUIのスプライトデータ
 	SpriteData lockonGrayData_{};
 	SpriteMaterialData lockonGrayMat_{};
@@ -46,4 +52,13 @@ private:
 	SpriteData apData_{};
 	SpriteMaterialData apMaterialData_{};
 
+	// ボスのAPバーのスプライトデータ
+	SpriteData bossApBarData_{};
+	SpriteMaterialData bossApBarMaterialData_{};
+	const float kBossAPBarWidth_ = 916.0f;
+
+	// ボスのAPゲージのスプライトデータ
+	SpriteData bossApGaugeData_{};
+	SpriteMaterialData bossApGaugeMaterialData_{};
+	const float kBossApGaugeWidth_ = 912.0f;
 };

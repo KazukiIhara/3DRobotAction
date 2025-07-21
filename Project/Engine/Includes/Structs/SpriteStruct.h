@@ -34,7 +34,7 @@ struct SpritePipelineStateStream {
 /// CPU側で使うスプライトのデータ
 /// </summary>
 struct SpriteData {
-	Vector2 size = { 0.0f,0.0f };
+	Vector2 size = { -1.0f,-1.0f };
 	float rotate = 0.0f;
 	Vector2 position = { 0.0f,0.0f };
 	bool isBack = false; // 背景スプライトかどうか
@@ -45,11 +45,11 @@ struct SpriteData {
 /// </summary>
 struct SpriteMaterialData {
 	std::string textureName = "";
-	BlendMode blendmode = BlendMode::None;
+	BlendMode blendmode = BlendMode::Normal;
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 	Vector2 anchorPoint = { 0.0f,0.0f };
 	Vector2 textureLeftTop = { 0.0f,0.0f };
-	Vector2 textureCutOutSize = { 0.0f,0.0f };
+	Vector2 textureCutOutSize = { -1.0f,-1.0f };
 
 	bool isFlipX = false;
 	bool isFlipY = false;
