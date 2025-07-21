@@ -188,7 +188,7 @@ inline void PlayScene<Data>::Initialize() {
 	player_ = std::make_unique<Player>(bulletManger_.get());
 
 	// 敵作成
-	enemy_ = std::make_unique<Enemy>(bulletManger_.get());
+	enemy_ = std::make_unique<Enemy>(bulletManger_.get(), player_->GetMechCore());
 
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
