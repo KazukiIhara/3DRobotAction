@@ -36,4 +36,6 @@ namespace MAGIUtility {
 
 	Vector4 NormalizePlane(const Vector4& plane);
 
+	
+
 }

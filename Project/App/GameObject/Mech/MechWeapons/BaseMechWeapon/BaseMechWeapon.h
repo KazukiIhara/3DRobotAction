@@ -24,10 +24,17 @@ class BaseMechWeapon {
 public:
 	BaseMechWeapon(const std::string& weaponName, const WeaponType& type);
 	virtual ~BaseMechWeapon() = default;
-	virtual void Update(MechCore* mechCore) = 0;
-	std::weak_ptr<GameObject3D> GetGameObject()const;
-	const WeaponType& GetType()const;
 
+	virtual void Update(MechCore* mechCore) = 0;
+
+	std::weak_ptr<GameObject3D> GetGameObject()const;
+
+	// 武器の種類を取得
+	const WeaponType& GetType()const;
+	// ダメージを取得
+	const int32_t& GetDamage()const;
+
+	// 攻撃を発射するワールド座標の取得
 	virtual Vector3 GetFireWorldPosition();
 
 	virtual void SetReloadTime() {};
@@ -40,9 +47,11 @@ protected:
 	// 武器タイプ
 	WeaponType type_;
 
+	// ダメージ
+	int32_t damage_ = 0;
+
 	// オブジェクト
 	std::weak_ptr<GameObject3D> weapon_;
-
 
 	// リロード中
 	bool isReloading_ = false;

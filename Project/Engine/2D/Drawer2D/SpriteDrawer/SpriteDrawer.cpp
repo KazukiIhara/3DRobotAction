@@ -140,16 +140,23 @@ SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, c
 	// 切り取りサイズ
 	Vector2 cutOutSize = material.textureCutOutSize;
 	// 切り取りサイズが設定されていない場合はmetaDataから取得
-	if (cutOutSize.x == 0.0f || cutOutSize.y == 0.0f) {
+	if (cutOutSize.x == -1.0f) {
 		cutOutSize.x = static_cast<float>(metaData.width);
+	}
+
+	if (cutOutSize.y == -1.0f) {
 		cutOutSize.y = static_cast<float>(metaData.height);
 	}
 
 	// スプライトのサイズ
 	Vector2 size = data.size;
 	// サイズが設定されていない場合、切り取りサイズと同じにする
-	if (size.x == 0.0f || size.y == 0.0f) {
-		size = cutOutSize;
+	if (size.x == -1.0f) {
+		size.x = cutOutSize.x;
+	}
+
+	if (size.y == -1.0f) {
+		size.y = cutOutSize.y;
 	}
 
 	float texLeft = material.textureLeftTop.x / metaData.width;

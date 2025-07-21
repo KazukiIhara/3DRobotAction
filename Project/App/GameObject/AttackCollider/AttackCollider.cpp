@@ -2,7 +2,13 @@
 
 #include "MAGI.h"
 
-AttackCollider::AttackCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL) {
+AttackCollider::AttackCollider(
+	const FriendlyTag& tag,
+	const Vector3& posW,
+	const Vector3& minL,
+	const Vector3& maxL,
+	int32_t damage) {
+
 	tag_ = tag;
 
 	// 一旦弾
@@ -11,6 +17,8 @@ AttackCollider::AttackCollider(const FriendlyTag& tag, const Vector3& posW, cons
 	posW_ = posW;
 	minL_ = minL;
 	maxL_ = maxL;
+
+	damage_ = damage;
 
 	Update();
 }
@@ -46,6 +54,10 @@ AttackCollider::HitInfo AttackCollider::GetHitInfo() const {
 
 AttackType AttackCollider::GetType()const {
 	return type_;
+}
+
+int32_t AttackCollider::GetDamage() const {
+	return damage_;
 }
 
 void AttackCollider::SetWorldPos(const Vector3& posW) {

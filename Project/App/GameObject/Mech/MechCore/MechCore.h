@@ -24,6 +24,7 @@
 #include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
 #include "GameObject/Mech/MechComponents/LockOn/MechLockOnComponent.h"
 #include "GameObject/Mech/MechComponents/Attack/MechAttackComponent.h"
+#include "GameObject/Mech/MechComponents/Status/MechStatusComponent.h"
 
 // コライダー
 #include "GameObject/Mech/MechCollider/MechCollider.h"
@@ -60,30 +61,51 @@ public:
 	// ゲッター
 	//======================= 
 
+	// ゲームオブジェクトの取得
 	std::weak_ptr<GameObject3D> GetGameObject()const;
+
+	//
+	// MechCoreが直接持っているパラメータの取得
+	// 
 	const MechCoreState& GetCurrentState()const;
 	const InputCommand& GetInputCommand()const;
 	const LockOnView& GetLockOnView()const;
-
 	const FriendlyTag& GetFriendlyTag()const;
+
+	// 
+	// 各パーツの取得
+	// 
 
 	MechBody* GetMechBody();
 	MechArmLeft* GetMechArmLeft();
 	MechArmRight* GetMechArmRight();
 
+	// 
+	// 武器の取得
+	// 
 	BaseMechWeapon* GetLeftHandWeapon();
 	BaseMechWeapon* GetRightHandWeapon();
 
+	// 
+	// コンポーネントの取得
+	// 
 	MechMovementComponent* GetMovementComponent();
 	MechLockOnComponent* GetLockOnComponent();
 	MechAttackComponent* GetAttackComponent();
+	MechStatusComponent* GetStatusComponent();
 
+	// 
+	// コライダーの取得(今後コンポーネント化する可能性あり)
+	// 
 	MechCollider* GetCollider();
 
 	//======================= 
 	// セッター
 	//======================= 
 
+	//
+	// MechCoreが直接持つパラメータのセット
+	// 
 	void SetInputCommand(const InputCommand& command);
 	void SetLockOnView(const LockOnView& lockOnView);
 
@@ -124,6 +146,8 @@ private:
 	std::unique_ptr<MechLockOnComponent> lockOnComponent_;
 	// 攻撃コンポーネント
 	std::unique_ptr<MechAttackComponent> attackComponent_;
+	// ステータス値管理コンポーネント
+	std::unique_ptr<MechStatusComponent> statusComponent_;
 
 	//======================= 
 	// 各パーツ

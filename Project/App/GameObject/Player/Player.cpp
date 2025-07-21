@@ -132,12 +132,16 @@ void Player::Update() {
 
 void Player::Draw() {
 	// UI描画
-	playerUI_->Draw();
+	playerUI_->Draw(mech_.get());
 
 	if (breakEffect_) {
 		breakEffect_->Draw();
 	}
 
+}
+
+void Player::SetBossMech(std::weak_ptr<MechCore> bossMechCore) {
+	playerUI_->SetBoss(bossMechCore);
 }
 
 std::weak_ptr<MechCore> Player::GetMechCore() {

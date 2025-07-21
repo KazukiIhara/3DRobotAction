@@ -19,11 +19,11 @@ public:
 	void SetReloadTime()override;
 	void SetCoolTime()override;
 
-
 private:
 	Vector3 fireLocalPosition_ = { 0.0f,0.24f,1.3f };
 	Matrix4x4 fireLocalTranslateMatrix_;
 	Vector3 fireWorldPosition_ = { 0.0f,0.0f,0.0f };
 
-	const float coolTime_ = 0.5f;
+	// 発射感覚
+	const float coolTime_ = 0.5f;\
 };
