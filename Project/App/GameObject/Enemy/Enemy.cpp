@@ -5,7 +5,7 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
-Enemy::Enemy(BulletManager* bulletManager) {
+Enemy::Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	// 機体の作成
 	mech_ = std::make_unique<MechCore>(FriendlyTag::EnemySide, bulletManager, true);
 
@@ -20,11 +20,16 @@ Enemy::Enemy(BulletManager* bulletManager) {
 		mechObj->AddCamera3D(followCamera);
 	}
 
+	// AIを作成
+	ai_ = std::make_unique<EnemyAI>(playerMech);
+
 }
 
 void Enemy::Update() {
 	// コマンド
 	InputCommand command{};
+
+	command = ai_->Update(mech_.get());
 
 	// コマンドセット
 	mech_->SetInputCommand(command);

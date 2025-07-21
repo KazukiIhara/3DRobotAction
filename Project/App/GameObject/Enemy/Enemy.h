@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "GameObject/Mech/MechCore/MechCore.h"
+#include "GameObject/EnemyAI/EnemyAI.h"
 
 // 前方宣言
 class BulletManager;
@@ -13,7 +14,7 @@ class BulletManager;
 /// </summary>
 class Enemy {
 public:
-	Enemy(BulletManager* bulletManager);
+	Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech);
 	~Enemy() = default;
 
 	void Update();
@@ -24,5 +25,8 @@ public:
 private:
 	// 機体クラス
 	std::shared_ptr<MechCore> mech_ = nullptr;
+
+	// 敵AIクラス
+	std::unique_ptr<EnemyAI> ai_;
 
 };
