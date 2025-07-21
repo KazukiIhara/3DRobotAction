@@ -35,6 +35,10 @@ const int32_t& BaseMechWeapon::GetDamage()const {
 	return damage_;
 }
 
+const float BaseMechWeapon::GetBulletSpeed() const {
+	return bulletSpeed_;
+}
+
 Vector3 BaseMechWeapon::GetFireWorldPosition() {
 	return Vector3();
 }

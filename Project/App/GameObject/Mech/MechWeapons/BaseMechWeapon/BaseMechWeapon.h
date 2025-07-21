@@ -33,6 +33,8 @@ public:
 	const WeaponType& GetType()const;
 	// ダメージを取得
 	const int32_t& GetDamage()const;
+	// 弾速を取得
+	const float GetBulletSpeed()const;
 
 	// 攻撃を発射するワールド座標の取得
 	virtual Vector3 GetFireWorldPosition();
@@ -49,6 +51,8 @@ protected:
 
 	// ダメージ
 	int32_t damage_ = 0;
+	// 弾速
+	float bulletSpeed_ = 0.0f;
 
 	// オブジェクト
 	std::weak_ptr<GameObject3D> weapon_;

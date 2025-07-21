@@ -10,6 +10,9 @@ MechWeaponAssultRifle::MechWeaponAssultRifle()
 	}
 	// ローカル移動量行列を計算
 	fireLocalTranslateMatrix_ = MakeTranslateMatrix(fireLocalPosition_);
+
+	// 弾速を設定
+	bulletSpeed_ = 100.0f;
 }
 
 void MechWeaponAssultRifle::Update(MechCore* mechCore) {

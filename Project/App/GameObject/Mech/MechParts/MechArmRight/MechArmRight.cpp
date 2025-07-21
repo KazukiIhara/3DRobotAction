@@ -24,11 +24,24 @@ void MechArmRight::Update(MechCore* mechCore) {
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		// 対象の胴体を取得
 		if (auto targetBodyObj = target->GetMechBody()->GetGameObject().lock()) {
+
 			// ロックオン対象の胴体のワールド座標を取得
 			const Vector3 targetBodyPos = targetBodyObj->GetTransform()->GetWorldPosition();
+			// 弾の発射地点のワールド座標を取得
+			const Vector3 bulletFirePosition = mechCore->GetRightHandWeapon()->GetFireWorldPosition();
+			// 弾の発射地点からターゲットまでの距離
+			const float fireToTarget = Length(bulletFirePosition - targetBodyPos);
+			// 弾速を取得
+			const float bulletSpeed = mechCore->GetRightHandWeapon()->GetBulletSpeed();
+			// 着弾までの予測時間
+			const float timeToImpact = fireToTarget / bulletSpeed;
+
+			// 着弾時の敵の移動後予測地点
+			const Vector3 targetEstPos = targetBodyPos + target->GetMovementComponent()->GetCurrentVelocity() * timeToImpact;
+
 			if (auto obj = rightArm_.lock()) {
 				// 前方ベクトルを計算、正規化
-				forward_ = targetBodyPos - obj->GetTransform()->GetWorldPosition();
+				forward_ = targetEstPos - obj->GetTransform()->GetWorldPosition();
 				forward_ = Normalize(forward_);
 				// ヨー角を取得
 				const float yaw = std::atan2(forward_.x, forward_.z);

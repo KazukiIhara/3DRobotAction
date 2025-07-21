@@ -6,6 +6,7 @@
 #include "MAGIAssert/MAGIAssert.h"
 
 using namespace MAGIMath;
+using namespace MAGIUtility;
 
 PlayerUI::PlayerUI() {
 	// ロックオン用のスプライト設定
@@ -76,23 +77,32 @@ void PlayerUI::Draw(MechCore* mechCore) {
 
 
 void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
+
 	// ロックオン状態などに応じてUIの座標を更新
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		if (auto targetBody = target->GetMechBody()->GetGameObject().lock()) {
 			// ターゲットのワールド座標を取得
-			const Vector3 targetWPos = targetBody->GetTransform()->GetWorldPosition();
+			// ロックオン対象の胴体のワールド座標を取得
+			const Vector3 targetBodyPos = targetBody->GetTransform()->GetWorldPosition();
 
-			const Matrix4x4 vp = MAGISYSTEM::GetCurrentCamera3D()->GetViewProjectionMatrix();
-			Vector4 clip = Transform(Vector4(targetWPos.x, targetWPos.y, targetWPos.z, 1.0f), vp);
+			const Vector2 targetSPos = TransformWorldToScreen(targetBodyPos);
+			lockonGrayData_.position = targetSPos;
 
-			const float invW = 1.0f / clip.w;
-			Vector3 ndc{ clip.x * invW, clip.y * invW, clip.z * invW };
+			// 弾の発射地点のワールド座標を取得
+			const Vector3 bulletFirePosition = mechCore->GetRightHandWeapon()->GetFireWorldPosition();
+			// 弾の発射地点からターゲットまでの距離
+			const float fireToTarget = Length(bulletFirePosition - targetBodyPos);
+			// 弾速を取得
+			const float bulletSpeed = mechCore->GetRightHandWeapon()->GetBulletSpeed();
+			// 着弾までの予測時間
+			const float timeToImpact = fireToTarget / bulletSpeed;
 
-			const float sx = (ndc.x + 1.f) * 0.5f * WindowApp::kClientWidth;
-			const float sy = (-ndc.y + 1.f) * 0.5f * WindowApp::kClientHeight;
+			// 着弾時の敵の移動後予測地点
+			const Vector3 targetEstPos = targetBodyPos + target->GetMovementComponent()->GetCurrentVelocity() * timeToImpact;
 
-			lockonGrayData_.position = { sx,sy };
-			lockonRedData_.position = { sx,sy };
+			// 照準で狙うべきワールド座標
+			const Vector2 targetPredictSPos = TransformWorldToScreen(targetEstPos);
+			lockonRedData_.position = targetPredictSPos;
 		}
 	} else {
 		lockonGrayData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);

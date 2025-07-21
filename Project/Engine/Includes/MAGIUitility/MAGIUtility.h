@@ -36,6 +36,6 @@ namespace MAGIUtility {
 
 	Vector4 NormalizePlane(const Vector4& plane);
 
-	
+	Vector2 TransformWorldToScreen(const Vector3& worldPos);
 
 }

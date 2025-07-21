@@ -25,5 +25,5 @@ private:
 	Vector3 fireWorldPosition_ = { 0.0f,0.0f,0.0f };
 
 	// 発射感覚
-	const float coolTime_ = 0.5f;\
+	const float coolTime_ = 0.5f;
 };

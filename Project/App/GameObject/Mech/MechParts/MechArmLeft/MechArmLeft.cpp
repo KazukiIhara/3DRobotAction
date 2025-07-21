@@ -25,7 +25,8 @@ void MechArmLeft::Update(MechCore* mechCore) {
 		// 対象の胴体を取得
 		if (auto targetBodyObj = target->GetMechBody()->GetGameObject().lock()) {
 			// ロックオン対象の胴体のワールド座標を取得
-			const Vector3 targetBodyPos = targetBodyObj->GetTransform()->GetWorldPosition();
+			const Vector3 targetBodyPos = targetBodyObj->GetTransform()->GetWorldPosition() + target->GetMovementComponent()->GetCurrentVelocity() * MAGISYSTEM::GetDeltaTime();
+
 			if (auto obj = leftArm_.lock()) {
 				// 前方ベクトルを計算、正規化
 				forward_ = targetBodyPos - obj->GetTransform()->GetWorldPosition();

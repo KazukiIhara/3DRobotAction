@@ -1,5 +1,7 @@
 #include "MAGIUtility.h"
 
+#include "MAGI.h"
+
 #include <cassert>
 
 using namespace MAGIMath;
@@ -103,4 +105,15 @@ uint32_t MAGIUtility::DivRoundUp(uint32_t num, uint32_t den) {
 Vector4 MAGIUtility::NormalizePlane(const Vector4& plane) {
 	float length = std::sqrt(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z);
 	return plane / length;
+}
+
+Vector2 MAGIUtility::TransformWorldToScreen(const Vector3& worldPos) {
+	const Matrix4x4 vp = MAGISYSTEM::GetCurrentCamera3D()->GetViewProjectionMatrix();
+	const Vector4 clip = Transform(Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0f), vp);
+	const float invW = 1.0f / clip.w;
+	const Vector3 ndc{ clip.x * invW, clip.y * invW, clip.z * invW };
+	const float sx = (ndc.x + 1.f) * 0.5f * WindowApp::kClientWidth;
+	const float sy = (-ndc.y + 1.f) * 0.5f * WindowApp::kClientHeight;
+
+	return Vector2(sx, sy);
 }

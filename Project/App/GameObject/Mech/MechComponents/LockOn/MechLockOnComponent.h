@@ -40,9 +40,9 @@ private:
 
 	// ロックオン対象のリスト
 	std::vector<std::weak_ptr<MechCore>> targetList_;
-
 	// ロックオン対象の機体
 	std::weak_ptr<MechCore> lockOnTarget_;
+
 
 	// ロックオン距離
 	float lockOnRange_ = 50.f;
