@@ -24,13 +24,13 @@ InputCommand EnemyAI::Update(MechCore* mechCore) {
 	// 
 	// ひとまずプレイヤーの周りを旋回させてみる
 	// 
-	Vector2 move{};
+	Vector2 inputMoveDir{};
 	Vector3 forward{};
 	Vector3 right{};
 	Vector2 moveDir{};
 
-	move.x = 1.0f;
-	move.y = 1.0f;
+	inputMoveDir.x = 1.0f;
+	inputMoveDir.y = 1.0f;
 
 	// 機体のゲームオブジェクトを取得
 	if (auto mechObj = mechCore->GetGameObject().lock()) {
@@ -42,7 +42,7 @@ InputCommand EnemyAI::Update(MechCore* mechCore) {
 			forward = Normalize(forward);
 			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
 
-			const Vector3 tempDir = Normalize(right * move.x + forward * move.y);
+			const Vector3 tempDir = Normalize(right * inputMoveDir.x + forward * inputMoveDir.y);
 
 			moveDir = { tempDir.x, tempDir.z };
 
