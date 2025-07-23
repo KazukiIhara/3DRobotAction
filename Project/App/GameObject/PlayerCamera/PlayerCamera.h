@@ -5,7 +5,7 @@
 
 class MechCore;
 
-class PlayerCamera :public Camera3D {
+class PlayerCamera:public Camera3D {
 public:
 	PlayerCamera(const std::string& name);
 	~PlayerCamera() = default;
@@ -15,6 +15,8 @@ public:
 	void SetTargetTransform(Transform3D* target);
 
 	void SetMechCore(std::weak_ptr<MechCore> mechCore);
+
+	const Quaternion& GetCameraQuaternion()const;
 
 private:
 	void ApplyInput(float dt);

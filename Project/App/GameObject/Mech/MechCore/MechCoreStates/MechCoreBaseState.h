@@ -4,6 +4,9 @@
 
 class MechCore;
 
+/// <summary>
+/// 機体のステート基底クラス
+/// </summary>
 class MechCoreBaseState {
 public:
 	virtual ~MechCoreBaseState() = default;

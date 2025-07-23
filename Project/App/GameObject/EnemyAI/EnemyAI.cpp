@@ -1,37 +1,104 @@
 #include "EnemyAI.h"
 
 #include "MAGI.h"
+#include "MAGIAssert/MAGIAssert.h" 
 
 #include "GameObject/Mech/MechCore/MechCore.h"
+
+#include "EnemyAIState/BaseEnemyAIState.h"
+#include "EnemyAIState/Root/EnemyAIStateRoot.h"
 
 EnemyAI::EnemyAI(std::weak_ptr<MechCore> playerMech) {
 	// プレイヤーの機体のポインタを受け取る
 	playerMech_ = playerMech;
 
+	// コマンド初期化
+	command_ = InputCommand{};
+
+	// ステートを作成
+	states_[EnemyAIState::Root] = std::make_shared<EnemyAIStateRoot>();
+
+	// 最初のステートを設定
+	ChangeState(EnemyAIState::Root);
 
 }
 
 InputCommand EnemyAI::Update(MechCore* mechCore) {
+	// コマンドリセット
+	command_ = InputCommand{};
 
-	// 出力するコマンド
-	InputCommand command{};
+	// ステートごとの更新
+	if (auto cs = currentState_.second.lock()) {
+		cs->Update(this);
+	}
 
-	// 
-	// ずっと攻撃
-	// 
+	// 入力された移動方向をカメラに対しての向きに直す
+	CulDirectionWithCamera(mechCore);
 
+	// コマンドを返す
+	return command_;
+}
 
-	// 
-	// ひとまずプレイヤーの周りを旋回させてみる
-	// 
-	Vector2 move{};
+void EnemyAI::ChangeState(EnemyAIState nextState) {
+	// 旧ステートの終了処理
+	if (auto cs = currentState_.second.lock()) {
+		cs->Exit(this);
+	}
+
+	// 変更後ステートの開始処理
+	currentState_ = std::make_pair(nextState, GetState(nextState));
+	if (auto cs = currentState_.second.lock()) {
+		cs->Enter(this);
+	}
+}
+
+void EnemyAI::MoveDir(const Vector2& dir) {
+	command_.moveDirection = dir;
+}
+
+void EnemyAI::CameraRotDir(const Vector2& camRDir) {
+	command_.cameraRotDirection = camRDir;
+}
+
+void EnemyAI::Jump() {
+	command_.jump = true;
+}
+
+void EnemyAI::QuickBoost() {
+	command_.quickBoost = true;
+}
+
+void EnemyAI::AssultBoost() {
+	command_.assultBoost = true;
+}
+
+void EnemyAI::LeftHandWeapon() {
+	command_.leftHandWeapon = true;
+}
+
+void EnemyAI::RightHandWeapon() {
+	command_.rightHandWeapon = true;
+}
+
+std::weak_ptr<BaseEnemyAIState> EnemyAI::GetState(EnemyAIState state) {
+	auto it = states_.find(state);
+	if (it != states_.end()) {
+		return it->second;
+	}
+
+	MAGIAssert::Assert(false, "Not find EnemyAIState!");
+	return {};
+}
+
+void EnemyAI::CulDirectionWithCamera(MechCore* mechCore) {
+
+	Vector2 inputMoveDir{};
 	Vector3 forward{};
 	Vector3 right{};
 	Vector2 moveDir{};
 
-	move.x = 1.0f;
-	move.y = 1.0f;
-
+	// 入力された移動方向をカメラに対しての向きに直す
+	inputMoveDir = command_.moveDirection;
 	// 機体のゲームオブジェクトを取得
 	if (auto mechObj = mechCore->GetGameObject().lock()) {
 		// 機体のカメラを取得
@@ -42,7 +109,7 @@ InputCommand EnemyAI::Update(MechCore* mechCore) {
 			forward = Normalize(forward);
 			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
 
-			const Vector3 tempDir = Normalize(right * move.x + forward * move.y);
+			const Vector3 tempDir = Normalize(right * inputMoveDir.x + forward * inputMoveDir.y);
 
 			moveDir = { tempDir.x, tempDir.z };
 
@@ -51,9 +118,5 @@ InputCommand EnemyAI::Update(MechCore* mechCore) {
 	}
 
 	// 移動方向をセット
-	command.moveDirection = Normalize(moveDir);
-
-
-	// コマンドを返す
-	return command;
+	command_.moveDirection = Normalize(moveDir);
 }
