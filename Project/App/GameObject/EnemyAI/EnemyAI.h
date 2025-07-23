@@ -16,10 +16,13 @@ class BaseEnemyAIState;
 /// 敵AIのステート
 /// </summary>
 enum class EnemyAIState {
-	Root,
-	Attack,
-	Avoid,
-	Escape,
+	Root,		// 通常
+	Search,		// 索敵
+	Approach,	// 接近
+	Attack,		// 攻撃	
+	Avoid,		// 回避
+	Leave,		// 離脱
+	Escape,		// 逃走
 };
 
 /// <summary>
