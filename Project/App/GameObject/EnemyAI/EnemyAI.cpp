@@ -8,7 +8,12 @@
 #include "EnemyAIState/BaseEnemyAIState.h"
 #include "EnemyAIState/Root/EnemyAIStateRoot.h"
 
-EnemyAI::EnemyAI(std::weak_ptr<MechCore> playerMech) {
+EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech) {
+	// 自機のポインタを受け取る
+	if (auto m = mechCore.lock()) {
+		mechCore_ = m.get();
+	}
+
 	// プレイヤーの機体のポインタを受け取る
 	playerMech_ = playerMech;
 
@@ -20,20 +25,19 @@ EnemyAI::EnemyAI(std::weak_ptr<MechCore> playerMech) {
 
 	// 最初のステートを設定
 	ChangeState(EnemyAIState::Root);
-
 }
 
-InputCommand EnemyAI::Update(MechCore* mechCore) {
+InputCommand EnemyAI::Update() {
 	// コマンドリセット
 	command_ = InputCommand{};
 
 	// ステートごとの更新
 	if (auto cs = currentState_.second.lock()) {
-		cs->Update(this);
+		cs->Update(this, mechCore_);
 	}
 
 	// 入力された移動方向をカメラに対しての向きに直す
-	CulDirectionWithCamera(mechCore);
+	CulDirectionWithCamera(mechCore_);
 
 	// コマンドを返す
 	return command_;
@@ -42,13 +46,13 @@ InputCommand EnemyAI::Update(MechCore* mechCore) {
 void EnemyAI::ChangeState(EnemyAIState nextState) {
 	// 旧ステートの終了処理
 	if (auto cs = currentState_.second.lock()) {
-		cs->Exit(this);
+		cs->Exit(this, mechCore_);
 	}
 
 	// 変更後ステートの開始処理
 	currentState_ = std::make_pair(nextState, GetState(nextState));
 	if (auto cs = currentState_.second.lock()) {
-		cs->Enter(this);
+		cs->Enter(this, mechCore_);
 	}
 }
 

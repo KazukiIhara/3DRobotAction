@@ -24,10 +24,10 @@ enum class EnemyAIState {
 /// </summary>
 class EnemyAI {
 public:
-	EnemyAI(std::weak_ptr<MechCore>playerMech);
+	EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore>playerMech);
 	~EnemyAI() = default;
 
-	InputCommand Update(MechCore* mechCore);
+	InputCommand Update();
 	void ChangeState(EnemyAIState nextState);
 
 	//
@@ -48,6 +48,9 @@ private:
 	void CulDirectionWithCamera(MechCore* mechCore);
 
 private:
+	// 自機のポインタ
+	MechCore* mechCore_;
+
 	// プレイヤーの機体のポインタ
 	std::weak_ptr<MechCore> playerMech_;
 

@@ -6,11 +6,11 @@ class EnemyAIStateRoot:public BaseEnemyAIState {
 public:
 	~EnemyAIStateRoot() = default;
 
-	void Enter(EnemyAI* enemyAI)override;
-	void Update(EnemyAI* enemyAI)override;
-	void Exit(EnemyAI* enemyAI)override;
+	void Enter(EnemyAI* enemyAI, MechCore* mechCore)override;
+	void Update(EnemyAI* enemyAI, MechCore* mechCore)override;
+	void Exit(EnemyAI* enemyAI, MechCore* mechCore)override;
 
 private:
 	float jumpTimer_ = 0.0f;
-	const float jumpTime_ = 1.0f;
+	const float jumpTime_ = 3.0f;
 };

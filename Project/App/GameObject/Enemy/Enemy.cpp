@@ -21,7 +21,7 @@ Enemy::Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	}
 
 	// AIを作成
-	ai_ = std::make_unique<EnemyAI>(playerMech);
+	ai_ = std::make_unique<EnemyAI>(mech_, playerMech);
 
 }
 
@@ -29,7 +29,7 @@ void Enemy::Update() {
 	// コマンド
 	InputCommand command{};
 
-	command = ai_->Update(mech_.get());
+	command = ai_->Update();
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
