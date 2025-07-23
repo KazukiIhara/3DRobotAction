@@ -17,6 +17,9 @@ class BaseEnemyAIState;
 /// </summary>
 enum class EnemyAIState {
 	Root,
+	Attack,
+	Avoid,
+	Escape,
 };
 
 /// <summary>
@@ -64,5 +67,10 @@ private:
 
 	// 冷静さ
 	int32_t calmness_ = 3;
+
+	// ステート変更タイマー
+	float stateChangeTimer_ = 0.0f;
+	// ステート変更時間
+	float stateChangeTime_ = 1.0f;
 
 };

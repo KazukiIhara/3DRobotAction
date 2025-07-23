@@ -25,6 +25,11 @@ public:
 
 private:
 	void DirectionToLockOnView(MechCore* mechCore);
+
+	void RotateToMoveDirection(MechCore* mechCore);
+
+	void RotateToQuickBoost(MechCore* mechCore);
+
 private:
 	// オブジェクト
 	std::weak_ptr<GameObject3D> body_;

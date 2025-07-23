@@ -14,17 +14,7 @@ void EnemyAIStateRoot::Enter(EnemyAI* enemyAI, MechCore* mechCore) {
 
 void EnemyAIStateRoot::Update(EnemyAI* enemyAI, MechCore* mechCore) {
 	// 旋回行動
-	enemyAI->MoveDir(Vector2(1.0f, 1.0f));
-
-	// 右手武器を見る(近接でなければ撃つ)
-	if (mechCore->GetRightHandWeapon()->GetType() == WeaponType::AssultRifle) {
-		enemyAI->RightHandWeapon();
-	}
-
-	// 左手武器を見る(近接でなければ撃つ)
-	if (mechCore->GetLeftHandWeapon()->GetType() == WeaponType::AssultRifle) {
-		enemyAI->LeftHandWeapon();
-	}
+	enemyAI->MoveDir(currentMoveDir_);
 
 	// 適度にジャンプする
 	jumpTimer_ -= MAGISYSTEM::GetDeltaTime();

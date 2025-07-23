@@ -50,11 +50,12 @@ void MechArmLeft::Update(MechCore* mechCore) {
 				// 回転を作成
 				Quaternion qYaw = MakeRotateAxisAngleQuaternion({ 0,1,0 }, yaw);
 				Quaternion qPitch = MakeRotateAxisAngleQuaternion({ 1,0,0 }, pitch);
-				Quaternion worldQ = Normalize(qPitch * qYaw);
+				Quaternion worldQ = Normalize(qYaw * qPitch);
 
 				// 胴体の回転の逆行列をかける
 				const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
-				const Quaternion targetQ = worldQ * Inverse(bodyQ);
+				const Quaternion targetQ = Inverse(bodyQ) * worldQ;
+
 				obj->GetTransform()->SetQuaternion(targetQ);
 			}
 

@@ -23,6 +23,7 @@ EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playe
 	// ステートを作成
 	states_[EnemyAIState::Root] = std::make_shared<EnemyAIStateRoot>();
 
+
 	// 最初のステートを設定
 	ChangeState(EnemyAIState::Root);
 }
