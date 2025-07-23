@@ -71,6 +71,7 @@ public:
 	const InputCommand& GetInputCommand()const;
 	const LockOnView& GetLockOnView()const;
 	const FriendlyTag& GetFriendlyTag()const;
+	bool GetIsInvaildFCS()const;
 
 	// 
 	// 各パーツの取得
@@ -122,12 +123,12 @@ private:
 private:
 	// インプットコマンド
 	InputCommand inputCommand_;
-
 	// ロックオン用のカメラ情報
 	LockOnView lockOnView_;
-
 	// 友好タグ
 	FriendlyTag tag_;
+	// FCS無効状態
+	bool isInvalidFCS_ = false;
 
 	// オブジェクト
 	std::weak_ptr<GameObject3D> core_;

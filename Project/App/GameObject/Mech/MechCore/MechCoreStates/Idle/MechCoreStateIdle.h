@@ -13,6 +13,4 @@ public:
 	void Update(MechCore* mechCore)override;
 	void Exit(MechCore* mechCore)override;
 
-private:
-
 };

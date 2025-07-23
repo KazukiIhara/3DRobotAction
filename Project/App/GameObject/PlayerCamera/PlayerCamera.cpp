@@ -61,6 +61,10 @@ void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
 	core_ = mechCore;
 }
 
+const Quaternion& PlayerCamera::GetCameraQuaternion() const {
+	return cameraRotation_;
+}
+
 void PlayerCamera::ApplyInput(float dt) {
 
 	// 右スティック入力

@@ -6,16 +6,17 @@
 
 // アプリ用汎用ヘッダ
 #include "GameCommon/GameCommon.h"
-#include "GameObject/EnemyAI/EnemyAIState/BaseEnemyAIState.h"
+
 
 // 前方宣言
 class MechCore;
+class BaseEnemyAIState;
 
 /// <summary>
-/// 敵AIの状態
+/// 敵AIのステート
 /// </summary>
 enum class EnemyAIState {
-
+	Root,
 };
 
 /// <summary>
@@ -27,17 +28,38 @@ public:
 	~EnemyAI() = default;
 
 	InputCommand Update(MechCore* mechCore);
+	void ChangeState(EnemyAIState nextState);
+
+	//
+	// 各ステートからコマンドを入力する際に呼ぶ関数
+	//
+	void MoveDir(const Vector2& dir);
+	void CameraRotDir(const Vector2& camRDir);
+	void Jump();
+	void QuickBoost();
+	void AssultBoost();
+	void LeftHandWeapon();
+	void RightHandWeapon();
+private:
+	// 対応するステートを取得
+	std::weak_ptr<BaseEnemyAIState> GetState(EnemyAIState state);
+
+	// 入力された方向をカメラに対しての向きに直す
+	void CulDirectionWithCamera(MechCore* mechCore);
 
 private:
 	// プレイヤーの機体のポインタ
 	std::weak_ptr<MechCore> playerMech_;
 
+	// 出力するコマンド
+	InputCommand command_;
+
 	// ステートテーブル
-	std::unordered_map<EnemyAIState, std::shared_ptr<BaseEnemyAIState>> state_;
+	std::unordered_map<EnemyAIState, std::shared_ptr<BaseEnemyAIState>> states_;
 	// 現在のステート
 	std::pair<EnemyAIState, std::weak_ptr<BaseEnemyAIState>> currentState_;
 
 	// 冷静さ
 	int32_t calmness_ = 3;
-	
+
 };

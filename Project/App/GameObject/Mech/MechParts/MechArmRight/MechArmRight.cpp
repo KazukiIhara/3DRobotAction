@@ -4,6 +4,7 @@
 #include "MAGIAssert/MAGIAssert.h" 
 
 #include "GameObject/Mech/MechCore/MechCore.h"
+#include "GameObject/PlayerCamera/PlayerCamera.h"
 
 using namespace MAGIMath;
 
@@ -61,13 +62,18 @@ void MechArmRight::Update(MechCore* mechCore) {
 		}
 	} else {
 		if (auto obj = rightArm_.lock()) {
-			const Quaternion localQ{};
-			const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
-			const Quaternion targetQ = localQ * bodyQ;
-			forward_ = Normalize(Transform(MakeForwardVector3(), targetQ));
+			if (auto mechCoreObj = mechCore->GetGameObject().lock()) {
+				if (auto camera = dynamic_cast<PlayerCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
+					const Quaternion localQ = camera->GetCameraQuaternion();
+					const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
+					const Quaternion targetQ = Inverse(bodyQ) * localQ;
 
-			// ローカルのクオータニオンをセット
-			obj->GetTransform()->SetQuaternion(localQ);
+					forward_ = Normalize(Transform(MakeForwardVector3(), localQ));
+
+					obj->GetTransform()->SetQuaternion(targetQ);
+
+				}
+			}
 		}
 	}
 }
