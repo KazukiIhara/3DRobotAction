@@ -16,3 +16,9 @@ struct DepthOutlineData
     float4 param2;
     float4 param3;
 };
+
+struct CameraInv
+{
+    float4x4 invView;
+    float4x4 invProj;
+};

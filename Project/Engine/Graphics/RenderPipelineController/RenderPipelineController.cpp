@@ -82,8 +82,6 @@ RenderController::RenderController(
 	postEffectCommand_.resize(kMaxPostEffectNum_);
 }
 
-RenderController::~RenderController() {}
-
 void RenderController::PreShadowRender() {
 	// まずリソース状態を「書き込み可能」に遷移
 	shadowDepthTexture_->TransitionToWrite();
@@ -208,6 +206,9 @@ void RenderController::ApplyPostEffect() {
 		case PostEffectType::GaussianY:
 		case PostEffectType::RadialBlur:
 			DrawRenderTextureWithParamater(commandList, command);
+			break;
+		case PostEffectType::DepthOutline:
+			DrawRenderTextureWithParamaterAndDepth(commandList, command);
 			break;
 		}
 
@@ -376,6 +377,52 @@ void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList*
 	// 描画した対象を読み取り可能状態にする
 	currentRenderTexture_->TransitionToRead();
 
+}
+
+void RenderController::DrawRenderTextureWithParamaterAndDepth(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command) {
+	// 現在の書き込み先のレンダーテクスチャを切り替え
+	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
+	// 書き込み可能状態にする
+	currentRenderTarget_->TransitionToWrite();
+	// 次のポストエフェクト用にレンダーテクスチャを切り替え
+	SwitchColorRenderTextureIndex();
+
+	// レンダーターゲットを設定
+	currentRenderTarget_->SetAsRenderTarget();
+	currentRenderTarget_->ClearRenderTarget();
+
+	// ビューポート、シザー設定
+	viewport_->SettingViewport();
+	scissorRect_->SettingScissorRect();
+
+	// パラメータを更新
+	std::memcpy(postEffectParamData_[command.index], &command.param, sizeof(PostEffectParamater));
+
+	// ポストエフェクトに対応するパイプラインを設定
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(command.postEffectType));
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(command.postEffectType, BlendMode::None));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 入力するテクスチャはひとつ前に描画したレンダーテクスチャ
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
+
+	// パラメータを送信
+	commandList->SetGraphicsRootConstantBufferView(1, postEffectParamResource_[command.index]->GetGPUVirtualAddress());
+
+	// 深度を送信
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(depthStencil_->GetSrvIndex()));
+
+	// カメラの逆行列を送る
+	camera3DManager_->TransferCurrentCameraInverse(3);
+
+	// 描画
+	commandList->DrawInstanced(3, 1, 0, 0);
+
+	// 出力結果を次の入力にする
+	currentRenderTexture_ = currentRenderTarget_;
+
+	// 描画した対象を読み取り可能状態にする
+	currentRenderTexture_->TransitionToRead();
 }
 
 void RenderController::SetRenderTargets(const std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 2>& rtvs, D3D12_CPU_DESCRIPTOR_HANDLE dsv) {

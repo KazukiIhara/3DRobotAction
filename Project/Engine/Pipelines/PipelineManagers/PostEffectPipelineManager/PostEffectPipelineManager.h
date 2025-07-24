@@ -21,6 +21,7 @@ class ShaderCompiler;
 #include "PostEffectPipelines/GaussianBlurXPostEffectPipeline/GaussianBlurXPostEffectPipeline.h"
 #include "PostEffectPipelines/GaussianBlurYPostEffectPipeline/GaussianBlurYPostEffectPipeline.h"
 #include "PostEffectPipelines/RadialBlurPostEffectPipeline/RadialBlurPostEffectPipeline.h"
+#include "PostEffectPipelines/DepthOutlinePosteffectPipeline/DepthOutlinePostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトパイプラインマネージャ
@@ -62,4 +63,6 @@ private:
 	std::unique_ptr<GaussianBlurYPostEffectPipeline> gaussianBlurYPostEffectPipeline_ = nullptr;
 	// RadialBlurPostEffectPipeline
 	std::unique_ptr<RadialBlurPostEffectPipeline> radialBlurPostEffectPipeline_ = nullptr;
+	// DepthPostEffectPipeline
+	std::unique_ptr<DepthOutlinePostEffectPipeline> depthOutlinePostEffectPipeline_ = nullptr;
 };

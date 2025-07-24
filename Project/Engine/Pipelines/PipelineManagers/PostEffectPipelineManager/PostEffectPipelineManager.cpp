@@ -54,6 +54,12 @@ void PostEffectPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCom
 	SetRootSignature(PostEffectType::RadialBlur);
 	SetPipelineState(PostEffectType::RadialBlur);
 
+	// DepthOutlineのパイプラインを生成、初期化
+	depthOutlinePostEffectPipeline_ = std::make_unique<DepthOutlinePostEffectPipeline>(dxgi, shaderCompiler);
+	depthOutlinePostEffectPipeline_->Initialize();
+	SetRootSignature(PostEffectType::DepthOutline);
+	SetPipelineState(PostEffectType::DepthOutline);
+
 }
 
 ID3D12RootSignature* PostEffectPipelineManager::GetRootSignature(PostEffectType pipelineState) {
@@ -67,59 +73,68 @@ ID3D12PipelineState* PostEffectPipelineManager::GetPipelineState(PostEffectType 
 void PostEffectPipelineManager::SetRootSignature(PostEffectType pipelineState) {
 	// パイプラインごとに対応するルートシグネイチャを設定
 	switch (pipelineState) {
-		case PostEffectType::Copy:
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = copyPostEffectPipeline_->GetRootSignature();
-			break;
-		case PostEffectType::Grayscale:
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = grayscalePostEffectPipeline_->GetRootSignature();
-			break;
-		case PostEffectType::Vignette:
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = vignettePostEffectPipeline_->GetRootSignature();
-			break;
-		case PostEffectType::GaussianX:
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = gaussianBlurXPostEffectPipeline_->GetRootSignature();
-			break;
-		case PostEffectType::GaussianY:
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = gaussianBlurYPostEffectPipeline_->GetRootSignature();
-			break;
-		case PostEffectType::RadialBlur:
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = radialBlurPostEffectPipeline_->GetRootSignature();
-			break;
+	case PostEffectType::Copy:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = copyPostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::Grayscale:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = grayscalePostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::Vignette:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = vignettePostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::GaussianX:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = gaussianBlurXPostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::GaussianY:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = gaussianBlurYPostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::RadialBlur:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = radialBlurPostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::DepthOutline:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = depthOutlinePostEffectPipeline_->GetRootSignature();
+		break;
 	}
+
 }
 
 void PostEffectPipelineManager::SetPipelineState(PostEffectType pipelineState) {
 	// パイプラインごとに対応するパイプラインステートを設定
 	switch (pipelineState) {
-		case PostEffectType::Copy:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = copyPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case PostEffectType::Grayscale:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = grayscalePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case PostEffectType::Vignette:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = vignettePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case PostEffectType::GaussianX:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = gaussianBlurXPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case PostEffectType::GaussianY:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = gaussianBlurYPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case PostEffectType::RadialBlur:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = radialBlurPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
+	case PostEffectType::Copy:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = copyPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::Grayscale:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = grayscalePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::Vignette:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = vignettePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::GaussianX:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = gaussianBlurXPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::GaussianY:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = gaussianBlurYPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::RadialBlur:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = radialBlurPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::DepthOutline:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = depthOutlinePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
 	}
 }
