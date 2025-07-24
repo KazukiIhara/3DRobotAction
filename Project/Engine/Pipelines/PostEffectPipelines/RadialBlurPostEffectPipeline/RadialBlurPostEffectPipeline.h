@@ -10,7 +10,6 @@ public:
 	RadialBlurPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~RadialBlurPostEffectPipeline()override;
 
-
 private:
 	void CreateRootSignature()override;
 	// シェーダーをコンパイルする

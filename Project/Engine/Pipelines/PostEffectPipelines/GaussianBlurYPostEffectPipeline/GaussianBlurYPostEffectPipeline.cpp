@@ -7,7 +7,8 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 GaussianBlurYPostEffectPipeline::GaussianBlurYPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
-	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {}
+	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {
+}
 
 GaussianBlurYPostEffectPipeline::~GaussianBlurYPostEffectPipeline() {}
 
