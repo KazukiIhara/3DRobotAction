@@ -16,7 +16,13 @@ class BaseEnemyAIState;
 /// 敵AIのステート
 /// </summary>
 enum class EnemyAIState {
-	Root,
+	Root,		// 通常
+	Search,		// 索敵
+	Approach,	// 接近
+	Attack,		// 攻撃	
+	Avoid,		// 回避
+	Leave,		// 離脱
+	Escape,		// 逃走
 };
 
 /// <summary>
@@ -64,5 +70,10 @@ private:
 
 	// 冷静さ
 	int32_t calmness_ = 3;
+
+	// ステート変更タイマー
+	float stateChangeTimer_ = 0.0f;
+	// ステート変更時間
+	float stateChangeTime_ = 1.0f;
 
 };

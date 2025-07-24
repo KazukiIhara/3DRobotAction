@@ -70,6 +70,7 @@ public:
 	void AddScale(const Vector3& scale);
 	void AddRotate(const Vector3& rotate);
 	void AddTranslate(const Vector3& translate);
+	void AddQuaterion(const Quaternion& deltaQ);
 
 	//
 	// ゲッター

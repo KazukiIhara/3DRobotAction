@@ -299,3 +299,8 @@ void Transform3D::AddTranslate(const Vector3& translate) {
 	translate_ += translate;
 	isChanged_ = true;
 }
+
+void Transform3D::AddQuaterion(const Quaternion& deltaQ) {
+	rotate_ = MAGIMath::Normalize(deltaQ * rotate_);
+	isChanged_ = true;
+}

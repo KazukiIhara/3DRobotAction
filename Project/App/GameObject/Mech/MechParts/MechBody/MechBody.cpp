@@ -21,6 +21,10 @@ MechBody::MechBody() {
 void MechBody::Update(MechCore* mechCore) {
 	// 方向を指定
 	DirectionToLockOnView(mechCore);
+
+	RotateToMoveDirection(mechCore);
+
+
 }
 
 std::weak_ptr<GameObject3D> MechBody::GetGameObject()const {
@@ -44,4 +48,51 @@ void MechBody::DirectionToLockOnView(MechCore* mechCore) {
 	if (auto body = body_.lock()) {
 		body->GetTransform()->SetQuaternion(targetQ);
 	}
+}
+
+void MechBody::RotateToMoveDirection(MechCore* mechCore) {
+
+	Vector2 dir2 = mechCore->GetMovementComponent()->GetCurrentMoveDir();
+	if (Length(dir2) < 1e-4f) { return; }
+
+	float spd = mechCore->GetMovementComponent()->GetCurrentSpeed();
+	if (spd < 1e-4f) { return; }
+
+	float maxSpd = mechCore->GetMovementComponent()->GetMaxSpeed();
+	float mul = spd / maxSpd;
+
+	Vector3 fwd = Normalize(Vector3{ dir2.x, 0.0f, dir2.y });
+	Vector3 right = Normalize(Cross(Vector3{ 0,1,0 }, fwd));
+
+	float kMaxRollDeg = 10.0f;
+	float kMaxRollRad = DegreeToRadian(kMaxRollDeg);
+
+	Quaternion dq = MakeRotateAxisAngleQuaternion(right, kMaxRollRad * mul);
+
+	if (auto body = body_.lock()) {
+		body->GetTransform()->AddQuaterion(dq);
+	}
+
+}
+
+void MechBody::RotateToQuickBoost(MechCore* mechCore) {
+	if (mechCore->GetCurrentState() != MechCoreState::QuickBoost) { return; }
+
+	Vector2 dir2 = mechCore->GetMovementComponent()->GetCurrentMoveDir();
+	float spd = mechCore->GetMovementComponent()->GetCurrentSpeed();
+	float maxSpd = mechCore->GetMovementComponent()->GetMaxSpeed();
+	float mul = spd / maxSpd;
+
+	Vector3 fwd = Normalize(Vector3{ dir2.x, 0.0f, dir2.y });
+	Vector3 right = Normalize(Cross(Vector3{ 0,1,0 }, fwd));
+
+	float kMaxRollDeg = 20.0f;
+	float kMaxRollRad = DegreeToRadian(kMaxRollDeg);
+
+	Quaternion dq = MakeRotateAxisAngleQuaternion(right, kMaxRollRad * mul);
+
+	if (auto body = body_.lock()) {
+		body->GetTransform()->AddQuaterion(dq);
+	}
+
 }
