@@ -1,16 +1,7 @@
-#include "DepthOutline.hlsli"
+#include "LuminanceOutline.hlsli"
 
 Texture2D<float4> gTexture : register(t0);
 SamplerState gSampler : register(s0);
-ConstantBuffer<DepthOutlineData> gdata : register(b0);
-ConstantBuffer<CameraInv> gCameraInv : register(b1);
-
-// 深度テクスチャ
-Texture2D<float> gDepthTexture : register(t1);
-
-// ポイント比較用サンプラー
-SamplerState gSamplerPoint : register(s1);
-
 
 static const float2 kIndex[3][3] =
 {
@@ -33,6 +24,10 @@ static const float kPrewittVerticalKernel[3][3] =
     { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f },
 };
 
+float Luminance(float3 v)
+{
+    return dot(v, float3(0.2125f, 0.7154f, 0.0721f));
+}
 
 PixelShaderOutput main(VertexShaderOutput input)
 {
@@ -47,13 +42,10 @@ PixelShaderOutput main(VertexShaderOutput input)
         for (int y = 0; y < 3; ++y)
         {
             float2 texcoord = input.texcoord + kIndex[x][y] * uvStepSize;
-            
-            float ndcDepth = gDepthTexture.Sample(gSamplerPoint, texcoord);
-            float4 viewSpace = mul(float4(0.0f, 0.0f, ndcDepth, 1.0f), gCameraInv.invProj);
-            float viewZ = viewSpace.z * rcp(viewSpace.w);
-            
-            differnce.x += viewZ * kPrewittHorizontalKernel[x][y];
-            differnce.y += viewZ * kPrewittVerticalKernel[x][y];
+            float3 fetchColor = gTexture.Sample(gSampler, texcoord).rgb;
+            float luminance = Luminance(fetchColor);
+            differnce.x += luminance * kPrewittHorizontalKernel[x][y];
+            differnce.y += luminance * kPrewittVerticalKernel[x][y];
         }
     }
     

@@ -54,6 +54,12 @@ void PostEffectPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCom
 	SetRootSignature(PostEffectType::RadialBlur);
 	SetPipelineState(PostEffectType::RadialBlur);
 
+	// LuminanceOutlineのパイプラインを生成、初期化
+	luminanceOutlinePostEffectPipeline_ = std::make_unique<LuminanceOutlinePostEffectPipeline>(dxgi, shaderCompiler);
+	luminanceOutlinePostEffectPipeline_->Initialize();
+	SetRootSignature(PostEffectType::LuminanceOutline);
+	SetPipelineState(PostEffectType::LuminanceOutline);
+
 	// DepthOutlineのパイプラインを生成、初期化
 	depthOutlinePostEffectPipeline_ = std::make_unique<DepthOutlinePostEffectPipeline>(dxgi, shaderCompiler);
 	depthOutlinePostEffectPipeline_->Initialize();
@@ -90,6 +96,9 @@ void PostEffectPipelineManager::SetRootSignature(PostEffectType pipelineState) {
 		break;
 	case PostEffectType::RadialBlur:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = radialBlurPostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::LuminanceOutline:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = luminanceOutlinePostEffectPipeline_->GetRootSignature();
 		break;
 	case PostEffectType::DepthOutline:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = depthOutlinePostEffectPipeline_->GetRootSignature();
@@ -129,6 +138,11 @@ void PostEffectPipelineManager::SetPipelineState(PostEffectType pipelineState) {
 	case PostEffectType::RadialBlur:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = radialBlurPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::LuminanceOutline:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = luminanceOutlinePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 	case PostEffectType::DepthOutline:

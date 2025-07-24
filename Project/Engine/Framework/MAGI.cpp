@@ -1176,6 +1176,13 @@ void MAGISYSTEM::ApplyPostEffectRadialBlur(Vector2 center, float blurWidth) {
 	renderController_->AddPostEffect(command);
 }
 
+void MAGISYSTEM::ApplyPostEffectLuminanceOutline() {
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::LuminanceOutline,
+	};
+	renderController_->AddPostEffect(command);
+}
+
 void MAGISYSTEM::ApplyPostffectDepthOutline() {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::DepthOutline,

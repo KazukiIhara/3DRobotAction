@@ -13,6 +13,7 @@ enum class PostEffectType {
 	GaussianX, // X軸ガウスぼかし
 	GaussianY, // Y軸ガウスぼかし
 	RadialBlur, // 集中ぼかし
+	LuminanceOutline, // 輝度比較アウトライン
 	DepthOutline, // 深度比較アウトライン
 
 	Num,
