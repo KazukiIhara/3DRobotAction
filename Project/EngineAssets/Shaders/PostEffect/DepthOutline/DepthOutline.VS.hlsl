@@ -1,4 +1,24 @@
-float4 main( float4 pos : POSITION ) : SV_POSITION
+#include "DepthOutline.hlsli"
+
+static const uint kNumVertex = 3;
+static const float4 kPositions[kNumVertex] =
 {
-	return pos;
+    { -1.0f, 1.0f, 0.0f, 1.0f },
+    { 3.0f, 1.0f, 0.0f, 1.0f },
+    { -1.0f, -3.0f, 0.0f, 1.0f },
+};
+
+static const float2 kTexcoord[kNumVertex] =
+{
+    { 0.0f, 0.0f },
+    { 2.0f, 0.0f },
+    { 0.0f, 2.0f },
+};
+
+VertexShaderOutput main(uint vertexId : SV_VertexID)
+{
+    VertexShaderOutput output;
+    output.position = kPositions[vertexId];
+    output.texcoord = kTexcoord[vertexId];
+    return output;
 }

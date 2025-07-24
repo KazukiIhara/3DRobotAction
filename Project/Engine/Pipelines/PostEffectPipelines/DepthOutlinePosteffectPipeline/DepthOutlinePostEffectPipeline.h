@@ -11,6 +11,8 @@ public:
 	~DepthOutlinePostEffectPipeline()override = default;
 
 private:
+	// ルートシグネイチャ作成
+	void CreateRootSignature()override;
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
