@@ -1183,7 +1183,7 @@ void MAGISYSTEM::ApplyPostEffectLuminanceOutline() {
 	renderController_->AddPostEffect(command);
 }
 
-void MAGISYSTEM::ApplyPostffectDepthOutline() {
+void MAGISYSTEM::ApplyPostEffectDepthOutline() {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::DepthOutline,
 	};

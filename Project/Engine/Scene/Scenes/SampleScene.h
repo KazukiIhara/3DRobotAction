@@ -193,7 +193,7 @@ inline void SampleScene<Data>::Update() {
 		MAGISYSTEM::ApplyPostEffectRadialBlur(radialBlurCenter_, radialBlurWidth_);
 	}
 
-	MAGISYSTEM::ApplyPostffectDepthOutline();
+	MAGISYSTEM::ApplyPostEffectLuminanceOutline();
 
 	// パラディン操作
 	Vector2 ls{};

@@ -2,6 +2,7 @@
 
 Texture2D<float4> gTexture : register(t0);
 SamplerState gSampler : register(s0);
+ConstantBuffer<LuminanceOutlineData> gData : register(b0);
 
 static const float2 kIndex[3][3] =
 {
@@ -50,11 +51,10 @@ PixelShaderOutput main(VertexShaderOutput input)
     }
     
     float weight = length(differnce);
-    weight = saturate(weight);
+    weight = saturate(weight * 6.0f);
     
     PixelShaderOutput output;
     
     output.color = float4((1.0f - weight) * gTexture.Sample(gSampler, input.texcoord).rgb, 1.0f);
-    
     return output;
 }
