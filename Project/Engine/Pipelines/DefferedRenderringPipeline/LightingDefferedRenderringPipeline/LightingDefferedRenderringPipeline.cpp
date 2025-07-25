@@ -47,7 +47,6 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rangeEnvironmentTex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 
-
 	// --- ルートパラメータ ---
 	D3D12_ROOT_PARAMETER rootParams[9]{};
 

@@ -21,7 +21,7 @@ enum class ParadinState {
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -67,6 +67,7 @@ private:
 	static const uint32_t brainStemNum_ = 3;
 	std::array<Transform3D*, brainStemNum_> brainStemTrans_ = nullptr;
 	float brainStemT_ = 0.0f;
+
 };
 
 template<typename Data>
@@ -143,6 +144,10 @@ inline void SampleScene<Data>::Initialize() {
 
 	// 平行光源の設定
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
+
+
+
+
 }
 
 template<typename Data>
@@ -176,6 +181,7 @@ inline void SampleScene<Data>::Update() {
 	//ImGui::ColorEdit3("Color", &directionalLight_.color.x);
 	//ImGui::End();
 
+
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// ポストエフェクトをかける
@@ -193,6 +199,8 @@ inline void SampleScene<Data>::Update() {
 		MAGISYSTEM::ApplyPostEffectRadialBlur(radialBlurCenter_, radialBlurWidth_);
 	}
 
+	MAGISYSTEM::ApplyPostEffectDepthNormalOutline();
+
 	// パラディン操作
 	Vector2 ls{};
 	if (MAGISYSTEM::IsPadConnected(0)) {
@@ -202,95 +210,95 @@ inline void SampleScene<Data>::Update() {
 
 	Vector3 velocity{};
 	switch (curParadinState_) {
-		case ParadinState::Idle:
-		{
-			if (Length(ls)) {
-				curParadinState_ = ParadinState::Walk;
-				paradinAnimationT_ = 0.0f;
-				break;
-			}
-			if (attackButton) {
-				curParadinState_ = ParadinState::AtkSword;
-				paradinAnimationT_ = 0.0f;
-				break;
-			}
-
-			MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Idle"), paradinAnimationT_, true);
-			paradinAnimationT_ += MAGISYSTEM::GetDeltaTime();
-		}
-		break;
-		case ParadinState::Walk:
-		{
-			if (!Length(ls)) {
-				curParadinState_ = ParadinState::Idle;
-				paradinAnimationT_ = 0.0f;
-				break;
-			}
-			if (attackButton) {
-				curParadinState_ = ParadinState::AtkSword;
-				paradinAnimationT_ = 0.0f;
-				break;
-			}
-			// 移動方向をカメラの方向に向ける
-			if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
-				Vector3 forward = cucam->GetTarget() - cucam->GetEye();
-				forward.y = 0.0f;
-				forward = Normalize(forward);
-				Vector3 right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
-
-				// 移動方向決定
-				const Vector3 dir = Normalize(right * ls.x + forward * ls.y);
-
-				// 移動量決定
-				velocity = dir * paradinSpeed_ * MAGISYSTEM::GetDeltaTime();
-
-				// 移動方向にキャラを向ける
-				float yaw = std::atan2(dir.x, dir.z);
-				const Quaternion dirQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
-				paradinTrans_->SetQuaternion(dirQ);
-			}
-
-			MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Walking"), paradinAnimationT_, true);
-			paradinAnimationT_ += MAGISYSTEM::GetDeltaTime();
-		}
-		break;
-		case ParadinState::AtkSword:
-		{
-			const float attackCancelTime = 1.0f;
-			const float aniSpdMul = 1.5f;
-
-			if (paradinAnimationT_ > attackCancelTime) {
-				if (attackButton) {
-					curParadinState_ = ParadinState::AtkKick;
-					paradinAnimationT_ = 0.0f;
-					break;
-				}
-			}
-
-			bool playAnimation = MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Attack_Sword_0"), paradinAnimationT_, false);
-			paradinAnimationT_ += MAGISYSTEM::GetDeltaTime() * aniSpdMul;
-
-			if (!playAnimation) {
-				curParadinState_ = ParadinState::Idle;
-				paradinAnimationT_ = 0.0f;
-				break;
-			}
-		}
-		break;
-		case ParadinState::AtkKick:
-		{
-			const float aniSpdMul = 1.2f;
-
-			bool playAnimation = MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Attack_Kick_0"), paradinAnimationT_, false);
-			paradinAnimationT_ += MAGISYSTEM::GetDeltaTime() * aniSpdMul;
-
-			if (!playAnimation) {
-				curParadinState_ = ParadinState::Idle;
-				paradinAnimationT_ = 0.0f;
-				break;
-			}
+	case ParadinState::Idle:
+	{
+		if (Length(ls)) {
+			curParadinState_ = ParadinState::Walk;
+			paradinAnimationT_ = 0.0f;
 			break;
 		}
+		if (attackButton) {
+			curParadinState_ = ParadinState::AtkSword;
+			paradinAnimationT_ = 0.0f;
+			break;
+		}
+
+		MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Idle"), paradinAnimationT_, true);
+		paradinAnimationT_ += MAGISYSTEM::GetDeltaTime();
+	}
+	break;
+	case ParadinState::Walk:
+	{
+		if (!Length(ls)) {
+			curParadinState_ = ParadinState::Idle;
+			paradinAnimationT_ = 0.0f;
+			break;
+		}
+		if (attackButton) {
+			curParadinState_ = ParadinState::AtkSword;
+			paradinAnimationT_ = 0.0f;
+			break;
+		}
+		// 移動方向をカメラの方向に向ける
+		if (auto cucam = MAGISYSTEM::GetCurrentCamera3D()) {
+			Vector3 forward = cucam->GetTarget() - cucam->GetEye();
+			forward.y = 0.0f;
+			forward = Normalize(forward);
+			Vector3 right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+
+			// 移動方向決定
+			const Vector3 dir = Normalize(right * ls.x + forward * ls.y);
+
+			// 移動量決定
+			velocity = dir * paradinSpeed_ * MAGISYSTEM::GetDeltaTime();
+
+			// 移動方向にキャラを向ける
+			float yaw = std::atan2(dir.x, dir.z);
+			const Quaternion dirQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
+			paradinTrans_->SetQuaternion(dirQ);
+		}
+
+		MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Walking"), paradinAnimationT_, true);
+		paradinAnimationT_ += MAGISYSTEM::GetDeltaTime();
+	}
+	break;
+	case ParadinState::AtkSword:
+	{
+		const float attackCancelTime = 1.0f;
+		const float aniSpdMul = 1.5f;
+
+		if (paradinAnimationT_ > attackCancelTime) {
+			if (attackButton) {
+				curParadinState_ = ParadinState::AtkKick;
+				paradinAnimationT_ = 0.0f;
+				break;
+			}
+		}
+
+		bool playAnimation = MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Attack_Sword_0"), paradinAnimationT_, false);
+		paradinAnimationT_ += MAGISYSTEM::GetDeltaTime() * aniSpdMul;
+
+		if (!playAnimation) {
+			curParadinState_ = ParadinState::Idle;
+			paradinAnimationT_ = 0.0f;
+			break;
+		}
+	}
+	break;
+	case ParadinState::AtkKick:
+	{
+		const float aniSpdMul = 1.2f;
+
+		bool playAnimation = MAGISYSTEM::ApplyAnimationSkinModel("Paradin", MAGISYSTEM::FindAnimation("Paradin_Attack_Kick_0"), paradinAnimationT_, false);
+		paradinAnimationT_ += MAGISYSTEM::GetDeltaTime() * aniSpdMul;
+
+		if (!playAnimation) {
+			curParadinState_ = ParadinState::Idle;
+			paradinAnimationT_ = 0.0f;
+			break;
+		}
+		break;
+	}
 
 	}
 

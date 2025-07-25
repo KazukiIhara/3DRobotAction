@@ -1,4 +1,4 @@
-#include "DepthOutlinePostEffectPipeline.h"
+#include "DepthNormalOutlinePostEffectPipeline.h"
 
 #include <cassert>
 
@@ -6,11 +6,11 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-DepthOutlinePostEffectPipeline::DepthOutlinePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+DepthNormalOutlinePostEffectPipeline::DepthNormalOutlinePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {
 }
 
-void DepthOutlinePostEffectPipeline::CreateRootSignature() {
+void DepthNormalOutlinePostEffectPipeline::CreateRootSignature() {
 	HRESULT hr = S_FALSE;
 
 	D3D12_DESCRIPTOR_RANGE descriptorRange{};
@@ -25,6 +25,11 @@ void DepthOutlinePostEffectPipeline::CreateRootSignature() {
 	depthTexRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	depthTexRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	D3D12_DESCRIPTOR_RANGE normalTexRange{};
+	normalTexRange.BaseShaderRegister = 2;
+	normalTexRange.NumDescriptors = 1;
+	normalTexRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	normalTexRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// RootSignature作成
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
@@ -32,7 +37,7 @@ void DepthOutlinePostEffectPipeline::CreateRootSignature() {
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
 	// RootParameter作成。
-	D3D12_ROOT_PARAMETER rootParameters[4] = {};
+	D3D12_ROOT_PARAMETER rootParameters[5] = {};
 
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// DescriptorTable使う
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;					// PixelShaderで使う
@@ -51,6 +56,12 @@ void DepthOutlinePostEffectPipeline::CreateRootSignature() {
 	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[3].Descriptor.ShaderRegister = 1;
+
+	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// DescriptorTable使う
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;					// PixelShaderで使う
+	rootParameters[4].DescriptorTable.pDescriptorRanges = &normalTexRange;				// Tableの中身の配列を指定
+	rootParameters[4].DescriptorTable.NumDescriptorRanges = 1;
+
 
 
 	descriptionRootSignature.pParameters = rootParameters;				//ルートパラメータ配列へのポインタ
@@ -96,12 +107,12 @@ void DepthOutlinePostEffectPipeline::CreateRootSignature() {
 
 }
 
-void DepthOutlinePostEffectPipeline::CompileShaders() {
+void DepthNormalOutlinePostEffectPipeline::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/DepthOutline/DepthOutline.VS.hlsl", L"vs_6_0");
+	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/DepthNormalOutline/DepthNormalOutline.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/DepthOutline/DepthOutline.PS.hlsl", L"ps_6_0");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/DepthNormalOutline/DepthNormalOutline.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }

@@ -344,6 +344,13 @@ public: // エンジンの機能
 	static void ApplyPostEffectGaussianY(float sigma, uint32_t karnelSize);
 	// シーンに集中ぼかしをかける
 	static void ApplyPostEffectRadialBlur(Vector2 center, float blurWidth);
+	// シーンに輝度比較アウトラインをかける
+	static void ApplyPostEffectLuminanceOutline();
+	// シーンに深度比較アウトラインをかける
+	static void ApplyPostEffectDepthOutline();
+	// シーンに深度と法線比較アウトラインをかける
+	static void ApplyPostEffectDepthNormalOutline();
+
 #pragma endregion
 
 #pragma region TextureDataContainer

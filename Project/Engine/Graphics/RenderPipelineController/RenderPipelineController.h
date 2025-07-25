@@ -52,7 +52,7 @@ public:
 		LightManager* lightManager,
 		SkyBoxDrawer* skyBoxDrawer
 	);
-	~RenderController();
+	~RenderController() = default;
 
 	// シャドウマップ用の深度描画前準備
 	void PreShadowRender();
@@ -96,6 +96,8 @@ private:
 	// レンダーテクスチャを描画
 	void DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType& type);
 	void DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command);
+	void DrawRenderTextureWithParamaterAndDepth(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command);
+	void DrawRenderTextureWithParamaterDepthAndNormal(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command);
 
 	// 複数のレンダーターゲットを追加
 	void SetRenderTargets(const std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 2>& rtvs, D3D12_CPU_DESCRIPTOR_HANDLE dsv);

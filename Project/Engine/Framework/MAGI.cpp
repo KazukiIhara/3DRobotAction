@@ -1176,6 +1176,27 @@ void MAGISYSTEM::ApplyPostEffectRadialBlur(Vector2 center, float blurWidth) {
 	renderController_->AddPostEffect(command);
 }
 
+void MAGISYSTEM::ApplyPostEffectLuminanceOutline() {
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::LuminanceOutline,
+	};
+	renderController_->AddPostEffect(command);
+}
+
+void MAGISYSTEM::ApplyPostEffectDepthOutline() {
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::DepthOutline,
+	};
+	renderController_->AddPostEffect(command);
+}
+
+void MAGISYSTEM::ApplyPostEffectDepthNormalOutline() {
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::DepthNormalOutline,
+	};
+	renderController_->AddPostEffect(command);
+}
+
 uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
 	return textureDataCantainer_->Load(fileName, isFullPath);
 }

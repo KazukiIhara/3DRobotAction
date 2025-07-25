@@ -2,13 +2,10 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
-/// <summary>
-/// 深度比較でアウトラインを出す
-/// </summary>
-class DepthOutlinePostEffectPipeline :public BaseWithParamaterPostEffectPipeline {
+class DepthNormalOutlinePostEffectPipeline :public BaseWithParamaterPostEffectPipeline {
 public:
-	DepthOutlinePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~DepthOutlinePostEffectPipeline()override = default;
+	DepthNormalOutlinePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~DepthNormalOutlinePostEffectPipeline()override = default;
 
 private:
 	// ルートシグネイチャ作成

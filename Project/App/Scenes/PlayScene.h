@@ -275,6 +275,7 @@ inline void PlayScene<Data>::Update() {
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
+	MAGISYSTEM::ApplyPostEffectDepthNormalOutline();aaaaaaasdddddddd
 }
 
 template<typename Data>
