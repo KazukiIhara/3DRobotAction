@@ -66,6 +66,12 @@ void PostEffectPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCom
 	SetRootSignature(PostEffectType::DepthOutline);
 	SetPipelineState(PostEffectType::DepthOutline);
 
+	// DepthNormalOutlineのパイプラインを生成、初期化
+	depthNormalOutlinePostEffectPipeline_ = std::make_unique<DepthNormalOutlinePostEffectPipeline>(dxgi, shaderCompiler);
+	depthNormalOutlinePostEffectPipeline_->Initialize();
+	SetRootSignature(PostEffectType::DepthNormalOutline);
+	SetPipelineState(PostEffectType::DepthNormalOutline);
+
 }
 
 ID3D12RootSignature* PostEffectPipelineManager::GetRootSignature(PostEffectType pipelineState) {
@@ -102,6 +108,9 @@ void PostEffectPipelineManager::SetRootSignature(PostEffectType pipelineState) {
 		break;
 	case PostEffectType::DepthOutline:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = depthOutlinePostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::DepthNormalOutline:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = depthNormalOutlinePostEffectPipeline_->GetRootSignature();
 		break;
 	}
 
@@ -148,6 +157,11 @@ void PostEffectPipelineManager::SetPipelineState(PostEffectType pipelineState) {
 	case PostEffectType::DepthOutline:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = depthOutlinePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::DepthNormalOutline:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = depthNormalOutlinePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 	}

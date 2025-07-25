@@ -348,6 +348,9 @@ public: // エンジンの機能
 	static void ApplyPostEffectLuminanceOutline();
 	// シーンに深度比較アウトラインをかける
 	static void ApplyPostEffectDepthOutline();
+	// シーンに深度と法線比較アウトラインをかける
+	static void ApplyPostEffectDepthNormalOutline();
+
 #pragma endregion
 
 #pragma region TextureDataContainer

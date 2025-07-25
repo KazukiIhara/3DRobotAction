@@ -1190,6 +1190,13 @@ void MAGISYSTEM::ApplyPostEffectDepthOutline() {
 	renderController_->AddPostEffect(command);
 }
 
+void MAGISYSTEM::ApplyPostEffectDepthNormalOutline() {
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::DepthNormalOutline,
+	};
+	renderController_->AddPostEffect(command);
+}
+
 uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
 	return textureDataCantainer_->Load(fileName, isFullPath);
 }

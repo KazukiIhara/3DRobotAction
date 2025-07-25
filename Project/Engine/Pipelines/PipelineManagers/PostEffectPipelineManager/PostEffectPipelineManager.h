@@ -23,6 +23,7 @@ class ShaderCompiler;
 #include "PostEffectPipelines/RadialBlurPostEffectPipeline/RadialBlurPostEffectPipeline.h"
 #include "PostEffectPipelines/LuminanceOutlinePostEffectPipeline/LuminanceOutlinePostEffectPipeline.h"
 #include "PostEffectPipelines/DepthOutlinePosteffectPipeline/DepthOutlinePostEffectPipeline.h"
+#include "PostEffectPipelines/DepthNormalOutlinePostEffectPipeline/DepthNormalOutlinePostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトパイプラインマネージャ
@@ -68,4 +69,7 @@ private:
 	std::unique_ptr<LuminanceOutlinePostEffectPipeline> luminanceOutlinePostEffectPipeline_ = nullptr;
 	// DepthPostEffectPipeline
 	std::unique_ptr<DepthOutlinePostEffectPipeline> depthOutlinePostEffectPipeline_ = nullptr;
+	// DepthNormalOutlinePostEffectPipeline
+	std::unique_ptr<DepthNormalOutlinePostEffectPipeline> depthNormalOutlinePostEffectPipeline_ = nullptr;
+
 };
