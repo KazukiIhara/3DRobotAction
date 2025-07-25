@@ -17,6 +17,6 @@ PixelShaderOutput main(VertexShaderOutput input)
     float random = rand2dTo1d(input.texcoord * gdata.param0.x);
     
     PixelShaderOutput output;
-    output.color = float4(random, random, random, 1.0f);
+    output.color = float4(random, random, random, 1.0f) * gTexture.Sample(gSampler, input.texcoord);
     return output;
 }

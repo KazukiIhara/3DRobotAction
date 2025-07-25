@@ -74,6 +74,10 @@ private:
 	// 板ポリエフェクトのパラメータ
 	PlaneEffectParam planeEffect_;
 
+	bool isPERandom_ = false;
+	bool isGrayScale_ = false;
+	bool isRadialBlur_ = false;
+
 };
 
 template<typename Data>
@@ -230,21 +234,21 @@ inline void PlayScene<Data>::Initialize() {
 template<typename Data>
 inline void PlayScene<Data>::Update() {
 
-	ImGui::Begin("Scene");
-	if (ImGui::Button("PlayCameraAnimation")) {
-		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
-			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
-				camera->StartEyeAnimation();
-			}
-		}
-	}
-	ImGui::End();
+	//ImGui::Begin("Scene");
+	//if (ImGui::Button("PlayCameraAnimation")) {
+	//	if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
+	//		if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
+	//			camera->StartEyeAnimation();
+	//		}
+	//	}
+	//}
+	//ImGui::End();
 
-	ImGui::Begin("AddEffect");
-	if (ImGui::Button("Plane")) {
-		MAGISYSTEM::AddPlaneEffect(planeEffect_);
-	}
-	ImGui::End();
+	//ImGui::Begin("AddEffect");
+	//if (ImGui::Button("Plane")) {
+	//	MAGISYSTEM::AddPlaneEffect(planeEffect_);
+	//}
+	//ImGui::End();
 
 
 	/*ImGui::Begin("VignetteParamater");
@@ -255,6 +259,16 @@ inline void PlayScene<Data>::Update() {
 	ImGui::Begin("GaussianBlurParamater");
 	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
 	ImGui::End();*/
+
+	ImGui::Begin("ExtraPostEffect");
+	ImGui::Checkbox("ApplyGrayScale", &isGrayScale_);
+	ImGui::Checkbox("ApplyRandomNoise", &isPERandom_);
+	ImGui::Checkbox("ApplyRadialBlur", &isRadialBlur_);
+
+	ImGui::DragFloat2("RadialBlurCenter", &radialBlurCenter_.x, 0.01f);
+	ImGui::DragFloat("RadiLBlurWidth", &radialBlurWidth_, 0.01f);
+	ImGui::End();
+
 
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
@@ -276,7 +290,18 @@ inline void PlayScene<Data>::Update() {
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectDepthNormalOutline();
-	MAGISYSTEM::ApplyPostEffectRandom();
+
+	if (isGrayScale_) {
+		MAGISYSTEM::ApplyPostEffectGrayScale();
+	}
+
+	if (isPERandom_) {
+		MAGISYSTEM::ApplyPostEffectRandom();
+	}
+
+	if (isRadialBlur_) {
+		MAGISYSTEM::ApplyPostEffectRadialBlur(radialBlurCenter_, radialBlurWidth_);
+	}
 
 }
 
