@@ -2,6 +2,7 @@
 
 #include "Logger/Logger.h"
 
+#include "Random/Random.h"
 #include "MAGIUitility/MAGIUtility.h"
 
 using namespace MAGIUtility;
@@ -1193,6 +1194,18 @@ void MAGISYSTEM::ApplyPostEffectDepthOutline() {
 void MAGISYSTEM::ApplyPostEffectDepthNormalOutline() {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::DepthNormalOutline,
+
+	};
+	renderController_->AddPostEffect(command);
+}
+
+void MAGISYSTEM::ApplyPostEffectRandom() {
+	float seed = Random::GenerateFloat(0.0f, 10000.0f);
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::Random,
+		.param = {
+			.param = {seed},
+		}
 	};
 	renderController_->AddPostEffect(command);
 }

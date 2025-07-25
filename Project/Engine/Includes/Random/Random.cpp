@@ -36,3 +36,21 @@ Vector3 Random::GenerateVector3(float min, float max) {
 Vector4 Random::GenerateVector4(float min, float max) {
 	return { GenerateFloat(min, max), GenerateFloat(min, max), GenerateFloat(min, max), GenerateFloat(min, max) };
 }
+
+float Random::GenerateSeed1Sec() {
+	using namespace std::chrono;
+
+	auto now = system_clock::now();
+	time_t now_t = system_clock::to_time_t(now);
+
+	std::tm localTm;
+
+	localtime_s(&localTm, &now_t);
+
+	uint32_t secondsSinceMidnight =
+		static_cast<uint32_t>(localTm.tm_hour * 3600 +
+			localTm.tm_min * 60 +
+			localTm.tm_sec);
+
+	return static_cast<float>(secondsSinceMidnight);
+}

@@ -53,14 +53,12 @@ PixelShaderOutput main(VertexShaderOutput input)
     gTexture.GetDimensions(width, height);
     float2 uvStep = float2(rcp(width), rcp(height));
 
-    //=== 中央ピクセル値を取得 =====================================
     float zCenter = LinearizeDepth(gDepthTexture.Sample(gSamplerPoint, input.texcoord));
     float3 nCenter = DecodeNormal(gNormalTexture.Sample(gSamplerPoint, input.texcoord).xyz);
 
     float2 gradDepth = 0.0f;
     float2 gradNormal = 0.0f;
 
-    //=== Prewitt 畳み込み =========================================
     [unroll]
     for (int ix = 0; ix < 3; ++ix)
     {
@@ -94,7 +92,6 @@ PixelShaderOutput main(VertexShaderOutput input)
     float edgeStrength = max(depthEdge, normalEdge);
     float edgeMask = step(kThreshold, edgeStrength); // 0 or 1
 
-    //--------------------------------------------------------------
     PixelShaderOutput o;
     float3 sceneCol = gTexture.Sample(gSampler, input.texcoord).rgb;
     o.color = float4(lerp(sceneCol, 0.0f.xxx, edgeMask), 1.0f); // 黒線

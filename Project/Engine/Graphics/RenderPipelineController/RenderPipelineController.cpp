@@ -206,6 +206,7 @@ void RenderController::ApplyPostEffect() {
 		case PostEffectType::GaussianY:
 		case PostEffectType::RadialBlur:
 		case PostEffectType::LuminanceOutline:
+		case PostEffectType::Random:
 			DrawRenderTextureWithParamater(commandList, command);
 			break;
 		case PostEffectType::DepthOutline:

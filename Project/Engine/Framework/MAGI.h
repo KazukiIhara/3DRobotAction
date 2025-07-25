@@ -350,6 +350,8 @@ public: // エンジンの機能
 	static void ApplyPostEffectDepthOutline();
 	// シーンに深度と法線比較アウトラインをかける
 	static void ApplyPostEffectDepthNormalOutline();
+	// シーンにランダムノイズのポストエフェクトをかける
+	static void ApplyPostEffectRandom();
 
 #pragma endregion
 

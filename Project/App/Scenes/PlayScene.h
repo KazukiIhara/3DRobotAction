@@ -22,7 +22,7 @@ using namespace MAGIUtility;
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene :public BaseScene<Data> {
+class PlayScene:public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -275,7 +275,9 @@ inline void PlayScene<Data>::Update() {
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
-	MAGISYSTEM::ApplyPostEffectDepthNormalOutline();aaaaaaasdddddddd
+	MAGISYSTEM::ApplyPostEffectDepthNormalOutline();
+	MAGISYSTEM::ApplyPostEffectRandom();
+
 }
 
 template<typename Data>

@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <chrono>
+#include <ctime>
+#include <bit> 
 
 #include "Math/Utility/MathUtility.h"
 
@@ -20,4 +23,7 @@ public:
 	static Vector3 GenerateVector3(float min, float max);
 	// Vector4型の乱数生成
 	static Vector4 GenerateVector4(float min, float max);
+
+	// 秒ごとに違うシード値を返す
+	static float GenerateSeed1Sec();
 };

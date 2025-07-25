@@ -24,6 +24,7 @@ class ShaderCompiler;
 #include "PostEffectPipelines/LuminanceOutlinePostEffectPipeline/LuminanceOutlinePostEffectPipeline.h"
 #include "PostEffectPipelines/DepthOutlinePosteffectPipeline/DepthOutlinePostEffectPipeline.h"
 #include "PostEffectPipelines/DepthNormalOutlinePostEffectPipeline/DepthNormalOutlinePostEffectPipeline.h"
+#include "PostEffectPipelines/RandomPostEffectPipeline/RandomPostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトパイプラインマネージャ
@@ -71,5 +72,7 @@ private:
 	std::unique_ptr<DepthOutlinePostEffectPipeline> depthOutlinePostEffectPipeline_ = nullptr;
 	// DepthNormalOutlinePostEffectPipeline
 	std::unique_ptr<DepthNormalOutlinePostEffectPipeline> depthNormalOutlinePostEffectPipeline_ = nullptr;
+	// RandomPostEffectPipeline
+	std::unique_ptr<RandomPostEffectPipeline> randomPostEffectPipeline_ = nullptr;
 
 };
