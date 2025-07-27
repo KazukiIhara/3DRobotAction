@@ -20,6 +20,7 @@ void Transform3D::Initialize(const Vector3& scale, const Vector3& rotate, const 
 
 	// ワールド行列作成
 	worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
+
 	// ワールド座標生成
 	worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
 }
@@ -32,6 +33,7 @@ void Transform3D::Initialize(const Vector3& scale, const Quaternion& rotate, con
 
 	// ワールド行列作成
 	worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
+
 	// ワールド座標生成
 	worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
 }
@@ -44,6 +46,7 @@ void Transform3D::Initialize(const Vector3& translate) {
 
 	// ワールド行列作成
 	worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
+
 	// ワールド座標生成
 	worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
 }
@@ -189,18 +192,31 @@ void Transform3D::SetParent(Transform3D* parent, bool keepWorld) {
 		inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
 	}
 
-	isChanged_ = true;
+	// ワールド行列作成
+	worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
 
-	if (isChanged_) {
-		// もし子がいる場合
-		if (!children_.empty()) {
-			for (auto& child : children_) {
-				if (child) {
-					child->SetIsChange(true);
-				}
+	// 現在フレームの値を保存
+	preRotate_ = rotate_;
+	preInputRadians_ = inputRadians_;
+
+	// 親がいる場合
+	if (parent_) {
+		worldMatrix_ = worldMatrix_ * parent_->GetWorldMatrix();
+	}
+
+	// ワールド座標生成
+	worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
+
+	// もし子がいる場合
+	if (!children_.empty()) {
+		for (auto& child : children_) {
+			if (child) {
+				child->SetIsChange(true);
+				child->Update();
 			}
 		}
 	}
+
 }
 
 void Transform3D::RemoveParent(bool keepWorld) {
@@ -230,13 +246,27 @@ void Transform3D::RemoveParent(bool keepWorld) {
 		inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
 	}
 
-	// 変化フラグを立て、子へ伝搬
-	isChanged_ = true;
+	// ワールド行列作成
+	worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
 
+	// 現在フレームの値を保存
+	preRotate_ = rotate_;
+	preInputRadians_ = inputRadians_;
+
+	// 親がいる場合
+	if (parent_) {
+		worldMatrix_ = worldMatrix_ * parent_->GetWorldMatrix();
+	}
+
+	// ワールド座標生成
+	worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
+
+	// もし子がいる場合
 	if (!children_.empty()) {
 		for (auto& child : children_) {
 			if (child) {
 				child->SetIsChange(true);
+				child->Update();
 			}
 		}
 	}

@@ -16,7 +16,7 @@
 /// </summary>
 class Camera3D {
 public:
-	Camera3D(const std::string& name, bool isUseYawPitch);
+	Camera3D(const std::string& name, bool isUseYawPitch = true);
 	Camera3D(const std::string& name, const Vector3& eye, float yaw, float pitch);
 	Camera3D(const std::string& name, const Vector3& eye, const Vector3& target, const Vector3& up);
 	virtual ~Camera3D();

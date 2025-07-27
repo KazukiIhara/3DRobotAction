@@ -4,6 +4,7 @@
 #include "Scenes/SampleScene.h"
 
 // GameScene
+#include "Scenes/TitleScene.h"
 #include "Scenes/PlayScene.h"
 
 Game::~Game() {}
@@ -16,6 +17,7 @@ void Game::Initialize() {
 	// サンプルシーン
 	sceneManager_->AddScene<SampleScene>("Sample");
 
+	sceneManager_->AddScene<TitleScene>("Title");
 	sceneManager_->AddScene<PlayScene>("Play");
 
 
