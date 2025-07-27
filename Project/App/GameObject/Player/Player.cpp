@@ -7,7 +7,7 @@
 
 Player::Player(BulletManager* bulletManager) {
 	// 機体の作成
-	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -10.0f), FriendlyTag::PlayerSide, bulletManager, false);
+	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, bulletManager, false);
 
 	// 三人称視点カメラの作成
 	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera");
