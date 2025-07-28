@@ -9,7 +9,7 @@
 /// タイトルシーン
 /// </summary>
 template <typename Data>
-class TitleScene:public BaseScene<Data> {
+class TitleScene :public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~TitleScene()override = default;
@@ -20,6 +20,8 @@ public:
 	void Finalize() override;
 
 private:
+	SpriteData bgData_;
+	SpriteMaterialData bgMatData_;
 
 };
 
@@ -37,6 +39,18 @@ inline void TitleScene<Data>::Initialize() {
 	// マネージャに追加
 	MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D)).lock()->ApplyCurrent();
 
+
+
+	// 
+	// アセットのロード
+	// 
+
+
+	// テクスチャ
+
+	MAGISYSTEM::LoadTexture("TitleBG.png");
+	bgMatData_.textureName = "TitleBG.png";
+
 }
 
 template<typename Data>
@@ -46,7 +60,7 @@ inline void TitleScene<Data>::Update() {
 
 template<typename Data>
 inline void TitleScene<Data>::Draw() {
-
+	MAGISYSTEM::DrawSprite(bgData_, bgMatData_);
 }
 
 template<typename Data>
