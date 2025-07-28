@@ -1301,6 +1301,10 @@ std::weak_ptr<GameObject3D> MAGISYSTEM::FindGameObject3D(const std::string& obje
 	return gameObject3DManager_->Find(objectName);
 }
 
+void MAGISYSTEM::ClearGameObject3D() {
+	gameObject3DManager_->Clear();
+}
+
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
 }
