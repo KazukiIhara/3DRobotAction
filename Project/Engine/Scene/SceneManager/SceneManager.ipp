@@ -3,6 +3,7 @@
 #include "Logger/Logger.h"
 #include "SceneManager.h"
 
+
 template <typename Data>
 SceneManager<Data>::SceneManager()
 	: data_(std::make_shared<Data>()) {

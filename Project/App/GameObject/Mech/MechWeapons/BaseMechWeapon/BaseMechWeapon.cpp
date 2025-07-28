@@ -18,9 +18,6 @@ BaseMechWeapon::BaseMechWeapon(const std::string& weaponName, const WeaponType& 
 	// タイプを設定
 	type_ = type;
 
-	// ダメージを設定
-	damage_ = 500;
-
 }
 
 std::weak_ptr<GameObject3D> BaseMechWeapon::GetGameObject()const {

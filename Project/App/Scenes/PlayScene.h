@@ -18,11 +18,31 @@ using namespace MAGIUtility;
 #include "GameObject/BulletManager/BulletManager.h"
 
 /// <summary>
+/// 終了判定
+/// </summary>
+enum class FinishJudgment {
+	Player,
+	Enemy,
+	Draw,
+};
+
+/// <summary>
+/// プレイシーンの情報構造体
+/// </summary>
+struct PlaySceneInfo {
+	int32_t battleTime = 90;
+	FinishJudgment judge;
+	bool finish = false;
+	bool isPause = false;
+
+};
+
+/// <summary>
 /// ゲームプレイシーン
 /// </summary>
 /// <typeparam name="Data"></typeparam>
 template <typename Data>
-class PlayScene:public BaseScene<Data> {
+class PlayScene :public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -67,16 +87,19 @@ private:
 	float radialBlurWidth_ = 0.01f;
 	float gaussianSigma_ = 0.5f;
 
+	// プレイシーンの情報
+	PlaySceneInfo info;
+
+	// 戦闘タイマー
+	float tempBattleTime_ = 0.0;
+	int32_t kMaxBattleTime_ = 90;
+
 	// 
 	// デバッグ用
 	// 
 
 	// 板ポリエフェクトのパラメータ
 	PlaneEffectParam planeEffect_;
-
-	bool isPERandom_ = false;
-	bool isGrayScale_ = false;
-	bool isRadialBlur_ = false;
 
 };
 
@@ -229,46 +252,23 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
 	MAGISYSTEM::ImportSceneData("SceneData", true);
 
+
+	//
+	// タイマーリセット
+	// 
+	tempBattleTime_ = 0.0f;
+	info.battleTime = kMaxBattleTime_;
+
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Update() {
 
-	//ImGui::Begin("Scene");
-	//if (ImGui::Button("PlayCameraAnimation")) {
-	//	if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
-	//		if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
-	//			camera->StartEyeAnimation();
-	//		}
-	//	}
-	//}
-	//ImGui::End();
-
-	//ImGui::Begin("AddEffect");
-	//if (ImGui::Button("Plane")) {
-	//	MAGISYSTEM::AddPlaneEffect(planeEffect_);
-	//}
-	//ImGui::End();
-
-
-	/*ImGui::Begin("VignetteParamater");
-	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
-	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
+#if defined(DEBUG) || defined(DEVELOP)
+	ImGui::Begin("SceneDebugUI");
+	ImGui::Text("BattleTime:%u", info.battleTime);
 	ImGui::End();
-
-	ImGui::Begin("GaussianBlurParamater");
-	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
-	ImGui::End();*/
-
-	ImGui::Begin("ExtraPostEffect");
-	ImGui::Checkbox("ApplyGrayScale", &isGrayScale_);
-	ImGui::Checkbox("ApplyRandomNoise", &isPERandom_);
-	ImGui::Checkbox("ApplyRadialBlur", &isRadialBlur_);
-
-	ImGui::DragFloat2("RadialBlurCenter", &radialBlurCenter_.x, 0.01f);
-	ImGui::DragFloat("RadiLBlurWidth", &radialBlurWidth_, 0.01f);
-	ImGui::End();
-
+#endif
 
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
@@ -291,23 +291,63 @@ inline void PlayScene<Data>::Update() {
 	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectDepthNormalOutline();
 
-	if (isGrayScale_) {
-		MAGISYSTEM::ApplyPostEffectGrayScale();
+	// 
+	// タイマー更新
+	// 
+
+	tempBattleTime_ += MAGISYSTEM::GetDeltaTime();
+
+	// 一秒経ったらタイマーをマイナス
+	if (tempBattleTime_ >= 1.0f) {
+		tempBattleTime_ = 0.0f;
+		info.battleTime--;
 	}
 
-	if (isPERandom_) {
-		MAGISYSTEM::ApplyPostEffectRandom();
+
+	// 
+	// シーン終了判定
+	// 
+
+	if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+		info.judge = FinishJudgment::Enemy;
+		info.finish = true;
 	}
 
-	if (isRadialBlur_) {
-		MAGISYSTEM::ApplyPostEffectRadialBlur(radialBlurCenter_, radialBlurWidth_);
+	if (enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+		info.judge = FinishJudgment::Player;
+		info.finish = true;
+	}
+
+	if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0 && enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+		info.judge = FinishJudgment::Draw;
+		info.finish = true;
+	}
+
+	if (info.battleTime == 0) {
+		// 体力割合が多いほうが勝利
+		float playerHPRaito = player_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
+		float enemyHPraito = enemy_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
+
+		if (playerHPRaito > enemyHPraito) {
+			info.judge = FinishJudgment::Player;
+		} else if (enemyHPraito < playerHPRaito) {
+			info.judge = FinishJudgment::Enemy;
+		} else {
+			info.judge = FinishJudgment::Draw;
+		}
+
+		info.finish = true;
+	}
+
+	// ひとまず即タイトルに戻る
+	if (info.finish) {
+		this->ChangeScene("Title");
 	}
 
 }
 
 template<typename Data>
 inline void PlayScene<Data>::Draw() {
-
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
@@ -321,5 +361,5 @@ inline void PlayScene<Data>::Draw() {
 
 template<typename Data>
 inline void PlayScene<Data>::Finalize() {
-
+	MAGISYSTEM::ClearGameObject3D();
 }

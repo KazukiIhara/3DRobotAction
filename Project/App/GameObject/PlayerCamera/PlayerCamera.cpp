@@ -59,6 +59,7 @@ void PlayerCamera::SetTargetTransform(Transform3D* target) {
 
 void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
 	core_ = mechCore;
+	eye_ = core_.lock()->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 }
 
 const Quaternion& PlayerCamera::GetCameraQuaternion() const {

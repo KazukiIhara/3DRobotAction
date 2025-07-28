@@ -51,7 +51,7 @@ enum class MechCoreState {
 /// </summary>
 class MechCore {
 public:
-	MechCore(FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn);
+	MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn);
 	~MechCore() = default;
 
 	void Update();

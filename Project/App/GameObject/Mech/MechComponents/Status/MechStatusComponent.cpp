@@ -5,6 +5,9 @@
 MechStatusComponent::MechStatusComponent() {
 	// HPを初期化
 	hp_ = kMaxHP_;
+	// HPの割合を計算
+	hpRaito_ = float(hp_) / float(kMaxHP_);
+
 }
 
 void MechStatusComponent::Update(MechCore* mechCore) {
@@ -14,16 +17,20 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 	for (auto& info : infos) {
 		if (info.isHit) {
 			switch (info.type) {
-				case AttackType::Bullet:
-					hp_ -= info.damage;
+			case AttackType::Bullet:
+				hp_ -= info.damage;
 
-					// 0以下にならないようにする
-					hp_ = std::max(0, hp_);
-					break;
+				// 0以下にならないようにする
+				hp_ = std::max(0, hp_);
+				break;
 			}
 
 		}
 	}
+
+	// HPの割合を計算
+	hpRaito_ = float(hp_) / float(kMaxHP_);
+
 }
 
 
@@ -33,4 +40,8 @@ const int32_t& MechStatusComponent::GetHp() const {
 
 const int32_t& MechStatusComponent::GetMaxHp() const {
 	return kMaxHP_;
+}
+
+float MechStatusComponent::GetHPRaito() const {
+	return hpRaito_;
 }

@@ -5,6 +5,11 @@
 
 class MechCore;
 
+enum PlayerCameraState {
+	Initialize,
+	Root,
+};
+
 class PlayerCamera:public Camera3D {
 public:
 	PlayerCamera(const std::string& name);
@@ -24,6 +29,9 @@ private:
 	void FollowCamera();
 
 private:
+	// プレイヤーカメラの状態
+	PlayerCameraState state_;
+
 	// 追従対象のトランスフォーム
 	Transform3D* followTargetTransform_ = nullptr;
 

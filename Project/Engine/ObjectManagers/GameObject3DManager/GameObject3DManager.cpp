@@ -66,21 +66,19 @@ void GameObject3DManager::DeleteGarbage() {
 }
 
 void GameObject3DManager::Clear() {
-	gameObjects_.clear();
+	for (auto& gameobject : gameObjects_) {
+		if (gameobject) {
+			gameobject->SetIsAlive(false);
+			gameobject->Finalize();
+		}
+	}
 }
 
 void GameObject3DManager::ClearWithOutUnique() {
 	for (auto& gameobject : gameObjects_) {
 		if (gameobject && !gameobject->GetIsUnique()) {
+			gameobject->SetIsAlive(false);
 			gameobject->Finalize();
 		}
 	}
-
-	std::erase_if(gameObjects_, [](const std::shared_ptr<GameObject3D>& gameObject) {
-		return gameObject && !gameObject->GetIsUnique();
-		});
-
-	std::erase_if(gameObjectList_, [](const std::pair<const std::string, std::weak_ptr<GameObject3D>>& entry) {
-		return entry.second.expired();
-		});
 }

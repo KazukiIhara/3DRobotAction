@@ -432,6 +432,8 @@ public: // エンジンの機能
 	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap = true);
 	// ゲームオブジェクト3Dを検索して取得
 	static std::weak_ptr<GameObject3D> FindGameObject3D(const std::string& objectName);
+	// ゲームオブジェクトを全削除
+	static void ClearGameObject3D();
 #pragma endregion
 
 #pragma region Camera2DManager

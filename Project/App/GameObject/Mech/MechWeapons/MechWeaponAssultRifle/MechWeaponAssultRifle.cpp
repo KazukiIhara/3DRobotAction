@@ -13,6 +13,9 @@ MechWeaponAssultRifle::MechWeaponAssultRifle()
 
 	// 弾速を設定
 	bulletSpeed_ = 100.0f;
+
+	// ダメージを設定
+	damage_ = 200;
 }
 
 void MechWeaponAssultRifle::Update(MechCore* mechCore) {

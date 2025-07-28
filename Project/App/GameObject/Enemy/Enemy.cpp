@@ -7,7 +7,7 @@
 
 Enemy::Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	// 機体の作成
-	mech_ = std::make_unique<MechCore>(FriendlyTag::EnemySide, bulletManager, true);
+	mech_ = std::make_unique<MechCore>(Vector3(0.0f, 0.0f, 30.0f), FriendlyTag::EnemySide, bulletManager, true);
 
 	// 三人称視点カメラの作成
 	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera");
@@ -29,7 +29,7 @@ void Enemy::Update() {
 	// コマンド
 	InputCommand command{};
 
-	command = ai_->Update();
+	//command = ai_->Update();
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
