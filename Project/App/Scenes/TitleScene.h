@@ -22,7 +22,10 @@ public:
 private:
 	SpriteData bgData_;
 	SpriteMaterialData bgMatData_;
-
+	SpriteData startData_;
+	SpriteMaterialData startMatData_;
+	SpriteData exitData_;
+	SpriteMaterialData exitMatData_;
 };
 
 template<typename Data>
@@ -49,18 +52,40 @@ inline void TitleScene<Data>::Initialize() {
 	// テクスチャ
 
 	MAGISYSTEM::LoadTexture("TitleBG.png");
+	MAGISYSTEM::LoadTexture("Start.png");
+	MAGISYSTEM::LoadTexture("Exit.png");
+
+	startData_.position = { WindowApp::kClientWidth * 0.5f, 800.0f };
+	exitData_.position = { WindowApp::kClientWidth * 0.5f, 912.0f };
+
 	bgMatData_.textureName = "TitleBG.png";
+
+	startMatData_.textureName = "Start.png";
+	startMatData_.anchorPoint = { 0.5f,0.5f };
+
+	exitMatData_.textureName = "Exit.png";
+	exitMatData_.anchorPoint = { 0.5f,0.5f };
 
 }
 
 template<typename Data>
 inline void TitleScene<Data>::Update() {
 
+	if (MAGISYSTEM::IsPadConnected(0)) {
+		if (MAGISYSTEM::TriggerButton(0, ButtonA)) {
+			this->ChangeScene("Play");
+		}
+	}
+
 }
 
 template<typename Data>
 inline void TitleScene<Data>::Draw() {
 	MAGISYSTEM::DrawSprite(bgData_, bgMatData_);
+
+	MAGISYSTEM::DrawSprite(startData_, startMatData_);
+	MAGISYSTEM::DrawSprite(exitData_, exitMatData_);
+
 }
 
 template<typename Data>
