@@ -38,6 +38,15 @@ struct PlaySceneInfo {
 };
 
 /// <summary>
+/// プレイシーンの状態
+/// </summary>
+enum class PlaySceneState {
+	Init,
+	Play,
+	Finish,
+};
+
+/// <summary>
 /// ゲームプレイシーン
 /// </summary>
 /// <typeparam name="Data"></typeparam>
