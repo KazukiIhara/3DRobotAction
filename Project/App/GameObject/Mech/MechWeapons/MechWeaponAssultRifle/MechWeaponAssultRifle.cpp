@@ -15,7 +15,7 @@ MechWeaponAssultRifle::MechWeaponAssultRifle()
 	bulletSpeed_ = 100.0f;
 
 	// ダメージを設定
-	damage_ = 200;
+	damage_ = kDamage_;
 }
 
 void MechWeaponAssultRifle::Update(MechCore* mechCore) {
@@ -45,5 +45,5 @@ void MechWeaponAssultRifle::SetReloadTime() {
 }
 
 void MechWeaponAssultRifle::SetCoolTime() {
-	coolTimer_ = coolTime_;
+	coolTimer_ = kCoolTime_;
 }
