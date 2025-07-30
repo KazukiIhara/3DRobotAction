@@ -33,9 +33,14 @@ private:
 	// パーティクル発生用のリソース
 
 
+	// パーティクル発生用のデータ
+
+
 	// instancing更新用のリソース
 
+
 	// instancing更新用のデータ
+
 
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingDrawResource_[static_cast<uint32_t>(BlendMode::Num)];

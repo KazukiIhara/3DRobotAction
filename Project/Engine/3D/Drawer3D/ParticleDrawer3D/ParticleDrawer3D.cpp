@@ -31,6 +31,7 @@ ParticleEffectDrawer3D::ParticleEffectDrawer3D(
 
 	dxgi_ = dxgi;
 	directXCommand_ = directXCommand;
+	srvUavManager_ = srvUavManager;
 	graphicsPipelineManager_ = graphicsPipelineManager;
 	shadowPipelineManager_ = shadowPipelineManager;
 	camera3DManager_ = camera3DManager;
@@ -40,8 +41,6 @@ ParticleEffectDrawer3D::ParticleEffectDrawer3D(
 }
 
 void ParticleEffectDrawer3D::Draw(BlendMode mode) {
-	const uint32_t i = static_cast<uint32_t>(mode);
-
 	const uint32_t inctanceCount = particleUpdater_->GetInstanceDrawCount(mode);
 	const uint32_t instancingSrvIndex = particleUpdater_->GetInstancingDrawSrvIndex(mode);
 

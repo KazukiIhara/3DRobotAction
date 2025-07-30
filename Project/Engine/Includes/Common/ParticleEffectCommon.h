@@ -21,9 +21,9 @@ struct ParticleEffectEmitData {
 };
 
 /// <summary>
-/// パーティクルエフェクトのGPUに送る更新用データ
+/// パーティクルエフェクトのGPUに送る発生用データ
 /// </summary>
-struct UpdateParticleEffectDataForGPU {
+struct EmitParticleEffectDataForGPU {
 	Vector3 scale;
 	float pad0;
 
@@ -44,6 +44,38 @@ struct UpdateParticleEffectDataForGPU {
 
 	float currentTime;
 	Vector3 pad6;
+};
+
+
+/// <summary>
+/// パーティクルエフェクトのGPUに送る更新用データ
+/// </summary>
+struct UpdateParticleEffectDataForGPU {
+	Vector3 scale;
+	float pad0;
+
+	Vector3 rotate;
+	float pad1;
+
+	Vector3 translate;
+	float pad2;
+
+	Vector3 velocity;
+	float pad3;
+
+	Vector4 color;
+
+	uint32_t texIndex;
+	Vector3 pad4;
+
+	bool isUseBillboard;
+	Vector3 pad5;
+
+	float lifeTime;
+	Vector3 pad6;
+
+	float currentTime;
+	Vector3 pad7;
 };
 
 /// <summary>
