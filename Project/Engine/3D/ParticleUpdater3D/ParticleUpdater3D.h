@@ -30,6 +30,9 @@ public:
 	uint32_t GetInstancingDrawSrvIndex(BlendMode mode)const;
 
 private:
+	// パーティクル発生用のリソース
+
+
 	// instancing更新用のリソース
 
 	// instancing更新用のデータ
