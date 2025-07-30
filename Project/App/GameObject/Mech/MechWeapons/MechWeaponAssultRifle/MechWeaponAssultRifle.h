@@ -27,5 +27,5 @@ private:
 	// 発射感覚
 	const float kCoolTime_ = 0.5f;
 	// ダメージ
-	const float kDamage_ = 200.0f;
+	const uint32_t kDamage_ = 200;
 };

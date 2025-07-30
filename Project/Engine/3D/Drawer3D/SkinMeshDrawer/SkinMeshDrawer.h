@@ -63,7 +63,6 @@ private:
 
 	// スキニング後用頂点
 	ComPtr<ID3D12Resource> skinnedVertexBuffer_;
-	VertexData3D* skinnedVertexData_ = nullptr;
 	uint32_t skinnedVertexUavIdx_ = 0;
 	uint32_t skinnedVertexSrvIdx_ = 0;
 	D3D12_RESOURCE_STATES skinnedVertexResourceState_ = D3D12_RESOURCE_STATE_COMMON;

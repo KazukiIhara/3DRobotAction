@@ -25,7 +25,7 @@ std::weak_ptr<GameObject3D> GameObject3DManager::Add(std::shared_ptr<GameObject3
 
 	if (insertMap) {
 		// map に追加
-		gameObjectList_.emplace(name, added);
+		gameObjectList_.insert_or_assign(name, added);
 	}
 
 	// weak_ptr を返す

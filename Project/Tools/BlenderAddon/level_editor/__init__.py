@@ -1,480 +1,301 @@
 import bpy
-import math
+import mathutils
 import bpy_extras
 import gpu
 import gpu_extras.batch
-import copy
-import mathutils
 import json
-
+import copy
 from mathutils import Vector
 
-# ブレンダーに登録するアドオン情報
+
 bl_info = {
     "name": "レベルエディタ",
     "author": "Kazuki Ihara",
-    "version": (1, 0),
+    "version": (1, 1, 0),
     "blender": (4, 4, 0),
     "location": "",
-    "description": "レベルエディタ",
+    "description": "シーンを書き出す簡易レベルエディタ",
     "warning": "",
-    "wiki_url": "",
-    "tracker_url": "",
     "category": "Object"
 }
+
 
 identifier_items = [
     ('CAMERA_EYE',    'CameraEyeControlPoint',    'カメラの Eye'),
     ('CAMERA_TARGET', 'CameraTargetControlPoint', 'カメラの Target'),
 ]
 
-bpy.types.Object.cp_order = bpy.props.IntProperty(
-    name="Order",
-    description="カメラコントロールポイントの並び順（0,1,2…）",
-    default=0,
-    min=0,
-)
 
-# モジュールのインポート
-from .stretch_vertex import MYADDON_OT_stretch_vertex
-
-#Add-on有効化時コールバック
 def register():
-    #列挙プロパティを追加
+    # === Object プロパティ ===
     bpy.types.Object.empty_identifier = bpy.props.EnumProperty(
-        name="Identifier",
-        description="EMPTY の識別子",
-        items=identifier_items,
-        default='CAMERA_EYE',
+        name="Identifier", description="EMPTY の識別子",
+        items=identifier_items, default='CAMERA_EYE',
+    )
+    bpy.types.Object.cp_order = bpy.props.IntProperty(
+        name="Order", description="コントロールポイントの並び順 (0,1,2…)",
+        default=0, min=0,
+    )
+    bpy.types.Object.cp_camera = bpy.props.StringProperty(
+        name="Camera", description="所属カメラ名",
+        default="", maxlen=64,
+    )
+    bpy.types.Object.mesh_visible = bpy.props.BoolProperty(
+        name="Visible", description="画面に描画するかどうか",
+        default=True,
     )
 
-    #Blenderにクラスを登録
     for cls in classes:
         bpy.utils.register_class(cls)
 
-    #メニューに項目を追加
     bpy.types.TOPBAR_MT_editor_menus.append(TOPBAR_MT_my_menu.submenu)
-    #3Dビューに描画関数を追加
-    DrawCollider.handle = bpy.types.SpaceView3D.draw_handler_add(DrawCollider.draw_collider, (),"WINDOW", "POST_VIEW")
+
+    DrawCollider.handle = bpy.types.SpaceView3D.draw_handler_add(
+        DrawCollider.draw_collider, (), "WINDOW", "POST_VIEW")
+
     print("レベルエディタが有効化されました")
 
-#Add-on無効化時コールバック
+
 def unregister():
-    # 先にプロパティを削除
+    # 追加プロパティ削除
+    del bpy.types.Object.mesh_visible
+    del bpy.types.Object.cp_camera
+    del bpy.types.Object.cp_order
     del bpy.types.Object.empty_identifier
-    # メニューから項目を削除
+
     bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_my_menu.submenu)
-    #3Dビューから描画関数を削除
     bpy.types.SpaceView3D.draw_handler_remove(DrawCollider.handle, "WINDOW")
-    
-    #Blenderにクラスを登録
+
     for cls in classes:
         bpy.utils.unregister_class(cls)
+
     print("レベルエディタが無効化されました")
 
-# テスト実行コード
-if __name__ == "__main__":
-    register()
 
-# メニュー項目描画
-def draw_menu_manual(self,context):  
-    #self: 呼び出し元のクラスインスタンスC++だとThisPtr
-    #Context: カーソルを合わせたときのポップアップのカスタマイズなどに使用
-    
-    #トップバーの[エディタメニュー]に項目(オペレータ)を追加
-    self.layout.operator("wm.url_open_preset",text="Manual",icon='HELP')
-
-#トップバーの拡張メニュー
 class TOPBAR_MT_my_menu(bpy.types.Menu):
-    #Blenderがクラスを識別するための固有の文字列
     bl_idname = "TOPBAR_MT_my_manu"
-    #メニューのラベルとして表示される文字列
     bl_label = "Mymenu"
-    #著者表示用の文字列
-    bl_description = "拡張メニュー by" + bl_info["author"]
+    bl_description = "拡張メニュー by " + bl_info["author"]
 
-    #サブメニューの描画
     def draw(self, context):
-        #トップバーの[エディタメニュー]に項目(オペレーター)を追加
-        self.layout.operator(MYADDON_OT_stretch_vertex.bl_idname,
-            text = MYADDON_OT_stretch_vertex.bl_label)
-        
-        #ICO球生成項目を追加
-        self.layout.operator(MYADDON_OT_create_ico_sphere.bl_idname,
-            text = MYADDON_OT_create_ico_sphere.bl_label)
-
-        #シーン出力
         self.layout.operator(MYADDON_OT_export_scene.bl_idname,
-            text = MYADDON_OT_export_scene.bl_label)
+                             text=MYADDON_OT_export_scene.bl_label)
 
-    #既存のメニューにサブメニューを追加
-    def submenu(self, context):
-
-        #ID指定でサブメニューを追加
+    def submenu(self, _context):
         self.layout.menu(TOPBAR_MT_my_menu.bl_idname)
 
-
-#オペレータ　ICO球生成
-class MYADDON_OT_create_ico_sphere(bpy.types.Operator):
-    bl_idname = "myaddon.myaddon_ot_create_object"
-    bl_label = "ICO球生成"
-    bl_description = "ICO球を生成します"
-    bl_options ={'REGISTER','UNDO'}
-
-    #メニューを実行したときに呼ばれる関数
-    def execute(self,context):
-        bpy.ops.mesh.primitive_ico_sphere_add()
-        print("ICO球を生成しました。")
-
-        return {'FINISHED'}
-    
-#オペレータ　シーン出力
-class MYADDON_OT_export_scene(bpy.types.Operator,bpy_extras.io_utils.ExportHelper):
+class MYADDON_OT_export_scene(bpy.types.Operator, bpy_extras.io_utils.ExportHelper):
     bl_idname = "myaddon.myaddon_ot_export_scene"
     bl_label = "シーン出力"
-    bl_description = "シーン情報をExportします"
-    #出力するファイルの拡張子
     filename_ext = ".json"
 
-    def write_and_print(self,file,str):
-        print(str)
-
-        file.write(str)
-        file.write("\n")
-
-    def execute(self,context):
-
-        print("シーン情報をExportします")
-        #ファイルに出力
+    def execute(self, _context):
         self.export_json()
-
-        print("シーン情報をExportしました")
-        self.report({'INFO'},"シーン情報をExportしました")
-
+        self.report({'INFO'}, "シーン情報を Export しました")
         return {'FINISHED'}
 
-    def export(self):
-        """ファイルに出力"""
-
-        print("シーン情報出力開始... %r" % self.filepath)
-
-        #ファイルをテキスト形式で書き出し用にオープン
-        #スコープを抜けると自動的にクローズされる
-        with open(self.filepath, "wt") as file:
-
-            #ファイルに文字列を書き込む
-            file.write("SCENE\n")
-        
-            #シーン内の全オブジェクトについて
-            for object in bpy.context.scene.objects:
-                
-                #親オブジェクトがあるものはスキップ
-                if(object.parent):
-                    continue
-
-                #シーン直下のオブジェクトをルートノード(深さ0)とし、再帰関数で走査
-                self.parse_scene_recursive(file, object,0)
-    
+    # JSON エクスポート本体
     def export_json(self):
-        """JSON形式でファイルに出力"""
-        
-        #保存する情報をまとめるdict
-        json_object_root = dict()
+        root = {"name": "scene", "objects": []}
 
-        #ノード名
-        json_object_root["name"] = "scene"
-        #オブジェクトリストを作成
-        json_object_root["objects"] = list()
-
-        #シーン内の全オブジェクトを走査してパック
-        for object in bpy.context.scene.objects:
-
-            #親オブジェクトがあるものはスキップ
-            if(object.parent):
+        for obj in bpy.context.scene.objects:
+            if obj.parent:
                 continue
+            self.pack_object_recursive(root["objects"], obj)
 
-            #シーン直下のオブジェクトをルートノード(深さ0)とし、再帰関数で走査
-            self.parse_scene_recursive_json(json_object_root["objects"],object, 0)
+        text = json.dumps(root, ensure_ascii=False, indent=4)
+        print(text)
+        with open(self.filepath, "wt", encoding="utf-8") as f:
+            f.write(text)
 
+    # 再帰でオブジェクトをパック
+    def pack_object_recursive(self, dst_list, obj, level=0):
+        jd = {"type": obj.type, "name": obj.name}
 
-        #オブジェクトをJSON文字列にエンコード
-        json_text = json.dumps(json_object_root, ensure_ascii=False, cls=json.JSONEncoder, indent=4)
-        #コンソールに表示してみる
-        print(json_text)
+        if obj.type == "CAMERA":
+            loc = obj.matrix_local.to_translation()
+            eye = (loc.x, loc.z, loc.y)
 
-        #ファイルをテキスト形式で書き出し用にオープン
-        #スコープを抜けると自動的にクローズされる
-        with open(self.filepath, "wt", encoding = "utf-8") as file:
-            
-            #ファイルに文字列を書き込む
-            file.write(json_text)
+            forward = (obj.matrix_local.to_3x3()
+                       @ Vector((0.0, 0.0, -1.0))).normalized()
+            tgt = loc + forward
+            target = (tgt.x, tgt.z, tgt.y)
 
-    def parse_scene_recursive_json(self,data_parent,object,level):
-
-        #シーンのオブジェクト一個分のjsonオブジェクト生成
-        json_object = dict()
-        #オブジェクト種類
-        json_object["type"] = object.type
-        #オブジェクト名
-        json_object["name"] = object.name
-
-        if object.type == "CAMERA":
-            # eye（Blender ローカル位置）
-            loc = object.matrix_local.to_translation()
-            eye = (loc.x, loc.z, loc.y)          # x z y に並び替え
-
-            # forward ベクトル = ローカルの -Z を親空間へ
-            forward = (object.matrix_local.to_3x3() @ Vector((0.0, 0.0, -1.0))).normalized()
-            tgt = loc + forward                   # 1m 先を注視点とする
-            target = (tgt.x, tgt.z, tgt.y)       # x z y に並び替え
-            
-            camData = object.data
-
-            camera = {
-                "target": (target[0],target[1],target[2]),
-                "eye": (eye[0],eye[1],eye[2]),         
-                "fovY": camData.angle_y,
-                "nearClip": camData.clip_start,
-                "farClip": camData.clip_end
+            cd = obj.data
+            jd["camera_data"] = {
+                "target": target,
+                "eye": eye,
+                "fovY": cd.angle_y,
+                "nearClip": cd.clip_start,
+                "farClip": cd.clip_end
             }
 
-            json_object["camera_data"] = camera
-
         else:
-            #その他情報をパック
-            #オブジェクトのローカルトランスフォームから
-            #平行移動、回転、スケールを抽出
-            trans, rot_q, scale = object.matrix_local.decompose()
-            rot_q_xyzw = (-rot_q.x,-rot_q.z,-rot_q.y,rot_q.w)   # Blender は wxyz なので並べ替え
+            trans, rot_q, scale = obj.matrix_local.decompose()
+            rot_q_xyzw = (-rot_q.x, -rot_q.z, -rot_q.y, rot_q.w)
+            jd["transform"] = {
+                "translate": (trans.x, trans.z, trans.y),
+                "rotate": rot_q_xyzw,
+                "scale": (scale.x, scale.z, scale.y)
+            }
 
-            transform = {
-                "translate": (trans.x, trans.z, trans.y), # 座標系ここで変換
-                "rotate": rot_q_xyzw,                
-                "scale": (scale.x, scale.z,scale.y)
-            }   
+        # 追加カスタムプロパティ類 ---------------
+        if "model_name" in obj:
+            jd["model_name"] = obj["model_name"]
+        if obj.type == "MESH":
+            jd["visible"] = bool(obj.mesh_visible)
 
-            #まとめて1個分のjsonオブジェクトに登録
-            json_object["transform"] = transform
+        # EMPTY 用識別子
+        if obj.type == "EMPTY" and obj.empty_identifier:
+            jd["identifier"] = obj.empty_identifier
+            jd["order"] = int(obj.cp_order)
+            if obj.cp_camera:
+                jd["camera_name"] = obj.cp_camera
 
-        #カスタムプロパティ'file name'
-        if "model_name" in object:
-            json_object["model_name"] = object["model_name"]
+        # collider
+        if "collider" in obj:
+            jd["collider"] = {
+                "type": obj["collider"],
+                "center": obj["collider_center"].to_list(),
+                "size": obj["collider_size"].to_list()
+            }
 
-        #カスタムプロパティ'collider'
-        if "collider" in object:
-            collider = dict()
-            collider["type"] =object["collider"]
-            collider["center"] =object["collider_center"].to_list()
-            collider["size"] =object["collider_size"].to_list()
-            json_object["collider"] =collider
-    
-        # 'empty_identifier' の書き込み
-        if hasattr(object, "empty_identifier") and object.empty_identifier:
-            json_object["identifier"] = object.empty_identifier
+        dst_list.append(jd)
 
-        #1個分のjsonオブジェクトを親オブジェクトに登録
-        data_parent.append(json_object)
+        # 子も再帰
+        if obj.children:
+            jd["children"] = []
+            for ch in obj.children:
+                self.pack_object_recursive(jd["children"], ch, level + 1)
 
-        #直接の子供リストを走査
-        if len(object.children) >0:
-            #子ノードリストを作成
-            json_object["children"] = list()
-
-            #子ノードへ進む(深さが1上がる)
-            for child in object.children:
-                self.parse_scene_recursive_json(json_object["children"],child,level +1)
-
-
-#パネル　ファイル名
+# ModelName Visible
 class OBJECT_PT_model_name(bpy.types.Panel):
-    """オブジェクトのモデルネームパネル"""
     bl_idname = "OBJECT_PT_model_name"
     bl_label = "ModelName"
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
     bl_context = "object"
 
-    #表示条件を指定
     @classmethod
     def poll(cls, context):
+        return context.object and context.object.type == 'MESH'
+
+    def draw(self, context):
         obj = context.object
-        return obj is not None and obj.type == 'MESH'
-
-    #サブメニューの描画
-    def draw(self,context):
-
-        #パネルに項目を追加
-        if "model_name" in context.object:
-            #既にプロパティがあれば、プロパティを表示
-            self.layout.prop(context.object,'["model_name"]', text = self.bl_label)
+        col = self.layout.column()
+        if "model_name" in obj:
+            col.prop(obj, '["model_name"]', text=self.bl_label)
         else:
-            #プロパティがなければ、プロパティ追加ボタンを表示
-            self.layout.operator(MYADDON_OT_add_modelname.bl_idname)
+            col.operator(MYADDON_OT_add_modelname.bl_idname)
+        col.prop(obj, "mesh_visible", text="Visible")
 
-#オペレータ　カスタムプロパティ
 class MYADDON_OT_add_modelname(bpy.types.Operator):
     bl_idname = "myaddon.myaddon_ot_add_modelname"
     bl_label = "modelName 追加"
-    bl_description = "['model_name']カスタムプロパティを追加します"
     bl_options = {"REGISTER", "UNDO"}
 
-    def execute(self,context):
-
-        #['model_name']カスタムプロパティを追加
+    def execute(self, context):
         context.object["model_name"] = ""
-
         return {"FINISHED"}
 
+# パネル: EMPTY 用
 class OBJECT_PT_empty_identifier(bpy.types.Panel):
     bl_idname = "OBJECT_PT_empty_identifier"
-    bl_label = "Identifier"
+    bl_label = "ControlPoint"
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
     bl_context = "object"
 
     @classmethod
     def poll(cls, context):
-        obj = context.object
-        return obj is not None and obj.type == 'EMPTY'
+        return context.object and context.object.type == 'EMPTY'
 
     def draw(self, context):
-        self.layout.prop(context.object, "empty_identifier", text=self.bl_label)
+        obj = context.object
+        self.layout.prop(obj, "empty_identifier", text="Identifier")
+        self.layout.prop(obj, "cp_order",        text="Order")
+        self.layout.prop(obj, "cp_camera",       text="Camera")
 
-
-#コライダー描画
 class DrawCollider:
-
-    #描画ハンドル
     handle = None
 
-    #3Dビューに登録する描画関数
+    @staticmethod
     def draw_collider():
-        #頂点データ
-        vertices = {"pos":[]}
-        #インデックスデータ
+        verts = {"pos": []}
         indices = []
-        
-        #各頂点と、オブジェクト中心からのオフセット
-        offsets = [
-                    [-0.5,-0.5,-0.5],
-                    [+0.5,-0.5,-0.5],
-                    [-0.5,+0.5,-0.5],
-                    [+0.5,+0.5,-0.5],
-                    [-0.5,-0.5,+0.5],
-                    [+0.5,-0.5,+0.5],
-                    [-0.5,+0.5,+0.5],
-                    [+0.5,+0.5,+0.5],
-        ]
-        #立方体のX,Y,Z方向サイズ
-        size = [2,2,2]
+        box_offsets = [(-.5,-.5,-.5), (.5,-.5,-.5), (-.5,.5,-.5), (.5,.5,-.5),
+                       (-.5,-.5,.5), (.5,-.5,.5), (-.5,.5,.5), (.5,.5,.5)]
 
-        #現在シーンのオブジェクトリストを走査
-        for object in bpy.context.scene.objects:
-
-            #コライダープロパティがなければ、描画をスキップ
-            if not "collider" in object:
+        for obj in bpy.context.scene.objects:
+            if "collider" not in obj:
                 continue
 
-            #中心点、サイズの変数を宣言
-            center = mathutils.Vector((0,0,0))
-            size = mathutils.Vector((2,2,2))
+            center = Vector(obj["collider_center"])
+            size   = Vector(obj["collider_size"])
 
-            #プロパティから値を取得
-            center[0]=object["collider_center"][0]
-            center[1]=object["collider_center"][1]
-            center[2]=object["collider_center"][2]
-            size[0]=object["collider_size"][0]
-            size[1]=object["collider_size"][1]
-            size[2]=object["collider_size"][2]
+            start = len(verts["pos"])
+            for off in box_offsets:
+                p = center + Vector(off) * size
+                verts["pos"].append(obj.matrix_world @ p)
 
-            #追加前の頂点数
-            start = len(vertices["pos"])
-            #BoxのB頂点分回す
-            for offset in offsets:
-                #オブジェクトの中心座標をコピー
-                pos = copy.copy(center)
-                #中心点を基準に各頂点ごとにずらす
-                pos[0]+=offset[0]*size[0]
-                pos[1]+=offset[1]*size[1]
-                pos[2]+=offset[2]*size[2]
-                #ローカル座標からワールド座標に変換
-                pos = object.matrix_world @ pos
-                #頂点データリストに座標を追加
-                vertices['pos'].append(pos)
+            # 12 lines (indices)
+            lines = [(0,1),(2,3),(0,2),(1,3),
+                     (4,5),(6,7),(4,6),(5,7),
+                     (0,4),(1,5),(2,6),(3,7)]
+            for a,b in lines:
+                indices.append([start+a, start+b])
 
-                #前面を構成する辺の頂点インデックス
-                indices.append([start+0,start+1])
-                indices.append([start+2,start+3])
-                indices.append([start+0,start+2])
-                indices.append([start+1,start+3])
-                #奥面を構成する辺の頂点インデックス
-                indices.append([start+4,start+5])
-                indices.append([start+6,start+7])
-                indices.append([start+4,start+6])
-                indices.append([start+5,start+7])
-                #前と頂点をつなぐ辺の頂点インデックス
-                indices.append([start+0,start+4])
-                indices.append([start+1,start+5])
-                indices.append([start+2,start+6])
-                indices.append([start+3,start+7])
-
-        #ビルドインのシェーダーを取得
         shader = gpu.shader.from_builtin("UNIFORM_COLOR")
-
-        #バッチを作成
-        batch = gpu_extras.batch.batch_for_shader(shader, "LINES", vertices, indices = indices)
-
-        #シェーダーのパラメータ設定
-        color = [0.5,1.0,1.0,1.0]
+        batch  = gpu_extras.batch.batch_for_shader(shader, "LINES",
+                                                   verts, indices=indices)
         shader.bind()
-        shader.uniform_float("color", color)
-        #描画
+        shader.uniform_float("color", (0.5,1.0,1.0,1.0))
         batch.draw(shader)
 
-#オペレータカスタムプロパティ追加
+
 class MYADDON_OT_add_collider(bpy.types.Operator):
     bl_idname = "myaddon.myaddon_ot_add_collider"
     bl_label = "コライダー追加"
-    bl_description = "['collider']カスタムプロパティを追加します"
     bl_options = {"REGISTER", "UNDO"}
 
-    def execute(self,context):
-
-        #カスタムプロパティを追加
-        context.object["collider"] = "Box"
-        context.object["collider_center"] = mathutils.Vector((0,0,0))
-        context.object["collider_size"] = mathutils.Vector((2,2,2))
-
+    def execute(self, context):
+        obj = context.object
+        obj["collider"] = "Box"
+        obj["collider_center"] = mathutils.Vector((0,0,0))
+        obj["collider_size"]   = mathutils.Vector((2,2,2))
         return {"FINISHED"}
 
-#パネルコライダー
 class OBJECT_PT_collider(bpy.types.Panel):
     bl_idname = "OBJECT_PT_collider"
-    bl_label = "collider"
+    bl_label = "Collider"
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
     bl_context = "object"
 
-    #サブメニューの描画
     def draw(self, context):
-
-        #パネルに項目を追加
-        if "collider" in context.object:
-            #既にプロパティがあれば、プロパティを表示
-            self.layout.prop(context.object, '["collider"]', text = "Type")
-            self.layout.prop(context.object, '["collider_center"]', text = "Center")
-            self.layout.prop(context.object, '["collider_size"]', text = "Size")
+        obj = context.object
+        if "collider" in obj:
+            col = self.layout.column()
+            col.prop(obj, '["collider"]', text="Type")
+            col.prop(obj, '["collider_center"]', text="Center")
+            col.prop(obj, '["collider_size"]', text="Size")
         else:
-            #プロパティがなければ、プロパティ追加ボタンを表示
             self.layout.operator(MYADDON_OT_add_collider.bl_idname)
 
-
-
-#Blenderに登録するクラスリスト
-classes =(
+# クラス登録リスト
+classes = (
     MYADDON_OT_export_scene,
     TOPBAR_MT_my_menu,
     MYADDON_OT_add_modelname,
     OBJECT_PT_model_name,
     OBJECT_PT_empty_identifier,
+    MYADDON_OT_add_collider,
+    OBJECT_PT_collider,
 )
+
+if __name__ == "__main__":
+    try:
+        unregister()
+    except Exception:
+        pass
+    register()
