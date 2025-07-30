@@ -90,7 +90,7 @@
                 ]
             },
             "model_name": "StageObj0",
-            "visible": true
+            "visible": false
         },
         {
             "type": "EMPTY",
@@ -224,7 +224,31 @@
                 "translate": [
                     41.580318450927734,
                     0.0,
-                    35.908470153808594
+                    -16.89338493347168
+                ],
+                "rotate": [
+                    -0.0,
+                    0.5,
+                    -0.0,
+                    0.8660253882408142
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "model_name": "StageObj0",
+            "visible": true
+        },
+        {
+            "type": "EMPTY",
+            "name": "CP.005",
+            "transform": {
+                "translate": [
+                    0.0,
+                    5.0,
+                    0.0
                 ],
                 "rotate": [
                     -0.0,
@@ -238,8 +262,9 @@
                     1.0
                 ]
             },
-            "model_name": "StageObj0",
-            "visible": true
+            "identifier": "CAMERA_TARGET",
+            "order": 1,
+            "camera_name": "Camera"
         }
     ]
 }
