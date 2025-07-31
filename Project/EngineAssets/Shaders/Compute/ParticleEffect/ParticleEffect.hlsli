@@ -1,4 +1,6 @@
 
+static const uint kMaxParticles = 1024;
+
 struct ParticleData
 {
     float3 scale;

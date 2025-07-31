@@ -24,8 +24,10 @@ class ComputePipelineManager;
 /// </summary>
 class ParticleUpdater3D {
 public:
-	ParticleUpdater3D();
+	ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager, ComputePipelineManager* computePipelineManager);
 	~ParticleUpdater3D() = default;
+
+	void InitData(uint32_t blendindex);
 
 	void AddParticle(const ParticleEffectEmitData& emitData);
 
@@ -36,32 +38,47 @@ public:
 	uint32_t GetInstancingDrawSrvIndex(BlendMode mode)const;
 
 private:
-	// パーティクル発生用のリソース(SRV)
-	ComPtr<ID3D12Resource> instancingEmitResource_[static_cast<uint32_t>(BlendMode::Num)];
-	// パーティクル発生用のデータ
-	ParticleEffectDataForGPU* instancingEmitData_[static_cast<uint32_t>(BlendMode::Num)];
+	// リソース遷移
+	void TransitionResource(ID3D12Resource* pResource, D3D12_RESOURCE_STATES& current, D3D12_RESOURCE_STATES after);
 
+private:
+	// パーティクル発生用のリソース(SRV)
+	ComPtr<ID3D12Resource> emitBuffer_[static_cast<uint32_t>(BlendMode::Num)];
 	// 発生用SRVインデックス
-	uint32_t instancingEmitSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
+	uint32_t emitSrvIdx_[static_cast<uint32_t>(BlendMode::Num)];
+	// パーティクル発生用のデータ
+	ParticleEffectDataForGPU* emitData_[static_cast<uint32_t>(BlendMode::Num)];
+	// パーティクルの発生数
+	uint32_t emitCount_[static_cast<uint32_t>(BlendMode::Num)];
 
 
 	// パーティクル更新用のリソース(SRV/UAV)
-	ComPtr<ID3D12Resource> instancingUpdateResource_[static_cast<uint32_t>(BlendMode::Num)];
+	ComPtr<ID3D12Resource> updateBuffer_[static_cast<uint32_t>(BlendMode::Num)];
 	// 更新用SRVインデックス
-	uint32_t instancingUpdateSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
+	uint32_t updateSrvIdx_[static_cast<uint32_t>(BlendMode::Num)];
 	// 更新用UAVインデックス
-	uint32_t instancingUpdateUavIndex_[static_cast<uint32_t>(BlendMode::Num)];
+	uint32_t updateUavIdx_[static_cast<uint32_t>(BlendMode::Num)];
+	// リソースステート
+	D3D12_RESOURCE_STATES updateResourceState_ = D3D12_RESOURCE_STATE_COMMON;
 
 
 	// パーティクル描画用のリソース(SRV/UAV)
-	ComPtr<ID3D12Resource> instancingDrawResource_[static_cast<uint32_t>(BlendMode::Num)];
+	ComPtr<ID3D12Resource> drawBuffer_[static_cast<uint32_t>(BlendMode::Num)];
 	// 描画用SRVインデックス
-	uint32_t instancingDrawSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
+	uint32_t drawSrvIdx_[static_cast<uint32_t>(BlendMode::Num)];
 	// 描画用UAVインデックス
-	uint32_t instancingDrawUavIndex_[static_cast<uint32_t>(BlendMode::Num)];
+	uint32_t drawUavIdx_[static_cast<uint32_t>(BlendMode::Num)];
+	// リソースステート
+	D3D12_RESOURCE_STATES drawResourceState_ = D3D12_RESOURCE_STATE_COMMON;
 
 
-	// instance描画する際に使う変数
+	// instanceの数
 	uint32_t instanceCount_[static_cast<uint32_t>(BlendMode::Num)];
+
+private:
+	DXGI* dxgi_ = nullptr;
+	DirectXCommand* command_ = nullptr;
+	SRVUAVManager* srvUavManager_ = nullptr;
+	ComputePipelineManager* computePipelineManager_ = nullptr;
 
 };
