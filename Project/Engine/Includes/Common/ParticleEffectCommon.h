@@ -7,6 +7,9 @@
 // 数学ヘッダ
 #include "Math/Types/AllMathTypes.h"
 
+// パーティクルの最大数
+static constexpr uint32_t kMaxParticleNum = 1024;
+
 /// <summary>
 /// パーティクルエフェクトの発生時データ
 /// </summary>
@@ -21,9 +24,9 @@ struct ParticleEffectEmitData {
 };
 
 /// <summary>
-/// パーティクルエフェクトのGPUに送る発生用データ
+/// パーティクルエフェクトのGPUに送るデータ
 /// </summary>
-struct EmitParticleEffectDataForGPU {
+struct ParticleEffectDataForGPU {
 	Vector3 scale;
 	float pad0;
 
@@ -54,8 +57,9 @@ struct EmitParticleEffectDataForGPU {
 /// </summary>
 struct DrawParticleEffectDataForGPU {
 	Matrix4x4 worldMat;
-	Vector4 color;
-	uint32_t texIndex;
 
+	Vector4 color;
+
+	uint32_t texIndex;
 	Vector3 padding;
 };
