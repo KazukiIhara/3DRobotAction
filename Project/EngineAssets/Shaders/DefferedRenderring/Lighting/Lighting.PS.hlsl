@@ -142,7 +142,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     // Environment
     //
     {
-        float3 environmentDiffuse = ComputeEnvironment(worldPos, normal, 3.0f);
+        float3 environmentDiffuse = ComputeEnvironment(worldPos, normal, 0.04f);
         totalDiffuse += environmentDiffuse;
     }
      
