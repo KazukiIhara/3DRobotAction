@@ -41,10 +41,8 @@ ParticleEffectDrawer3D::ParticleEffectDrawer3D(
 }
 
 void ParticleEffectDrawer3D::Draw(BlendMode mode) {
-	const uint32_t inctanceCount = particleUpdater_->GetInstanceDrawCount(mode);
-	const uint32_t instancingSrvIndex = particleUpdater_->GetInstancingDrawSrvIndex(mode);
-
-	if (inctanceCount == 0) return;
+	const uint32_t inctanceCount = kMaxParticleNum;
+	const uint32_t instancingSrvIndex = particleUpdater_->GetInstancingSrvIndex();
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 

@@ -39,5 +39,6 @@ struct GPUParticle {
 	Vector4 color;
 
 	Vector2 size;
-	Vector2 pad0;
+	uint32_t texIdx;
+	float pad0;
 };

@@ -11,67 +11,48 @@ ParticleUpdater3D::ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAV
 	srvUavManager_ = srvUavManager;
 	computePipelineManager_ = computePipelineManager;
 
-	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+	// 
+	// リソース作成
+	// 
 
-		// 
-		// 発生用のリソース作成
-		// 
-		emitBuffer_[i] = dxgi_->CreateBufferResource(sizeof(ParticleEffectDataForGPU) * kMaxParticleNum);
-
-		emitSrvIdx_[i] = srvUavManager_->Allocate();
-		srvUavManager_->CreateSrvStructuredBuffer(emitSrvIdx_[i], emitBuffer_[i].Get(), kMaxParticleNum, sizeof(ParticleEffectEmitData));
-
-		emitBuffer_[i]->Map(0, nullptr, reinterpret_cast<void**>(&emitData_[i]));
-
-		emitCount_[i] = 0;
-
-		// 
-		// 更新用のリソース作成
-		// 
-		updateBuffer_[i] = dxgi_->CreateBufferResource(sizeof(ParticleEffectDataForGPU) * kMaxParticleNum, true);
-
-		updateSrvIdx_[i] = srvUavManager_->Allocate();
-		srvUavManager_->CreateSrvStructuredBuffer(updateSrvIdx_[i], updateBuffer_[i].Get(), kMaxParticleNum, sizeof(ParticleEffectDataForGPU));
-
-		updateUavIdx_[i] = srvUavManager_->Allocate();
-		srvUavManager_->CreateUavStructuredBuffer(updateUavIdx_[i], updateBuffer_[i].Get(), kMaxParticleNum, sizeof(ParticleEffectDataForGPU));
-
-		// 
-		// 描画用のリソース作成
-		// 
-		drawBuffer_[i] = dxgi_->CreateBufferResource(sizeof(DrawParticleEffectDataForGPU) * kMaxParticleNum, true);
-
-		drawSrvIdx_[i] = srvUavManager_->Allocate();
-		srvUavManager_->CreateSrvStructuredBuffer(drawSrvIdx_[i], drawBuffer_[i].Get(), kMaxParticleNum, sizeof(DrawParticleEffectDataForGPU));
-
-		drawUavIdx_[i] = srvUavManager_->Allocate();
-		srvUavManager_->CreateUavStructuredBuffer(drawUavIdx_[i], drawBuffer_[i].Get(), kMaxParticleNum, sizeof(DrawParticleEffectDataForGPU));
-
-		// インスタンス用の変数初期化
-		instanceCount_[i] = 0;
+	// パーティクル
+	particleBuffer_ = dxgi_->CreateBufferResource(sizeof(GPUParticle) * kMaxParticleNum, true);
+	// SRV
+	particleSrvIdx_ = srvUavManager_->Allocate();
+	srvUavManager_->CreateSrvStructuredBuffer(particleSrvIdx_, particleBuffer_.Get(), kMaxParticleNum, sizeof(GPUParticle));
+	// UAV
+	particleUavIdx_ = srvUavManager_->Allocate();
+	srvUavManager_->CreateUavStructuredBuffer(particleUavIdx_, particleBuffer_.Get(), kMaxParticleNum, sizeof(GPUParticle));
 
 
-		// 
-		// データの初期化
-		// 
-		InitData(i);
-	}
+	// 射出するパーティクル
+	emitParticleBuffer_ = dxgi_->CreateBufferResource(sizeof(GPUParticleEmitData) * kMaxParticleNum, true);
+	// SRV
+	emitSrvIdx_ = srvUavManager_->Allocate();
+	srvUavManager_->CreateSrvStructuredBuffer(emitSrvIdx_, emitParticleBuffer_.Get(), kMaxParticleNum, sizeof(GPUParticleEmitData));
+
+
+	// パーティクルデータ初期化
+	InitData();
+
+	// パーティクルの発生カウント初期化
+	particleEmitCount_ = 0;
 
 }
 
-void ParticleUpdater3D::InitData(uint32_t blendindex) {
+void ParticleUpdater3D::InitData() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = command_->GetList();
 
 	// ステート遷移
-	TransitionResource(updateBuffer_[blendindex].Get(), updateResourceState_, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 
 	// パイプライン設定
 	commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleInit));
 	commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleInit));
 
 	// コマンドを積む
-	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(updateUavIdx_[blendindex]));
+	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
 
 	// 実行
 	commandList->Dispatch(1, 1, 1);
@@ -79,25 +60,74 @@ void ParticleUpdater3D::InitData(uint32_t blendindex) {
 	// UAV 完了保証
 	D3D12_RESOURCE_BARRIER uavBarrier{};
 	uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
-	uavBarrier.UAV.pResource = updateBuffer_[blendindex].Get();
+	uavBarrier.UAV.pResource = particleBuffer_.Get();
 	commandList->ResourceBarrier(1, &uavBarrier);
 
 }
 
-void ParticleUpdater3D::AddParticle(const ParticleEffectEmitData& emitData) {
+void ParticleUpdater3D::AddParticle(const GPUParticleEmitData& emitData) {
+	// 参照を取得
+	auto& data = emitParticleData_[particleEmitCount_];
 
+	// データを挿入
+	data = emitData;
+
+	// 発生数をインクリメント
+	particleEmitCount_++;
 }
+
 
 void ParticleUpdater3D::Update() {
+	// 
+	// パーティクル発生
+	// 
 
+	// 更新用のステートへ遷移
+	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = command_->GetList();
+	// パイプライン設定
+	commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleEmit));
+	commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleEmit));
+
+	// パラメータを積む
+
+
+	// 実行
+	commandList->Dispatch(1, 1, 1);
+
+
+	// UAV 完了保証
+	D3D12_RESOURCE_BARRIER uavBarrier{};
+	uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrier.UAV.pResource = particleBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrier);
+
+
+	//
+	// パーティクル更新
+	// 
+
+	// パイプライン設定
+	commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleUpdate));
+	commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleUpdate));
+
+	// パラメータを積む
+
+
+	// 実行
+	commandList->Dispatch(1, 1, 1);
+
+	// 描画用のステートへ遷移 
+	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
+
+	// 発生数を初期化
+	particleEmitCount_ = 0;
 }
 
-uint32_t ParticleUpdater3D::GetInstanceDrawCount(BlendMode mode) const {
-	return instanceCount_[static_cast<uint32_t>(mode)];
-}
-
-uint32_t ParticleUpdater3D::GetInstancingDrawSrvIndex(BlendMode mode) const {
-	return drawSrvIdx_[static_cast<uint32_t>(mode)];
+uint32_t ParticleUpdater3D::GetInstancingSrvIndex() const {
+	return particleSrvIdx_;
 }
 
 void ParticleUpdater3D::TransitionResource(ID3D12Resource* pResource, D3D12_RESOURCE_STATES& current, D3D12_RESOURCE_STATES after) {
