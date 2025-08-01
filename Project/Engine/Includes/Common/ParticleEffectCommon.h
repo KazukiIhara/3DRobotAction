@@ -7,84 +7,58 @@
 // 数学ヘッダ
 #include "Math/Types/AllMathTypes.h"
 
+// DirectX
+#include <d3d12.h>
+
+#include "DirectX-Headers/include/directx/d3dx12_pipeline_state_stream.h"
+
+/// <summary>
+/// パーティクル用のパイプラインストリーム
+/// </summary>
+struct Particle3DPipelineStateStream {
+	CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE		rootSignature;
+	CD3DX12_PIPELINE_STATE_STREAM_AS					amplificationShader;
+	CD3DX12_PIPELINE_STATE_STREAM_MS					meshShader;
+	CD3DX12_PIPELINE_STATE_STREAM_PS					pixelShader;
+	CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER			rasterizer;
+	CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC			blend;
+	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL			depthStencil;
+	CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS rtvFormats;
+	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT	dsvFormat;
+};
+
+// パーティクルの最大数
+static constexpr uint32_t kMaxParticleNum = 1024;
+
 /// <summary>
 /// パーティクルエフェクトの発生時データ
 /// </summary>
-struct ParticleEffectEmitData {
-	Vector3 scale = { 1.0f,1.0f,1.0f };
-	Vector3 rotate = { 0.0f,0.0f,0.0f };
-	Vector3 translate = { 0.0f,0.0f,0.0f };
-	Vector3 velocity = { 0.0f,0.0f,0.0f };
-	std::string texName = "";
-	uint32_t isUseBillboard = 1;
-	float lifeTime = 1.0f;
-};
+struct GPUParticleEmitData {
+	Vector3 pos;
+	float life;
 
-/// <summary>
-/// パーティクルエフェクトのGPUに送る発生用データ
-/// </summary>
-struct EmitParticleEffectDataForGPU {
-	Vector3 scale;
-	float pad0;
-
-	Vector3 rotate;
-	float pad1;
-
-	Vector3 translate;
-	float pad2;
-
-	Vector3 velocity;
-	float pad3;
-
-	bool isUseBillboard;
-	Vector3 pad4;
-
-	float lifeTime;
-	Vector3 pad5;
-
-	float currentTime;
-	Vector3 pad6;
-};
-
-
-/// <summary>
-/// パーティクルエフェクトのGPUに送る更新用データ
-/// </summary>
-struct UpdateParticleEffectDataForGPU {
-	Vector3 scale;
-	float pad0;
-
-	Vector3 rotate;
-	float pad1;
-
-	Vector3 translate;
-	float pad2;
-
-	Vector3 velocity;
-	float pad3;
+	Vector3 velo;
+	uint32_t texIndex;
 
 	Vector4 color;
 
-	uint32_t texIndex;
-	Vector3 pad4;
-
-	bool isUseBillboard;
-	Vector3 pad5;
-
-	float lifeTime;
-	Vector3 pad6;
-
-	float currentTime;
-	Vector3 pad7;
+	Vector2 size;
+	Vector2 pad0;
 };
 
 /// <summary>
-/// パーティクルエフェクトのGPUに送る描画用データ
+/// パーティクル構造体
 /// </summary>
-struct DrawParticleEffectDataForGPU {
-	Matrix4x4 worldMat;
-	Vector4 color;
-	uint32_t texIndex;
+struct GPUParticle {
+	Vector3 pos;
+	float life;
 
-	Vector3 padding;
+	Vector3 velo;
+	uint32_t texIdx;
+
+	Vector4 color;
+
+	Vector2 size;
+	float age;
+	float pad0;
 };

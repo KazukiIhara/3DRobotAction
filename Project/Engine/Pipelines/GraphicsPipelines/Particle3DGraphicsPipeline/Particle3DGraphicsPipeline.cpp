@@ -6,15 +6,15 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-Particle3DGraphicsPipeline::Particle3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+OldParticle3DGraphicsPipeline::OldParticle3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseGraphicsPipeline(dxgi, shaderCompiler) {
 
 }
 
-Particle3DGraphicsPipeline::~Particle3DGraphicsPipeline() {
+OldParticle3DGraphicsPipeline::~OldParticle3DGraphicsPipeline() {
 }
 
-void Particle3DGraphicsPipeline::CreateRootSignature() {
+void OldParticle3DGraphicsPipeline::CreateRootSignature() {
 	HRESULT hr = S_FALSE;
 
 	// テクスチャ用
@@ -91,7 +91,7 @@ void Particle3DGraphicsPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void Particle3DGraphicsPipeline::CompileShaders() {
+void OldParticle3DGraphicsPipeline::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
 	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Particle3D/Particle3D.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);
@@ -101,7 +101,7 @@ void Particle3DGraphicsPipeline::CompileShaders() {
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-void Particle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
+void OldParticle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	HRESULT hr;
 
 	assert(rootSignature_);
@@ -139,7 +139,7 @@ void Particle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	}
 }
 
-D3D12_BLEND_DESC Particle3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
+D3D12_BLEND_DESC OldParticle3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {
 	case 0:// kBlendModeNone
@@ -209,7 +209,7 @@ D3D12_BLEND_DESC Particle3DGraphicsPipeline::BlendStateSetting(uint32_t blendMod
 	return blendDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC Particle3DGraphicsPipeline::DepthStecilDescSetting() {
+D3D12_DEPTH_STENCIL_DESC OldParticle3DGraphicsPipeline::DepthStecilDescSetting() {
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	// Depthの機能を有効化する
@@ -222,7 +222,7 @@ D3D12_DEPTH_STENCIL_DESC Particle3DGraphicsPipeline::DepthStecilDescSetting() {
 	return depthStencilDesc;
 }
 
-D3D12_INPUT_LAYOUT_DESC Particle3DGraphicsPipeline::InputLayoutSetting() {
+D3D12_INPUT_LAYOUT_DESC OldParticle3DGraphicsPipeline::InputLayoutSetting() {
 	// InputLayout
 	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
@@ -247,7 +247,7 @@ D3D12_INPUT_LAYOUT_DESC Particle3DGraphicsPipeline::InputLayoutSetting() {
 	return inputLayoutDesc;
 }
 
-D3D12_RASTERIZER_DESC Particle3DGraphicsPipeline::RasterizerStateSetting() {
+D3D12_RASTERIZER_DESC OldParticle3DGraphicsPipeline::RasterizerStateSetting() {
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc_{};
 	// 裏側(時計回り)を表示しない

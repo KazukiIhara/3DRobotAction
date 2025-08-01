@@ -24,26 +24,22 @@ class ParticleUpdater3D;
 /// <summary>
 /// パーティクル3D描画クラス
 /// </summary>
-class ParticleEffectDrawer3D {
+class ParticleDrawer3D {
 public:
-	ParticleEffectDrawer3D(
+	ParticleDrawer3D(
 		DXGI* dxgi,
 		DirectXCommand* directXCommand,
 		SRVUAVManager* srvUavManager,
 		GraphicsPipelineManager* graphicsPipelineManager,
-		ShadowPipelineManager* shadowPipelineManager,
 		Camera3DManager* camera3DManager,
-		LightManager* lightManager,
 		ParticleUpdater3D* particleUpdater
 	);
-	~ParticleEffectDrawer3D() = default;
+	~ParticleDrawer3D() = default;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(BlendMode mode);
-
-private:
 
 private:
 	DXGI* dxgi_ = nullptr;

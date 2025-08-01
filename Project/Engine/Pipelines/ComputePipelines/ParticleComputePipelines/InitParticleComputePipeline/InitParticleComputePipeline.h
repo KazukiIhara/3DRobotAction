@@ -13,10 +13,10 @@
 class DXGI;
 class ShaderCompiler;
 
-class SkinningComputePipeline {
+class InitParticleComputePipeline {
 public:
-	SkinningComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~SkinningComputePipeline() = default;
+	InitParticleComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~InitParticleComputePipeline() = default;
 
 	// 初期化
 	void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -50,4 +50,3 @@ private:
 	DXGI* dxgi_ = nullptr;
 	ShaderCompiler* shaderCompiler_ = nullptr;
 };
-

@@ -13,43 +13,49 @@
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
+// 前方宣言
+class DXGI;
+class DirectXCommand;
+class SRVUAVManager;
+class ComputePipelineManager;
+
 /// <summary>
 /// 3Dパーティクル更新クラス
 /// </summary>
 class ParticleUpdater3D {
 public:
-	ParticleUpdater3D();
+	ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager, ComputePipelineManager* computePipelineManager);
 	~ParticleUpdater3D() = default;
 
-	void AddParticle(const ParticleEffectEmitData& emitData);
+	void InitData();
+
+	void AddParticle(const GPUParticleEmitData& emitData);
 
 	void Update();
 
-	uint32_t GetInstanceDrawCount(BlendMode mode)const;
-
-	uint32_t GetInstancingDrawSrvIndex(BlendMode mode)const;
+	uint32_t GetInstancingSrvIndex()const;
 
 private:
-	// パーティクル発生用のリソース
+	// リソース遷移
+	void TransitionResource(ID3D12Resource* pResource, D3D12_RESOURCE_STATES& current, D3D12_RESOURCE_STATES after);
 
+private:
+	// パーティクル全部
+	ComPtr<ID3D12Resource> particleBuffer_;
+	uint32_t particleSrvIdx_;
+	uint32_t particleUavIdx_;
+	D3D12_RESOURCE_STATES currentParticleResourceState_ = D3D12_RESOURCE_STATE_COMMON;
 
-	// パーティクル発生用のデータ
+	// このフレームに射出するパーティクル
+	ComPtr<ID3D12Resource> emitParticleBuffer_;
+	GPUParticleEmitData* emitParticleData_ = nullptr;
+	uint32_t emitSrvIdx_;
+	uint32_t particleEmitCount_ = 0;
 
+private:
+	DXGI* dxgi_ = nullptr;
+	DirectXCommand* command_ = nullptr;
+	SRVUAVManager* srvUavManager_ = nullptr;
+	ComputePipelineManager* computePipelineManager_ = nullptr;
 
-	// instancing更新用のリソース
-
-
-	// instancing更新用のデータ
-
-
-	// instancing描画用のリソース
-	ComPtr<ID3D12Resource> instancingDrawResource_[static_cast<uint32_t>(BlendMode::Num)];
-	// instancing描画用のデータ
-	DrawParticleEffectDataForGPU* instancingDrawData_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// instance描画する際に使う変数
-	uint32_t instanceCount_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// instancing描画用SRVインデックス
-	uint32_t instancingDrawSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
 };

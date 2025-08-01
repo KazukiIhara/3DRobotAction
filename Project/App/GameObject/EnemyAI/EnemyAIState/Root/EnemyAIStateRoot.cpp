@@ -8,11 +8,11 @@
 
 using namespace MAGIMath;
 
-void EnemyAIStateRoot::Enter(EnemyAI* enemyAI, MechCore* mechCore) {
+void EnemyAIStateRoot::Enter([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
 	jumpTimer_ = jumpTime_;
 }
 
-void EnemyAIStateRoot::Update(EnemyAI* enemyAI, MechCore* mechCore) {
+void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
 	// 旋回行動
 	enemyAI->MoveDir(currentMoveDir_);
 
@@ -24,6 +24,6 @@ void EnemyAIStateRoot::Update(EnemyAI* enemyAI, MechCore* mechCore) {
 	}
 }
 
-void EnemyAIStateRoot::Exit(EnemyAI* enemyAI, MechCore* mechCore) {
+void EnemyAIStateRoot::Exit([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
 
 }

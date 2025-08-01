@@ -5,6 +5,9 @@
 /// </summary>
 enum class ComputePipelineStateType {
 	Skinning,
+	ParticleInit,
+	ParticleEmit,
+	ParticleUpdate,
 
 	Num,
 };

@@ -78,11 +78,18 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::SkyBox);
 	SetPipelineState(GraphicsPipelineStateType::SkyBox);
 
-	// 3Dパーティクルのグラフィックスパイプラインを生成、初期化
-	particle3DGraphicsPipeline_ = std::make_unique<Particle3DGraphicsPipeline>(dxgi, shaderCompiler);
+	// 旧型3Dパーティクルのグラフィックスパイプラインを生成、初期化
+	particle3DGraphicsPipeline_ = std::make_unique<OldParticle3DGraphicsPipeline>(dxgi, shaderCompiler);
 	particle3DGraphicsPipeline_->Initialize();
-	SetRootSignature(GraphicsPipelineStateType::Particle3D);
-	SetPipelineState(GraphicsPipelineStateType::Particle3D);
+	SetRootSignature(GraphicsPipelineStateType::OldParticle3D);
+	SetPipelineState(GraphicsPipelineStateType::OldParticle3D);
+
+	// パーティクルエフェクトのグラフィックスパイプラインを生成、初期化
+	particleEffect3DGraphicsPipeline_ = std::make_unique<ParticleEffectGraphicsPipeline>(dxgi, shaderCompiler);
+	particleEffect3DGraphicsPipeline_->Initialize();
+	SetRootSignature(GraphicsPipelineStateType::ParticleEffect3D);
+	SetPipelineState(GraphicsPipelineStateType::ParticleEffect3D);
+
 
 	// 他のパイプラインステートが追加された場合はここに追加
 }
@@ -138,8 +145,11 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 		// スカイボックス用のルートシグネイチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = skyBoxGraphicsPipeline_->GetRootSignature();
 		break;
-	case GraphicsPipelineStateType::Particle3D:
+	case GraphicsPipelineStateType::OldParticle3D:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = particle3DGraphicsPipeline_->GetRootSignature();
+		break;
+	case GraphicsPipelineStateType::ParticleEffect3D:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = particleEffect3DGraphicsPipeline_->GetRootSignature();
 		break;
 		// 他のパイプラインステートが追加された場合はここに追加
 	}
@@ -197,9 +207,14 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = skyBoxGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
-	case GraphicsPipelineStateType::Particle3D:
+	case GraphicsPipelineStateType::OldParticle3D:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = particle3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::ParticleEffect3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = particleEffect3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 

@@ -17,6 +17,11 @@ void ComputePipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompil
 	SetRootSignature(ComputePipelineStateType::Skinning);
 	SetPipelineState(ComputePipelineStateType::Skinning);
 
+	// InitParticle
+	initParticlePipeline_ = std::make_unique<InitParticleComputePipeline>(dxgi, shaderCompiler);
+	SetRootSignature(ComputePipelineStateType::ParticleInit);
+	SetPipelineState(ComputePipelineStateType::ParticleInit);
+
 	// 他のパイプランはここに追加
 
 }
@@ -31,17 +36,24 @@ ID3D12PipelineState* ComputePipelineManager::GetPipelineState(ComputePipelineSta
 
 void ComputePipelineManager::SetRootSignature(ComputePipelineStateType pipelineState) {
 	switch (pipelineState) {
-		case ComputePipelineStateType::Skinning:
-			// Skinning
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = skinningComputePipeline_->GetRootSignature();
-			break;
+	case ComputePipelineStateType::Skinning:
+		// Skinning
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = skinningComputePipeline_->GetRootSignature();
+		break;
+	case ComputePipelineStateType::ParticleInit:
+		// InitParticle
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = initParticlePipeline_->GetRootSignature();
+		break;
 	}
 }
 
 void ComputePipelineManager::SetPipelineState(ComputePipelineStateType pipelineState) {
 	switch (pipelineState) {
-		case ComputePipelineStateType::Skinning:
-			computePipelineStates_[static_cast<uint32_t>(pipelineState)] = skinningComputePipeline_->GetPipelineState();
-			break;
+	case ComputePipelineStateType::Skinning:
+		computePipelineStates_[static_cast<uint32_t>(pipelineState)] = skinningComputePipeline_->GetPipelineState();
+		break;
+	case ComputePipelineStateType::ParticleInit:
+		computePipelineStates_[static_cast<uint32_t>(pipelineState)] = initParticlePipeline_->GetPipelineState();
+		break;
 	}
 }

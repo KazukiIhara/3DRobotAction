@@ -74,6 +74,8 @@
 #include "ParticleGroup3DManager/ParticleGroup3DManager.h"
 #include "LightManager/LightManager.h"
 
+
+
 // 
 // Drawer
 // 
@@ -91,8 +93,16 @@
 
 #include "3D/Drawer3D/SkyBoxDrawer/SkyBoxDrawer.h"
 
+
+// 
+// ParticleSystem
+// 
+#include "ParticleUpdater3D/ParticleUpdater3D.h"
+#include "Drawer3D/ParticleDrawer3D/ParticleDrawer3D.h"
+
+
 //
-// EffectManager
+// Effect
 //
 #include "Effect3D/EffectManagers3D/PrimitiveEffectManagers3D/PlaneEffectManager/PlaneEffectManager.h"
 
@@ -750,10 +760,15 @@ protected:
 	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
 	static std::unique_ptr<RingDrawer3D> ringDrawer3D_;
 	static std::unique_ptr<CylinderDrawer3D> cylinderDrawer3D_;
-
 	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
-
 	static std::unique_ptr<SkyBoxDrawer> skyBoxDrawer_;
+
+
+	// 
+	// ParticleSystem
+	// 
+	static std::unique_ptr<ParticleUpdater3D> particleUpdater3D_;
+	static std::unique_ptr<ParticleDrawer3D> particleDrawer3D_;
 
 	//
 	// EffectManager

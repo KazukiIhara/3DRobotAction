@@ -21,7 +21,7 @@ void main(uint3 dtid : SV_DispatchThreadID)
     
     if (dtid.x < gMeshInfo.MeshletCount)
     {
-        // スキニングモデルはGPUカリングを行わないようにする
+        // TODO:スキニングモデルはGPUカリングを行わないようにする
         visible = IsVisible(gCullData[meshletID], gInstance[instanceID].world, gCamera.worldPosition, gFrustum.planes);
     }
     

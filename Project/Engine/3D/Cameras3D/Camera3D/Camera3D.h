@@ -57,7 +57,7 @@ public:
 	void TransferCamera(uint32_t rootParameterIndex);
 	void TransferCameraInv(uint32_t rootParameterIndex);
 	void TransferCameraFrustum(uint32_t rootParameterIndex);
-
+	void TransferCameraVector(uint32_t rootParameterIndex);
 
 	const std::string& GetName()const;
 	Matrix4x4 GetViewProjectionMatrix()const;
@@ -185,4 +185,10 @@ private:
 	ComPtr<ID3D12Resource> frustumResource_ = nullptr;
 	// CameraFrustum用データ
 	Camera3DFrustumForGPU* frustumData_ = nullptr;
+
+	// CameraVector用リソース
+	ComPtr<ID3D12Resource> vectorResource_ = nullptr;
+	// CameraVector用データ
+	CameraVector* vectorData_ = nullptr;
+
 };

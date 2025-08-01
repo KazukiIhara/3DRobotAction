@@ -11,11 +11,14 @@
 // MyHedder
 #include "Enums/ComputePipelineEnum.h"
 
+
 #include "ComputePipelines/SkinningComputePipeline/SkinningComputePipeline.h"
+#include "ComputePipelines/ParticleComputePipelines/InitParticleComputePipeline/InitParticleComputePipeline.h"
 
+// 前方宣言
 class DXGI;
-
 class ShaderCompiler;
+
 
 class ComputePipelineManager {
 public:
@@ -42,5 +45,7 @@ private:
 private:
 	// Skinning用のComputePipeline
 	std::unique_ptr<SkinningComputePipeline> skinningComputePipeline_ = nullptr;
+	// Particle初期化用のComputePipeline
+	std::unique_ptr<InitParticleComputePipeline> initParticlePipeline_ = nullptr;
 
 };
