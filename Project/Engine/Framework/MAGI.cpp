@@ -165,6 +165,7 @@ void MAGISYSTEM::Initialize() {
 	// SRVUAVmanager
 	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
 
+
 	// Viewport
 	viewport_ = std::make_unique<Viewport>(directXCommand_.get());
 	// Scissor
@@ -754,7 +755,12 @@ void MAGISYSTEM::Draw() {
 		sphereDrawer3D_->Draw(mode);
 		ringDrawer3D_->Draw(mode);
 		cylinderDrawer3D_->Draw(mode);
+
 	}
+
+
+	particleDrawer3D_->Draw(BlendMode::Add);
+
 
 	// パーティクルの描画処理
 	particleGroup3DManager_->Draw();

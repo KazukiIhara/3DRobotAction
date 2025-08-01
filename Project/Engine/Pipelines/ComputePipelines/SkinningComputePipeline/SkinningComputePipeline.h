@@ -16,7 +16,7 @@ class ShaderCompiler;
 class SkinningComputePipeline {
 public:
 	SkinningComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~SkinningComputePipeline();
+	~SkinningComputePipeline() = default;
 
 	// 初期化
 	void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);

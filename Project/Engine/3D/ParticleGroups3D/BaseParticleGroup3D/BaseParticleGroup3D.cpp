@@ -68,9 +68,9 @@ void BaseParticleGroup3D::PrepareForRendering() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
 	// RootSignatureを設定
-	commandList->SetGraphicsRootSignature(MAGISYSTEM::GetGraphicsRootSignature(GraphicsPipelineStateType::Particle3D));
+	commandList->SetGraphicsRootSignature(MAGISYSTEM::GetGraphicsRootSignature(GraphicsPipelineStateType::OldParticle3D));
 	// PSOを設定
-	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Particle3D, blendMode_));
+	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::OldParticle3D, blendMode_));
 	// 形状を設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定

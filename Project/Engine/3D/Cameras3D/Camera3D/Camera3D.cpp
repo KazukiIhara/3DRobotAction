@@ -298,6 +298,10 @@ void Camera3D::TransferCameraFrustum(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, frustumResource_->GetGPUVirtualAddress());
 }
 
+void Camera3D::TransferCameraVector(uint32_t rootParameterIndex) {
+
+}
+
 const std::string& Camera3D::GetName()const {
 	return name_;
 }
@@ -354,6 +358,7 @@ void Camera3D::CreateCameraResource() {
 	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DForGPU));
 	cameraInvResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DInverseForGPU));
 	frustumResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DFrustumForGPU));
+
 }
 
 void Camera3D::MapCameraData() {

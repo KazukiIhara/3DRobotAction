@@ -11,7 +11,6 @@ SkinningComputePipeline::SkinningComputePipeline(DXGI* dxgi, ShaderCompiler* sha
 	Initialize(dxgi, shaderCompiler);
 }
 
-SkinningComputePipeline::~SkinningComputePipeline() {}
 
 void SkinningComputePipeline::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	SetDXGI(dxgi);

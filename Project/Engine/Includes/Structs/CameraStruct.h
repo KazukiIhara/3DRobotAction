@@ -24,6 +24,17 @@ struct Camera3DFrustumForGPU {
 	Vector4 farClip;
 };
 
+struct CameraVector {
+	Vector3 right;
+	float pad0;
+
+	Vector3 up;
+	float pad1;
+
+	Vector3 forward;
+	float pad2;
+};
+
 // シェーダーに送る2Dカメラ情報
 struct Camera2DForGPU {
 	Matrix4x4 viewProjection;

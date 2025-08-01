@@ -1,6 +1,22 @@
 
 static const uint kMaxParticles = 1024;
 
+static const float4 kPlane[4] =
+{
+    float4(-1.0f, 1.0f, 0.0f, 1.0f),
+    float4(1.0f, 1.0f, 0.0f, 1.0f),
+    float4(-1.0f, -1.0f, 0.0f, 1.0f),
+    float4(1.0f, -1.0f, 0.0f, 1.0f),
+};
+
+static const float2 kPlaneUVs[4] =
+{
+    float2(0.0f, 0.0f),
+    float2(1.0f, 0.0f),
+    float2(0.0f, 1.0f),
+    float2(1.0f, 1.0f)
+};
+
 struct ParticleEmitData
 {
     float3 pos;
@@ -30,4 +46,27 @@ struct Particle
     float age;
     float pad0;
     
+};
+
+
+// Meshシェーダーからピクセルシェーダーに渡す構造体
+struct MeshOutput
+{
+    float4 position : SV_Position;
+    float2 uv : TEXCOORD0;
+    uint instanceIndex : TEXCOORD1;
+};
+
+// カメラ
+struct Camera
+{
+    float4x4 viewProjection;
+    float3 worldPosition;
+    float _padding;
+};
+
+// ASで使う構造体
+struct ASPayload
+{
+    uint instanceID;
 };

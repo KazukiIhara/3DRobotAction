@@ -19,7 +19,7 @@ MechHead::MechHead() {
 	head_ = MAGISYSTEM::AddGameObject3D(std::move(headObject));
 }
 
-void MechHead::Update(MechCore* mechCore) {
+void MechHead::Update([[maybe_unused]] MechCore* mechCore) {
 
 }
 

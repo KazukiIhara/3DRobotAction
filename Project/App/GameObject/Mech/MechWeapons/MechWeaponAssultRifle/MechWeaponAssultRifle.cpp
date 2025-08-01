@@ -18,7 +18,7 @@ MechWeaponAssultRifle::MechWeaponAssultRifle()
 	damage_ = kDamage_;
 }
 
-void MechWeaponAssultRifle::Update(MechCore* mechCore) {
+void MechWeaponAssultRifle::Update([[maybe_unused]] MechCore* mechCore) {
 	if (auto weapon = weapon_.lock()) {
 		// 弾の発射位置を計算
 		const Matrix4x4 wMat = fireLocalTranslateMatrix_ * weapon->GetTransform()->GetWorldMatrix();

@@ -2,17 +2,16 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-// 前方宣言
-class DXGI;
-class ShaderCompiler;
+
+#include "Common/ParticleEffectCommon.h"
 
 /// <summary>
-/// 3Dパーティクル描画パイプライン
+/// パーティクル描画用パイプライン
 /// </summary>
-class OldParticle3DGraphicsPipeline:public BaseGraphicsPipeline {
+class ParticleEffectGraphicsPipeline : public BaseGraphicsPipeline {
 public:
-	OldParticle3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~OldParticle3DGraphicsPipeline()override;
+	ParticleEffectGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~ParticleEffectGraphicsPipeline()override = default;
 
 private:
 	// ルートシグネチャを作成する
@@ -21,10 +20,9 @@ private:
 	void CompileShaders()override;
 	// グラフィックスパイプラインオブジェクトを作成する
 	void CreateGraphicsPipelineObject()override;
+
 	// BlendStateの設定を行う
 	D3D12_BLEND_DESC BlendStateSetting(uint32_t blendModeNum)override;
-	// DepthStencilStateの設定を行う
-	D3D12_DEPTH_STENCIL_DESC DepthStecilDescSetting()override;
 	// InputLayoutの設定を行う
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う

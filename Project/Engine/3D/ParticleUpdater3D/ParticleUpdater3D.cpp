@@ -1,5 +1,7 @@
 #include "ParticleUpdater3D.h"
 
+#include <cassert>
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -10,6 +12,11 @@ ParticleUpdater3D::ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAV
 	command_ = command;
 	srvUavManager_ = srvUavManager;
 	computePipelineManager_ = computePipelineManager;
+
+	assert(dxgi_);
+	assert(command_);
+	assert(srvUavManager_);
+	assert(computePipelineManager_);
 
 	// 
 	// リソース作成
@@ -31,7 +38,6 @@ ParticleUpdater3D::ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAV
 	emitSrvIdx_ = srvUavManager_->Allocate();
 	srvUavManager_->CreateSrvStructuredBuffer(emitSrvIdx_, emitParticleBuffer_.Get(), kMaxParticleNum, sizeof(GPUParticleEmitData));
 
-
 	// パーティクルデータ初期化
 	InitData();
 
@@ -46,6 +52,10 @@ void ParticleUpdater3D::InitData() {
 
 	// ステート遷移
 	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+
+	// SRVUAVのディスクリプタヒープを設定
+	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { srvUavManager_->GetDescriptorHeap() };
+	commandList->SetDescriptorHeaps(1, descriptorHeaps->GetAddressOf());
 
 	// パイプライン設定
 	commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleInit));
