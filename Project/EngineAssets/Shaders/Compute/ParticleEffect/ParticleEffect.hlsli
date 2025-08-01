@@ -1,39 +1,33 @@
 
 static const uint kMaxParticles = 1024;
 
-struct ParticleData
+struct ParticleEmitData
 {
-    float3 scale;
-    float pad0;
+    float3 pos;
+    float life;
     
-    float3 rotate;
-    float pad1;
-    
-    float3 translate;
-    float pad2;
-    
-    float3 velocity;
-    float pad3;
-    
+    float3 velo;
     uint texIndex;
-    float3 pad4;
-    
-    uint isBillboard;
-    float3 pad5;
-    
-    float lifeTime;
-    float3 pad6;
-    
-    float currentTime;
-    float3 pad7;
-};
-
-struct ParticleDrawData
-{
-    float4x4 worldMat;
     
     float4 color;
     
-    uint texIndex;
-    float3 pad0;
+    float2 size;
+    float2 pad0;
+    
+};
+
+struct Particle
+{
+    float3 pos;
+    float life;
+    
+    float3 velo;
+    uint texIdx;
+    
+    float4 color;
+    
+    float2 size;
+    float age;
+    float pad0;
+    
 };

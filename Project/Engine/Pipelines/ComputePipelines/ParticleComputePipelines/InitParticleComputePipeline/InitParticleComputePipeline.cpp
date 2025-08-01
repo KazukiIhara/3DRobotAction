@@ -31,38 +31,22 @@ ID3D12PipelineState* InitParticleComputePipeline::GetPipelineState() {
 void InitParticleComputePipeline::CreateRootSignature() {
 	HRESULT hr = S_FALSE;
 
-	// SRV Descriptor Ranges
-	D3D12_DESCRIPTOR_RANGE srvRanges0[1] = {};
-	srvRanges0[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	srvRanges0[0].NumDescriptors = 1;              // t0
-	srvRanges0[0].BaseShaderRegister = 0;          // t0から始まる
-	srvRanges0[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	D3D12_DESCRIPTOR_RANGE srvRanges1[1] = {};
-	srvRanges1[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	srvRanges1[0].NumDescriptors = 1;              // t1
-	srvRanges1[0].BaseShaderRegister = 1;          // t1から始まる
-	srvRanges1[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	D3D12_DESCRIPTOR_RANGE srvRanges2[1] = {};
-	srvRanges2[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	srvRanges2[0].NumDescriptors = 1;              // t2
-	srvRanges2[0].BaseShaderRegister = 2;          // t2から始まる
-	srvRanges2[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
 	// UAV Range
-	D3D12_DESCRIPTOR_RANGE uavRanges[1] = {};
-	uavRanges[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV;
-	uavRanges[0].NumDescriptors = 1;                // u0のみ
-	uavRanges[0].BaseShaderRegister = 0;            // u0から始まる
-	uavRanges[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	D3D12_DESCRIPTOR_RANGE particleUav[1] = {};
+	particleUav[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV;
+	particleUav[0].NumDescriptors = 1;
+	particleUav[0].BaseShaderRegister = 0;
+	particleUav[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// Root Parameters
 	D3D12_ROOT_PARAMETER rootParams[1] = {};
 
+	// Particle用
+	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[0].DescriptorTable.NumDescriptorRanges = _countof(particleUav);
+	rootParams[0].DescriptorTable.pDescriptorRanges = particleUav;
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
-
-	
 	// Root Signature
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc = {};
 	rootSigDesc.NumParameters = _countof(rootParams);
@@ -88,7 +72,7 @@ void InitParticleComputePipeline::CreateRootSignature() {
 
 void InitParticleComputePipeline::CompileShaders() {
 	computeShaderBlob_ = nullptr;
-	computeShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Compute/Skinning/Skinning.CS.hlsl", L"cs_6_0");
+	computeShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Compute/ParticleEffect/InitializeParticleEffect.CS.hlsl", L"cs_6_0");
 	assert(computeShaderBlob_ != nullptr);
 }
 

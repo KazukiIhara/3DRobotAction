@@ -31,14 +31,14 @@ struct GPUParticleEmitData {
 /// </summary>
 struct GPUParticle {
 	Vector3 pos;
-	float age;
+	float life;
 
 	Vector3 velo;
-	float life;
+	uint32_t texIdx;
 
 	Vector4 color;
 
 	Vector2 size;
-	uint32_t texIdx;
+	float age;
 	float pad0;
 };
