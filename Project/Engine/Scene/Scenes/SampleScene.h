@@ -64,7 +64,7 @@ private:
 	float paradinSpeed_ = 2.0f;
 
 	// BrainStem
-	static const uint32_t brainStemNum_ = 3;
+	static const uint32_t brainStemNum_ = 600;
 	std::array<Transform3D*, brainStemNum_> brainStemTrans_ = nullptr;
 	float brainStemT_ = 0.0f;
 
@@ -111,7 +111,7 @@ inline void SampleScene<Data>::Initialize() {
 	// 踊ってるやつ作成
 
 	for (uint32_t i = 0; i < brainStemNum_; i++) {
-		std::unique_ptr<Transform3D> brainStemTransform = std::make_unique<Transform3D>(Vector3(float(i * 2), 0.0f, 2.0f));
+		std::unique_ptr<Transform3D> brainStemTransform = std::make_unique<Transform3D>(Vector3(-float(i * 2) + 1.0f, 0.0f, float(i * 2) + 1.0f));
 		brainStemTrans_[i] = MAGISYSTEM::AddTransform3D(std::move(brainStemTransform));
 	}
 
@@ -144,8 +144,6 @@ inline void SampleScene<Data>::Initialize() {
 
 	// 平行光源の設定
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
-
-
 
 
 }
