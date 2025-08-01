@@ -18,14 +18,12 @@
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
-ParticleEffectDrawer3D::ParticleEffectDrawer3D(
+ParticleDrawer3D::ParticleDrawer3D(
 	DXGI* dxgi,
 	DirectXCommand* directXCommand,
 	SRVUAVManager* srvUavManager,
 	GraphicsPipelineManager* graphicsPipelineManager,
-	ShadowPipelineManager* shadowPipelineManager,
 	Camera3DManager* camera3DManager,
-	LightManager* lightManager,
 	ParticleUpdater3D* particleUpdater
 ) {
 
@@ -33,14 +31,12 @@ ParticleEffectDrawer3D::ParticleEffectDrawer3D(
 	directXCommand_ = directXCommand;
 	srvUavManager_ = srvUavManager;
 	graphicsPipelineManager_ = graphicsPipelineManager;
-	shadowPipelineManager_ = shadowPipelineManager;
 	camera3DManager_ = camera3DManager;
-	lightManager_ = lightManager;
 	particleUpdater_ = particleUpdater;
 
 }
 
-void ParticleEffectDrawer3D::Draw(BlendMode mode) {
+void ParticleDrawer3D::Draw(BlendMode mode) {
 	const uint32_t inctanceCount = kMaxParticleNum;
 	const uint32_t instancingSrvIndex = particleUpdater_->GetInstancingSrvIndex();
 

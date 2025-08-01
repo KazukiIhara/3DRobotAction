@@ -95,6 +95,12 @@ std::unique_ptr<ModelDrawerManager> MAGISYSTEM::modelDrawerManager_ = nullptr;
 
 std::unique_ptr<SkyBoxDrawer> MAGISYSTEM::skyBoxDrawer_ = nullptr;
 
+// 
+// ParticleSystem
+// 
+std::unique_ptr<ParticleUpdater3D> MAGISYSTEM::particleUpdater3D_ = nullptr;
+std::unique_ptr<ParticleDrawer3D> MAGISYSTEM::particleDrawer3D_ = nullptr;
+
 //
 // EffectManager
 //
@@ -238,6 +244,11 @@ void MAGISYSTEM::Initialize() {
 	// SkyBoxDrawer
 	skyBoxDrawer_ = std::make_unique<SkyBoxDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
+	// ParticleUpdater
+	particleUpdater3D_ = std::make_unique<ParticleUpdater3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), computePipelineManager_.get());
+	// ParticleDrawer
+	particleDrawer3D_ = std::make_unique<ParticleDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get(), particleUpdater3D_.get());
+
 	// PlaneEffectManager
 	planeEffectManager_ = std::make_unique<PlaneEffectManager>(deltaTimer_.get(), transformManager_.get(), planeDrawer3D_.get());
 
@@ -301,6 +312,16 @@ void MAGISYSTEM::Finalize() {
 	// PlaneEffectManager
 	if (planeEffectManager_) {
 		planeEffectManager_.reset();
+	}
+
+	// ParticleDrawer
+	if (particleDrawer3D_) {
+		particleDrawer3D_.reset();
+	}
+
+	// ParticleUpdater
+	if (particleUpdater3D_) {
+		particleUpdater3D_.reset();
 	}
 
 	// SkyBoxDrawer
