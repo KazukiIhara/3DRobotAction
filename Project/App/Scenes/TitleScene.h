@@ -43,7 +43,6 @@ inline void TitleScene<Data>::Initialize() {
 	MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D)).lock()->ApplyCurrent();
 
 
-
 	// 
 	// アセットのロード
 	// 

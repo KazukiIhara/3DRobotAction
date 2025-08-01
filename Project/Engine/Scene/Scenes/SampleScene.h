@@ -64,7 +64,7 @@ private:
 	float paradinSpeed_ = 2.0f;
 
 	// BrainStem
-	static const uint32_t brainStemNum_ = 500;
+	static const uint32_t brainStemNum_ = 3;
 	std::array<Transform3D*, brainStemNum_> brainStemTrans_ = nullptr;
 	float brainStemT_ = 0.0f;
 
