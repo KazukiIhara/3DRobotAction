@@ -28,21 +28,25 @@ void ParticleEffectGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeTextures.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 
-	D3D12_ROOT_PARAMETER rootParams[3] = {};
+	D3D12_ROOT_PARAMETER rootParams[4] = {};
 
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
 	rootParams[0].Descriptor.ShaderRegister = 0;
 
-	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
-	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[1].Descriptor.ShaderRegister = 1;
 
 	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
 	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
+
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
+	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
 
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};

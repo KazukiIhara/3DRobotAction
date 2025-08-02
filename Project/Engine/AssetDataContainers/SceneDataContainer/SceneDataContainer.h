@@ -13,7 +13,6 @@ struct SceneCameraData {
 	std::string name;
 	Vector3 eye;
 	Vector3 target;
-	Vector3 up = { 0,1,0 };
 	float fovY;
 	float nearClip;
 	float farClip;

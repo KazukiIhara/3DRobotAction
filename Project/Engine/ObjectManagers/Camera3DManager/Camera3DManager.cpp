@@ -80,6 +80,18 @@ void Camera3DManager::TransferCurrentCameraFrustum(uint32_t rootParameterIndex) 
 	}
 }
 
+void Camera3DManager::TransferCurrentCameraVector(uint32_t rootParameterIndex) {
+#if defined(DEBUG) || defined(DEVELOP)
+	if (isDebugCamera_) {
+		debugCamera_->TransferCameraVector(rootParameterIndex);
+		return;
+	}
+#endif
+	if (currentCamera_) {
+		currentCamera_->TransferCameraVector(rootParameterIndex);
+	}
+}
+
 
 void Camera3DManager::DrawCurrentCameraFrustum() {
 #if defined(DEBUG) || defined(DEVELOP)

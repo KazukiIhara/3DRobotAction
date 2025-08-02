@@ -18,7 +18,7 @@ class Camera3D {
 public:
 	Camera3D(const std::string& name, bool isUseYawPitch = true);
 	Camera3D(const std::string& name, const Vector3& eye, float yaw, float pitch);
-	Camera3D(const std::string& name, const Vector3& eye, const Vector3& target, const Vector3& up);
+	Camera3D(const std::string& name, const Vector3& eye, const Vector3& target);
 	virtual ~Camera3D();
 
 	// 更新
@@ -99,6 +99,8 @@ protected:
 	Vector3 up_ = { 0.0f,1.0f,0.0f };
 	// カメラの前方ベクトル
 	Vector3 forward_ = { 0.0f,0.0f,1.0f };
+	// 右ベクトル
+	Vector3 right_ = { 1.0f,0.0f,0.0f };
 
 	// ヨー角
 	float yaw_ = 0.0f;

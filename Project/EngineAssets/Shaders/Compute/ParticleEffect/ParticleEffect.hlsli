@@ -65,6 +65,18 @@ struct Camera
     float _padding;
 };
 
+struct CameraVector
+{
+    float3 right;
+    float pad0;
+    
+    float3 up;
+    float pad1;
+    
+    float3 forward;
+    float pad2;
+};
+
 // AS‚Åg‚¤\‘¢‘Ì
 struct ASPayload
 {

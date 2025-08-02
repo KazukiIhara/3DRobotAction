@@ -21,6 +21,7 @@ public:
 	void TransferCurrentCamera(uint32_t rootParameterIndex);
 	void TransferCurrentCameraInverse(uint32_t rootParameterIndex);
 	void TransferCurrentCameraFrustum(uint32_t rootParameterIndex);
+	void TransferCurrentCameraVector(uint32_t rootParameterIndex);
 
 	void DrawCurrentCameraFrustum();
 	void ShakeCurrentCamera(float duration, const Vector3& intensity);
