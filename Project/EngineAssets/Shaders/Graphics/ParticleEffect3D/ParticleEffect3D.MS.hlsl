@@ -25,8 +25,8 @@ void main(in payload ASPayload payload,
     const float3 right = normalize(gCameraVec.right);
     const float3 up = normalize(gCameraVec.up);
     
-    float sx = particle.size.x * 0.5f; // ‰¡•‚Ì”¼•ª
-    float sy = particle.size.y * 0.5f; // c•‚Ì”¼•ª
+    float sx = particle.size.x; // ‰¡•‚Ì”¼•ª
+    float sy = particle.size.y; // c•‚Ì”¼•ª
 
     float4x4 wMat;
 
