@@ -62,3 +62,11 @@ struct GPUParticle {
 	float age;
 	float pad0;
 };
+
+/// <summary>
+/// パーティクルのカウント用構造体
+/// </summary>
+struct GPUParticleCount {
+	uint32_t emitCount;
+	Vector3 pad0;
+};
