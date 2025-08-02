@@ -215,7 +215,13 @@ namespace MAGIMath {
 	Matrix4x4 RemoveScaling(const Matrix4x4& mat);
 
 	// 視点行列を作成
+	Matrix4x4 MakeLookAtMatrix(const Vector3& eye, const Vector3& target);
+
+	// 視点行列を作成
 	Matrix4x4 MakeLookAtMatrix(const Vector3& eye, const Vector3& target, const Vector3& up);
+
+	// カメラベクトル作成
+	void MakeCameraVector(const Vector3& eye, const Vector3& target, Vector3& forward, Vector3& right, Vector3& up);
 
 	// 拡縮行列作成関数
 	Matrix4x4 MakeScaleMatrix(const Vector3& scale);

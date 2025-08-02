@@ -46,9 +46,10 @@ void ParticleDrawer3D::Draw(BlendMode mode) {
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::ParticleEffect3D, mode));
 
 	camera3DManager_->TransferCurrentCamera(0); // b0
+	camera3DManager_->TransferCurrentCameraVector(1); // b1
 
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
-	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(0)); // t1000
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // t1000
 
 
 	commandList->DispatchMesh(1, inctanceCount, 1);

@@ -20,7 +20,9 @@ Camera3D::Camera3D(const std::string& name, bool isUseYawPitch) {
 		target_ = eye_ + forward;
 	}
 
-	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
+	MakeCameraVector(eye_, target_, forward_, right_, up_);
+
+	viewMatrix_ = MakeLookAtMatrix(eye_, target_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
@@ -42,7 +44,9 @@ Camera3D::Camera3D(const std::string& name, const Vector3& eye, float yaw, float
 		target_ = eye_ + forward;
 	}
 
-	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
+	MakeCameraVector(eye_, target_, forward_, right_, up_);
+
+	viewMatrix_ = MakeLookAtMatrix(eye_, target_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
@@ -50,15 +54,16 @@ Camera3D::Camera3D(const std::string& name, const Vector3& eye, float yaw, float
 	MapCameraData();
 }
 
-Camera3D::Camera3D(const std::string& name, const Vector3& eye, const Vector3& target, const Vector3& up) {
+Camera3D::Camera3D(const std::string& name, const Vector3& eye, const Vector3& target) {
 	name_ = name;
 	isUseYawPitch_ = false;
 
 	eye_ = eye;
 	target_ = target;
-	up_ = up;
 
-	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
+	MakeCameraVector(eye_, target_, forward_, right_, up_);
+
+	viewMatrix_ = MakeLookAtMatrix(eye_, target_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
@@ -82,12 +87,15 @@ void Camera3D::UpdateData() {
 		target_ = eye_ + forward_;
 	}
 
+	// カメラの各ベクトルを計算
+	MakeCameraVector(eye_, target_, forward_, right_, up_);
+
 	// ビュー行列作成
-	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
+	viewMatrix_ = MakeLookAtMatrix(eye_, target_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
 	const Vector3 culEye = eye_ - forward_;
-	const Matrix4x4 CullingFrustumVM = MakeLookAtMatrix(culEye, target_, up_);
+	const Matrix4x4 CullingFrustumVM = MakeLookAtMatrix(culEye, target_);
 	const Matrix4x4& m = viewProjectionMatrix_;
 
 	// 各平面の抽出（行ベクトル形式）
@@ -299,7 +307,7 @@ void Camera3D::TransferCameraFrustum(uint32_t rootParameterIndex) {
 }
 
 void Camera3D::TransferCameraVector(uint32_t rootParameterIndex) {
-
+	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, vectorResource_->GetGPUVirtualAddress());
 }
 
 const std::string& Camera3D::GetName()const {
@@ -358,7 +366,7 @@ void Camera3D::CreateCameraResource() {
 	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DForGPU));
 	cameraInvResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DInverseForGPU));
 	frustumResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DFrustumForGPU));
-
+	vectorResource_ = MAGISYSTEM::CreateBufferResource(sizeof(CameraVector));
 }
 
 void Camera3D::MapCameraData() {
@@ -370,6 +378,9 @@ void Camera3D::MapCameraData() {
 
 	frustumData_ = nullptr;
 	frustumResource_->Map(0, nullptr, reinterpret_cast<void**>(&frustumData_));
+
+	vectorData_ = nullptr;
+	vectorResource_->Map(0, nullptr, reinterpret_cast<void**>(&vectorData_));
 
 	UpdateCameraData();
 }
@@ -387,6 +398,10 @@ void Camera3D::UpdateCameraData() {
 	frustumData_->top = frustumPlanes_[3];
 	frustumData_->nearClip = frustumPlanes_[4];
 	frustumData_->farClip = frustumPlanes_[5];
+
+	vectorData_->up = up_;
+	vectorData_->right = right_;
+	vectorData_->forward = forward_;
 }
 
 void Camera3D::SetIsUseYawPitch(bool isUseYawPitch) {

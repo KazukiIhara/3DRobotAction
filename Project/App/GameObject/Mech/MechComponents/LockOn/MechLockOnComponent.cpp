@@ -47,7 +47,7 @@ void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 	const float aspect = 16.0f / 9.0f;
 
 	// View, Projection, VP
-	const Matrix4x4 V = MakeLookAtMatrix(view.eye, view.target, view.up);
+	const Matrix4x4 V = MakeLookAtMatrix(view.eye, view.target);
 	const Matrix4x4 P = MakePerspectiveFovMatrix(fovY, aspect, view.nearClipRange, view.farClipRange);
 	Matrix4x4 VP = V * P;
 

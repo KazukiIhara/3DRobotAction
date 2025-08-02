@@ -54,7 +54,7 @@ void SceneDataImporter::Import(const std::string& scaneDataName, bool isSceneCle
 
 	// カメラ
 	for (const auto& camera : sceneData.cameras) {
-		std::shared_ptr<Camera3D> newCamera = std::make_shared<Camera3D>(camera.name, camera.eye, camera.target, camera.up);
+		std::shared_ptr<Camera3D> newCamera = std::make_shared<Camera3D>(camera.name, camera.eye, camera.target);
 
 		newCamera->SetEyeControlPoints(camera.eyeControlPoints);
 		newCamera->SetTargetControlPoints(camera.targetControlPoints);

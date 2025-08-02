@@ -57,7 +57,7 @@ void LightManager::Update() {
 	Vector3 position = target_ - lightDir * lightDistance;
 
 	// ビュー行列（ライト空間ビュー）
-	lightView_ = MakeLookAtMatrix(position, target_, up);
+	lightView_ = MakeLookAtMatrix(position, target_);
 
 	// VP 行列を GPU 定数バッファへ書き込み
 	directionalLightCameraData_->viewProjection = lightView_ * lightProj_;

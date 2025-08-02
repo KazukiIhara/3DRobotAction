@@ -1,6 +1,7 @@
 #include "../../Compute/ParticleEffect/ParticleEffect.hlsli"
 
 ConstantBuffer<Camera> gCamera : register(b0);
+ConstantBuffer<CameraVector> gCameraVec : register(b1);
 StructuredBuffer<Particle> gInstanceData : register(t0);
 
 [outputtopology("triangle")]
@@ -20,10 +21,9 @@ void main(in payload ASPayload payload,
     const float3 camPos = gCamera.worldPosition;
     const float3 objPos = particle.pos;
     
-    const float3 forward = normalize(camPos - objPos);
-    
-    const float3 right = normalize(cross(worldUp, forward));
-    const float3 up = cross(forward, right);
+    const float3 forward = normalize(gCameraVec.forward);
+    const float3 right = normalize(gCameraVec.right);
+    const float3 up = normalize(gCameraVec.up);
     
     float sx = particle.size.x * 0.5f; // â°ïùÇÃîºï™
     float sy = particle.size.y * 0.5f; // ècïùÇÃîºï™

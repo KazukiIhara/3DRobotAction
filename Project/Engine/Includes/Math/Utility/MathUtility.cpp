@@ -372,7 +372,7 @@ Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
 
 Vector3 MAGIMath::CatmullRomSpline(const std::vector<Vector3>& controlPoints, float t) {
 	int numPoints = static_cast<int>(controlPoints.size());
-	
+
 	if (numPoints < 4) {
 		// 4つ未満のポイントではCatmull-Romスプラインが機能しないため、直接返す
 		return controlPoints[0];
@@ -629,6 +629,27 @@ Matrix4x4 MAGIMath::RemoveScaling(const Matrix4x4& mat) {
 	return result;
 }
 
+Matrix4x4 MAGIMath::MakeLookAtMatrix(const Vector3& eye, const Vector3& target) {
+	// 1) 前方向ベクトル（左手系: target - eye）
+	Vector3 z = Normalize(target - eye);
+
+	// 2) 右方向ベクトル
+	Vector3 x = Normalize(Cross(MakeUpVector3(), z));
+
+	// 3) 真上ベクトル
+	Vector3 y = Cross(z, x);
+
+	// 4) ビューマトリクスを組み立て
+	Matrix4x4 result = {
+		x.x,  y.x,  z.x,  0.0f,   // 第一行
+		x.y,  y.y,  z.y,  0.0f,   // 第二行
+		x.z,  y.z,  z.z,  0.0f,   // 第三行
+	   -Dot(x, eye), -Dot(y, eye), -Dot(z, eye), 1.0f  // 第四行
+	};
+
+	return result;
+}
+
 Matrix4x4 MAGIMath::MakeLookAtMatrix(const Vector3& eye, const Vector3& target, const Vector3& up) {
 	// 1) 前方向ベクトル（左手系: target - eye）
 	Vector3 z = Normalize(target - eye);
@@ -648,6 +669,15 @@ Matrix4x4 MAGIMath::MakeLookAtMatrix(const Vector3& eye, const Vector3& target, 
 	};
 
 	return result;
+}
+
+void MAGIMath::MakeCameraVector(const Vector3& eye, const Vector3& target, Vector3& forward, Vector3& right, Vector3& up) {
+	// 1) 前方向ベクトル（左手系: target - eye）
+	forward = Normalize(target - eye);
+	// 2) 右方向ベクトル
+	right = Normalize(Cross(MakeUpVector3(), forward));
+	// 3) 真上ベクトル
+	up = Cross(forward, right);
 }
 
 Matrix4x4 MAGIMath::MakeScaleMatrix(const Vector3& scale) {
