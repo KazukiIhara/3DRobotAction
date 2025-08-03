@@ -29,7 +29,7 @@ void Enemy::Update() {
 	// コマンド
 	InputCommand command{};
 
-	//command = ai_->Update();
+	command = ai_->Update();
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
