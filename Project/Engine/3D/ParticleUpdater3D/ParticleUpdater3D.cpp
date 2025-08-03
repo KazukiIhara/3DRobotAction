@@ -41,9 +41,6 @@ ParticleUpdater3D::ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAV
 	// パーティクルデータ初期化
 	InitData();
 
-	// パーティクルの発生カウント初期化
-	particleEmitCount_ = 0;
-
 }
 
 void ParticleUpdater3D::InitData() {
@@ -73,17 +70,19 @@ void ParticleUpdater3D::InitData() {
 	uavBarrier.UAV.pResource = particleBuffer_.Get();
 	commandList->ResourceBarrier(1, &uavBarrier);
 
+	// パーティクルの発生カウント初期化
+	emitCount_ = 0;
 }
 
 void ParticleUpdater3D::AddParticle(const GPUParticleEmitData& emitData) {
 	// 参照を取得
-	auto& data = emitParticleData_[particleEmitCount_];
+	auto& data = emitParticleData_[emitCount_];
 
 	// データを挿入
 	data = emitData;
 
 	// 発生数をインクリメント
-	particleEmitCount_++;
+	emitCount_++;
 }
 
 
@@ -102,6 +101,8 @@ void ParticleUpdater3D::Update() {
 	commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleEmit));
 
 	// パラメータを積む
+	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
+	commandList->SetComputeRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(emitSrvIdx_));
 
 
 	// 実行
@@ -119,21 +120,21 @@ void ParticleUpdater3D::Update() {
 	// パーティクル更新
 	// 
 
-	// パイプライン設定
-	commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleUpdate));
-	commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleUpdate));
+	//// パイプライン設定
+	//commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleUpdate));
+	//commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleUpdate));
 
-	// パラメータを積む
+	//// パラメータを積む
+	//commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
 
-
-	// 実行
-	commandList->Dispatch(1, 1, 1);
+	//// 実行
+	//commandList->Dispatch(1, 1, 1);
 
 	// 描画用のステートへ遷移 
 	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
 
 	// 発生数を初期化
-	particleEmitCount_ = 0;
+	emitCount_ = 0;
 }
 
 uint32_t ParticleUpdater3D::GetInstancingSrvIndex() const {

@@ -3,7 +3,7 @@
 // パーティクル
 RWStructuredBuffer<Particle> gParticle : register(u0);
 StructuredBuffer<ParticleEmitData> gEmit : register(t0);
-ConstantBuffer<ParticleCount> gCounter : register(b0);
+ConstantBuffer<EmitCount> gEmitCount : register(b0);
 
 // 初期化
 [numthreads(1, 1, 1)]

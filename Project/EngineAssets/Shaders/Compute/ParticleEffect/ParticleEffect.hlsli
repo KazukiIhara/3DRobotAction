@@ -48,7 +48,7 @@ struct Particle
     
 };
 
-struct ParticleCount
+struct EmitCount
 {
     uint emitCount;
     float3 pad0;

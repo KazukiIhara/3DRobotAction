@@ -22,6 +22,16 @@ void ComputePipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompil
 	SetRootSignature(ComputePipelineStateType::ParticleInit);
 	SetPipelineState(ComputePipelineStateType::ParticleInit);
 
+	// EmitParticle
+	emitParticlePipeline_ = std::make_unique<EmitParticleComputePipeline>(dxgi, shaderCompiler);
+	SetRootSignature(ComputePipelineStateType::ParticleEmit);
+	SetPipelineState(ComputePipelineStateType::ParticleEmit);
+
+	// UpdateParticle
+	updateParticlePipeline_ = std::make_unique<UpdateParticleComputePipeline>(dxgi, shaderCompiler);
+	SetRootSignature(ComputePipelineStateType::ParticleUpdate);
+	SetPipelineState(ComputePipelineStateType::ParticleUpdate);
+
 	// 他のパイプランはここに追加
 
 }
@@ -44,6 +54,14 @@ void ComputePipelineManager::SetRootSignature(ComputePipelineStateType pipelineS
 		// InitParticle
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = initParticlePipeline_->GetRootSignature();
 		break;
+	case ComputePipelineStateType::ParticleEmit:
+		// InitParticle
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = emitParticlePipeline_->GetRootSignature();
+		break;
+	case ComputePipelineStateType::ParticleUpdate:
+		// InitParticle
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = updateParticlePipeline_->GetRootSignature();
+		break;
 	}
 }
 
@@ -54,6 +72,12 @@ void ComputePipelineManager::SetPipelineState(ComputePipelineStateType pipelineS
 		break;
 	case ComputePipelineStateType::ParticleInit:
 		computePipelineStates_[static_cast<uint32_t>(pipelineState)] = initParticlePipeline_->GetPipelineState();
+		break;
+	case ComputePipelineStateType::ParticleEmit:
+		computePipelineStates_[static_cast<uint32_t>(pipelineState)] = emitParticlePipeline_->GetPipelineState();
+		break;
+	case ComputePipelineStateType::ParticleUpdate:
+		computePipelineStates_[static_cast<uint32_t>(pipelineState)] = updateParticlePipeline_->GetPipelineState();
 		break;
 	}
 }

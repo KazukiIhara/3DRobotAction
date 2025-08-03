@@ -14,6 +14,8 @@
 
 #include "ComputePipelines/SkinningComputePipeline/SkinningComputePipeline.h"
 #include "ComputePipelines/ParticleComputePipelines/InitParticleComputePipeline/InitParticleComputePipeline.h"
+#include "ComputePipelines/ParticleComputePipelines/EmitParticleComputePipeline/EmitParticleComputePipeline.h"
+#include "ComputePipelines/ParticleComputePipelines/UpdateParticleComputePipeline/UpdateParticleComputePipeline.h"
 
 // 前方宣言
 class DXGI;
@@ -47,5 +49,8 @@ private:
 	std::unique_ptr<SkinningComputePipeline> skinningComputePipeline_ = nullptr;
 	// Particle初期化用のComputePipeline
 	std::unique_ptr<InitParticleComputePipeline> initParticlePipeline_ = nullptr;
-
+	// Particle発生用のComputePipeline
+	std::unique_ptr<EmitParticleComputePipeline> emitParticlePipeline_ = nullptr;
+	// Particle更新用のComputePipeline
+	std::unique_ptr<UpdateParticleComputePipeline> updateParticlePipeline_ = nullptr;
 };

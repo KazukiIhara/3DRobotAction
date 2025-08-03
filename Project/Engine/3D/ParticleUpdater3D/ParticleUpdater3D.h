@@ -51,11 +51,11 @@ private:
 	GPUParticleEmitData* emitParticleData_ = nullptr;
 	uint32_t emitSrvIdx_;
 
-	// パーティクルカウンター
-	ComPtr<ID3D12Resource> particleCountBuffer_;
-	GPUParticleCount* particleCountData_ = nullptr;
-	uint32_t countUavIdx_;
-	D3D12_RESOURCE_STATES currentParticleResourceState_ = D3D12_RESOURCE_STATE_COMMON;
+	// 射出する数
+	uint32_t emitCount_ = 0;
+	
+	// AliveBuffer
+	ComPtr<ID3D12Resource> aliveBuffer_[2];
 
 
 private:

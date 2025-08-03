@@ -64,9 +64,9 @@ struct GPUParticle {
 };
 
 /// <summary>
-/// パーティクルのカウント用構造体
+/// 発生カウント用
 /// </summary>
-struct GPUParticleCount {
+struct GPUParticleEmitCount {
 	uint32_t emitCount;
 	Vector3 pad0;
 };
