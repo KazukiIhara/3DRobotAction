@@ -637,6 +637,11 @@ void MAGISYSTEM::Draw() {
 	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { srvuavManager_->GetDescriptorHeap() };
 	commandList->SetDescriptorHeaps(1, descriptorHeaps->GetAddressOf());
 
+	//
+	// パーティクルシステムの更新
+	//
+	particleUpdater3D_->Update();
+
 	// 
 	// 描画処理
 	// 

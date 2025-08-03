@@ -48,6 +48,11 @@ struct Particle
     
 };
 
+struct EmitCount
+{
+    uint emitCount;
+    float3 pad0;
+};
 
 // Meshシェーダーからピクセルシェーダーに渡す構造体
 struct MeshOutput
