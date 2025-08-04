@@ -148,12 +148,12 @@ inline void SampleScene<Data>::Initialize() {
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
 
 	// パーティクル
-	for (size_t i = 0; i < 1; i++) {
+	for (size_t i = 0; i < 1024; i++) {
 		GPUParticleEmitData data;
 		data.pos = { 0.0f,5.0f,0.0f };
 		data.size = { 1.0f,1.0f };
 		data.texIndex = MAGISYSTEM::GetDefaultTextureIndex();
-		data.velo = Vector3(0.0f, -0.1f, 0.0f);
+		data.velo = Vector3(Random::GenerateFloat(-0.5f, 0.5f), Random::GenerateFloat(-0.5f, 0.5f), Random::GenerateFloat(-0.5f, 0.5f));
 		MAGISYSTEM::EmitParticle(data);
 	}
 
