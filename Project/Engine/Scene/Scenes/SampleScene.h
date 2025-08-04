@@ -10,6 +10,8 @@
 
 #include "3D/Cameras3D/ThirdPersonCamera/ThirdPersonCamera.h"
 
+#include "Random/Random.h"
+
 using namespace MAGIUtility;
 
 enum class ParadinState {
@@ -145,6 +147,15 @@ inline void SampleScene<Data>::Initialize() {
 	// 平行光源の設定
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
 
+	// パーティクル
+	for (size_t i = 0; i < 1; i++) {
+		GPUParticleEmitData data;
+		data.pos = { 0.0f,5.0f,0.0f };
+		data.size = { 1.0f,1.0f };
+		data.texIndex = MAGISYSTEM::GetDefaultTextureIndex();
+		data.velo = Vector3(0.0f, -0.1f, 0.0f);
+		MAGISYSTEM::EmitParticle(data);
+	}
 
 }
 
@@ -307,14 +318,7 @@ inline void SampleScene<Data>::Update() {
 	MAGISYSTEM::ApplyAnimationSkinModel("BrainStem", MAGISYSTEM::FindAnimation("BrainStem"), brainStemT_, true);
 
 
-	// パーティクル
-	for (size_t i = 0; i < 1024; i++) {
-		GPUParticleEmitData data;
-		data.pos = { 0.0f,5.0f,0.0f };
-		data.size = { 1.0f,1.0f };
-		data.texIndex = MAGISYSTEM::GetDefaultTextureIndex();
-		MAGISYSTEM::EmitParticle(data);
-	}
+
 }
 
 template<typename Data>

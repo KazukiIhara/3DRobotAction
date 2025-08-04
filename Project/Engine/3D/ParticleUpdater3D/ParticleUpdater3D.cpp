@@ -3,17 +3,20 @@
 #include <cassert>
 
 #include "MAGIAssert/MAGIAssert.h"
+#include "DeltaTimer/DeltaTimer.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
 
-ParticleUpdater3D::ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager, ComputePipelineManager* computePipelineManager) {
+ParticleUpdater3D::ParticleUpdater3D(DeltaTimer* deltaTimer, DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager, ComputePipelineManager* computePipelineManager) {
+	deltaTimer_ = deltaTimer;
 	dxgi_ = dxgi;
 	command_ = command;
 	srvUavManager_ = srvUavManager;
 	computePipelineManager_ = computePipelineManager;
 
+	assert(deltaTimer);
 	assert(dxgi_);
 	assert(command_);
 	assert(srvUavManager_);
@@ -43,9 +46,9 @@ ParticleUpdater3D::ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAV
 
 
 	// 射出するパーティクルの数を送る
-	emitCountBuffer_ = dxgi_->CreateBufferResource(sizeof(GPUParticleEmitCount));
+	particleInfoBuffer_ = dxgi_->CreateBufferResource(sizeof(GPUParticleInfo));
 	// Map
-	emitCountBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&emitCountData_));
+	particleInfoBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&particleInfo));
 
 	// パーティクルデータ初期化
 	InitData();
@@ -81,7 +84,7 @@ void ParticleUpdater3D::InitData() {
 
 	// パーティクルの発生カウント初期化
 	emitCount_ = 0;
-	emitCountData_->emitCount = emitCount_;
+	particleInfo->emitCount = emitCount_;
 }
 
 void ParticleUpdater3D::AddParticle(const GPUParticleEmitData& emitData) {
@@ -105,7 +108,10 @@ void ParticleUpdater3D::Update() {
 	// 
 
 	// パーティクルの発生数を入力
-	emitCountData_->emitCount = emitCount_;
+	particleInfo->emitCount = emitCount_;
+	// デルタタイムを入力
+	particleInfo->deltaTime = deltaTimer_->GetDeltaTime();
+
 
 	// 更新用のステートへ遷移
 	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
@@ -123,8 +129,8 @@ void ParticleUpdater3D::Update() {
 	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
 	// 発射されるパーティクルのリスト (SRV)
 	commandList->SetComputeRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(emitSrvIdx_));
-	// 発射されるパーティクルの数 (CBV)
-	commandList->SetComputeRootConstantBufferView(2, emitCountBuffer_->GetGPUVirtualAddress());
+	// パーティクルに関する定数情報(CBV)
+	commandList->SetComputeRootConstantBufferView(2, particleInfoBuffer_->GetGPUVirtualAddress());
 
 	// 実行
 	commandList->Dispatch(1, 1, 1);
@@ -141,15 +147,20 @@ void ParticleUpdater3D::Update() {
 	// パーティクル更新
 	// 
 
-	//// パイプライン設定
-	//commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleUpdate));
-	//commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleUpdate));
+	// パイプライン設定
+	commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleUpdate));
+	commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleUpdate));
 
-	//// パラメータを積む
-	//commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
 
-	//// 実行
-	//commandList->Dispatch(1, 1, 1);
+	// パラメータを積む
+
+	// パーティクルリスト (UAV)
+	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
+	// パーティクルに関する定数情報(CBV)
+	commandList->SetComputeRootConstantBufferView(1, particleInfoBuffer_->GetGPUVirtualAddress());
+
+	// 実行
+	commandList->Dispatch(1, 1, 1);
 
 	// 描画用のステートへ遷移 
 	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);

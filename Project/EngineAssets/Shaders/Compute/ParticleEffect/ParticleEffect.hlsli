@@ -48,10 +48,11 @@ struct Particle
     
 };
 
-struct EmitCount
+struct ParticleInfo
 {
     uint emitCount;
-    float3 pad0;
+    float deltaTime;
+    float2 pad0;
 };
 
 // Meshシェーダーからピクセルシェーダーに渡す構造体
@@ -80,6 +81,12 @@ struct CameraVector
     
     float3 forward;
     float pad2;
+};
+
+struct CameraInv
+{
+    float4x4 invView;
+    float4x4 invProj;
 };
 
 // ASで使う構造体

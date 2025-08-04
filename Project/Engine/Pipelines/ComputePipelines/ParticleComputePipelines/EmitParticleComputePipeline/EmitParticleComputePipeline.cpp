@@ -60,7 +60,7 @@ void EmitParticleComputePipeline::CreateRootSignature() {
 	rootParams[1].DescriptorTable.pDescriptorRanges = emitParticleSrv;
 	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
-	// EmitCount用
+	// Info用
 	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParams[2].Descriptor.ShaderRegister = 0;

@@ -14,6 +14,7 @@
 #include "Enums/BlendModeEnum.h"
 
 // 前方宣言
+class DeltaTimer;
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -24,7 +25,7 @@ class ComputePipelineManager;
 /// </summary>
 class ParticleUpdater3D {
 public:
-	ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager, ComputePipelineManager* computePipelineManager);
+	ParticleUpdater3D(DeltaTimer* deltaTimer, DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager, ComputePipelineManager* computePipelineManager);
 	~ParticleUpdater3D() = default;
 
 	void InitData();
@@ -52,8 +53,8 @@ private:
 	uint32_t emitSrvIdx_;
 
 	// 射出するパーティクルの数を送る
-	ComPtr<ID3D12Resource> emitCountBuffer_;
-	GPUParticleEmitCount* emitCountData_ = nullptr;
+	ComPtr<ID3D12Resource> particleInfoBuffer_;
+	GPUParticleInfo* particleInfo = nullptr;
 	uint32_t emitCount_;
 
 	// AliveBuffer
@@ -62,6 +63,7 @@ private:
 	ComPtr<ID3D12Resource> deadListBuffer_;
 
 private:
+	DeltaTimer* deltaTimer_ = nullptr;
 	DXGI* dxgi_ = nullptr;
 	DirectXCommand* command_ = nullptr;
 	SRVUAVManager* srvUavManager_ = nullptr;

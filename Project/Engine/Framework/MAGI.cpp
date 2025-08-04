@@ -246,7 +246,7 @@ void MAGISYSTEM::Initialize() {
 	skyBoxDrawer_ = std::make_unique<SkyBoxDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// ParticleUpdater
-	particleUpdater3D_ = std::make_unique<ParticleUpdater3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), computePipelineManager_.get());
+	particleUpdater3D_ = std::make_unique<ParticleUpdater3D>(deltaTimer_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), computePipelineManager_.get());
 	// ParticleDrawer
 	particleDrawer3D_ = std::make_unique<ParticleDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get(), particleUpdater3D_.get());
 

@@ -66,7 +66,8 @@ struct GPUParticle {
 /// <summary>
 /// 発生カウント用
 /// </summary>
-struct GPUParticleEmitCount {
+struct GPUParticleInfo {
 	uint32_t emitCount;
-	Vector3 pad0;
+	float deltaTime;
+	Vector2 pad0;
 };

@@ -39,13 +39,18 @@ void UpdateParticleComputePipeline::CreateRootSignature() {
 	particleUav[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// Root Parameters
-	D3D12_ROOT_PARAMETER rootParams[1] = {};
+	D3D12_ROOT_PARAMETER rootParams[2] = {};
 
 	// Particle用
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[0].DescriptorTable.NumDescriptorRanges = _countof(particleUav);
 	rootParams[0].DescriptorTable.pDescriptorRanges = particleUav;
 	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
+	// Info用
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	rootParams[1].Descriptor.ShaderRegister = 0;
 
 	// Root Signature
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc = {};
