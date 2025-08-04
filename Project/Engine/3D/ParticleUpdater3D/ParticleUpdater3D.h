@@ -51,12 +51,15 @@ private:
 	GPUParticleEmitData* emitParticleData_ = nullptr;
 	uint32_t emitSrvIdx_;
 
-	// 射出する数
-	uint32_t emitCount_ = 0;
-	
-	// AliveBuffer
-	ComPtr<ID3D12Resource> aliveBuffer_[2];
+	// 射出するパーティクルの数を送る
+	ComPtr<ID3D12Resource> emitCountBuffer_;
+	GPUParticleEmitCount* emitCountData_ = nullptr;
+	uint32_t emitCount_;
 
+	// AliveBuffer
+	ComPtr<ID3D12Resource> aliveListBuffer_[2];
+	// DeadList
+	ComPtr<ID3D12Resource> deadListBuffer_;
 
 private:
 	DXGI* dxgi_ = nullptr;

@@ -306,6 +306,15 @@ inline void SampleScene<Data>::Update() {
 	brainStemT_ += MAGISYSTEM::GetDeltaTime();
 	MAGISYSTEM::ApplyAnimationSkinModel("BrainStem", MAGISYSTEM::FindAnimation("BrainStem"), brainStemT_, true);
 
+
+	// パーティクル
+	for (size_t i = 0; i < 1024; i++) {
+		GPUParticleEmitData data;
+		data.pos = { 0.0f,5.0f,0.0f };
+		data.size = { 1.0f,1.0f };
+		data.texIndex = MAGISYSTEM::GetDefaultTextureIndex();
+		MAGISYSTEM::EmitParticle(data);
+	}
 }
 
 template<typename Data>

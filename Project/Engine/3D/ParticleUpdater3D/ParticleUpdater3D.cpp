@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "MAGIAssert/MAGIAssert.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -33,10 +34,18 @@ ParticleUpdater3D::ParticleUpdater3D(DXGI* dxgi, DirectXCommand* command, SRVUAV
 
 
 	// 射出するパーティクル
-	emitParticleBuffer_ = dxgi_->CreateBufferResource(sizeof(GPUParticleEmitData) * kMaxParticleNum, true);
+	emitParticleBuffer_ = dxgi_->CreateBufferResource(sizeof(GPUParticleEmitData) * kMaxParticleNum);
 	// SRV
 	emitSrvIdx_ = srvUavManager_->Allocate();
 	srvUavManager_->CreateSrvStructuredBuffer(emitSrvIdx_, emitParticleBuffer_.Get(), kMaxParticleNum, sizeof(GPUParticleEmitData));
+	// Map
+	emitParticleBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&emitParticleData_));
+
+
+	// 射出するパーティクルの数を送る
+	emitCountBuffer_ = dxgi_->CreateBufferResource(sizeof(GPUParticleEmitCount));
+	// Map
+	emitCountBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&emitCountData_));
 
 	// パーティクルデータ初期化
 	InitData();
@@ -72,9 +81,13 @@ void ParticleUpdater3D::InitData() {
 
 	// パーティクルの発生カウント初期化
 	emitCount_ = 0;
+	emitCountData_->emitCount = emitCount_;
 }
 
 void ParticleUpdater3D::AddParticle(const GPUParticleEmitData& emitData) {
+	// パーティクル上限検査
+	MAGIAssert::Assert(kMaxParticleNum >= emitCount_, "MaxParticleNum !");
+
 	// 参照を取得
 	auto& data = emitParticleData_[emitCount_];
 
@@ -91,19 +104,27 @@ void ParticleUpdater3D::Update() {
 	// パーティクル発生
 	// 
 
+	// パーティクルの発生数を入力
+	emitCountData_->emitCount = emitCount_;
+
 	// 更新用のステートへ遷移
 	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = command_->GetList();
+
 	// パイプライン設定
 	commandList->SetComputeRootSignature(computePipelineManager_->GetRootSignature(ComputePipelineStateType::ParticleEmit));
 	commandList->SetPipelineState(computePipelineManager_->GetPipelineState(ComputePipelineStateType::ParticleEmit));
 
 	// パラメータを積む
-	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
-	commandList->SetComputeRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(emitSrvIdx_));
 
+	// パーティクルリスト (UAV)
+	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
+	// 発射されるパーティクルのリスト (SRV)
+	commandList->SetComputeRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(emitSrvIdx_));
+	// 発射されるパーティクルの数 (CBV)
+	commandList->SetComputeRootConstantBufferView(2, emitCountBuffer_->GetGPUVirtualAddress());
 
 	// 実行
 	commandList->Dispatch(1, 1, 1);
@@ -133,7 +154,7 @@ void ParticleUpdater3D::Update() {
 	// 描画用のステートへ遷移 
 	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
 
-	// 発生数を初期化
+	// 次のフレーム用に初期化
 	emitCount_ = 0;
 }
 

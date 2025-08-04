@@ -1518,6 +1518,10 @@ void MAGISYSTEM::SetSkyBoxTextureIndex(uint32_t skyBoxTextureIndex) {
 	skyBoxDrawer_->SetTextureIndex(skyBoxTextureIndex);
 }
 
+void MAGISYSTEM::EmitParticle(const GPUParticleEmitData& emitData) {
+	particleUpdater3D_->AddParticle(emitData);
+}
+
 void MAGISYSTEM::AddPlaneEffect(const PlaneEffectParam& param) {
 	planeEffectManager_->Add(param);
 }
