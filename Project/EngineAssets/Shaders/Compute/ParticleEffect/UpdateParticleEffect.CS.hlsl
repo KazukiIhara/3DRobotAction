@@ -14,27 +14,25 @@ void main(uint3 DTid : SV_DispatchThreadID)
     if (particleIndex < kMaxParticles)
     {
         Particle p = gParticle[particleIndex];
-        if (p.age <= p.life)
+        if (0.0f < p.timer)
         {
-            gParticle[particleIndex].pos += p.velo * gInfo.deltaTime;
-            gParticle[particleIndex].age += gInfo.deltaTime;
+            float newTimer = p.timer - gInfo.deltaTime;
             
-            return;
-        }
-        else
-        {
-            int freeListIdx;
-            InterlockedAdd(gFreeListIndex[0], 1, freeListIdx);
-        
-            if ((freeListIdx + 1) < kMaxParticles)
+            gParticle[particleIndex].pos += p.velo * gInfo.deltaTime;
+            gParticle[particleIndex].timer = newTimer;
+            
+            if (newTimer <= 0.0f)
             {
-                gFreeList[freeListIdx + 1] = particleIndex;
-            }
-            else
-            {
+                int freeListIdx;
                 InterlockedAdd(gFreeListIndex[0], 1, freeListIdx);
+                if ((freeListIdx + 1) < kMaxParticles)
+                {
+                    gFreeList[freeListIdx + 1] = particleIndex;
+                }
+            
             }
         }
-                
+        
+        
     }
 }

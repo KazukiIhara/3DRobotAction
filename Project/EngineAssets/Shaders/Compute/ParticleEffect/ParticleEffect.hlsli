@@ -43,7 +43,7 @@ struct Particle
     float4 color;
     
     float2 size;
-    float age;
+    float timer;
     float pad0;
     
 };

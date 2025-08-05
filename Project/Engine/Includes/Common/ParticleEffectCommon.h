@@ -59,7 +59,7 @@ struct GPUParticle {
 	Vector4 color;
 
 	Vector2 size;
-	float age;
+	float timer;
 	float pad0;
 };
 

@@ -189,7 +189,7 @@ inline void SampleScene<Data>::Update() {
 	ImGui::Begin("Particle");
 	if (ImGui::Button("Emit")) {
 		// パーティクル
-		for (size_t i = 0; i < 400; i++) {
+		for (size_t i = 0; i < 500; i++) {
 			GPUParticleEmitData data;
 			data.pos = { 0.0f,5.0f,0.0f };
 			data.size = { 0.05f,0.05f };

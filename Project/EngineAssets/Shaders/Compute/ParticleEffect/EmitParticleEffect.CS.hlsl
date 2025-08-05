@@ -14,7 +14,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     if (gInfo.emitCount != 0)
     {
         for (uint i = 0; i < gInfo.emitCount; ++i)
-        {                      
+        {
             int freeListIndex;
             InterlockedAdd(gFreeListIndex[0], -1, freeListIndex);
             if (0 <= freeListIndex && freeListIndex < kMaxParticles)
@@ -26,7 +26,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
                 gParticle[particleIdx].texIdx = gEmit[i].texIndex;
                 gParticle[particleIdx].color = gEmit[i].color;
                 gParticle[particleIdx].size = gEmit[i].size;
-                gParticle[particleIdx].age = 0.0f;                 
+                gParticle[particleIdx].timer = gEmit[i].life;
             }
             else
             {

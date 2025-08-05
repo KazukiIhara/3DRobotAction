@@ -13,7 +13,7 @@ void main(uint3 tid : SV_DispatchThreadID)
     ASPayload payload;
     payload.instanceID = instanceID;
     
-    uint alive = (p.age <= p.life);
+    uint alive = (0.0f < p.timer);
 
     DispatchMesh(alive, 1, 1, payload);
     
