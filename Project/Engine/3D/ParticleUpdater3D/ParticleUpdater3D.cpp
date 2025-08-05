@@ -89,9 +89,9 @@ void ParticleUpdater3D::InitData() {
 	commandList->SetComputeRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(freeListIdxUavIdx_));
 	commandList->SetComputeRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(freeListUavIdx_));
 
-
 	// 実行
-	commandList->Dispatch(1, 1, 1);
+	const uint32_t groupCount = (kMaxParticleNum + kThreadsPerGroup - 1) / kThreadsPerGroup;
+	commandList->Dispatch(groupCount, 1, 1);
 
 	// UAV 完了保証
 	D3D12_RESOURCE_BARRIER uavBarrierParticle{};
@@ -207,7 +207,8 @@ void ParticleUpdater3D::Update() {
 	commandList->SetComputeRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(freeListUavIdx_));
 
 	// 実行
-	commandList->Dispatch(1, 1, 1);
+	const uint32_t groupCount = (kMaxParticleNum + kThreadsPerGroup - 1) / kThreadsPerGroup;
+	commandList->Dispatch(groupCount, 1, 1);
 
 	// UAV 完了保証
 	uavBarrierFListIdx.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;

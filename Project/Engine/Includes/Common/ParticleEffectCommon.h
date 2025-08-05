@@ -27,8 +27,12 @@ struct Particle3DPipelineStateStream {
 	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT	dsvFormat;
 };
 
+// スレッドの数
+static constexpr uint32_t kThreadsPerGroup = 1024;
+
 // パーティクルの最大数
-static constexpr uint32_t kMaxParticleNum = 1024;
+static constexpr uint32_t kMaxParticleNum = 1048576;
+
 
 /// <summary>
 /// パーティクルエフェクトの発生時データ

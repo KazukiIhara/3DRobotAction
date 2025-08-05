@@ -1,5 +1,5 @@
 
-static const uint kMaxParticles = 1024;
+static const uint kMaxParticles = 1048576;
 
 static const float4 kPlane[4] =
 {
