@@ -174,6 +174,17 @@ void ParticleUpdater3D::Update() {
 	uavBarrier.UAV.pResource = particleBuffer_.Get();
 	commandList->ResourceBarrier(1, &uavBarrier);
 
+	// UAV 完了保証
+	D3D12_RESOURCE_BARRIER uavBarrierFListIdx{};
+	uavBarrierFListIdx.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrierFListIdx.UAV.pResource = freeListIdxBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrierFListIdx);
+
+	// UAV 完了保証
+	D3D12_RESOURCE_BARRIER uavBarrierFList{};
+	uavBarrierFList.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrierFList.UAV.pResource = freeListBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrierFList);
 
 	//
 	// パーティクル更新
@@ -197,6 +208,16 @@ void ParticleUpdater3D::Update() {
 
 	// 実行
 	commandList->Dispatch(1, 1, 1);
+
+	// UAV 完了保証
+	uavBarrierFListIdx.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrierFListIdx.UAV.pResource = freeListIdxBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrierFListIdx);
+
+	// UAV 完了保証
+	uavBarrierFList.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrierFList.UAV.pResource = freeListBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrierFList);
 
 	// 描画用のステートへ遷移 
 	TransitionResource(particleBuffer_.Get(), currentParticleResourceState_, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
