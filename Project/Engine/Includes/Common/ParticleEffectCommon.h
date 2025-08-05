@@ -34,15 +34,15 @@ static constexpr uint32_t kMaxParticleNum = 1024;
 /// パーティクルエフェクトの発生時データ
 /// </summary>
 struct GPUParticleEmitData {
-	Vector3 pos;
-	float life;
+	Vector3 pos = { 0.0f,0.0f,0.0 };
+	float life = 5.0f;
 
-	Vector3 velo;
-	uint32_t texIndex;
+	Vector3 velo = { 0.0f,0.0f,0.0f };
+	uint32_t texIndex = 1;
 
-	Vector4 color;
+	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 
-	Vector2 size;
+	Vector2 size = { 1.0f,1.0f };
 	Vector2 pad0;
 };
 
@@ -59,14 +59,15 @@ struct GPUParticle {
 	Vector4 color;
 
 	Vector2 size;
-	float age;
+	float timer;
 	float pad0;
 };
 
 /// <summary>
 /// 発生カウント用
 /// </summary>
-struct GPUParticleEmitCount {
+struct GPUParticleInfo {
 	uint32_t emitCount;
-	Vector3 pad0;
+	float deltaTime;
+	Vector2 pad0;
 };

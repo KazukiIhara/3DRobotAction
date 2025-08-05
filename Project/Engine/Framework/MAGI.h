@@ -620,6 +620,12 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region ParticleSystem
+	// パーティクル発生
+	static void EmitParticle(const GPUParticleEmitData& emitData);
+#pragma endregion
+
+
 #pragma region PlaneEffectManager
 	// 板ポリエフェクトを追加
 	static void AddPlaneEffect(const PlaneEffectParam& param);

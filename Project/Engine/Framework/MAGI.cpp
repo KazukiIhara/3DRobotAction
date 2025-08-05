@@ -246,7 +246,7 @@ void MAGISYSTEM::Initialize() {
 	skyBoxDrawer_ = std::make_unique<SkyBoxDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// ParticleUpdater
-	particleUpdater3D_ = std::make_unique<ParticleUpdater3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), computePipelineManager_.get());
+	particleUpdater3D_ = std::make_unique<ParticleUpdater3D>(deltaTimer_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), computePipelineManager_.get());
 	// ParticleDrawer
 	particleDrawer3D_ = std::make_unique<ParticleDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get(), particleUpdater3D_.get());
 
@@ -1516,6 +1516,10 @@ void MAGISYSTEM::DrawSkinModel(const std::string& name, const Matrix4x4& worldMa
 
 void MAGISYSTEM::SetSkyBoxTextureIndex(uint32_t skyBoxTextureIndex) {
 	skyBoxDrawer_->SetTextureIndex(skyBoxTextureIndex);
+}
+
+void MAGISYSTEM::EmitParticle(const GPUParticleEmitData& emitData) {
+	particleUpdater3D_->AddParticle(emitData);
 }
 
 void MAGISYSTEM::AddPlaneEffect(const PlaneEffectParam& param) {

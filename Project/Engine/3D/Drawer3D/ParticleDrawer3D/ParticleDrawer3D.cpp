@@ -37,7 +37,6 @@ ParticleDrawer3D::ParticleDrawer3D(
 }
 
 void ParticleDrawer3D::Draw(BlendMode mode) {
-	const uint32_t inctanceCount = kMaxParticleNum;
 	const uint32_t instancingSrvIndex = particleUpdater_->GetInstancingSrvIndex();
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
@@ -46,11 +45,11 @@ void ParticleDrawer3D::Draw(BlendMode mode) {
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::ParticleEffect3D, mode));
 
 	camera3DManager_->TransferCurrentCamera(0); // b0
-	camera3DManager_->TransferCurrentCameraVector(1); // b1
+	camera3DManager_->TransferCurrentCameraInverse(1);
 
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // t1000
 
 
-	commandList->DispatchMesh(1, inctanceCount, 1);
+	commandList->DispatchMesh(1, kMaxParticleNum, 1);
 }
