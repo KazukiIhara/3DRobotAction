@@ -55,6 +55,7 @@ struct ParticleInfo
     float2 pad0;
 };
 
+
 // Meshシェーダーからピクセルシェーダーに渡す構造体
 struct MeshOutput
 {

@@ -50,6 +50,20 @@ ParticleUpdater3D::ParticleUpdater3D(DeltaTimer* deltaTimer, DXGI* dxgi, DirectX
 	// Map
 	particleInfoBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&particleInfo));
 
+
+	// フリーリストのインデックス
+	freeListIdxBuffer_ = dxgi_->CreateBufferResource(sizeof(int32_t), true);
+	// UAV
+	freeListIdxUavIdx_ = srvUavManager_->Allocate();
+	srvUavManager_->CreateUavStructuredBuffer(freeListIdxUavIdx_, freeListIdxBuffer_.Get(), 1, sizeof(int32_t));
+
+	// フリーリスト
+	freeListBuffer_ = dxgi_->CreateBufferResource(sizeof(uint32_t) * kMaxParticleNum, true);
+	// UAV
+	freeListUavIdx_ = srvUavManager_->Allocate();
+	srvUavManager_->CreateUavStructuredBuffer(freeListUavIdx_, freeListBuffer_.Get(), kMaxParticleNum, sizeof(uint32_t));
+
+
 	// パーティクルデータ初期化
 	InitData();
 
@@ -72,15 +86,30 @@ void ParticleUpdater3D::InitData() {
 
 	// コマンドを積む
 	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
+	commandList->SetComputeRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(freeListIdxUavIdx_));
+	commandList->SetComputeRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(freeListUavIdx_));
+
 
 	// 実行
 	commandList->Dispatch(1, 1, 1);
 
 	// UAV 完了保証
-	D3D12_RESOURCE_BARRIER uavBarrier{};
-	uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
-	uavBarrier.UAV.pResource = particleBuffer_.Get();
-	commandList->ResourceBarrier(1, &uavBarrier);
+	D3D12_RESOURCE_BARRIER uavBarrierParticle{};
+	uavBarrierParticle.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrierParticle.UAV.pResource = particleBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrierParticle);
+
+	// UAV 完了保証
+	D3D12_RESOURCE_BARRIER uavBarrierFListIdx{};
+	uavBarrierFListIdx.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrierFListIdx.UAV.pResource = freeListIdxBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrierFListIdx);
+
+	// UAV 完了保証
+	D3D12_RESOURCE_BARRIER uavBarrierFList{};
+	uavBarrierFList.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrierFList.UAV.pResource = freeListBuffer_.Get();
+	commandList->ResourceBarrier(1, &uavBarrierFList);
 
 	// パーティクルの発生カウント初期化
 	emitCount_ = 0;
@@ -131,7 +160,10 @@ void ParticleUpdater3D::Update() {
 	commandList->SetComputeRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(emitSrvIdx_));
 	// パーティクルに関する定数情報(CBV)
 	commandList->SetComputeRootConstantBufferView(2, particleInfoBuffer_->GetGPUVirtualAddress());
-
+	// パーティクルの空きリストインデックス
+	commandList->SetComputeRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(freeListIdxUavIdx_));
+	// パーティクルの空きリスト
+	commandList->SetComputeRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(freeListUavIdx_));
 	// 実行
 	commandList->Dispatch(1, 1, 1);
 
@@ -158,6 +190,10 @@ void ParticleUpdater3D::Update() {
 	commandList->SetComputeRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(particleUavIdx_));
 	// パーティクルに関する定数情報(CBV)
 	commandList->SetComputeRootConstantBufferView(1, particleInfoBuffer_->GetGPUVirtualAddress());
+	// パーティクルの空きリストインデックス
+	commandList->SetComputeRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(freeListIdxUavIdx_));
+	// パーティクルの空きリスト
+	commandList->SetComputeRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(freeListUavIdx_));
 
 	// 実行
 	commandList->Dispatch(1, 1, 1);

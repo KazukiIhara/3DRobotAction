@@ -52,15 +52,18 @@ private:
 	GPUParticleEmitData* emitParticleData_ = nullptr;
 	uint32_t emitSrvIdx_;
 
-	// 射出するパーティクルの数を送る
+	// GPUで使うパーティクル用の情報
 	ComPtr<ID3D12Resource> particleInfoBuffer_;
 	GPUParticleInfo* particleInfo = nullptr;
 	uint32_t emitCount_;
 
-	// AliveBuffer
-	ComPtr<ID3D12Resource> aliveListBuffer_[2];
-	// DeadList
-	ComPtr<ID3D12Resource> deadListBuffer_;
+	// フリーリストのインデックス
+	ComPtr<ID3D12Resource> freeListIdxBuffer_;
+	uint32_t freeListIdxUavIdx_;
+
+	// フリーリスト
+	ComPtr<ID3D12Resource> freeListBuffer_;
+	uint32_t freeListUavIdx_;
 
 private:
 	DeltaTimer* deltaTimer_ = nullptr;

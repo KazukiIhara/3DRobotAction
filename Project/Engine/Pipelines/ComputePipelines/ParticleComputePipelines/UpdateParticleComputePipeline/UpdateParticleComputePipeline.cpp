@@ -38,8 +38,22 @@ void UpdateParticleComputePipeline::CreateRootSignature() {
 	particleUav[0].BaseShaderRegister = 0;
 	particleUav[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	// UAV Range
+	D3D12_DESCRIPTOR_RANGE freeListIdxUav[1] = {};
+	freeListIdxUav[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV;
+	freeListIdxUav[0].NumDescriptors = 1;
+	freeListIdxUav[0].BaseShaderRegister = 1;
+	freeListIdxUav[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	// UAV Range
+	D3D12_DESCRIPTOR_RANGE freeListUav[1] = {};
+	freeListUav[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV;
+	freeListUav[0].NumDescriptors = 1;
+	freeListUav[0].BaseShaderRegister = 2;
+	freeListUav[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
 	// Root Parameters
-	D3D12_ROOT_PARAMETER rootParams[2] = {};
+	D3D12_ROOT_PARAMETER rootParams[4] = {};
 
 	// Particle用
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
@@ -51,6 +65,18 @@ void UpdateParticleComputePipeline::CreateRootSignature() {
 	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParams[1].Descriptor.ShaderRegister = 0;
+
+	// freeListIdx用
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[2].DescriptorTable.NumDescriptorRanges = _countof(freeListIdxUav);
+	rootParams[2].DescriptorTable.pDescriptorRanges = freeListIdxUav;
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
+	// FreeList用
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[3].DescriptorTable.NumDescriptorRanges = _countof(freeListUav);
+	rootParams[3].DescriptorTable.pDescriptorRanges = freeListUav;
+	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
 	// Root Signature
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc = {};
