@@ -12,8 +12,10 @@ void main(uint3 DTid : SV_DispatchThreadID)
     if (particleIndex < kMaxParticles)
     {
         Particle p = gParticle[particleIndex];
-        gParticle[particleIndex].pos += p.velo * gInfo.deltaTime;
-        //gParticle[particleIndex].age += gInfo.deltaTime;       
+        if (p.age <= p.life)
+        {
+            gParticle[particleIndex].pos += p.velo * gInfo.deltaTime;
+            gParticle[particleIndex].age += gInfo.deltaTime;
+        }
     }
-    
 }

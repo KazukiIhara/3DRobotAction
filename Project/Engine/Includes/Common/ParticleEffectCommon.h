@@ -35,7 +35,7 @@ static constexpr uint32_t kMaxParticleNum = 1024;
 /// </summary>
 struct GPUParticleEmitData {
 	Vector3 pos = { 0.0f,0.0f,0.0 };
-	float life = 1.0f;
+	float life = 5.0f;
 
 	Vector3 velo = { 0.0f,0.0f,0.0f };
 	uint32_t texIndex = 1;

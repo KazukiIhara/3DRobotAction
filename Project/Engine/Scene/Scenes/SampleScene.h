@@ -70,6 +70,9 @@ private:
 	std::array<Transform3D*, brainStemNum_> brainStemTrans_ = nullptr;
 	float brainStemT_ = 0.0f;
 
+	// texIndex
+	uint32_t circleIndex_;
+
 };
 
 template<typename Data>
@@ -83,6 +86,8 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
 	MAGISYSTEM::LoadTexture("gradationLine.png");
 	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
+
+	circleIndex_ = MAGISYSTEM::LoadTexture("Circle2.png");
 
 	// モデル
 	MAGISYSTEM::LoadModel("teapot");
@@ -147,15 +152,6 @@ inline void SampleScene<Data>::Initialize() {
 	// 平行光源の設定
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
 
-	// パーティクル
-	for (size_t i = 0; i < 1024; i++) {
-		GPUParticleEmitData data;
-		data.pos = { 0.0f,5.0f,0.0f };
-		data.size = { 1.0f,1.0f };
-		data.texIndex = MAGISYSTEM::GetDefaultTextureIndex();
-		data.velo = Vector3(Random::GenerateFloat(-0.5f, 0.5f), Random::GenerateFloat(-0.5f, 0.5f), Random::GenerateFloat(-0.5f, 0.5f));
-		MAGISYSTEM::EmitParticle(data);
-	}
 
 }
 
@@ -190,6 +186,22 @@ inline void SampleScene<Data>::Update() {
 	//ImGui::ColorEdit3("Color", &directionalLight_.color.x);
 	//ImGui::End();
 
+	ImGui::Begin("Particle");
+	if (ImGui::Button("Emit")) {
+		// パーティクル
+		for (size_t i = 0; i < 1024; i++) {
+			GPUParticleEmitData data;
+			data.pos = { 0.0f,5.0f,0.0f };
+			data.size = { 0.05f,0.05f };
+			data.texIndex = circleIndex_;
+			//data.velo = Vector3(Random::GenerateFloat(-0.5f, 0.5f), Random::GenerateFloat(-0.5f, 0.5f), Random::GenerateFloat(-0.5f, 0.5f));
+			data.velo = Vector3(Random::GenerateVector3(-0.5f, 0.5f));
+			data.life = 10.0f;
+			data.color = Vector4(Random::GenerateFloat(0.0f, 1.0f), Random::GenerateFloat(0.0f, 1.0f), Random::GenerateFloat(0.0f, 1.0f), 1.0f);
+			MAGISYSTEM::EmitParticle(data);
+		}
+	}
+	ImGui::End();
 
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
