@@ -73,6 +73,10 @@ private:
 	// texIndex
 	uint32_t circleIndex_;
 
+
+
+	float debugTimer_ = 0.0f;
+
 };
 
 template<typename Data>
@@ -153,6 +157,7 @@ inline void SampleScene<Data>::Initialize() {
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
 
 
+
 }
 
 template<typename Data>
@@ -189,7 +194,7 @@ inline void SampleScene<Data>::Update() {
 	ImGui::Begin("Particle");
 	if (ImGui::Button("Emit")) {
 		// パーティクル
-		for (size_t i = 0; i < 500; i++) {
+		for (size_t i = 0; i < 100; i++) {
 			GPUParticleEmitData data;
 			data.pos = { 0.0f,5.0f,0.0f };
 			data.size = { 0.05f,0.05f };
@@ -201,6 +206,23 @@ inline void SampleScene<Data>::Update() {
 		}
 	}
 	ImGui::End();
+
+	debugTimer_ += MAGISYSTEM::GetDeltaTime();
+
+	if (debugTimer_ >= 1.0f) {
+		for (size_t i = 0; i < 100; i++) {
+			GPUParticleEmitData data;
+			data.pos = { 0.0f,5.0f,0.0f };
+			data.size = { 0.05f,0.05f };
+			data.texIndex = circleIndex_;
+			data.velo = Vector3(Random::GenerateVector3(-0.5f, 0.5f));
+			data.life = 10.0f;
+			data.color = Vector4(Random::GenerateFloat(0.0f, 1.0f), Random::GenerateFloat(0.0f, 1.0f), Random::GenerateFloat(0.0f, 1.0f), 1.0f);
+			MAGISYSTEM::EmitParticle(data);
+		}
+
+		debugTimer_ = 0.0f;
+	}
 
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
