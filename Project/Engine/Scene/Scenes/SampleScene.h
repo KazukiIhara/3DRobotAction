@@ -194,7 +194,7 @@ inline void SampleScene<Data>::Update() {
 	ImGui::Begin("Particle");
 	if (ImGui::Button("Emit")) {
 		// パーティクル
-		for (size_t i = 0; i < 100; i++) {
+		for (size_t i = 0; i < 1000000; i++) {
 			GPUParticleEmitData data;
 			data.pos = { 0.0f,5.0f,0.0f };
 			data.size = { 0.05f,0.05f };
@@ -209,8 +209,8 @@ inline void SampleScene<Data>::Update() {
 
 	debugTimer_ += MAGISYSTEM::GetDeltaTime();
 
-	if (debugTimer_ >= 1.0f) {
-		for (size_t i = 0; i < 100; i++) {
+	if (debugTimer_ >= 0.1f) {
+		for (size_t i = 0; i < 10000; i++) {
 			GPUParticleEmitData data;
 			data.pos = { 0.0f,5.0f,0.0f };
 			data.size = { 0.05f,0.05f };
