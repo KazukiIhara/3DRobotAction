@@ -17,8 +17,10 @@ void main(uint3 DTid : SV_DispatchThreadID)
         if (0.0f < p.timer)
         {
             float newTimer = p.timer - gInfo.deltaTime;
+            float remainRatio = saturate(newTimer / p.life);
             
             gParticle[particleIndex].pos += p.velo * gInfo.deltaTime;
+            gParticle[particleIndex].color.a = remainRatio;
             gParticle[particleIndex].timer = newTimer;
             
             if (newTimer <= 0.0f)
