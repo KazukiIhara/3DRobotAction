@@ -70,8 +70,6 @@
 #include "GameObject3DManager/GameObject3DManager.h"
 #include "Camera2DManager/Camera2DManager.h"
 #include "Camera3DManager/Camera3DManager.h"
-#include "Emitter3DManager/Emitter3DManager.h"
-#include "ParticleGroup3DManager/ParticleGroup3DManager.h"
 #include "LightManager/LightManager.h"
 
 
@@ -476,28 +474,6 @@ public: // エンジンの機能
 	static void ClearCamera3D();
 #pragma endregion
 
-#pragma region Emitter3DManager
-	// エミッターの追加
-	static std::string CreateEmitter3D(const std::string& emitterName, const Vector3& position);
-	// エミッターの削除
-	static void RemoveEmitter3D(const std::string& emitterName);
-	// エミッターの取得
-	static Emitter3D* FindEmitter3D(const std::string& emitterName);
-	// 全削除
-	static void ClearEmitter3D();
-#pragma endregion
-
-#pragma region ParticleGroup3DManager
-	// シンプル形状パーティクルグループの追加
-	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName = "");
-	// モデルのパーティクルグループの追加
-	static std::string CreateStaticParticleGroup3D(const std::string& particleGroupName, const std::string& modelName);
-	// パーティクルグループの取得
-	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
-	// パーティクルリストを取得
-	static const std::vector<std::unique_ptr<BaseParticleGroup3D>>& GetParticleGroupList();
-#pragma endregion
-
 #pragma region LightManager
 	// DirectionalLightをセット
 	static void SetDirectionalLight(const DirectionalLight& directionalLight);
@@ -750,8 +726,6 @@ protected:
 	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 	static std::unique_ptr<Camera2DManager> camera2DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
-	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
-	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
 	static std::unique_ptr<LightManager> lightManager_;
 
 	// 
