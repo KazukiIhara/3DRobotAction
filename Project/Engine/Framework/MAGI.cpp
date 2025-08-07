@@ -74,8 +74,6 @@ std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
 std::unique_ptr<Camera2DManager> MAGISYSTEM::camera2DManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
-std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
-std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nullptr;
 std::unique_ptr<LightManager> MAGISYSTEM::lightManager_ = nullptr;
 
 // 
@@ -114,7 +112,7 @@ std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
 // 
 // GameManager
 // 
-std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
+std::unique_ptr<SceneManager> MAGISYSTEM::sceneManager_ = nullptr;
 
 //
 // Data入出力クラス
@@ -202,10 +200,6 @@ void MAGISYSTEM::Initialize() {
 	camera2DManager_ = std::make_unique<Camera2DManager>();
 	// Camera3DManager
 	camera3DManager_ = std::make_unique<Camera3DManager>();
-	// Emitter3DManager
-	emitter3DManager_ = std::make_unique<Emitter3DManager>();
-	// ParticleGroup3DManager
-	particleGroup3DManager_ = std::make_unique<ParticleGroup3DManager>();
 	// LightManager
 	lightManager_ = std::make_unique<LightManager>(dxgi_.get(), directXCommand_.get());
 
@@ -262,7 +256,7 @@ void MAGISYSTEM::Initialize() {
 	);
 
 	// SceneManager
-	sceneManager_ = std::make_unique<SceneManager<GameData>>();
+	sceneManager_ = std::make_unique<SceneManager>();
 
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();
@@ -403,16 +397,6 @@ void MAGISYSTEM::Finalize() {
 	// LightManager
 	if (lightManager_) {
 		lightManager_.reset();
-	}
-
-	// ParticleGroup3DManager
-	if (particleGroup3DManager_) {
-		particleGroup3DManager_.reset();
-	}
-
-	// Emitter3DManager
-	if (emitter3DManager_) {
-		emitter3DManager_.reset();
 	}
 
 	// Camera3DManager
@@ -608,13 +592,6 @@ void MAGISYSTEM::Update() {
 	// 3Dカメラマネージャの更新処理
 	camera3DManager_->Update();
 
-
-	// 3Dエミッターマネージャの更新処理
-	emitter3DManager_->Update();
-
-	// 3Dパーティクルグループマネージャの更新処理
-	particleGroup3DManager_->Update();
-
 	// ライトマネージャ(新)の更新
 	lightManager_->Update();
 
@@ -765,10 +742,6 @@ void MAGISYSTEM::Draw() {
 
 
 	particleDrawer3D_->Draw(BlendMode::Add);
-
-
-	// パーティクルの描画処理
-	particleGroup3DManager_->Draw();
 
 	// ポストエフェクトの影響を受けるスプライトを描画
 	for (uint32_t i = static_cast<uint32_t>(BlendMode::None); i < kBlendModeNum; ++i) {
@@ -1351,38 +1324,6 @@ void MAGISYSTEM::ShakeCurrentCamera3D(float duration, const Vector3& intensity) 
 
 void MAGISYSTEM::ClearCamera3D() {
 	camera3DManager_->Clear();
-}
-
-std::string MAGISYSTEM::CreateEmitter3D(const std::string& emitterName, const Vector3& position) {
-	return emitter3DManager_->CreateEmitter(emitterName, position);
-}
-
-void MAGISYSTEM::RemoveEmitter3D(const std::string& emitterName) {
-	emitter3DManager_->Remove(emitterName);
-}
-
-Emitter3D* MAGISYSTEM::FindEmitter3D(const std::string& emitterName) {
-	return emitter3DManager_->Find(emitterName);
-}
-
-void MAGISYSTEM::ClearEmitter3D() {
-	emitter3DManager_->Clear();
-}
-
-std::string MAGISYSTEM::CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName) {
-	return particleGroup3DManager_->CreatePrimitiveParticleGroup(particleGroupName, primitiveType, textureName);
-}
-
-std::string MAGISYSTEM::CreateStaticParticleGroup3D(const std::string& particleGroupName, const std::string& modelName) {
-	return particleGroup3DManager_->CreateStaticParticleGroup(particleGroupName, modelName);
-}
-
-BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particleGraoupName) {
-	return particleGroup3DManager_->Find(particleGraoupName);
-}
-
-const std::vector<std::unique_ptr<BaseParticleGroup3D>>& MAGISYSTEM::GetParticleGroupList() {
-	return particleGroup3DManager_->GetParticleGroups();
 }
 
 void MAGISYSTEM::SetDirectionalLight(const DirectionalLight& directionalLight) {

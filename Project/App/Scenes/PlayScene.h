@@ -50,10 +50,9 @@ enum class PlaySceneState {
 /// ゲームプレイシーン
 /// </summary>
 /// <typeparam name="Data"></typeparam>
-template <typename Data>
-class PlayScene:public BaseScene<Data> {
+class PlayScene :public BaseScene {
 public:
-	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
+	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
 
 	void Initialize() override;
@@ -112,8 +111,7 @@ private:
 
 };
 
-template<typename Data>
-inline void PlayScene<Data>::Initialize() {
+inline void PlayScene::Initialize() {
 	//-------------------------------------------------------
 	// シーンの必須設定(はよ基底クラスに移せや)
 	//-------------------------------------------------------
@@ -159,14 +157,6 @@ inline void PlayScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("gradation.png");
 	// 粒子用
 	MAGISYSTEM::LoadTexture("star.png");
-
-	// エミッターとパーティクルを作成
-	MAGISYSTEM::CreateEmitter3D("Star", Vector3(0.0f, 0.0f, 0.0f));
-	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Star", Primitive3DType::Plane, "star.png");
-
-	// エミッターとパーティクルを作成
-	MAGISYSTEM::CreateEmitter3D("Haze", Vector3(0.0f, 0.0f, 0.0f));
-	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Haze", Primitive3DType::Plane, "smoke.png");
 
 	//===================================
 	// モデルのロード
@@ -272,8 +262,7 @@ inline void PlayScene<Data>::Initialize() {
 
 }
 
-template<typename Data>
-inline void PlayScene<Data>::Update() {
+inline void PlayScene::Update() {
 
 #if defined(DEBUG) || defined(DEVELOP)
 	ImGui::Begin("SceneDebugUI");
@@ -381,8 +370,7 @@ inline void PlayScene<Data>::Update() {
 
 }
 
-template<typename Data>
-inline void PlayScene<Data>::Draw() {
+inline void PlayScene::Draw() {
 	// プレイヤーにまつわるもの描画
 	player_->Draw();
 
@@ -394,7 +382,6 @@ inline void PlayScene<Data>::Draw() {
 
 }
 
-template<typename Data>
-inline void PlayScene<Data>::Finalize() {
+inline void PlayScene::Finalize() {
 	MAGISYSTEM::ClearGameObject3D();
 }

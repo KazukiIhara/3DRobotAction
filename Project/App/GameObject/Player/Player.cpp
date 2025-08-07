@@ -114,29 +114,11 @@ void Player::Update() {
 	// UI更新
 	playerUI_->Update(mech_.get());
 
-
-	//// 破壊時エフェクトテスト
-	//if (ImGui::Button("PlayEffect")) {
-	//	breakEffect_ = std::make_unique<BreakEffect>(mech_->GetGameObject().lock()->GetTransform()->GetWorldPosition());
-	//}
-
-	if (breakEffect_) {
-		// 終わってたら抜ける
-		if (breakEffect_->IsFinished()) {
-			breakEffect_.reset();
-		} else {
-			breakEffect_->Update();
-		}
-	}
 }
 
 void Player::Draw() {
 	// UI描画
 	playerUI_->Draw(mech_.get());
-
-	if (breakEffect_) {
-		breakEffect_->Draw();
-	}
 
 }
 

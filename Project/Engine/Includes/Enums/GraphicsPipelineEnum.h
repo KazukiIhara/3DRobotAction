@@ -20,7 +20,6 @@ enum class GraphicsPipelineStateType {
 	SkyBox,
 
 	ParticleEffect3D,
-	OldParticle3D,
 
 	Num,
 };

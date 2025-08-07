@@ -4,9 +4,9 @@
 #include <memory>
 
 // MyHedder
-#include "Effects/BreakEffect/BreakEffect.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "GameObject/PlayerUI/PlayerUI.h"
+#include "Structs/ColorStruct.h"
 
 // 前方宣言
 class BulletManager;
@@ -35,8 +35,6 @@ private:
 	// プレイヤーUIクラス
 	std::unique_ptr<PlayerUI> playerUI_ = nullptr;
 
-	// 破壊時のエフェクト
-	std::unique_ptr<BreakEffect> breakEffect_ = nullptr;
 
 	// デバッグ用変数
 	bool isBreak_ = false;

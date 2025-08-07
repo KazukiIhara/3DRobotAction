@@ -25,7 +25,6 @@
 
 #include "GraphicsPipelines/SkyBoxGraphicsPipeline/SkyBoxGraphicsPipeline.h"
 
-#include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
 
 #include "GraphicsPipelines/ParticleEffect3DGraphicsPipeline/ParticleEffect3DGraphicsPipeline.h"
 
@@ -86,9 +85,6 @@ private:
 
 	// SkyBoxGraphicsPipeline
 	std::unique_ptr<SkyBoxGraphicsPipeline> skyBoxGraphicsPipeline_ = nullptr;
-
-	// Particle3DGraphicsPipeline(old)
-	std::unique_ptr<OldParticle3DGraphicsPipeline> particle3DGraphicsPipeline_ = nullptr;
 
 	// ParticleEffect3DGraphicsPipeline
 	std::unique_ptr<ParticleEffectGraphicsPipeline> particleEffect3DGraphicsPipeline_ = nullptr;

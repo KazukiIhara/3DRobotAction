@@ -22,10 +22,9 @@ enum class ParadinState {
 };
 
 // サンプルシーン
-template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene : public BaseScene {
 public:
-	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
+	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
 
 	void Initialize() override;
@@ -67,7 +66,7 @@ private:
 
 	// BrainStem
 	static const uint32_t brainStemNum_ = 3;
-	std::array<Transform3D*, brainStemNum_> brainStemTrans_ = nullptr;
+	std::array<Transform3D*, brainStemNum_> brainStemTrans_;
 	float brainStemT_ = 0.0f;
 
 	// texIndex
@@ -79,8 +78,7 @@ private:
 
 };
 
-template<typename Data>
-inline void SampleScene<Data>::Initialize() {
+void SampleScene::Initialize() {
 
 	//
 	// アセットのロード
@@ -160,8 +158,7 @@ inline void SampleScene<Data>::Initialize() {
 
 }
 
-template<typename Data>
-inline void SampleScene<Data>::Update() {
+inline void SampleScene::Update() {
 
 	//ImGui::Begin("GrayscaleParamater");
 	//ImGui::Checkbox("On", &isOnGrayscale_);
@@ -354,8 +351,7 @@ inline void SampleScene<Data>::Update() {
 
 }
 
-template<typename Data>
-inline void SampleScene<Data>::Draw() {
+inline void SampleScene::Draw() {
 	for (uint32_t i = 0; i < brainStemNum_; i++) {
 		MAGISYSTEM::DrawSkinModel("BrainStem", brainStemTrans_[i]->GetWorldMatrix(), ModelMaterial{});
 	}
@@ -363,7 +359,6 @@ inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::DrawSkinModel("Paradin", paradinTrans_->GetWorldMatrix(), ModelMaterial{});
 }
 
-template<typename Data>
-inline void SampleScene<Data>::Finalize() {
+inline void SampleScene::Finalize() {
 
 }

@@ -10,7 +10,6 @@
 #include "BaseScene/BaseScene.h"
 #include "GameData/GameData.h"
 
-template <typename Data>
 class SceneManager {
 public:
 	SceneManager();
@@ -21,30 +20,37 @@ public:
 	// 描画
 	void Draw();
 
-	// 新しいシーンの追加(テンプレートテンプレート引数)
-	template <template <class> class SceneTemplate>
-	void AddScene(const std::string& sceneName);
+	// 新しいシーンの追加
+	template <class T>
+	void AddScene(const std::string& name) {
+		// BaseScene を継承しているかをチェック
+		static_assert(std::is_base_of<BaseScene, T>::value,
+			"SceneTemplate<Data> must derive from BaseScene<Data>.");
+
+		// ファクトリ関数を登録
+		factory_[name] = [this]() {
+			return std::make_unique<T>(this);
+			};
+	}
 
 	// シーン変更
 	void ChangeScene(const std::string& sceneName);
 
 	// 共有データへの参照を取得
-	Data& GetData()const;
+	GameData& GetData()const;
 private:
 	// シーン変更処理
 	void SwitchScene();
 private:
 	// シーンファクトリ関数
-	using SceneFactoryFunc = std::function<std::unique_ptr<BaseScene<Data>>()>;
+	using SceneFactoryFunc = std::function<std::unique_ptr<BaseScene>()>;
 	// シーンファクトリ
 	std::unordered_map<std::string, SceneFactoryFunc> factory_;
 	// 現在シーン
-	std::unique_ptr<BaseScene<Data>> currentScene_;
+	std::unique_ptr<BaseScene> currentScene_;
 	// 次のシーン
-	std::unique_ptr<BaseScene<Data>> nextScene_;
+	std::unique_ptr<BaseScene> nextScene_;
 	// 共有データ
-	std::shared_ptr<Data> data_;
+	std::unique_ptr<GameData> data_;
 
 };
-
-#include "SceneManager.ipp"
