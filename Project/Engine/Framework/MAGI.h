@@ -763,7 +763,7 @@ protected:
 	// 
 	// GameManager
 	// 
-	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
+	static std::unique_ptr<SceneManager> sceneManager_;
 
 
 	//

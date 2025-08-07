@@ -17,8 +17,8 @@ void Game::Initialize() {
 	// サンプルシーン
 	sceneManager_->AddScene<SampleScene>("Sample");
 
-	sceneManager_->AddScene<TitleScene>("Title");
-	sceneManager_->AddScene<PlayScene>("Play");
+	//sceneManager_->AddScene<TitleScene>("Title");
+	//sceneManager_->AddScene<PlayScene>("Play");
 
 
 	// 最初のシーンを設定

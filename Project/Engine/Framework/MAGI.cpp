@@ -112,7 +112,7 @@ std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
 // 
 // GameManager
 // 
-std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
+std::unique_ptr<SceneManager> MAGISYSTEM::sceneManager_ = nullptr;
 
 //
 // Data入出力クラス
@@ -256,7 +256,7 @@ void MAGISYSTEM::Initialize() {
 	);
 
 	// SceneManager
-	sceneManager_ = std::make_unique<SceneManager<GameData>>();
+	sceneManager_ = std::make_unique<SceneManager>();
 
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();

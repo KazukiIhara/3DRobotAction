@@ -8,10 +8,9 @@
 /// <summary>
 /// タイトルシーン
 /// </summary>
-template <typename Data>
-class TitleScene :public BaseScene<Data> {
+class TitleScene :public BaseScene {
 public:
-	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
+	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~TitleScene()override = default;
 
 	void Initialize() override;
@@ -28,8 +27,7 @@ private:
 	SpriteMaterialData exitMatData_;
 };
 
-template<typename Data>
-inline void TitleScene<Data>::Initialize() {
+inline void TitleScene::Initialize() {
 	// 2Dカメラ作成
 	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");
 	// マネージャに追加
@@ -67,8 +65,7 @@ inline void TitleScene<Data>::Initialize() {
 
 }
 
-template<typename Data>
-inline void TitleScene<Data>::Update() {
+inline void TitleScene::Update() {
 
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		if (MAGISYSTEM::TriggerButton(0, ButtonA)) {
@@ -78,8 +75,7 @@ inline void TitleScene<Data>::Update() {
 
 }
 
-template<typename Data>
-inline void TitleScene<Data>::Draw() {
+inline void TitleScene::Draw() {
 	MAGISYSTEM::DrawSprite(bgData_, bgMatData_);
 
 	MAGISYSTEM::DrawSprite(startData_, startMatData_);
@@ -87,7 +83,6 @@ inline void TitleScene<Data>::Draw() {
 
 }
 
-template<typename Data>
-inline void TitleScene<Data>::Finalize() {
+inline void TitleScene::Finalize() {
 
 }
