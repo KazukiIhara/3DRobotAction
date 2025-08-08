@@ -1,33 +1,6 @@
-#pragma once
+#include "TitleScene.h"
 
-#include <memory>
-#include <array>
-
-#include "MAGI.h"
-
-/// <summary>
-/// タイトルシーン
-/// </summary>
-class TitleScene :public BaseScene {
-public:
-	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
-	~TitleScene()override = default;
-
-	void Initialize() override;
-	void Update() override;
-	void Draw() override;
-	void Finalize() override;
-
-private:
-	SpriteData bgData_;
-	SpriteMaterialData bgMatData_;
-	SpriteData startData_;
-	SpriteMaterialData startMatData_;
-	SpriteData exitData_;
-	SpriteMaterialData exitMatData_;
-};
-
-inline void TitleScene::Initialize() {
+void TitleScene::Initialize() {
 	// 2Dカメラ作成
 	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");
 	// マネージャに追加
@@ -65,7 +38,7 @@ inline void TitleScene::Initialize() {
 
 }
 
-inline void TitleScene::Update() {
+void TitleScene::Update() {
 
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		if (MAGISYSTEM::TriggerButton(0, ButtonA)) {
@@ -75,7 +48,7 @@ inline void TitleScene::Update() {
 
 }
 
-inline void TitleScene::Draw() {
+void TitleScene::Draw() {
 	MAGISYSTEM::DrawSprite(bgData_, bgMatData_);
 
 	MAGISYSTEM::DrawSprite(startData_, startMatData_);
@@ -83,6 +56,6 @@ inline void TitleScene::Draw() {
 
 }
 
-inline void TitleScene::Finalize() {
+void TitleScene::Finalize() {
 
 }
