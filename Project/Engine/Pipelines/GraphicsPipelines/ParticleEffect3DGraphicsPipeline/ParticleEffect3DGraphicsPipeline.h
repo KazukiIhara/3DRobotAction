@@ -3,7 +3,7 @@
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
 
-#include "Common/ParticleEffectCommon.h"
+#include "Common/Particle/ParticleEffectCommon.h"
 
 /// <summary>
 /// パーティクル描画用パイプライン

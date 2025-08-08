@@ -1,11 +1,11 @@
 #include "Game.h"
 
 // EngineScenes
-#include "Scenes/SampleScene.h"
+#include "Scenes/Sample/SampleScene.h"
 
 // GameScene
-#include "Scenes/TitleScene.h"
-#include "Scenes/PlayScene.h"
+#include "Scenes/Title/TitleScene.h"
+#include "Scenes/Play/PlayScene.h"
 
 Game::~Game() {}
 

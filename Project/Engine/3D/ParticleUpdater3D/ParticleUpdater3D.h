@@ -9,7 +9,7 @@
 
 // MyHedder
 #include "DirectX/ComPtr/ComPtr.h"
-#include "Common/ParticleEffectCommon.h"
+#include "Common/Particle/ParticleEffectCommon.h"
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
