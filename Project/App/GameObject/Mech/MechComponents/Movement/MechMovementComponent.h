@@ -24,6 +24,11 @@ public:
 	void Move(MechCore* mechCore);
 	// クイックブースト
 	void QuickBoostEnter(MechCore* mechCore);
+	// アサルトブースト
+	void AssultBoostEnter(MechCore* mechCore);
+
+	// アサルトブースト更新
+	void AssultBoostUpdate(MechCore* mechCore);
 
 	// クイックブースト更新
 	void QuickBoostUpdate();
@@ -40,6 +45,7 @@ public:
 
 	// 接地判定
 	void CheckOnGround(MechCore* mechCore);
+
 	// 重力計算
 	void CulGravityVelocity(MechCore* mechCore);
 

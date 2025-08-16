@@ -11,6 +11,10 @@ void MechCoreStateAssultBoost::Enter([[maybe_unused]] MechCore* mechCore) {
 }
 
 void MechCoreStateAssultBoost::Update([[maybe_unused]] MechCore* mechCore) {
+	// コマンドを取得
+	const InputCommand command = mechCore->GetInputCommand();
+
+
 
 }
 

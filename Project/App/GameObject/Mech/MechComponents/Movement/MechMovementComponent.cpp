@@ -13,6 +13,11 @@ MechMovementComponent::MechMovementComponent() {
 }
 
 void MechMovementComponent::Update(MechCore* mechCore) {
+	// 設置している場合は縦の移動量を0にする
+	if (onGround_) {
+		velocity_.y = 0.0f;
+	}
+
 	// スピードと向きからこのフレームでの移動量を計算
 	velocity_.x = currentMoveDir_.x * moveSpeed_;
 	velocity_.z = currentMoveDir_.y * moveSpeed_;
@@ -67,6 +72,18 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 
 	// カメラ横揺れ
 	MAGISYSTEM::ShakeCurrentCamera3D(kQuickBoostCancelTime_, kQuickBoostCameraShakeIntensity_);
+}
+
+void MechMovementComponent::AssultBoostEnter(MechCore* mechCore) {
+	// コマンド取得
+	const InputCommand command = mechCore->GetInputCommand();
+
+}
+
+void MechMovementComponent::AssultBoostUpdate(MechCore* mechCore) {
+	// コマンド取得
+	const InputCommand command = mechCore->GetInputCommand();
+
 }
 
 void MechMovementComponent::QuickBoostUpdate() {
@@ -135,9 +152,7 @@ void MechMovementComponent::CulGravityVelocity(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 
-	if (onGround_) {
-		velocity_.y = 0.0f;
-	} else {
+	if (!onGround_) {
 		if (!command.jump) { // ジャンプ入力中は重力の影響を与えない
 			velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
 		}

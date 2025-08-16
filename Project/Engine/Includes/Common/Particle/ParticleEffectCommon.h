@@ -31,7 +31,7 @@ struct Particle3DPipelineStateStream {
 static constexpr uint32_t kThreadsPerGroup = 1024;
 
 // パーティクルの最大数
-static constexpr uint32_t kMaxParticleNum = 1048576;
+static constexpr uint32_t kMaxParticleNum = 262144;
 
 
 /// <summary>

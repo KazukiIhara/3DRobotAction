@@ -118,7 +118,7 @@ std::weak_ptr<Camera3D> GameObject3D::GetCamera3D(const std::string& camera3DNam
 		return it->second;
 	}
 
-	MAGIAssert::Assert(false, "GameObject3D " + name_ + ": Not found camera3D [ " + camera3DName + " ]\n");
+	MAGIAssert::Assert(false, "GameObject3D " + name_ + ": Not found camera3D [ " + camera3DName + " ]\n");	
 
 	return {};
 }
