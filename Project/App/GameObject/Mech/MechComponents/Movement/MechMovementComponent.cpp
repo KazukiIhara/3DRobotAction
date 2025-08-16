@@ -13,7 +13,7 @@ MechMovementComponent::MechMovementComponent() {
 }
 
 void MechMovementComponent::Update(MechCore* mechCore) {
-	// 設置している場合は縦の移動量を0にする
+	// 接地している場合は縦の移動量を0にする
 	if (onGround_) {
 		velocity_.y = 0.0f;
 	}

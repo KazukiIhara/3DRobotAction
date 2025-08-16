@@ -105,6 +105,9 @@ private:
 	const float kQuickBoostCancelTime_ = 0.3f;
 	const Vector3 kQuickBoostCameraShakeIntensity_ = { 0.0f,0.0f,0.0f };
 
+	// アサルトブーストの最大速度
+	const float kMaxAssultBoostSpeed_ = 50.0f;
+
 	// ジャンプの初速度
 	const float kJumpFirstSpeed_ = 10.0f;
 	// ジャンプの最大速度
@@ -131,6 +134,8 @@ private:
 	float quickBoostTimer_ = 0.0f;
 	// クイックブーストの移動量アニメーション
 	SimpleAnimation<float> quickBoostSpeedAnimaion_;
+
+
 
 	// 接地フラグ
 	bool onGround_ = false;

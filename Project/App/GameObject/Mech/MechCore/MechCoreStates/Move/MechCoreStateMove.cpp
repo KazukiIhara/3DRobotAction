@@ -21,6 +21,12 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 		return;
 	}
 
+	// アサルトブースト入力あり
+	if (command.assultBoost) {
+		mechCore->ChangeState(MechCoreState::AssultBoost);
+		return;
+	}
+
 	// 移動入力なし　→　待機状態に遷移
 	if (!Length(command.moveDirection)) {
 		mechCore->ChangeState(MechCoreState::Idle);
