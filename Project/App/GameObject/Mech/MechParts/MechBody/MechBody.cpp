@@ -78,7 +78,7 @@ void MechBody::RotateToMoveDirection(MechCore* mechCore) {
 		// 最大速度を設定
 		maxSpd = 30.0f;
 		// 最大角度を設定
-		maxDeg = 80.0f;
+		maxDeg = 60.0f;
 
 		break;
 	default:
