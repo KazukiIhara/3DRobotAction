@@ -30,22 +30,33 @@ std::weak_ptr<GameObject3D> MechLeg::GetGameObject()const {
 void MechLeg::RotateAngleAsVelocity(MechCore* core) {
 	// 状態を取得
 	const MechCoreState curState = core->GetCurrentState();
-	if (curState != MechCoreState::QuickBoost) {
+	Quaternion targetQ{};
+
+	switch (curState) {
+	case MechCoreState::Idle:
+	case MechCoreState::Move:
+	{
 		// 現在の進行方向を取得
 		const Vector2 currentDir = core->GetMovementComponent()->GetCurrentMoveDir();
-		float yaw = std::atan2(currentDir.x, currentDir.y);
+		const float yaw = std::atan2(currentDir.x, currentDir.y);
 		const Quaternion dirQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
 		const Quaternion bodyQ = core->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
-		const Quaternion targetQ = Inverse(bodyQ) * dirQ;
+		targetQ = Inverse(bodyQ) * dirQ;
 
 		if (auto leg = leg_.lock()) {
 			leg->GetTransform()->SetQuaternion(targetQ);
 		}
-	} else {
-		const Quaternion targetQ = MakeIdentityQuaternion();
+	}
+	break;
+	case MechCoreState::QuickBoost:
+	case MechCoreState::AssultBoost:
+	{
+		targetQ = MakeIdentityQuaternion();
 		if (auto leg = leg_.lock()) {
 			leg->GetTransform()->SetQuaternion(targetQ);
 		}
+	}
+	break;
 	}
 
 }

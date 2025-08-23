@@ -3,6 +3,7 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h" 
 
+#include "GameObject/PlayerCamera/PlayerCamera.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
 
 using namespace MAGIMath;
@@ -52,27 +53,62 @@ void MechBody::DirectionToLockOnView(MechCore* mechCore) {
 
 void MechBody::RotateToMoveDirection(MechCore* mechCore) {
 
-	Vector2 dir2 = mechCore->GetMovementComponent()->GetCurrentMoveDir();
-	if (Length(dir2) < 1e-4f) { return; }
+	MechCoreState currentState = mechCore->GetCurrentState();
 
-	float spd = mechCore->GetMovementComponent()->GetCurrentSpeed();
-	if (spd < 1e-4f) { return; }
+	Vector3 dir{};
+	float spd{};
+	float maxDeg{};
+	float maxSpd{};
 
-	float maxSpd = mechCore->GetMovementComponent()->GetMaxSpeed();
+	switch (currentState) {
+	case MechCoreState::AssultBoost:
+		// カメラの方向を取得
+		if (auto mechCoreObj = mechCore->GetGameObject().lock()) {
+			if (auto camera = dynamic_cast<PlayerCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
+				const Quaternion localQ = camera->GetCameraQuaternion();
+				const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
+				const Quaternion targetQ = Inverse(bodyQ) * localQ;
+
+				dir = Normalize(Transform(MakeForwardVector3(), localQ));
+
+			}
+		}
+		// 速度を取得(ひとまず設定)
+		spd = 30.0f;
+		// 最大速度を設定
+		maxSpd = 30.0f;
+		// 最大角度を設定
+		maxDeg = 80.0f;
+
+		break;
+	default:
+		// 移動方向を取得
+		Vector2 moveDir = mechCore->GetMovementComponent()->GetCurrentMoveDir();
+		dir = { moveDir.x,0.0f,moveDir.y };
+		if (Length(moveDir) < 1e-4f) { return; }
+		// 速度を取得
+		spd = mechCore->GetMovementComponent()->GetCurrentSpeed();
+		if (spd < 1e-4f) { return; }
+		// 最大速度を取得
+		maxSpd = mechCore->GetMovementComponent()->GetMaxSpeed();
+		// 最大角度を設定
+		maxDeg = 10.0f;
+
+		break;
+	}
+
 	float mul = spd / maxSpd;
 
-	Vector3 fwd = Normalize(Vector3{ dir2.x, 0.0f, dir2.y });
+	Vector3 fwd = Normalize(dir);
 	Vector3 right = Normalize(Cross(Vector3{ 0,1,0 }, fwd));
 
-	float kMaxRollDeg = 10.0f;
-	float kMaxRollRad = DegreeToRadian(kMaxRollDeg);
+	float kMaxRollRad = DegreeToRadian(maxDeg);
 
 	Quaternion dq = MakeRotateAxisAngleQuaternion(right, kMaxRollRad * mul);
 
 	if (auto body = body_.lock()) {
 		body->GetTransform()->AddQuaterion(dq);
 	}
-
 }
 
 void MechBody::RotateToQuickBoost(MechCore* mechCore) {
