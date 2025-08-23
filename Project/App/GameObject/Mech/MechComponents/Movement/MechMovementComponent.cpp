@@ -1,6 +1,9 @@
+#define NOMINMAX
+
 #include "MechMovementComponent.h"
 
 #include "GameObject/Mech/MechCore/MechCore.h"
+#include "GameObject/PlayerCamera/PlayerCamera.h"
 
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
@@ -13,9 +16,20 @@ MechMovementComponent::MechMovementComponent() {
 }
 
 void MechMovementComponent::Update(MechCore* mechCore) {
-	// スピードと向きからこのフレームでの移動量を計算
-	velocity_.x = currentMoveDir_.x * moveSpeed_;
-	velocity_.z = currentMoveDir_.y * moveSpeed_;
+	// 現在のステートを取得
+	const MechCoreState currentState = mechCore->GetCurrentState();
+
+	// 接地している場合は縦の移動量の最低値を0にする
+	if (onGround_) {
+		velocity_.y = std::max(0.0f, velocity_.y);
+	}
+
+	// アサルトブースト時はすでに移動量を計算しているため計算しない
+	if (currentState != MechCoreState::AssultBoost) {
+		// スピードと向きからこのフレームでの移動量を計算
+		velocity_.x = currentMoveDir_.x * moveSpeed_;
+		velocity_.z = currentMoveDir_.y * moveSpeed_;
+	}
 
 	// 移動量をオブジェクトに加算
 	if (auto core = mechCore->GetGameObject().lock()) {
@@ -65,8 +79,47 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 	// タイマーセット
 	quickBoostTimer_ = 0.0f;
 
-	// カメラ横揺れ
-	MAGISYSTEM::ShakeCurrentCamera3D(kQuickBoostCancelTime_, kQuickBoostCameraShakeIntensity_);
+	// カメラ揺れ
+	const bool isHardLock = mechCore->GetLockOnComponent()->GetEnableHardLockOn();
+	if (isHardLock) {
+		MAGISYSTEM::ShakeCurrentCamera3D(kQuickBoostCameraShakeTime_, kQuickBoostCameraShakeIntensityHL_);
+	} else {
+		MAGISYSTEM::ShakeCurrentCamera3D(kQuickBoostCameraShakeTime_, kQuickBoostCameraShakeIntensitySL_);
+	}
+}
+
+void MechMovementComponent::AssultBoostEnter(MechCore* mechCore) {
+	// コマンド取得
+	const InputCommand command = mechCore->GetInputCommand();
+	
+	// アサルトブースト時には使わないため0にする
+	currentMoveDir_ = { 0.0f,0.0f };
+	moveSpeed_ = 0.0f;
+}
+
+void MechMovementComponent::AssultBoostUpdate(MechCore* mechCore) {
+	// コマンド取得
+	const InputCommand command = mechCore->GetInputCommand();
+
+	// カメラの方向を取得
+	Vector3 cameraDir{};
+
+	if (auto mechCoreObj = mechCore->GetGameObject().lock()) {
+		if (auto camera = dynamic_cast<PlayerCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
+			const Quaternion localQ = camera->GetCameraQuaternion();
+			const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
+			const Quaternion targetQ = Inverse(bodyQ) * localQ;
+
+			cameraDir = Normalize(Transform(MakeForwardVector3(), localQ));
+
+		}
+	}
+
+	// 速度の計算
+
+	// カメラの方向に対して移動方向をセット
+	velocity_ = cameraDir * kMaxAssultBoostSpeed_; // ひとまず最大値を入れておく
+
 }
 
 void MechMovementComponent::QuickBoostUpdate() {
@@ -135,9 +188,7 @@ void MechMovementComponent::CulGravityVelocity(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 
-	if (onGround_) {
-		velocity_.y = 0.0f;
-	} else {
+	if (!onGround_) {
 		if (!command.jump) { // ジャンプ入力中は重力の影響を与えない
 			velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
 		}

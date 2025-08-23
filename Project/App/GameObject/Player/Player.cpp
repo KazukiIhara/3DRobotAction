@@ -52,6 +52,9 @@ void Player::Update() {
 		// クイックブースト入力
 		command.quickBoost = MAGISYSTEM::TriggerButton(0, ButtonR);
 
+		// アサルトブースト入力
+		command.assultBoost = MAGISYSTEM::TriggerButton(0, ButtonA);
+
 		// ロックオンモード切り替え
 		command.switchHardLock = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
 

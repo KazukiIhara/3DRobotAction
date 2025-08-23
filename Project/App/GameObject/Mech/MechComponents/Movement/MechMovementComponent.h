@@ -24,6 +24,11 @@ public:
 	void Move(MechCore* mechCore);
 	// クイックブースト
 	void QuickBoostEnter(MechCore* mechCore);
+	// アサルトブースト
+	void AssultBoostEnter(MechCore* mechCore);
+
+	// アサルトブースト更新
+	void AssultBoostUpdate(MechCore* mechCore);
 
 	// クイックブースト更新
 	void QuickBoostUpdate();
@@ -40,6 +45,7 @@ public:
 
 	// 接地判定
 	void CheckOnGround(MechCore* mechCore);
+
 	// 重力計算
 	void CulGravityVelocity(MechCore* mechCore);
 
@@ -97,7 +103,16 @@ private:
 	const float kQuickBoostTime_ = 0.6f;
 	// クイックブーストキャンセル時間
 	const float kQuickBoostCancelTime_ = 0.3f;
-	const Vector3 kQuickBoostCameraShakeIntensity_ = { 0.0f,0.0f,0.0f };
+
+	// クイックブースト時にカメラが揺れる時間
+	const float kQuickBoostCameraShakeTime_ = 0.05f;
+	// ソフトロック時のクイックブースト時にカメラが揺れる量
+	const Vector3 kQuickBoostCameraShakeIntensitySL_ = { 0.0f,0.03f,0.0f };
+	// ハードロック時のクイックブースト時にカメラが揺れる量
+	const Vector3 kQuickBoostCameraShakeIntensityHL_ = { 0.0f,0.1f,0.0f };
+
+	// アサルトブーストの最大速度
+	const float kMaxAssultBoostSpeed_ = 30.0f;
 
 	// ジャンプの初速度
 	const float kJumpFirstSpeed_ = 10.0f;
@@ -125,6 +140,7 @@ private:
 	float quickBoostTimer_ = 0.0f;
 	// クイックブーストの移動量アニメーション
 	SimpleAnimation<float> quickBoostSpeedAnimaion_;
+
 
 	// 接地フラグ
 	bool onGround_ = false;

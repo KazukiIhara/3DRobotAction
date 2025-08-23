@@ -7,6 +7,7 @@
 #include "MechCoreStates/Idle/MechCoreStateIdle.h"
 #include "MechCoreStates/Move/MechCoreStateMove.h"
 #include "MechCoreStates/QuickBoost/MechCoreStateQuickBoost.h"
+#include "MechCoreStates/AssultBoost/MechCoreStateAssultBoost.h"
 
 using namespace MAGIMath;
 
@@ -92,6 +93,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
 	states_[MechCoreState::Move] = std::make_shared<MechCoreStateMove>();
 	states_[MechCoreState::QuickBoost] = std::make_shared<MechCoreStateQuickBoost>();
+	states_[MechCoreState::AssultBoost] = std::make_shared<MechCoreStateAssultBoost>();
 
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);

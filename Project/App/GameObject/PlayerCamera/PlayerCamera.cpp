@@ -132,7 +132,6 @@ void PlayerCamera::HardLockCamera(float dt) {
 }
 
 void PlayerCamera::FollowCamera() {
-
 	// 累積YawPitchからクオータニオンを生成
 	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
 	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pPitch_);

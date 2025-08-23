@@ -20,6 +20,12 @@ void MechCoreStateIdle::Update(MechCore* mechCore) {
 		return;
 	}
 
+	// アサルトブースト入力あり
+	if (command.assultBoost) {
+		mechCore->ChangeState(MechCoreState::AssultBoost);
+		return;
+	}
+
 	// 待機時の処理
 	mechCore->GetMovementComponent()->Idle();
 	// ジャンプの処理

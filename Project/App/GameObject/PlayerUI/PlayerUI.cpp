@@ -63,7 +63,7 @@ void PlayerUI::Update(MechCore* mechCore) {
 
 }
 
-void PlayerUI::Draw(MechCore* mechCore) {
+void PlayerUI::Draw([[maybe_unused]] MechCore* mechCore) {
 	// ロックオンUIの描画
 	DrawLockonUI();
 
