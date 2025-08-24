@@ -34,18 +34,6 @@ class GameObject3D;
 class MechCoreBaseState;
 class BulletManager;
 
-
-/// <summary>
-/// 機体の状態
-/// </summary>
-enum class MechCoreState {
-	Idle,
-	Move,
-	QuickBoost,
-	AssultBoost,
-	Melee,
-};
-
 /// <summary>
 /// 機体制御クラス
 /// </summary>

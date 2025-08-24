@@ -16,7 +16,7 @@ void MechCoreStateAssultBoost::Update([[maybe_unused]] MechCore* mechCore) {
 	const InputCommand command = mechCore->GetInputCommand();
 
 	// キャンセル行動
-	if (command.quickBoost) { // クイックブーストでキャンセル
+	if (command.quickBoost && Length(command.moveDirection)) { // クイックブーストでキャンセル
 		mechCore->ChangeState(MechCoreState::QuickBoost);
 		return;
 	} else if (command.jump) { // ジャンプでキャンセル

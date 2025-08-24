@@ -20,6 +20,17 @@ enum class AttackType {
 };
 
 /// <summary>
+/// 機体のふるまい
+/// </summary>
+enum class MechCoreState {
+	Idle,
+	Move,
+	QuickBoost,
+	AssultBoost,
+	Melee,
+};
+
+/// <summary>
 /// ロックオンカメラ
 /// </summary>
 struct LockOnView {

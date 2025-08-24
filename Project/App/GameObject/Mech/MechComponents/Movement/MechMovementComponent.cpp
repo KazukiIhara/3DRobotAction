@@ -76,6 +76,9 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 	// 速度をセット
 	moveSpeed_ = kQuickBoostFirstSpeed_;
 
+	// 降下速度をリセット
+	velocity_.y = 0.0f;
+
 	// タイマーセット
 	quickBoostTimer_ = 0.0f;
 
@@ -91,7 +94,7 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 void MechMovementComponent::AssultBoostEnter(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
-	
+
 	// アサルトブースト時には使わないため0にする
 	currentMoveDir_ = { 0.0f,0.0f };
 	moveSpeed_ = 0.0f;

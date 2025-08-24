@@ -55,14 +55,14 @@ private:
 	// パラメータ
 
 	// オフセットの半径
-	float radius_ = 6.0f;
+	float radius_ = 2.5f;
 
 	// カメラの感度
 	float sensYaw_ = 8.0f;
 	float sensPitch_ = 6.0f;
 
 	// カメラ補間速度
-	const float kPivotLag_ = 0.15f;
+	const float kPivotLag_ = 0.1f;
 
 	// ターゲットにカメラを向ける速度
 	const float kHardLockTargetLag_ = 0.25f;

@@ -160,6 +160,7 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	// 描画したいパラメータ
 	Vector3 worldPosition{};
 	int hp = 0;
+	int en = 0;
 	int targetHP = 0;
 
 	if (auto obj = mechCore->GetGameObject().lock()) {
@@ -168,6 +169,8 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 
 	hp = mechCore->GetStatusComponent()->GetHp();
 
+	en = mechCore->GetStatusComponent()->GetEn();
+
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		targetHP = target->GetStatusComponent()->GetHp();
 	}
@@ -175,6 +178,7 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	ImGui::Begin("PlayerDebugUI");
 	ImGui::InputFloat3("WorldPosition", &worldPosition.x);
 	ImGui::InputInt("HP", &hp);
+	ImGui::InputInt("EN", &en);
 	ImGui::InputInt("TargetHP", &targetHP);
 	ImGui::End();
 }

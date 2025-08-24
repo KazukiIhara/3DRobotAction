@@ -9,6 +9,8 @@ using namespace MAGIMath;
 void MechCoreStateQuickBoost::Enter(MechCore* mechCore) {
 	// クイックブースト初期化
 	mechCore->GetMovementComponent()->QuickBoostEnter(mechCore);
+	// エネルギー消費
+	mechCore->GetStatusComponent()->UseQuickBoostEnergy();
 }
 
 void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
@@ -28,7 +30,7 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 
 	// キャンセル行動
 	if (mechCore->GetMovementComponent()->QuickBoostEnableCancel()) {
-		if (command.quickBoost) { // クイックブーストでキャンセル
+		if (command.quickBoost && Length(command.moveDirection)) { // クイックブーストでキャンセル
 			mechCore->ChangeState(MechCoreState::QuickBoost);
 			return;
 		} else if (command.jump) { // ジャンプでキャンセル
@@ -40,11 +42,8 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 	// 更新
 	mechCore->GetMovementComponent()->QuickBoostUpdate();
 
-	// 重力による移動量計算
-	mechCore->GetMovementComponent()->CulGravityVelocity(mechCore);
 }
 
-void MechCoreStateQuickBoost::Exit(MechCore* mechCore) {
-	// 重力による移動量計算
-	mechCore->GetMovementComponent()->CulGravityVelocity(mechCore);
+void MechCoreStateQuickBoost::Exit([[maybe_unused]] MechCore* mechCore) {
+
 }

@@ -25,7 +25,6 @@ void MechBody::Update(MechCore* mechCore) {
 
 	RotateToMoveDirection(mechCore);
 
-
 }
 
 std::weak_ptr<GameObject3D> MechBody::GetGameObject()const {
@@ -65,11 +64,9 @@ void MechBody::RotateToMoveDirection(MechCore* mechCore) {
 		// カメラの方向を取得
 		if (auto mechCoreObj = mechCore->GetGameObject().lock()) {
 			if (auto camera = dynamic_cast<PlayerCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
-				const Quaternion localQ = camera->GetCameraQuaternion();
-				const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
-				const Quaternion targetQ = Inverse(bodyQ) * localQ;
+				const Quaternion q = camera->GetCameraQuaternion();
 
-				dir = Normalize(Transform(MakeForwardVector3(), localQ));
+				dir = Normalize(Transform(MakeForwardVector3(), q));
 
 			}
 		}
@@ -102,7 +99,7 @@ void MechBody::RotateToMoveDirection(MechCore* mechCore) {
 	Vector3 fwd = Normalize(dir);
 	Vector3 right = Normalize(Cross(Vector3{ 0,1,0 }, fwd));
 
-	float kMaxRollRad = DegreeToRadian(maxDeg);
+	float kMaxRollRad = DegreeToRadian(maxDeg) - dir.y;
 
 	Quaternion dq = MakeRotateAxisAngleQuaternion(right, kMaxRollRad * mul);
 

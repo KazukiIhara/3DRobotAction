@@ -240,6 +240,10 @@ float MAGIMath::DegreeToRadian(float degree) {
 	return degree * (std::numbers::pi_v<float> / 180.0f);
 }
 
+float MAGIMath::RadianToDegree(float radian) {
+	return radian * (180.0f / std::numbers::pi_v<float>);
+}
+
 float MAGIMath::WrapPi(float angle) {
 	angle = std::fmod(angle + std::numbers::pi_v<float>,
 		2.0f * std::numbers::pi_v<float>);
