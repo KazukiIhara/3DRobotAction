@@ -22,9 +22,11 @@ public:
 private:
 	void UpdateLockonUI(MechCore* mechCore);
 	void UpdateAPUI(MechCore* mechCore);
+	void UpdateENUI(MechCore* mechCore);
 
 	void DrawLockonUI();
 	void DrawAPUI();
+	void DrawENUI();
 
 	void DrawDebugUI(MechCore* mechCore);
 private:
@@ -52,13 +54,23 @@ private:
 	SpriteData apData_{};
 	SpriteMaterialData apMaterialData_{};
 
+	// ボスのAPゲージのスプライトデータ
+	SpriteData bossApGaugeData_{};
+	SpriteMaterialData bossApGaugeMaterialData_{};
+	const float kBossApGaugeWidth_ = 912.0f;
+	
 	// ボスのAPバーのスプライトデータ
 	SpriteData bossApBarData_{};
 	SpriteMaterialData bossApBarMaterialData_{};
 	const float kBossAPBarWidth_ = 916.0f;
 
-	// ボスのAPゲージのスプライトデータ
-	SpriteData bossApGaugeData_{};
-	SpriteMaterialData bossApGaugeMaterialData_{};
-	const float kBossApGaugeWidth_ = 912.0f;
+	// ENゲージのスプライトデータ
+	SpriteData enGaugeData_{};
+	SpriteMaterialData enGaugeMaterialData_{};
+	const float kENGaugeWidth_ = 696.0f;
+
+	// ENバーのスプライトデータ
+	SpriteData enBarData_{};
+	SpriteMaterialData enBarMaterialData_{};
+	const float kENBarWidth_ = 702.0f;
 };

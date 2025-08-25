@@ -22,5 +22,5 @@ void Game::Initialize() {
 
 
 	// 最初のシーンを設定
-	sceneManager_->ChangeScene("Play");
+	sceneManager_->ChangeScene("Title");
 }

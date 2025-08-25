@@ -25,6 +25,74 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadTexture("Start.png");
 	MAGISYSTEM::LoadTexture("Exit.png");
 
+	//===================================
+	// テクスチャのロード
+	//===================================
+
+	// ロックオン用テクスチャ
+	MAGISYSTEM::LoadTexture("LockonUIGray.png");
+	MAGISYSTEM::LoadTexture("LockonUIRed.png");
+
+	// APUI用テクスチャ
+	MAGISYSTEM::LoadTexture("ApGauge.png");
+	MAGISYSTEM::LoadTexture("ApBar.png");
+
+	MAGISYSTEM::LoadTexture("BossApBar.png");
+	MAGISYSTEM::LoadTexture("BossApGauge.png");
+
+	// ENUI用テクスチャ
+	MAGISYSTEM::LoadTexture("EnBar.png");
+	MAGISYSTEM::LoadTexture("EnGauge.png");
+
+	// 円形テクスチャ
+	MAGISYSTEM::LoadTexture("Circle2.png");
+
+	// ホワイトテクスチャ
+	MAGISYSTEM::LoadTexture("white.png");
+
+	// 靄用
+	MAGISYSTEM::LoadTexture("smoke.png");
+	// リング用
+	MAGISYSTEM::LoadTexture("gradation.png");
+	// 粒子用
+	MAGISYSTEM::LoadTexture("star.png");
+
+	//===================================
+	// モデルのロード
+	//===================================
+
+	MAGISYSTEM::LoadModel("teapot");
+	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
+
+	MAGISYSTEM::LoadModel("StageObj0");
+	MAGISYSTEM::CreateModelDrawer("StageObj0", MAGISYSTEM::FindModel("StageObj0"));
+
+	MAGISYSTEM::LoadModel("Ground");
+	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
+
+	MAGISYSTEM::LoadModel("MechHead");
+	MAGISYSTEM::CreateModelDrawer("MechHead", MAGISYSTEM::FindModel("MechHead"));
+
+	MAGISYSTEM::LoadModel("MechBody");
+	MAGISYSTEM::CreateModelDrawer("MechBody", MAGISYSTEM::FindModel("MechBody"));
+
+	MAGISYSTEM::LoadModel("MechRightArm");
+	MAGISYSTEM::CreateModelDrawer("MechRightArm", MAGISYSTEM::FindModel("MechRightArm"));
+
+	MAGISYSTEM::LoadModel("MechLeftArm");
+	MAGISYSTEM::CreateModelDrawer("MechLeftArm", MAGISYSTEM::FindModel("MechLeftArm"));
+
+	MAGISYSTEM::LoadModel("MechLeg");
+	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
+
+	MAGISYSTEM::LoadModel("AssultRifle");
+	MAGISYSTEM::CreateModelDrawer("AssultRifle", MAGISYSTEM::FindModel("AssultRifle"));
+
+	MAGISYSTEM::LoadModel("Bullet");
+	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
+
+
+
 	startData_.position = { WindowApp::kClientWidth * 0.5f, 800.0f };
 	exitData_.position = { WindowApp::kClientWidth * 0.5f, 912.0f };
 

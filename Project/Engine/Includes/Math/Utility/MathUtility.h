@@ -141,6 +141,8 @@ namespace MAGIMath {
 
 	// 度数法からラジアンに変換
 	float DegreeToRadian(float degree);
+	// ラジアンから度数法に変換
+	float RadianToDegree(float radian);
 
 	/// [-π, +π] に折り返す
 	float WrapPi(float angle);
