@@ -19,34 +19,38 @@ PlayerUI::PlayerUI() {
 	// 射撃盤用のスプライト設定
 	lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
 	lockonRedData_.size = { 128.0f,128.0f };
-
 	lockonRedMat_.anchorPoint = { 0.5f,0.5f };
 	lockonRedMat_.textureName = "LockonUIRed.png";
 
 	// APバー用のスプライト設定
 	apBarData_.position = Vector2(98.0f, 900.0f);
-
 	apBarMaterialData_.anchorPoint = { 0.0f,0.5f };
 	apBarMaterialData_.textureName = "ApBar.png";
 
 	// APゲージ用のスプライト設定
 	apGaugeData_.position = Vector2(100.0f, 900.0f);
-
 	apGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
 	apGaugeMaterialData_.textureName = "ApGauge.png";
 
 	// ボスAPバー用のスプライト設定
 	bossApBarData_.position = Vector2(WindowApp::kClientWidth * 0.5f - kBossAPBarWidth_ * 0.5f, 100.0f);
-
 	bossApBarMaterialData_.anchorPoint = { 0.0f,0.5f };
 	bossApBarMaterialData_.textureName = "BossApBar.png";
 
-
 	// ボスAPゲージ用のスプライト設定
 	bossApGaugeData_.position = Vector2(WindowApp::kClientWidth * 0.5f - kBossApGaugeWidth_ * 0.5f, 100.0f);
-
 	bossApGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
 	bossApGaugeMaterialData_.textureName = "BossApGauge.png";
+
+	// ENバー用のスプライト設定
+	enBarData_.position = Vector2(WindowApp::kClientWidth * 0.5f - kENBarWidth_ * 0.5f, 950.0f);
+	enBarMaterialData_.anchorPoint = { 0.0f,0.5f };
+	enBarMaterialData_.textureName = "EnBar.png";
+
+	// ENゲージ用のスプライト設定
+	enGaugeData_.position = Vector2(WindowApp::kClientWidth * 0.5f - kENGaugeWidth_ * 0.5f, 950.0f);
+	enGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
+	enGaugeMaterialData_.textureName = "EnGauge.png";
 
 }
 
@@ -61,6 +65,8 @@ void PlayerUI::Update(MechCore* mechCore) {
 	// APUIの更新
 	UpdateAPUI(mechCore);
 
+	// ENUIの更新
+	UpdateENUI(mechCore);
 }
 
 void PlayerUI::Draw([[maybe_unused]] MechCore* mechCore) {
@@ -69,6 +75,9 @@ void PlayerUI::Draw([[maybe_unused]] MechCore* mechCore) {
 
 	// APUIの描画
 	DrawAPUI();
+
+	// ENUIの描画
+	DrawENUI();
 
 #if defined(DEBUG) || defined(DEVELOP)
 	DrawDebugUI(mechCore);
@@ -133,6 +142,16 @@ void PlayerUI::UpdateAPUI(MechCore* mechCore) {
 
 }
 
+void PlayerUI::UpdateENUI(MechCore* mechCore) {
+	// 現在のenを取得
+	const int32_t currentEn = mechCore->GetStatusComponent()->GetEn();
+	// enの最大値を取得
+	const int32_t maxEn = mechCore->GetStatusComponent()->GetMaxEn();
+
+	// ENゲージの長さを設定
+	enGaugeData_.size.x = kENGaugeWidth_ * (static_cast<float>(currentEn) / static_cast<float>(maxEn));
+}
+
 void PlayerUI::DrawLockonUI() {
 	// ロックオンUI
 	MAGISYSTEM::DrawSprite(lockonGrayData_, lockonGrayMat_);
@@ -154,6 +173,13 @@ void PlayerUI::DrawAPUI() {
 		// ボスのゲージ
 		MAGISYSTEM::DrawSprite(bossApGaugeData_, bossApGaugeMaterialData_);
 	}
+}
+
+void PlayerUI::DrawENUI() {
+	// ENバー
+	MAGISYSTEM::DrawSprite(enBarData_, enBarMaterialData_);
+	// ENゲージ
+	MAGISYSTEM::DrawSprite(enGaugeData_, enGaugeMaterialData_);
 }
 
 void PlayerUI::DrawDebugUI(MechCore* mechCore) {

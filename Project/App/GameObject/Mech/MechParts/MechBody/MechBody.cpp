@@ -65,9 +65,7 @@ void MechBody::RotateToMoveDirection(MechCore* mechCore) {
 		if (auto mechCoreObj = mechCore->GetGameObject().lock()) {
 			if (auto camera = dynamic_cast<PlayerCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
 				const Quaternion q = camera->GetCameraQuaternion();
-
 				dir = Normalize(Transform(MakeForwardVector3(), q));
-
 			}
 		}
 		// 速度を取得(ひとまず設定)
