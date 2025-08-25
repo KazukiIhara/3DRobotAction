@@ -55,7 +55,7 @@ private:
 	// パラメータ
 
 	// オフセットの半径
-	float radius_ = 2.5f;
+	float radius_ = 2.7f;
 
 	// カメラの感度
 	float sensYaw_ = 8.0f;
