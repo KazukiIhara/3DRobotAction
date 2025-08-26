@@ -6,7 +6,12 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 
 #include "EnemyAIState/BaseEnemyAIState.h"
+
+// 
+// 敵AIのステート
+// 
 #include "EnemyAIState/Root/EnemyAIStateRoot.h"
+#include "EnemyAIState/Search/EnemyAIStateSearch.h"
 
 EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech) {
 	// 自機のポインタを受け取る
