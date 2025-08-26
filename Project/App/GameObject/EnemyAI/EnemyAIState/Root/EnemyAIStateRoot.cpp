@@ -16,12 +16,13 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	// 旋回行動
 	enemyAI->MoveDir(currentMoveDir_);
 
-	// 適度にジャンプする
-	jumpTimer_ -= MAGISYSTEM::GetDeltaTime();
-	if (jumpTimer_ <= 0.0) {
-		enemyAI->Jump();
-		jumpTimer_ = jumpTime_;
-	}
+
+	// 状態遷移用のスコアを取得
+
+
+	// 状態遷移
+
+
 }
 
 void EnemyAIStateRoot::Exit([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {

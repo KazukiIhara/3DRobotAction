@@ -8,14 +8,17 @@
 
 using namespace MAGIMath;
 
-void EnemyAIStateSearch::Enter(EnemyAI* enemyAI, MechCore* mechCore) {
+void EnemyAIStateSearch::Enter([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
 
 }
 
-void EnemyAIStateSearch::Update(EnemyAI* enemyAI, MechCore* mechCore) {
+void EnemyAIStateSearch::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
+	// ジャンプしたり左右に少し揺れながら自機の方に近づいてくる
+
+	// 一定の距離になったら通常行動に移行
 
 }
 
-void EnemyAIStateSearch::Exit(EnemyAI* enemyAI, MechCore* mechCore) {
+void EnemyAIStateSearch::Exit([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
 
 }
