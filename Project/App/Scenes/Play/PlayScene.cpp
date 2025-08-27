@@ -76,10 +76,8 @@ void PlayScene::Initialize() {
 	//-------------------------------------------------------
 
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-	MAGISYSTEM::LoadSceneDataFromJson("SceneData1");
 
-	MAGISYSTEM::ImportSceneData("SceneData1", true);
-
+	MAGISYSTEM::ImportSceneData("SceneData", true);
 
 	//
 	// タイマーリセット

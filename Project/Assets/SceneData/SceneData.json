@@ -45,54 +45,6 @@
             "visible": true
         },
         {
-            "type": "MESH",
-            "name": "StageObject0.001",
-            "transform": {
-                "translate": [
-                    -52.72517776489258,
-                    0.0,
-                    -23.186094284057617
-                ],
-                "rotate": [
-                    -0.0,
-                    -0.0,
-                    -0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "model_name": "StageObj0",
-            "visible": true
-        },
-        {
-            "type": "MESH",
-            "name": "StageObject0",
-            "transform": {
-                "translate": [
-                    -52.72517776489258,
-                    0.0,
-                    22.896150588989258
-                ],
-                "rotate": [
-                    -0.0,
-                    -0.0,
-                    -0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "model_name": "StageObj0",
-            "visible": true
-        },
-        {
             "type": "EMPTY",
             "name": "CP",
             "transform": {
@@ -218,13 +170,13 @@
             "camera_name": "Camera"
         },
         {
-            "type": "MESH",
-            "name": "StageObject0.002",
+            "type": "EMPTY",
+            "name": "CP.005",
             "transform": {
                 "translate": [
-                    41.580318450927734,
                     0.0,
-                    35.908470153808594
+                    5.0,
+                    0.0
                 ],
                 "rotate": [
                     -0.0,
@@ -238,8 +190,9 @@
                     1.0
                 ]
             },
-            "model_name": "StageObj0",
-            "visible": true
+            "identifier": "CAMERA_TARGET",
+            "order": 1,
+            "camera_name": "Camera"
         }
     ]
 }

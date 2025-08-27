@@ -27,7 +27,7 @@ EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playe
 
 	// ステートを作成
 	states_[EnemyAIState::Root] = std::make_shared<EnemyAIStateRoot>();
-
+	states_[EnemyAIState::Search] = std::make_shared<EnemyAIStateSearch>();
 
 	// 最初のステートを設定
 	ChangeState(EnemyAIState::Root);
@@ -60,6 +60,11 @@ void EnemyAI::ChangeState(EnemyAIState nextState) {
 	if (auto cs = currentState_.second.lock()) {
 		cs->Enter(this, mechCore_);
 	}
+}
+
+MechCore* EnemyAI::GetPlayerMech() {
+	auto ptr = playerMech_.lock();
+	return ptr.get();
 }
 
 void EnemyAI::MoveDir(const Vector2& dir) {

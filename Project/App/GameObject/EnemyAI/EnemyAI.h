@@ -19,7 +19,6 @@ enum class EnemyAIState {
 	Root,		// 通常
 	Search,		// 索敵
 	Approach,	// 接近
-	Attack,		// 攻撃	
 	Avoid,		// 回避
 	Leave,		// 離脱
 	Escape,		// 逃走
@@ -35,6 +34,9 @@ public:
 
 	InputCommand Update();
 	void ChangeState(EnemyAIState nextState);
+
+	// 自機を取得
+	MechCore* GetPlayerMech();
 
 	//
 	// 各ステートからコマンドを入力する際に呼ぶ関数
