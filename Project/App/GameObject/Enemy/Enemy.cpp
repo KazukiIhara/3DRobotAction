@@ -28,8 +28,9 @@ Enemy::Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 void Enemy::Update() {
 	// コマンド
 	InputCommand command{};
-
-	command = ai_->Update();
+	if (isAIActive_) {
+		command = ai_->Update();
+	}
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
@@ -44,6 +45,10 @@ void Enemy::Update() {
 
 	// 機体更新
 	mech_->Update();
+}
+
+void Enemy::SetIsAIActive(bool isActive) {
+	isAIActive_ = isActive;
 }
 
 std::weak_ptr<MechCore> Enemy::GetMechCore() {

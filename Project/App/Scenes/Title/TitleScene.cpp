@@ -57,6 +57,10 @@ void TitleScene::Initialize() {
 	// 粒子用
 	MAGISYSTEM::LoadTexture("star.png");
 
+	// 終了時テクスチャ
+	MAGISYSTEM::LoadTexture("YouWin.png");
+	MAGISYSTEM::LoadTexture("YouLose.png");
+
 	//===================================
 	// モデルのロード
 	//===================================
