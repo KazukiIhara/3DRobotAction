@@ -24,6 +24,15 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	// 距離を図る
 	const float distance = Length(pos - playerPos);
 
+	// 距離によって移動の向きを変更
+	if (distance > targetRange_) {
+		targetMoveDir_ = { 1.0f,1.0f };
+	} else {
+		targetMoveDir_ = { 1.0f,0.0f };
+	}
+
+	currentMoveDir_ = Lerp(currentMoveDir_, targetMoveDir_, 0.01f);
+
 	// 旋回行動
 	enemyAI->MoveDir(currentMoveDir_);
 
