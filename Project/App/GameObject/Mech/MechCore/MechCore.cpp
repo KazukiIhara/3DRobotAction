@@ -76,6 +76,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 		if (auto leg = leg_->GetGameObject().lock()) {
 			leg->GetTransform()->SetParent(body->GetTransform(), false);
 		}
+
 	}
 
 	// コンポーネントを作成
@@ -97,6 +98,8 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
+
+	
 
 	//===========================
 	// マネージャをセット

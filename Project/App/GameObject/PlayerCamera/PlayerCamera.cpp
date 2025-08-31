@@ -7,9 +7,9 @@
 
 using namespace MAGIMath;
 
-PlayerCamera::PlayerCamera(const std::string& name)
+PlayerCamera::PlayerCamera(const std::string& name, float yaw)
 	:Camera3D(name, false) {
-
+	pYaw_ = yaw;
 }
 
 void PlayerCamera::Update() {
