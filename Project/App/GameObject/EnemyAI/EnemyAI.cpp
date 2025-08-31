@@ -7,13 +7,15 @@
 
 #include "EnemyAIState/BaseEnemyAIState.h"
 
+#include "GameObject/BulletManager/BulletManager.h"
+
 // 
 // 敵AIのステート
 // 
 #include "EnemyAIState/Root/EnemyAIStateRoot.h"
 #include "EnemyAIState/Search/EnemyAIStateSearch.h"
 
-EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech) {
+EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech, BulletManager* bulletManager) {
 	// 自機のポインタを受け取る
 	if (auto m = mechCore.lock()) {
 		mechCore_ = m.get();
@@ -31,11 +33,28 @@ EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playe
 
 	// 最初のステートを設定
 	ChangeState(EnemyAIState::Root);
+
+	bulletManager_ = bulletManager;
 }
 
 InputCommand EnemyAI::Update() {
 	// コマンドリセット
 	command_ = InputCommand{};
+
+	// 回避用コライダーの更新
+	const Matrix4x4 lMat = MakeTranslateMatrix(avoidColliderTranslate_);
+	const Matrix4x4 wMat = lMat * mechCore_->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldMatrix();
+	const Vector3 wPos = ExtractionWorldPos(wMat);
+
+	const float size = avoidCollider_.localMinMax;
+	const float sizeY = avoidCollider_.localMinMaxY;
+	avoidCollider_.min = { wPos.x - size, wPos.y - sizeY,wPos.z - size };
+	avoidCollider_.max = { wPos.x + size, wPos.y + sizeY,wPos.z + size };
+
+	// コライダーをデバッグ描画
+#if defined(DEBUG) || defined(DEVELOP)
+	MAGISYSTEM::DrawLineAABB(avoidCollider_.min, avoidCollider_.max, Color::Green);
+#endif
 
 	// ステートごとの更新
 	if (auto cs = currentState_.second.lock()) {
@@ -71,6 +90,10 @@ RootDir EnemyAI::GetRootDir() const {
 	return rootDir_;
 }
 
+AvoidColliderAABB EnemyAI::GetAvoidCollider() const {
+	return avoidCollider_;
+}
+
 void EnemyAI::MoveDir(const Vector2& dir) {
 	command_.moveDirection = dir;
 }
@@ -101,6 +124,10 @@ void EnemyAI::RightHandWeapon() {
 
 void EnemyAI::SetRootDir(RootDir dir) {
 	rootDir_ = dir;
+}
+
+BulletManager* EnemyAI::GetBulletManager() {
+	return bulletManager_;
 }
 
 std::weak_ptr<BaseEnemyAIState> EnemyAI::GetState(EnemyAIState state) {

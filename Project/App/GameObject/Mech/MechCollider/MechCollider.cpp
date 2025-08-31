@@ -21,7 +21,9 @@ void MechCollider::Update() {
 
 void MechCollider::Draw() {
 	// デバッグ描画
+#if defined(DEBUG) || defined(DEVELOP)
 	MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Blue);
+#endif
 }
 
 const Vector3& MechCollider::GetMinW() const {

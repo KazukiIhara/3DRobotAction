@@ -21,7 +21,7 @@ Enemy::Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	}
 
 	// AIを作成
-	ai_ = std::make_unique<EnemyAI>(mech_, playerMech);
+	ai_ = std::make_unique<EnemyAI>(mech_, playerMech, bulletManager);
 
 }
 

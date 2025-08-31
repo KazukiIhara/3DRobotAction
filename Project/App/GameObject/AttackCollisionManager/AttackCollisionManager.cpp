@@ -25,9 +25,11 @@ void AttackCollisionManager::Update() {
 }
 
 void AttackCollisionManager::Draw() {
+#if defined(DEBUG) || defined(DEVELOP)
 	for (auto& collider : attackColliders_) {
 		collider->Draw();
 	}
+#endif
 }
 
 void AttackCollisionManager::CheckCollision() {

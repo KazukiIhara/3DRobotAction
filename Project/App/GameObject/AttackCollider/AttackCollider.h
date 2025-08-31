@@ -34,6 +34,7 @@ public:
 	HitInfo GetHitInfo()const;
 	AttackType GetType()const;
 	int32_t GetDamage()const;
+	FriendlyTag GetFriendlyTag()const;
 
 	void SetWorldPos(const Vector3& posW);
 	void SetIsAlive(bool isAlve);

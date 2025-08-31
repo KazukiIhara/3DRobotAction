@@ -18,10 +18,7 @@ class BaseEnemyAIState;
 enum class EnemyAIState {
 	Root,		// 通常
 	Search,		// 索敵
-	Approach,	// 接近
 	Avoid,		// 回避
-	Leave,		// 離脱
-	Escape,		// 逃走
 };
 
 enum class RootDir {
@@ -29,12 +26,23 @@ enum class RootDir {
 	Right,
 };
 
+struct AvoidColliderAABB {
+	const float localMinMax = 4.0f;
+	const float localMinMaxY = 8.0f;
+
+	Vector3 min;
+	Vector3 max;
+};
+
+// 弾マネージャ
+class BulletManager;
+
 /// <summary>
 /// 敵のAIクラス
 /// </summary>
 class EnemyAI {
 public:
-	EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore>playerMech);
+	EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore>playerMech, BulletManager* bulletManager);
 	~EnemyAI() = default;
 
 	InputCommand Update();
@@ -45,6 +53,9 @@ public:
 
 	// 現在の旋回方向を取得
 	RootDir GetRootDir() const;
+
+	// 回避用のコライダーを取得
+	AvoidColliderAABB GetAvoidCollider() const;
 
 	//
 	// 各ステートからコマンドを入力する際に呼ぶ関数
@@ -57,6 +68,10 @@ public:
 	void LeftHandWeapon();
 	void RightHandWeapon();
 	void SetRootDir(RootDir dir);
+
+	// 弾マネージャを取得
+	BulletManager* GetBulletManager();
+
 private:
 	// 対応するステートを取得
 	std::weak_ptr<BaseEnemyAIState> GetState(EnemyAIState state);
@@ -79,14 +94,15 @@ private:
 	// 現在のステート
 	std::pair<EnemyAIState, std::weak_ptr<BaseEnemyAIState>> currentState_;
 
-	// 冷静さ
-	int32_t calmness_ = 3;
-
-	// ステート変更タイマー
-	float stateChangeTimer_ = 0.0f;
-	// ステート変更時間
-	float stateChangeTime_ = 1.0f;
-
 	// 現在の旋回方向
 	RootDir rootDir_ = RootDir::Left;
+
+	// 回避用コライダーのトランスレート
+	Vector3 avoidColliderTranslate_ = { 0.0f,0.0f,8.0f };
+
+	// 回避用コライダー
+	AvoidColliderAABB avoidCollider_;
+
+	// 弾マネージャのポインタ
+	BulletManager* bulletManager_ = nullptr;
 };

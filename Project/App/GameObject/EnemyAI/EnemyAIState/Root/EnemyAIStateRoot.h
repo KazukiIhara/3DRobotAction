@@ -12,13 +12,11 @@ public:
 	void Exit(EnemyAI* enemyAI, MechCore* mechCore)override;
 
 private:
-	Vector2 targetMoveDir_ = { 1.0f,1.0f };
-	Vector2 currentMoveDir_ = { 1.0f,0.2f };
+	Vector2 targetMoveDir_ = { 0.0f,0.0f };
+	Vector2 currentMoveDir_ = { 0.0f,0.0f };
 	float targetRange_ = 10.0f;
 
 	float jumpTimer_ = 0.0f;
 	const float jumpTime_ = 3.0f;
 
-	// 旋回の方向
-	RootDir rootDir_ = RootDir::Left;
 };
