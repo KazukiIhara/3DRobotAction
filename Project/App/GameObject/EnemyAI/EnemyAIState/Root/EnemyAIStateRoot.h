@@ -18,4 +18,7 @@ private:
 
 	float jumpTimer_ = 0.0f;
 	const float jumpTime_ = 3.0f;
+
+	// 旋回の方向
+	RootDir rootDir_ = RootDir::Left;
 };

@@ -24,6 +24,11 @@ enum class EnemyAIState {
 	Escape,		// 逃走
 };
 
+enum class RootDir {
+	Left,
+	Right,
+};
+
 /// <summary>
 /// 敵のAIクラス
 /// </summary>
@@ -38,6 +43,9 @@ public:
 	// 自機を取得
 	MechCore* GetPlayerMech();
 
+	// 現在の旋回方向を取得
+	RootDir GetRootDir() const;
+
 	//
 	// 各ステートからコマンドを入力する際に呼ぶ関数
 	//
@@ -48,6 +56,7 @@ public:
 	void AssultBoost();
 	void LeftHandWeapon();
 	void RightHandWeapon();
+	void SetRootDir(RootDir dir);
 private:
 	// 対応するステートを取得
 	std::weak_ptr<BaseEnemyAIState> GetState(EnemyAIState state);
@@ -78,4 +87,6 @@ private:
 	// ステート変更時間
 	float stateChangeTime_ = 1.0f;
 
+	// 現在の旋回方向
+	RootDir rootDir_ = RootDir::Left;
 };

@@ -67,6 +67,10 @@ MechCore* EnemyAI::GetPlayerMech() {
 	return ptr.get();
 }
 
+RootDir EnemyAI::GetRootDir() const {
+	return rootDir_;
+}
+
 void EnemyAI::MoveDir(const Vector2& dir) {
 	command_.moveDirection = dir;
 }
@@ -93,6 +97,10 @@ void EnemyAI::LeftHandWeapon() {
 
 void EnemyAI::RightHandWeapon() {
 	command_.rightHandWeapon = true;
+}
+
+void EnemyAI::SetRootDir(RootDir dir) {
+	rootDir_ = dir;
 }
 
 std::weak_ptr<BaseEnemyAIState> EnemyAI::GetState(EnemyAIState state) {
