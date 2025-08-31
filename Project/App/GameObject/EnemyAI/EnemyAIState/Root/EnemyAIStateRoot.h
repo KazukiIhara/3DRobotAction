@@ -17,6 +17,7 @@ private:
 	float targetRange_ = 10.0f;
 
 	float jumpTimer_ = 0.0f;
-	const float jumpTime_ = 3.0f;
+	float boostTimer_ = 2.0f;
 
+	float avoidCoolTimer_ = 0.5f;
 };

@@ -14,6 +14,7 @@
 // 
 #include "EnemyAIState/Root/EnemyAIStateRoot.h"
 #include "EnemyAIState/Search/EnemyAIStateSearch.h"
+#include "EnemyAIState/Avoid/EnemyAIStateAvoid.h"
 
 EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech, BulletManager* bulletManager) {
 	// 自機のポインタを受け取る
@@ -30,9 +31,10 @@ EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playe
 	// ステートを作成
 	states_[EnemyAIState::Root] = std::make_shared<EnemyAIStateRoot>();
 	states_[EnemyAIState::Search] = std::make_shared<EnemyAIStateSearch>();
+	states_[EnemyAIState::Avoid] = std::make_shared<EnemyAIStateAvoid>();
 
 	// 最初のステートを設定
-	ChangeState(EnemyAIState::Root);
+	ChangeState(EnemyAIState::Search);
 
 	bulletManager_ = bulletManager;
 }
