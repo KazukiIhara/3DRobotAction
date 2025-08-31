@@ -50,7 +50,7 @@ enum class PlaySceneState {
 /// ゲームプレイシーン
 /// </summary>
 /// <typeparam name="Data"></typeparam>
-class PlayScene :public BaseScene {
+class PlayScene:public BaseScene {
 public:
 	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;
@@ -77,6 +77,10 @@ private:
 	// 敵
 	std::unique_ptr<Enemy> enemy_;
 
+	// 終了時UI
+	SpriteData finishSpriteData_;
+	SpriteMaterialData finishSpriteMatData_;
+
 	//----------------------------------------- 
 	// マネージャ
 	//-----------------------------------------
@@ -101,6 +105,9 @@ private:
 	// 戦闘タイマー
 	float tempBattleTime_ = 0.0;
 	int32_t kMaxBattleTime_ = 90;
+
+	// シーン終了演出のタイマー
+	float finishSceneTimer_ = 3.0f;
 
 	// 
 	// デバッグ用

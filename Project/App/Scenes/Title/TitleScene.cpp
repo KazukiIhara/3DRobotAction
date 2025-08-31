@@ -57,6 +57,10 @@ void TitleScene::Initialize() {
 	// 粒子用
 	MAGISYSTEM::LoadTexture("star.png");
 
+	// 終了時テクスチャ
+	MAGISYSTEM::LoadTexture("YouWin.png");
+	MAGISYSTEM::LoadTexture("YouLose.png");
+
 	//===================================
 	// モデルのロード
 	//===================================
@@ -93,7 +97,7 @@ void TitleScene::Initialize() {
 
 
 
-	startData_.position = { WindowApp::kClientWidth * 0.5f, 800.0f };
+	startData_.position = { WindowApp::kClientWidth * 0.5f, 900.0f };
 	exitData_.position = { WindowApp::kClientWidth * 0.5f, 912.0f };
 
 	bgMatData_.textureName = "TitleBG.png";
@@ -120,7 +124,6 @@ void TitleScene::Draw() {
 	MAGISYSTEM::DrawSprite(bgData_, bgMatData_);
 
 	MAGISYSTEM::DrawSprite(startData_, startMatData_);
-	MAGISYSTEM::DrawSprite(exitData_, exitMatData_);
 
 }
 

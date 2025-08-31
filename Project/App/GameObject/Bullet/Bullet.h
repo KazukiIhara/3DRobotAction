@@ -29,6 +29,10 @@ public:
 
 	bool GetIsAlive()const;
 
+	AttackCollider* GetAttackCollider();
+	
+	Vector3 GetWorldPos();
+
 private:
 	// ゲームオブジェクト
 	std::weak_ptr<GameObject3D> bullet_;

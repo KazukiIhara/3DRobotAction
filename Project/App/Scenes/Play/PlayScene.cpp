@@ -76,16 +76,22 @@ void PlayScene::Initialize() {
 	//-------------------------------------------------------
 
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-	MAGISYSTEM::LoadSceneDataFromJson("SceneData1");
 
-	MAGISYSTEM::ImportSceneData("SceneData1", true);
-
+	MAGISYSTEM::ImportSceneData("SceneData", true);
 
 	//
 	// タイマーリセット
 	// 
 	tempBattleTime_ = 0.0f;
 	info.battleTime = kMaxBattleTime_;
+
+	//
+	// 終了時UIの設定
+	//
+
+	finishSpriteData_.position = { WindowApp::kClientWidth * 0.5f,WindowApp::kClientHeight * 0.5f };
+	finishSpriteMatData_.anchorPoint = { 0.5f,0.5f };
+	finishSpriteMatData_.textureName = "YouWin.png";
 
 }
 
@@ -124,6 +130,31 @@ void PlayScene::Update() {
 	// ライト変数
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
+	// ポストエフェクト適用
+	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
+	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
+	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
+	MAGISYSTEM::ApplyPostEffectDepthNormalOutline();
+
+
+	// 
+	// タイマー更新
+	// 
+
+	tempBattleTime_ += MAGISYSTEM::GetDeltaTime();
+
+	// 一秒経ったらタイマーをマイナス
+	if (tempBattleTime_ >= 1.0f) {
+		tempBattleTime_ = 0.0f;
+		if (info.battleTime > 0) {
+			info.battleTime--;
+		}
+	}
+
+	//
+	// オブジェクト更新
+	//
+
 	// プレイヤー更新
 	player_->Update();
 
@@ -135,25 +166,6 @@ void PlayScene::Update() {
 
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
-
-	// ポストエフェクト適用
-	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
-	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
-	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
-	MAGISYSTEM::ApplyPostEffectDepthNormalOutline();
-
-	// 
-	// タイマー更新
-	// 
-
-	tempBattleTime_ += MAGISYSTEM::GetDeltaTime();
-
-	// 一秒経ったらタイマーをマイナス
-	if (tempBattleTime_ >= 1.0f) {
-		tempBattleTime_ = 0.0f;
-		info.battleTime;
-	}
-
 
 	// 
 	// シーン終了判定
@@ -190,9 +202,13 @@ void PlayScene::Update() {
 		info.finish = true;
 	}
 
-	// ひとまず即タイトルに戻る
 	if (info.finish) {
-		this->ChangeScene("Title");
+		enemy_->SetIsAIActive(false);
+		finishSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
+	}
+
+	if (finishSceneTimer_ <= 0.0f) {
+		ChangeScene("Title");
 	}
 
 }
@@ -206,6 +222,26 @@ void PlayScene::Draw() {
 
 	// 攻撃判定マネージャ描画
 	attackCollisionManager_->Draw();
+
+	// 戦闘終了時の描画
+	if (info.finish) {
+		switch (info.judge) {
+			case FinishJudgment::Player:
+				finishSpriteMatData_.textureName = "YouWin.png";
+				MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
+				break;
+			case FinishJudgment::Enemy:
+				finishSpriteMatData_.textureName = "YouLose.png";
+				MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
+				break;
+			case FinishJudgment::Draw:
+				finishSpriteMatData_.textureName = "YouWin.png";
+				MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
+				break;
+			default:
+				break;
+		}
+	}
 
 }
 

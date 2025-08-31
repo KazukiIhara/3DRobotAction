@@ -60,6 +60,10 @@ int32_t AttackCollider::GetDamage() const {
 	return damage_;
 }
 
+FriendlyTag AttackCollider::GetFriendlyTag()const {
+	return tag_;
+}
+
 void AttackCollider::SetWorldPos(const Vector3& posW) {
 	posW_ = posW;
 }

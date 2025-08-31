@@ -188,6 +188,7 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	int hp = 0;
 	int en = 0;
 	int targetHP = 0;
+	Vector3 targetPos{};
 
 	if (auto obj = mechCore->GetGameObject().lock()) {
 		worldPosition = obj->GetTransform()->GetWorldPosition();
@@ -199,12 +200,18 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		targetHP = target->GetStatusComponent()->GetHp();
+		// ターゲット対象の座標を取得
+		targetPos = target->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 	}
+
+	// 距離を図る
+	float distance = Length(worldPosition - targetPos);
 
 	ImGui::Begin("PlayerDebugUI");
 	ImGui::InputFloat3("WorldPosition", &worldPosition.x);
 	ImGui::InputInt("HP", &hp);
 	ImGui::InputInt("EN", &en);
 	ImGui::InputInt("TargetHP", &targetHP);
+	ImGui::InputFloat("TargetDistance", &distance);
 	ImGui::End();
 }

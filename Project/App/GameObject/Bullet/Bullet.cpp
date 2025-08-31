@@ -85,3 +85,15 @@ void Bullet::Finalize() {
 bool Bullet::GetIsAlive()const {
 	return isAlive_;
 }
+
+AttackCollider* Bullet::GetAttackCollider() {
+	return collider_.lock().get();
+}
+
+Vector3 Bullet::GetWorldPos() {
+	Vector3 pos{};
+	if (auto bullet = bullet_.lock()) {
+		pos = bullet->GetTransform()->GetWorldPosition();
+	}
+	return pos;
+}

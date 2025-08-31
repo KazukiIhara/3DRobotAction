@@ -12,7 +12,7 @@ enum PlayerCameraState {
 
 class PlayerCamera:public Camera3D {
 public:
-	PlayerCamera(const std::string& name);
+	PlayerCamera(const std::string& name, float yaw);
 	~PlayerCamera() = default;
 
 	void Update()override;

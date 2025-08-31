@@ -28,6 +28,10 @@ void BulletManager::Draw() {
 	}
 }
 
+const std::vector<Bullet> BulletManager::GetBullets() {
+	return bullets_;
+}
+
 void BulletManager::AddBullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos, int32_t damage) {
 	// コライダーを作成
 	std::shared_ptr<AttackCollider> bulletCollider = std::make_unique<AttackCollider>(tag, wPos, Vector3(-0.4f, -0.4f, -0.4f), Vector3(0.4f, 0.4f, 0.4f), damage);

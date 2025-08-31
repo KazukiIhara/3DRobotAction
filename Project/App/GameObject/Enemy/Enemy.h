@@ -19,6 +19,8 @@ public:
 
 	void Update();
 
+	void SetIsAIActive(bool isActive);
+
 	// 機体を取得
 	std::weak_ptr<MechCore> GetMechCore();
 
@@ -29,4 +31,6 @@ private:
 	// 敵AIクラス
 	std::unique_ptr<EnemyAI> ai_;
 
+	// AIのアクティブフラグ
+	bool isAIActive_ = true;
 };

@@ -10,7 +10,7 @@ Enemy::Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	mech_ = std::make_unique<MechCore>(Vector3(0.0f, 0.0f, 30.0f), FriendlyTag::EnemySide, bulletManager, true);
 
 	// 三人称視点カメラの作成
-	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera");
+	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera", std::numbers::pi_v<float>);
 	followCamera->SetIsUnique(true);
 	followCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
 	followCamera->SetMechCore(mech_);
@@ -21,15 +21,16 @@ Enemy::Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	}
 
 	// AIを作成
-	ai_ = std::make_unique<EnemyAI>(mech_, playerMech);
+	ai_ = std::make_unique<EnemyAI>(mech_, playerMech, bulletManager);
 
 }
 
 void Enemy::Update() {
 	// コマンド
 	InputCommand command{};
-
-	/*command = ai_->Update();*/
+	if (isAIActive_) {
+		command = ai_->Update();
+	}
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
@@ -44,6 +45,10 @@ void Enemy::Update() {
 
 	// 機体更新
 	mech_->Update();
+}
+
+void Enemy::SetIsAIActive(bool isActive) {
+	isAIActive_ = isActive;
 }
 
 std::weak_ptr<MechCore> Enemy::GetMechCore() {
