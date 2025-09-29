@@ -47,13 +47,13 @@ void Player::Update() {
 		command.cameraRotDirection = MAGISYSTEM::GetRightStick(0);
 
 		// ジャンプ入力
-		command.jump = MAGISYSTEM::PushButton(0, ButtonL);
+		command.jump = MAGISYSTEM::PushButton(0, ButtonA);
 
 		// クイックブースト入力
-		command.quickBoost = MAGISYSTEM::TriggerButton(0, ButtonR);
+		command.quickBoost = MAGISYSTEM::TriggerButton(0, ButtonX);
 
 		// アサルトブースト入力
-		command.assultBoost = MAGISYSTEM::TriggerButton(0, ButtonA);
+		command.assultBoost = MAGISYSTEM::TriggerButton(0, ButtonLeftStick);
 
 		// ロックオンモード切り替え
 		command.switchHardLock = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
