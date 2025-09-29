@@ -88,7 +88,7 @@ private:
 	std::unique_ptr<AttackCollisionManager> attackCollisionManager_;
 
 	// 弾のマネージャ
-	std::unique_ptr<BulletManager> bulletManger_;
+	std::unique_ptr<AttackObjectManager> attackObjectManger_;
 
 
 	// ポストエフェクトの用の変数

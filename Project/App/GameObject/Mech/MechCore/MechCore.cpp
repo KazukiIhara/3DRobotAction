@@ -11,7 +11,7 @@
 
 using namespace MAGIMath;
 
-MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn) {
+MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* bulletManager, bool enableHardlockOn) {
 	// ゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", position);
 	coreObject->SetIsUnique(true);

@@ -10,12 +10,12 @@
 class AttackCollisionManager;
 
 /// <summary>
-/// 弾のマネージャ (弾だけでなく今後攻撃全般のマネージャになりそう)
+/// 攻撃オブジェクトマネージャ
 /// </summary>
-class BulletManager {
+class AttackObjectManager {
 public:
-	BulletManager(AttackCollisionManager* attackColliderManager);
-	~BulletManager() = default;
+	AttackObjectManager(AttackCollisionManager* attackColliderManager);
+	~AttackObjectManager() = default;
 
 	void Update();
 	void Draw();

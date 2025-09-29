@@ -7,14 +7,14 @@
 #include "GameObject/EnemyAI/EnemyAI.h"
 
 // 前方宣言
-class BulletManager;
+class AttackObjectManager;
 
 /// <summary>
 /// 敵クラス
 /// </summary>
 class Enemy {
 public:
-	Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech);
+	Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerMech);
 	~Enemy() = default;
 
 	void Update();

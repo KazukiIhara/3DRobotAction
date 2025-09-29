@@ -9,14 +9,14 @@
 #include "Structs/ColorStruct.h"
 
 // 前方宣言
-class BulletManager;
+class AttackObjectManager;
 
 /// <summary>
 /// プレイヤークラス
 /// </summary>
 class Player {
 public:
-	Player(BulletManager* bulletManager);
+	Player(AttackObjectManager* bulletManager);
 	~Player() = default;
 
 	void Update();

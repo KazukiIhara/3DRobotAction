@@ -5,12 +5,12 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
-#include "GameObject/BulletManager/BulletManager.h"
+#include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
 using namespace MAGIMath;
 
-MechAttackComponent::MechAttackComponent(BulletManager* bulletManager) {
-	bulletManager_ = bulletManager;
+MechAttackComponent::MechAttackComponent(AttackObjectManager* attackObjectManager) {
+	attackObjectManager_ = attackObjectManager;
 }
 
 void MechAttackComponent::Update(MechCore* mechCore) {
@@ -53,7 +53,7 @@ void MechAttackComponent::AttackLeftHand(MechCore* mechCore) {
 		const int32_t damage = mechCore->GetLeftHandWeapon()->GetDamage();
 
 		// 弾を追加
-		bulletManager_->AddBullet(tag, armDir, bulletSpeed, fireWPos, damage);
+		attackObjectManager_->AddBullet(tag, armDir, bulletSpeed, fireWPos, damage);
 
 		// クールタイムにする
 		mechCore->GetLeftHandWeapon()->SetCoolTime();
@@ -87,7 +87,7 @@ void MechAttackComponent::AttackRightHand(MechCore* mechCore) {
 		const int32_t damage = mechCore->GetRightHandWeapon()->GetDamage();
 
 		// 弾を追加
-		bulletManager_->AddBullet(tag, armFwd, bulletSpeed, fireWPos, damage);
+		attackObjectManager_->AddBullet(tag, armFwd, bulletSpeed, fireWPos, damage);
 
 		// クールタイムにする
 		mechCore->GetRightHandWeapon()->SetCoolTime();

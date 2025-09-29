@@ -33,14 +33,14 @@
 // 前方宣言
 class GameObject3D;
 class MechCoreBaseState;
-class BulletManager;
+class AttackObjectManager;
 
 /// <summary>
 /// 機体制御クラス
 /// </summary>
 class MechCore {
 public:
-	MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn);
+	MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* bulletManager, bool enableHardlockOn);
 	~MechCore() = default;
 
 	void Update();

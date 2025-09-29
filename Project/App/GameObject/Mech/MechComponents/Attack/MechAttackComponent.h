@@ -1,14 +1,14 @@
 #pragma once
 
 class MechCore;
-class BulletManager;
+class AttackObjectManager;
 
 /// <summary>
 /// 攻撃コンポーネント
 /// </summary>
 class MechAttackComponent {
 public:
-	MechAttackComponent(BulletManager* bulletManager);
+	MechAttackComponent(AttackObjectManager* bulletManager);
 	~MechAttackComponent() = default;
 
 	void Update(MechCore* mechCore);
@@ -21,5 +21,5 @@ private:
 
 
 	// 弾マネージャ
-	BulletManager* bulletManager_ = nullptr;
+	AttackObjectManager* attackObjectManager_ = nullptr;
 };
