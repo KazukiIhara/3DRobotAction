@@ -19,6 +19,7 @@
 
 // 武器クラス
 #include "GameObject/Mech/MechWeapons/MechWeaponAssultRifle/MechWeaponAssultRifle.h"
+#include "GameObject/Mech/MechWeapons/MechShoulderWeaponDualMissileLauncher/MechShoulderWeaponDualMissileLauncher.h"
 
 // コンポーネントクラス
 #include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
@@ -39,7 +40,7 @@ class BulletManager;
 /// </summary>
 class MechCore {
 public:
-	MechCore(const Vector3& position,FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn);
+	MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn);
 	~MechCore() = default;
 
 	void Update();
@@ -160,6 +161,12 @@ private:
 
 	// 右手武器
 	std::unique_ptr<BaseMechWeapon> rightHandWeapon_ = nullptr;
+
+	// 左肩武器
+	std::unique_ptr<BaseMechShoulderWeapon> leftShoulerWeapon_ = nullptr;
+
+	// 右肩武器
+	std::unique_ptr<BaseMechShoulderWeapon> rightShoulerWeapon_ = nullptr;
 
 	//=======================
 	// コライダー

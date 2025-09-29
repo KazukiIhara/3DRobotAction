@@ -4,7 +4,7 @@
 
 #include "GameObject/AttackCollider/AttackCollider.h"
 
-Missile::Missile(const Vector3& wPos, float speed, const Vector3& dir, std::weak_ptr<AttackCollider> attackCollider) {
+Missile::Missile(const Vector3& wPos, float speed, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
 	lifeTime_ = 10.0f;
 	dir_ = dir;
@@ -17,6 +17,9 @@ Missile::Missile(const Vector3& wPos, float speed, const Vector3& dir, std::weak
 	std::shared_ptr<GameObject3D> missile = std::make_shared<GameObject3D>("Missile", wPos);
 	missile->AddModelRenderer(renderer);
 	missile_ = MAGISYSTEM::AddGameObject3D(std::move(missile));
+
+	// ターゲットを設定
+	target_ = target;
 
 	// 攻撃コライダーを設定
 	collider_ = attackCollider;
@@ -36,10 +39,16 @@ void Missile::Update() {
 	}
 
 	// 
-	// ここにミサイル特有の更新処理を実装する
+	// ここにミサイル固有の更新処理を実装する
 	// 
 
-
+	switch (type_) {
+		case MissileType::Dual:
+			UpdateDualMissile();
+			break;
+		default:
+			break;
+	}
 
 	// 進行方向に向ける
 	const Quaternion targetQ = DirectionToQuaternion(dir_);
@@ -94,4 +103,17 @@ Vector3 Missile::GetWorldPos() {
 		pos = bullet->GetTransform()->GetWorldPosition();
 	}
 	return pos;
+}
+
+void Missile::UpdateDualMissile() {
+	switch (phase_) {
+		case MissilePhase::Boost:
+
+			break;
+		case MissilePhase::Guided:
+
+			break;
+		default:
+			break;
+	}
 }

@@ -6,10 +6,10 @@
 // BaseClass
 #include "GameObject/Mech/MechWeapons/BaseMechShoulderWeapon/BaseMechShoulderWeapon.h"
 
-class MechShoulderWeaponDualMissile:public BaseMechShoulderWeapon {
+class MechShoulderWeaponDualMissileLauncher:public BaseMechShoulderWeapon {
 public:
-	MechShoulderWeaponDualMissile();
-	~MechShoulderWeaponDualMissile()override = default;
+	MechShoulderWeaponDualMissileLauncher();
+	~MechShoulderWeaponDualMissileLauncher()override = default;
 
 private:
 

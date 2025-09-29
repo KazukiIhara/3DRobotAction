@@ -9,14 +9,15 @@
 
 // 前方宣言
 class GameObject3D;
+class MechCore;
 
 // ミサイルの種類
-enum MissileType {
+enum class MissileType {
 	Dual,
 };
 
 // ミサイルのフェーズ
-enum MissilePhase {
+enum class MissilePhase {
 	Boost,
 	Guided,
 };
@@ -30,6 +31,7 @@ public:
 		const Vector3& wPos,
 		float speed,
 		const Vector3& dir,
+		std::weak_ptr<MechCore> target,
 		std::weak_ptr<AttackCollider> attackCollider
 	);
 	~Missile() = default;
@@ -45,11 +47,23 @@ public:
 	Vector3 GetWorldPos();
 
 private:
+	// ミサイルの破壊判定を取る
+
+	// 双対ミサイルの更新処理
+	void UpdateDualMissile();
+
+private:
 	// ゲームオブジェクト
 	std::weak_ptr<GameObject3D> missile_;
 
+	// ロックオン対象の機体
+	std::weak_ptr<MechCore> target_;
+
 	// ミサイルの種類
 	MissileType type_;
+
+	// 現在のフェーズ
+	MissilePhase phase_;
 
 	// 進行方向
 	Vector3 dir_ = { 0.0f,0.0f,0.0f };

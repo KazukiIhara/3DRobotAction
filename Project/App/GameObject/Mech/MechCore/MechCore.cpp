@@ -42,6 +42,13 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 	// 右手武器
 	rightHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
 
+	// 左肩武器
+
+
+	// 右肩武器
+	rightShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>();
+
+
 	// パーツを親子付け
 
 	// 体
@@ -100,7 +107,6 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 	ChangeState(MechCoreState::Idle);
 
 	
-
 	//===========================
 	// マネージャをセット
 	//===========================
