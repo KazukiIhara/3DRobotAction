@@ -95,3 +95,11 @@ void MechAttackComponent::AttackRightHand(MechCore* mechCore) {
 		break;
 	}
 }
+
+void MechAttackComponent::AttackLeftShoulder(MechCore* mechCore) {
+
+}
+
+void MechAttackComponent::AttackRightShoulder(MechCore* mechCore) {
+
+}
