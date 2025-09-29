@@ -42,7 +42,7 @@ private:
 	float speed_ = 0.0f;
 
 	// 最大生存時間
-	float lifeTime_ = 10.0f;
+	float lifeTime_ = 5.0f;
 	// 生存フラグ
 	bool isAlive_ = false;
 

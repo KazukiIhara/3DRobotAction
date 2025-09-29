@@ -16,6 +16,7 @@ enum class FriendlyTag {
 /// </summary>
 enum class AttackType {
 	Bullet,
+	Missile,
 	Melee,
 };
 

@@ -6,7 +6,7 @@
 
 Bullet::Bullet(const Vector3& dir, float speed, const Vector3& wPos, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
-	lifeTime_ = 10.0f;
+	lifeTime_ = 5.0f;
 	dir_ = dir;
 	speed_ = speed;
 
