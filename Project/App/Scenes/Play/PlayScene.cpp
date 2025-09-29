@@ -124,6 +124,11 @@ void PlayScene::Update() {
 		}
 	}
 
+	bool isActiveEnemyAI = enemy_->GetIsAIActive();
+	if (ImGui::Checkbox("EnableEnemyAI", &isActiveEnemyAI)) {
+		enemy_->SetIsAIActive(isActiveEnemyAI);
+	}
+
 	ImGui::End();
 #endif
 

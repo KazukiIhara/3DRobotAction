@@ -54,3 +54,7 @@ void Enemy::SetIsAIActive(bool isActive) {
 std::weak_ptr<MechCore> Enemy::GetMechCore() {
 	return mech_;
 }
+
+bool Enemy::GetIsAIActive() const {
+	return isAIActive_;
+}

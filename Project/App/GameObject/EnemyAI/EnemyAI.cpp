@@ -7,7 +7,7 @@
 
 #include "EnemyAIState/BaseEnemyAIState.h"
 
-#include "GameObject/BulletManager/BulletManager.h"
+#include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
 // 
 // 敵AIのステート
