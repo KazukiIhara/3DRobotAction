@@ -64,6 +64,12 @@ void Player::Update() {
 		// 右手武器攻撃
 		command.rightHandWeapon = MAGISYSTEM::GetRightTrigger(0) >= 0.3f;
 
+		// 左肩武器攻撃
+		command.leftShoulderWeapon = MAGISYSTEM::TriggerButton(0, ButtonL);
+
+		// 右肩武器攻撃
+		command.rightShoulderWeapon = MAGISYSTEM::TriggerButton(0, ButtonR);
+
 
 	} else { // パッドなしならキーボード入力解禁
 		// 移動入力
