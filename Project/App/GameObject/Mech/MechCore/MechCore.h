@@ -73,8 +73,8 @@ public:
 	// 
 	// 武器の取得
 	// 
-	BaseMechWeapon* GetLeftHandWeapon();
-	BaseMechWeapon* GetRightHandWeapon();
+	BaseMechHandWeapon* GetLeftHandWeapon();
+	BaseMechHandWeapon* GetRightHandWeapon();
 
 	// 
 	// コンポーネントの取得
@@ -157,10 +157,10 @@ private:
 	std::unique_ptr<MechLeg> leg_ = nullptr;
 
 	// 左手武器
-	std::unique_ptr<BaseMechWeapon> leftHandWeapon_ = nullptr;
+	std::unique_ptr<BaseMechHandWeapon> leftHandWeapon_ = nullptr;
 
 	// 右手武器
-	std::unique_ptr<BaseMechWeapon> rightHandWeapon_ = nullptr;
+	std::unique_ptr<BaseMechHandWeapon> rightHandWeapon_ = nullptr;
 
 	// 左肩武器
 	std::unique_ptr<BaseMechShoulderWeapon> leftShoulerWeapon_ = nullptr;

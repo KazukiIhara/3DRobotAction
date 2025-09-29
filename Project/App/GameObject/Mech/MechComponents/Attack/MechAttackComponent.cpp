@@ -31,7 +31,7 @@ void MechAttackComponent::Update(MechCore* mechCore) {
 
 void MechAttackComponent::AttackLeftHand(MechCore* mechCore) {
 	// 左手の武器を見に行く
-	const WeaponType type = mechCore->GetLeftHandWeapon()->GetType();
+	const HandWeaponType type = mechCore->GetLeftHandWeapon()->GetType();
 
 	// クールタイム中なら早期リターン
 	if (mechCore->GetLeftHandWeapon()->IsCoolTime()) {
@@ -39,7 +39,7 @@ void MechAttackComponent::AttackLeftHand(MechCore* mechCore) {
 	}
 
 	switch (type) {
-	case WeaponType::AssultRifle:
+	case HandWeaponType::AssultRifle:
 
 		// 敵味方の識別を取得
 		const FriendlyTag tag = mechCore->GetFriendlyTag();
@@ -65,7 +65,7 @@ void MechAttackComponent::AttackLeftHand(MechCore* mechCore) {
 
 void MechAttackComponent::AttackRightHand(MechCore* mechCore) {
 	// 右手の武器を見に行く
-	const WeaponType type = mechCore->GetRightHandWeapon()->GetType();
+	const HandWeaponType type = mechCore->GetRightHandWeapon()->GetType();
 
 	// クールタイム中なら早期リターン
 	if (mechCore->GetRightHandWeapon()->IsCoolTime()) {
@@ -73,7 +73,7 @@ void MechAttackComponent::AttackRightHand(MechCore* mechCore) {
 	}
 
 	switch (type) {
-	case WeaponType::AssultRifle:
+	case HandWeaponType::AssultRifle:
 
 		// 敵味方の識別を取得
 		const FriendlyTag tag = mechCore->GetFriendlyTag();

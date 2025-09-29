@@ -43,10 +43,10 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 	rightHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
 
 	// 左肩武器
-
+	leftShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Left);
 
 	// 右肩武器
-	rightShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>();
+	rightShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Right);
 
 
 	// パーツを親子付け
@@ -84,6 +84,17 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 			leg->GetTransform()->SetParent(body->GetTransform(), false);
 		}
 
+
+		// 左肩武器
+		if (auto leftShoulderWeapon = leftShoulerWeapon_->GetGameObject().lock()) {
+			leftShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
+		}
+
+		// 右肩武器
+		if (auto rightShoulderWeapon = rightShoulerWeapon_->GetGameObject().lock()) {
+			rightShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
+		}
+
 	}
 
 	// コンポーネントを作成
@@ -106,7 +117,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
 
-	
+
 	//===========================
 	// マネージャをセット
 	//===========================
@@ -214,11 +225,11 @@ MechArmRight* MechCore::GetMechArmRight() {
 	return rightArm_.get();
 }
 
-BaseMechWeapon* MechCore::GetLeftHandWeapon() {
+BaseMechHandWeapon* MechCore::GetLeftHandWeapon() {
 	return leftHandWeapon_.get();
 }
 
-BaseMechWeapon* MechCore::GetRightHandWeapon() {
+BaseMechHandWeapon* MechCore::GetRightHandWeapon() {
 	return rightHandWeapon_.get();
 }
 

@@ -8,9 +8,18 @@
 
 class MechShoulderWeaponDualMissileLauncher:public BaseMechShoulderWeapon {
 public:
-	MechShoulderWeaponDualMissileLauncher();
+	MechShoulderWeaponDualMissileLauncher(const WitchShoulder& witch);
 	~MechShoulderWeaponDualMissileLauncher()override = default;
 
-private:
+	void Update(MechCore* mechCore)override;
 
+
+private:
+	// 初速
+	float firstSpeed_ = 0.0f;
+	// 加速度
+	float acc_ = 0.0f;
+
+	// 胴体からのオフセット
+	Vector3 offset_ = { 0.3f,0.3f,-0.3f };
 };
