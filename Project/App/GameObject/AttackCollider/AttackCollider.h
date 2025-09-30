@@ -16,6 +16,7 @@ public:
 
 	AttackCollider(
 		const FriendlyTag& tag,
+		const AttackType& type,
 		const Vector3& posW,
 		const Vector3& minL,
 		const Vector3& maxL,

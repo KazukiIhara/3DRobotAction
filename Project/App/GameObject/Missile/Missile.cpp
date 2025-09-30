@@ -4,11 +4,12 @@
 
 #include "GameObject/AttackCollider/AttackCollider.h"
 
-Missile::Missile(const Vector3& wPos, float speed, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
+Missile::Missile(const MissileType& missileType, const Vector3& wPos, float speed, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
 	lifeTime_ = 10.0f;
 	dir_ = dir;
 	speed_ = speed;
+	type_ = missileType;
 
 	// レンダラーを作成
 	std::shared_ptr<ModelRenderer> renderer = std::make_shared<ModelRenderer>("Missile", "MechRightArm");
@@ -23,6 +24,9 @@ Missile::Missile(const Vector3& wPos, float speed, const Vector3& dir, std::weak
 
 	// 攻撃コライダーを設定
 	collider_ = attackCollider;
+
+	// フェーズを初期化
+	phase_ = MissilePhase::Boost;
 }
 
 void Missile::Update() {
@@ -38,10 +42,7 @@ void Missile::Update() {
 		}
 	}
 
-	// 
 	// ここにミサイル固有の更新処理を実装する
-	// 
-
 	switch (type_) {
 		case MissileType::Dual:
 			UpdateDualMissile();

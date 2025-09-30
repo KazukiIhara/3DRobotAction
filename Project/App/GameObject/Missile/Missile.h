@@ -28,6 +28,7 @@ enum class MissilePhase {
 class Missile {
 public:
 	Missile(
+		const MissileType& missileType,
 		const Vector3& wPos,
 		float speed,
 		const Vector3& dir,
