@@ -131,21 +131,25 @@ void MechAttackComponent::AttackLeftShoulder(MechCore* mechCore) {
 		// 最大速度取得
 		const float maxSpeed = mechCore->GetLeftShoulderWeapon()->GetMaxSpeed();
 		// ダメージを参照
-		int32_t damage = mechCore->GetLeftShoulderWeapon()->GetDamage();
+		const int32_t damage = mechCore->GetLeftShoulderWeapon()->GetDamage();
 
 		// ターゲットを設定 TODO:(ひとまず機体のロックオン機能から直接持ってくるが、ミサイルランチャーから受け取るようにする)
 		std::weak_ptr<MechCore> target = mechCore->GetLockOnComponent()->GetLockOnTarget();
 
-		// 腕の向きを取得(一旦仮で敵の方に飛ばす)
-		const Vector3 armFwd = mechCore->GetMechArmRight()->GetForward();
-
-		// 四発発射
-		for (uint32_t i = 0; i < 4; i++) {
-			// 発射する方向を決定
-
-			// 発射
-			attackObjectManager_->AddMissile(tag, MissileType::Dual, wPos, firstSpeed, acc, maxSpeed, armFwd, damage, target);
+		if (auto tgt = target.lock()) {
+			if (auto tgtBody = tgt->GetMechBody()->GetGameObject().lock()) {
+				// ターゲットのワールド座標を取得
+				const Vector3 targetWPos = tgtBody->GetTransform()->GetWorldPosition();
+				// 四発発射
+				for (uint32_t i = 0; i < 4; i++) {
+					// 発射する方向を決定
+					const Vector3 dir = Normalize(targetWPos - wPos);
+					// 発射
+					attackObjectManager_->AddMissile(tag, MissileType::Dual, wPos, firstSpeed - float(i) * 2.0f, acc, maxSpeed, dir, damage, target);
+				}
+			}
 		}
+
 		// クールタイムにする
 		mechCore->GetLeftShoulderWeapon()->EnableCoolTime();
 	}

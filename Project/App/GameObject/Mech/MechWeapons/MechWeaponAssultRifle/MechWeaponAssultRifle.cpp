@@ -12,7 +12,7 @@ MechWeaponAssultRifle::MechWeaponAssultRifle()
 	fireLocalTranslateMatrix_ = MakeTranslateMatrix(fireLocalPosition_);
 
 	// 弾速を設定
-	bulletSpeed_ = 100.0f;
+	bulletSpeed_ = 70.0f;
 
 	// ダメージを設定
 	damage_ = kDamage_;
