@@ -84,17 +84,15 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 			leg->GetTransform()->SetParent(body->GetTransform(), false);
 		}
 
-
-		// 左肩武器
-		if (auto leftShoulderWeapon = leftShoulerWeapon_->GetGameObject().lock()) {
-			leftShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
-		}
-
 		// 右肩武器
 		if (auto rightShoulderWeapon = rightShoulerWeapon_->GetGameObject().lock()) {
 			rightShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
 		}
 
+		// 左肩武器
+		if (auto leftShoulderWeapon = leftShoulerWeapon_->GetGameObject().lock()) {
+			leftShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
+		}
 	}
 
 	// コンポーネントを作成
@@ -158,6 +156,8 @@ void MechCore::Update() {
 	// 武器を更新
 	rightHandWeapon_->Update(this);
 	leftHandWeapon_->Update(this);
+	leftShoulerWeapon_->Update(this);
+	rightShoulerWeapon_->Update(this);
 
 	// 攻撃コンポーネントを更新
 	attackComponent_->Update(this);
@@ -231,6 +231,14 @@ BaseMechHandWeapon* MechCore::GetLeftHandWeapon() {
 
 BaseMechHandWeapon* MechCore::GetRightHandWeapon() {
 	return rightHandWeapon_.get();
+}
+
+BaseMechShoulderWeapon* MechCore::GetLeftShoulderWeapon() {
+	return leftShoulerWeapon_.get();
+}
+
+BaseMechShoulderWeapon* MechCore::GetRightShoulderWeapon() {
+	return rightShoulerWeapon_.get();
 }
 
 MechMovementComponent* MechCore::GetMovementComponent() {

@@ -75,6 +75,8 @@ public:
 	// 
 	BaseMechHandWeapon* GetLeftHandWeapon();
 	BaseMechHandWeapon* GetRightHandWeapon();
+	BaseMechShoulderWeapon* GetLeftShoulderWeapon();
+	BaseMechShoulderWeapon* GetRightShoulderWeapon();
 
 	// 
 	// コンポーネントの取得

@@ -4,23 +4,39 @@
 
 MechShoulderWeaponDualMissileLauncher::MechShoulderWeaponDualMissileLauncher(const WitchShoulder& witch)
 	:BaseMechShoulderWeapon("DualMissileLauncher", ShoulderWeaponType::DualMissileLauncher, witch) {
+	
 	// 初期座標を設定
 	if (auto obj = weapon_.lock()) {
 		switch (witchShoulder_) {
-			case WitchShoulder::Left:
-				obj->GetTransform()->SetTranslateX(-offset_.x);
-				break;
-			case WitchShoulder::Right:
-				obj->GetTransform()->SetTranslateX(offset_.x);
-				break;
+		case WitchShoulder::Left:
+			obj->GetTransform()->SetTranslateX(-offset_.x);
+			break;
+		case WitchShoulder::Right:
+			obj->GetTransform()->SetTranslateX(offset_.x);
+			break;
 		}
 		obj->GetTransform()->SetTranslateY(offset_.y);
 		obj->GetTransform()->SetTranslateZ(offset_.z);
 	}
+
+	// ミサイルの初速を設定
+	firstSpeed_ = kFirstSpeed_;
+
+	// ミサイルの加速度を設定
+	acc_ = kAcc_;
+
+	// ミサイルの最大速度を設定
+	maxSpeed_ = kMaxSpeed_;
+
+	// ダメージを設定
+	damage_ = kDamage_;
 }
 
 void MechShoulderWeaponDualMissileLauncher::Update([[maybe_unused]] MechCore* mechCore) {
-
+	// 攻撃発生地点を計算
+	if (auto obj = weapon_.lock()) {
+		fireWorldPosition_ = obj->GetTransform()->GetWorldPosition();
+	}
 
 	// クールタイム中かどうか
 	if (coolTimer_ > 0.0f) {

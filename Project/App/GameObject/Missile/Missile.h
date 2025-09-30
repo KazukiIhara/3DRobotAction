@@ -31,6 +31,8 @@ public:
 		const MissileType& missileType,
 		const Vector3& wPos,
 		float speed,
+		float acc,
+		float maxSpeed,
 		const Vector3& dir,
 		std::weak_ptr<MechCore> target,
 		std::weak_ptr<AttackCollider> attackCollider
@@ -70,13 +72,15 @@ private:
 	Vector3 dir_ = { 0.0f,0.0f,0.0f };
 	// 速度
 	float speed_ = 0.0f;
+	// ブースト時の加速量
+	float acc_ = 0.0f;
+	// 最大速度
+	float maxSpeed_ = 0.0f;
 
 	// 生存フラグ
 	bool isAlive_ = false;
 
-	// ブースト時の加速量
-	float boostAcc_ = 3.0f;
-
+	
 	// 最大生存時間
 	float lifeTime_ = 10.0f;
 

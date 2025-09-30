@@ -37,6 +37,8 @@ public:
 		const MissileType& missileType,
 		const Vector3& wPos,
 		float speed,
+		float acc,
+		float maxSpeed,
 		const Vector3& dir,
 		int32_t damage,
 		std::weak_ptr<MechCore> target

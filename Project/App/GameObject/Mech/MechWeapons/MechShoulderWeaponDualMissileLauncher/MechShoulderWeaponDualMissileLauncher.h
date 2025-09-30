@@ -6,20 +6,24 @@
 // BaseClass
 #include "GameObject/Mech/MechWeapons/BaseMechShoulderWeapon/BaseMechShoulderWeapon.h"
 
-class MechShoulderWeaponDualMissileLauncher:public BaseMechShoulderWeapon {
+class MechShoulderWeaponDualMissileLauncher :public BaseMechShoulderWeapon {
 public:
 	MechShoulderWeaponDualMissileLauncher(const WitchShoulder& witch);
 	~MechShoulderWeaponDualMissileLauncher()override = default;
 
 	void Update(MechCore* mechCore)override;
 
-
 private:
-	// 初速
-	float firstSpeed_ = 0.0f;
-	// 加速度
-	float acc_ = 0.0f;
+	// ミサイルの初速
+	const float kFirstSpeed_ = 15.0f;
+	// ミサイルの加速度
+	const float kAcc_ = 1.0f;
+	// ミサイルの最大速度
+	const float kMaxSpeed_ = 20.0f;
+	// ミサイルのダメージ
+	const int32_t kDamage_ = 500;
 
 	// 胴体からのオフセット
 	Vector3 offset_ = { 0.3f,0.3f,-0.3f };
+
 };

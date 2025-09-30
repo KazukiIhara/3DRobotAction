@@ -20,8 +20,6 @@ public:
 	void AttackRightShoulder(MechCore* mechCore);
 
 private:
-
-
-	// 弾マネージャ
+	// 攻撃オブジェクトマネージャ
 	AttackObjectManager* attackObjectManager_ = nullptr;
 };
