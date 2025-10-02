@@ -30,6 +30,9 @@ Missile::Missile(const MissileType& missileType, const Vector3& wPos, float spee
 
 	// フェーズを初期化
 	phase_ = MissilePhase::Boost;
+
+	// ブーストタイマーを初期化
+	boostTime_ = 1.0f;
 }
 
 void Missile::Update() {
@@ -49,8 +52,6 @@ void Missile::Update() {
 	switch (type_) {
 	case MissileType::Dual:
 		UpdateDualMissile();
-		break;
-	default:
 		break;
 	}
 
@@ -112,6 +113,12 @@ Vector3 Missile::GetWorldPos() {
 void Missile::UpdateDualMissile() {
 	switch (phase_) {
 	case MissilePhase::Boost:
+		// タイマーをデクリメント
+		boostTime_ -= MAGISYSTEM::GetDeltaTime();
+		// タイマーが0になったら追従モードになる
+		if (boostTime_ <= 0.0f) {
+			phase_ = MissilePhase::Guided;
+		}
 
 		break;
 	case MissilePhase::Guided:

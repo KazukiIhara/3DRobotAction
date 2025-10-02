@@ -79,10 +79,12 @@ private:
 
 	// 生存フラグ
 	bool isAlive_ = false;
-
 	
 	// 最大生存時間
 	float lifeTime_ = 10.0f;
+	
+	// ブーストの時間
+	float boostTime_ = 1.0f;
 
 	// 攻撃コライダー
 	std::weak_ptr<AttackCollider> collider_;
