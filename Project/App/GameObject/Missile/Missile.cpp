@@ -3,6 +3,7 @@
 #include "MAGI.h"
 
 #include "GameObject/AttackCollider/AttackCollider.h"
+#include "GameObject/Mech/MechCore/MechCore.h"
 
 Missile::Missile(const MissileType& missileType, const Vector3& wPos, float speed, float acc, float maxSpeed, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
@@ -30,9 +31,6 @@ Missile::Missile(const MissileType& missileType, const Vector3& wPos, float spee
 
 	// フェーズを初期化
 	phase_ = MissilePhase::Boost;
-
-	// ブーストタイマーを初期化
-	boostTime_ = 1.0f;
 }
 
 void Missile::Update() {
@@ -113,18 +111,28 @@ Vector3 Missile::GetWorldPos() {
 void Missile::UpdateDualMissile() {
 	switch (phase_) {
 	case MissilePhase::Boost:
-		// タイマーをデクリメント
-		boostTime_ -= MAGISYSTEM::GetDeltaTime();
-		// タイマーが0になったら追従モードになる
-		if (boostTime_ <= 0.0f) {
+		// 加速
+		speed_ += acc_ * MAGISYSTEM::GetDeltaTime();
+		// 最大速度に達したら追従開始
+		if (speed_ > maxSpeed_) {
+			speed_ = maxSpeed_;
 			phase_ = MissilePhase::Guided;
 		}
-
 		break;
 	case MissilePhase::Guided:
+		// 目標角度を計算
+		if (auto obj = missile_.lock()) {
+			if (auto targetObj = target_.lock()) {
+				if (auto targetMechBodyObj = targetObj->GetMechBody()->GetGameObject().lock()) {
+					const Vector3 targetPos = targetMechBodyObj->GetTransform()->GetWorldPosition();
+					targetDir_ = Normalize(targetPos - obj->GetTransform()->GetWorldPosition());
+				}
+			}
+		}
 
-		break;
-	default:
+		// 補完
+		dir_ = Lerp(dir_, targetDir_, 0.05f);
+
 		break;
 	}
 }

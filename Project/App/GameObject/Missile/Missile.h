@@ -70,6 +70,9 @@ private:
 
 	// 進行方向
 	Vector3 dir_ = { 0.0f,0.0f,0.0f };
+	// 目標進行方向
+	Vector3 targetDir_ = { 0.0f,0.0f,0.0f };
+
 	// 速度
 	float speed_ = 0.0f;
 	// ブースト時の加速量
@@ -82,9 +85,6 @@ private:
 	
 	// 最大生存時間
 	float lifeTime_ = 10.0f;
-	
-	// ブーストの時間
-	float boostTime_ = 1.0f;
 
 	// 攻撃コライダー
 	std::weak_ptr<AttackCollider> collider_;

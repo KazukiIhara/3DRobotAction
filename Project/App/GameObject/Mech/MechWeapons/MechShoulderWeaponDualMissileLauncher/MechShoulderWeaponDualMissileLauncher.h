@@ -15,11 +15,11 @@ public:
 
 private:
 	// ミサイルの初速
-	const float kFirstSpeed_ = 15.0f;
+	const float kFirstSpeed_ = 10.0f;
 	// ミサイルの加速度
-	const float kAcc_ = 1.0f;
+	const float kAcc_ = 5.0f;
 	// ミサイルの最大速度
-	const float kMaxSpeed_ = 20.0f;
+	const float kMaxSpeed_ = 15.0f;
 	// ミサイルのダメージ
 	const int32_t kDamage_ = 500;
 
