@@ -84,7 +84,7 @@ private:
 	bool isAlive_ = false;
 	
 	// 最大生存時間
-	float lifeTime_ = 10.0f;
+	float lifeTime_ = 5.0f;
 
 	// 攻撃コライダー
 	std::weak_ptr<AttackCollider> collider_;

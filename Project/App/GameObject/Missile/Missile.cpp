@@ -7,7 +7,7 @@
 
 Missile::Missile(const MissileType& missileType, const Vector3& wPos, float speed, float acc, float maxSpeed, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
-	lifeTime_ = 10.0f;
+	lifeTime_ = 5.0f;
 	dir_ = dir;
 	speed_ = speed;
 	acc_ = acc;
@@ -131,7 +131,7 @@ void Missile::UpdateDualMissile() {
 		}
 
 		// 補完
-		dir_ = Lerp(dir_, targetDir_, 0.05f);
+		dir_ = Lerp(dir_, targetDir_, 0.1f);
 
 		break;
 	}
