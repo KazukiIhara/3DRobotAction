@@ -57,3 +57,7 @@ bool BaseMechShoulderWeapon::IsCoolTime() const {
 void BaseMechShoulderWeapon::EnableCoolTime() {
 	coolTimer_ = coolTime_;
 }
+
+std::array<float, 4> BaseMechShoulderWeapon::GetDualMissileAngles() {
+	return dualMissileAngles_;
+}

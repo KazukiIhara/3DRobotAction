@@ -3,6 +3,7 @@
 // C++
 #include <memory>
 #include <string>
+#include <array>
 
 // MyHedder
 #include "Math/Types/AllMathTypes.h"
@@ -55,6 +56,9 @@ public:
 	// クールタイム状態にする
 	void EnableCoolTime();
 
+	// 双対ミサイルの拡散角度を取得
+	std::array<float, 4> GetDualMissileAngles();
+
 protected:
 	// オブジェクト
 	std::weak_ptr<GameObject3D> weapon_;
@@ -82,4 +86,7 @@ protected:
 	float acc_ = 0.0f;
 	// 最大速度
 	float maxSpeed_ = 0.0f;
+
+	// 双対ミサイルが拡散する角度
+	std::array<float, 4> dualMissileAngles_;
 };

@@ -140,12 +140,29 @@ void MechAttackComponent::AttackLeftShoulder(MechCore* mechCore) {
 			if (auto tgtBody = tgt->GetMechBody()->GetGameObject().lock()) {
 				// ターゲットのワールド座標を取得
 				const Vector3 targetWPos = tgtBody->GetTransform()->GetWorldPosition();
+
+				// 発射する方向を計算
+				Vector3 forward = Normalize(targetWPos - wPos);
+				const Vector3 right = Normalize(Cross(MakeUpVector3(), forward));
+				Vector3 up = Normalize(Cross(forward, right));
+
+				// コーン半角
+				const float spreadDeg = 45.0f;
+				const float spreadRad = spreadDeg * (std::numbers::pi_v<float> / 180.0f);
+				const float ringScale = tanf(spreadRad); // 小角での半径
+				const float startAngleDeg = 90.0f;
+				const float startAngleRad = startAngleDeg * (std::numbers::pi_v<float> / 180.0f);
+
 				// 四発発射
-				for (uint32_t i = 0; i < 4; i++) {
-					// 発射する方向を決定
-					const Vector3 dir = Normalize(targetWPos - wPos);
+				const uint32_t kCount = 4;
+				for (uint32_t i = 0; i < kCount; i++) {
+
+					const float theta = startAngleRad + mechCore->GetLeftShoulderWeapon()->GetDualMissileAngles()[i] * (std::numbers::pi_v<float> / 180.0f);
+					const Vector3 ringDir = Normalize(right * cosf(theta) + up * sinf(theta));
+					const Vector3 dir = Normalize(forward + ringDir * ringScale);
+
 					// 発射
-					attackObjectManager_->AddMissile(tag, MissileType::Dual, wPos, firstSpeed - float(i) * 2.0f, acc, maxSpeed, dir, damage, target);
+					attackObjectManager_->AddMissile(tag, MissileType::Dual, wPos, firstSpeed, acc, maxSpeed, dir, damage, target);
 				}
 			}
 		}

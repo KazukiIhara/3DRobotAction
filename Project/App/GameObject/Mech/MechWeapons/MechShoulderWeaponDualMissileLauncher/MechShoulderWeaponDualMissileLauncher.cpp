@@ -4,7 +4,7 @@
 
 MechShoulderWeaponDualMissileLauncher::MechShoulderWeaponDualMissileLauncher(const WitchShoulder& witch)
 	:BaseMechShoulderWeapon("DualMissileLauncher", ShoulderWeaponType::DualMissileLauncher, witch) {
-	
+
 	// 初期座標を設定
 	if (auto obj = weapon_.lock()) {
 		switch (witchShoulder_) {
@@ -30,6 +30,13 @@ MechShoulderWeaponDualMissileLauncher::MechShoulderWeaponDualMissileLauncher(con
 
 	// ダメージを設定
 	damage_ = kDamage_;
+
+
+	// ミサイルの拡散角度を設定
+	dualMissileAngles_[0] = -25.0f;
+	dualMissileAngles_[1] = 25.0f;
+	dualMissileAngles_[2] = -45.0f;
+	dualMissileAngles_[3] = 45.0f;
 }
 
 void MechShoulderWeaponDualMissileLauncher::Update([[maybe_unused]] MechCore* mechCore) {
