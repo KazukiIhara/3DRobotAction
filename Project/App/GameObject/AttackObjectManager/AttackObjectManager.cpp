@@ -41,7 +41,7 @@ void AttackObjectManager::Draw() {
 	}
 }
 
-const std::vector<Bullet> AttackObjectManager::GetBullets() {
+const std::vector<Bullet>& AttackObjectManager::GetBullets() {
 	return bullets_;
 }
 

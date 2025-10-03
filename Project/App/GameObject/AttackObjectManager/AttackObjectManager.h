@@ -23,7 +23,7 @@ public:
 	void Update();
 	void Draw();
 
-	const std::vector<Bullet> GetBullets();
+	const std::vector<Bullet>& GetBullets();
 
 	void AddBullet(
 		const FriendlyTag& tag,
