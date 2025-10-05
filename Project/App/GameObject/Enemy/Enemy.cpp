@@ -5,7 +5,7 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
-Enemy::Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
+Enemy::Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	// 機体の作成
 	mech_ = std::make_unique<MechCore>(Vector3(0.0f, 0.0f, 30.0f), FriendlyTag::EnemySide, bulletManager, true);
 
@@ -53,4 +53,8 @@ void Enemy::SetIsAIActive(bool isActive) {
 
 std::weak_ptr<MechCore> Enemy::GetMechCore() {
 	return mech_;
+}
+
+bool Enemy::GetIsAIActive() const {
+	return isAIActive_;
 }

@@ -7,7 +7,7 @@
 
 #include "EnemyAIState/BaseEnemyAIState.h"
 
-#include "GameObject/BulletManager/BulletManager.h"
+#include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
 // 
 // 敵AIのステート
@@ -16,7 +16,7 @@
 #include "EnemyAIState/Search/EnemyAIStateSearch.h"
 #include "EnemyAIState/Avoid/EnemyAIStateAvoid.h"
 
-EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech, BulletManager* bulletManager) {
+EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech, AttackObjectManager* bulletManager) {
 	// 自機のポインタを受け取る
 	if (auto m = mechCore.lock()) {
 		mechCore_ = m.get();
@@ -36,7 +36,7 @@ EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playe
 	// 最初のステートを設定
 	ChangeState(EnemyAIState::Search);
 
-	bulletManager_ = bulletManager;
+	attackObjectManager_ = bulletManager;
 }
 
 InputCommand EnemyAI::Update() {
@@ -128,8 +128,8 @@ void EnemyAI::SetRootDir(RootDir dir) {
 	rootDir_ = dir;
 }
 
-BulletManager* EnemyAI::GetBulletManager() {
-	return bulletManager_;
+AttackObjectManager* EnemyAI::GetBulletManager() {
+	return attackObjectManager_;
 }
 
 std::weak_ptr<BaseEnemyAIState> EnemyAI::GetState(EnemyAIState state) {

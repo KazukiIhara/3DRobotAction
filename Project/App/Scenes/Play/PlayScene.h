@@ -15,7 +15,7 @@ using namespace MAGIUtility;
 #include "GameObject/Enemy/Enemy.h"
 
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
-#include "GameObject/BulletManager/BulletManager.h"
+#include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
 /// <summary>
 /// 終了判定
@@ -34,7 +34,6 @@ struct PlaySceneInfo {
 	FinishJudgment judge;
 	bool finish = false;
 	bool isPause = false;
-
 };
 
 /// <summary>
@@ -89,7 +88,7 @@ private:
 	std::unique_ptr<AttackCollisionManager> attackCollisionManager_;
 
 	// 弾のマネージャ
-	std::unique_ptr<BulletManager> bulletManger_;
+	std::unique_ptr<AttackObjectManager> attackObjectManger_;
 
 
 	// ポストエフェクトの用の変数

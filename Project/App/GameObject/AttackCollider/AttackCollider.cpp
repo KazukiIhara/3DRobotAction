@@ -4,6 +4,7 @@
 
 AttackCollider::AttackCollider(
 	const FriendlyTag& tag,
+	const AttackType& type,
 	const Vector3& posW,
 	const Vector3& minL,
 	const Vector3& maxL,
@@ -11,8 +12,7 @@ AttackCollider::AttackCollider(
 
 	tag_ = tag;
 
-	// 一旦弾
-	type_ = AttackType::Bullet;
+	type_ = type;
 
 	posW_ = posW;
 	minL_ = minL;
@@ -33,7 +33,16 @@ void AttackCollider::Update() {
 
 void AttackCollider::Draw() {
 	// デバッグ描画
-	MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Crimson);
+	switch (type_) {
+		case AttackType::Bullet:
+			MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Crimson);
+			break;
+		case AttackType::Missile:
+			MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Yellow);
+			break;
+		case AttackType::Melee:
+			break;
+	}
 }
 
 const Vector3& AttackCollider::GetMinW() const {

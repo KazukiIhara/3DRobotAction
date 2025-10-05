@@ -35,13 +35,13 @@ void PlayScene::Initialize() {
 	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
 
 	// 弾マネージャ
-	bulletManger_ = std::make_unique<BulletManager>(attackCollisionManager_.get());
+	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
 
 	// プレイヤー作成
-	player_ = std::make_unique<Player>(bulletManger_.get());
+	player_ = std::make_unique<Player>(attackObjectManger_.get());
 
 	// 敵作成
-	enemy_ = std::make_unique<Enemy>(bulletManger_.get(), player_->GetMechCore());
+	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), player_->GetMechCore());
 
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
@@ -124,6 +124,11 @@ void PlayScene::Update() {
 		}
 	}
 
+	bool isActiveEnemyAI = enemy_->GetIsAIActive();
+	if (ImGui::Checkbox("EnableEnemyAI", &isActiveEnemyAI)) {
+		enemy_->SetIsAIActive(isActiveEnemyAI);
+	}
+
 	ImGui::End();
 #endif
 
@@ -162,7 +167,7 @@ void PlayScene::Update() {
 	enemy_->Update();
 
 	// 弾マネージャ更新
-	bulletManger_->Update();
+	attackObjectManger_->Update();
 
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
@@ -218,7 +223,7 @@ void PlayScene::Draw() {
 	player_->Draw();
 
 	// 弾マネージャ描画
-	bulletManger_->Draw();
+	attackObjectManger_->Draw();
 
 	// 攻撃判定マネージャ描画
 	attackCollisionManager_->Draw();

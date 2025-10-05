@@ -5,7 +5,7 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
-Player::Player(BulletManager* bulletManager) {
+Player::Player(AttackObjectManager* bulletManager) {
 	// 機体の作成
 	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, bulletManager, false);
 
@@ -47,13 +47,13 @@ void Player::Update() {
 		command.cameraRotDirection = MAGISYSTEM::GetRightStick(0);
 
 		// ジャンプ入力
-		command.jump = MAGISYSTEM::PushButton(0, ButtonL);
+		command.jump = MAGISYSTEM::PushButton(0, ButtonA);
 
 		// クイックブースト入力
-		command.quickBoost = MAGISYSTEM::TriggerButton(0, ButtonR);
+		command.quickBoost = MAGISYSTEM::TriggerButton(0, ButtonX);
 
 		// アサルトブースト入力
-		command.assultBoost = MAGISYSTEM::TriggerButton(0, ButtonA);
+		command.assultBoost = MAGISYSTEM::TriggerButton(0, ButtonLeftStick);
 
 		// ロックオンモード切り替え
 		command.switchHardLock = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
@@ -63,6 +63,12 @@ void Player::Update() {
 
 		// 右手武器攻撃
 		command.rightHandWeapon = MAGISYSTEM::GetRightTrigger(0) >= 0.3f;
+
+		// 左肩武器攻撃
+		command.leftShoulderWeapon = MAGISYSTEM::TriggerButton(0, ButtonL);
+
+		// 右肩武器攻撃
+		command.rightShoulderWeapon = MAGISYSTEM::TriggerButton(0, ButtonR);
 
 
 	} else { // パッドなしならキーボード入力解禁

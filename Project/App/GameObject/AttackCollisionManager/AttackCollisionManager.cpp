@@ -34,12 +34,20 @@ void AttackCollisionManager::Draw() {
 
 void AttackCollisionManager::CheckCollision() {
 	for (auto& mech : mechs_) {
+		// 機体のタグを取得
+		const FriendlyTag mechTag = mech.lock()->GetFriendlyTag();
 		if (auto m = mech.lock()) {
 			// 機体のAABBコライダーを取得
 			const Vector3 mMin = m->GetCollider()->GetMinW();
 			const Vector3 mMax = m->GetCollider()->GetMaxW();
 
 			for (auto& atkCollider : attackColliders_) {
+				// 攻撃のタグを取得
+				const FriendlyTag atkTag = atkCollider->GetFriendlyTag();
+
+				// 同じタグだった場合はスキップ
+				if (mechTag == atkTag) continue;
+
 				// 攻撃のAABBコライダーを取得
 				const Vector3 aMin = atkCollider->GetMinW();
 				const Vector3 aMax = atkCollider->GetMaxW();

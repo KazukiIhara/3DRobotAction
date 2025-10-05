@@ -1,12 +1,12 @@
 #pragma once
 
-#include "GameObject/Mech/MechWeapons/BaseMechWeapon/BaseMechWeapon.h"
+#include "GameObject/Mech/MechWeapons/BaseMechHandWeapon/BaseMechHandWeapon.h"
 #include "Math/Utility/MathUtility.h"
 
 /// <summary>
 /// ライフル武器クラス
 /// </summary>
-class MechWeaponAssultRifle: public BaseMechWeapon {
+class MechWeaponAssultRifle: public BaseMechHandWeapon {
 public:
 	MechWeaponAssultRifle();
 	~MechWeaponAssultRifle()override = default;

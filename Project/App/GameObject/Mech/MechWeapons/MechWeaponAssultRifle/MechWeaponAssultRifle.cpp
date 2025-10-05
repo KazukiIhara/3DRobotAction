@@ -3,7 +3,7 @@
 #include "MAGI.h"
 
 MechWeaponAssultRifle::MechWeaponAssultRifle()
-	:BaseMechWeapon("AssultRifle", WeaponType::AssultRifle) {
+	:BaseMechHandWeapon("AssultRifle", HandWeaponType::AssultRifle) {
 	// 初期座標を設定
 	if (auto obj = weapon_.lock()) {
 		obj->GetTransform()->SetTranslateZ(0.6f);
@@ -12,7 +12,7 @@ MechWeaponAssultRifle::MechWeaponAssultRifle()
 	fireLocalTranslateMatrix_ = MakeTranslateMatrix(fireLocalPosition_);
 
 	// 弾速を設定
-	bulletSpeed_ = 100.0f;
+	bulletSpeed_ = 70.0f;
 
 	// ダメージを設定
 	damage_ = kDamage_;

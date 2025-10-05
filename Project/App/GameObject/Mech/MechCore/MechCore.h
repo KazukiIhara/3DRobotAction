@@ -19,6 +19,7 @@
 
 // 武器クラス
 #include "GameObject/Mech/MechWeapons/MechWeaponAssultRifle/MechWeaponAssultRifle.h"
+#include "GameObject/Mech/MechWeapons/MechShoulderWeaponDualMissileLauncher/MechShoulderWeaponDualMissileLauncher.h"
 
 // コンポーネントクラス
 #include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
@@ -32,14 +33,14 @@
 // 前方宣言
 class GameObject3D;
 class MechCoreBaseState;
-class BulletManager;
+class AttackObjectManager;
 
 /// <summary>
 /// 機体制御クラス
 /// </summary>
 class MechCore {
 public:
-	MechCore(const Vector3& position,FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn);
+	MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* bulletManager, bool enableHardlockOn);
 	~MechCore() = default;
 
 	void Update();
@@ -72,8 +73,10 @@ public:
 	// 
 	// 武器の取得
 	// 
-	BaseMechWeapon* GetLeftHandWeapon();
-	BaseMechWeapon* GetRightHandWeapon();
+	BaseMechHandWeapon* GetLeftHandWeapon();
+	BaseMechHandWeapon* GetRightHandWeapon();
+	BaseMechShoulderWeapon* GetLeftShoulderWeapon();
+	BaseMechShoulderWeapon* GetRightShoulderWeapon();
 
 	// 
 	// コンポーネントの取得
@@ -156,10 +159,16 @@ private:
 	std::unique_ptr<MechLeg> leg_ = nullptr;
 
 	// 左手武器
-	std::unique_ptr<BaseMechWeapon> leftHandWeapon_ = nullptr;
+	std::unique_ptr<BaseMechHandWeapon> leftHandWeapon_ = nullptr;
 
 	// 右手武器
-	std::unique_ptr<BaseMechWeapon> rightHandWeapon_ = nullptr;
+	std::unique_ptr<BaseMechHandWeapon> rightHandWeapon_ = nullptr;
+
+	// 左肩武器
+	std::unique_ptr<BaseMechShoulderWeapon> leftShoulerWeapon_ = nullptr;
+
+	// 右肩武器
+	std::unique_ptr<BaseMechShoulderWeapon> rightShoulerWeapon_ = nullptr;
 
 	//=======================
 	// コライダー

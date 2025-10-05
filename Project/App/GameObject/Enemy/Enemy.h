@@ -7,22 +7,25 @@
 #include "GameObject/EnemyAI/EnemyAI.h"
 
 // 前方宣言
-class BulletManager;
+class AttackObjectManager;
 
 /// <summary>
 /// 敵クラス
 /// </summary>
 class Enemy {
 public:
-	Enemy(BulletManager* bulletManager, std::weak_ptr<MechCore> playerMech);
+	Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerMech);
 	~Enemy() = default;
 
 	void Update();
 
-	void SetIsAIActive(bool isActive);
 
 	// 機体を取得
 	std::weak_ptr<MechCore> GetMechCore();
+
+	bool GetIsAIActive() const;
+
+	void SetIsAIActive(bool isActive);
 
 private:
 	// 機体クラス

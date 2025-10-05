@@ -13,24 +13,24 @@ class GameObject3D;
 /// <summary>
 /// 武器の種類
 /// </summary>
-enum WeaponType {
+enum HandWeaponType {
 	AssultRifle,
 };
 
 /// <summary>
-/// 武器ベースクラス
+/// 手持ち武器ベースクラス
 /// </summary>
-class BaseMechWeapon {
+class BaseMechHandWeapon {
 public:
-	BaseMechWeapon(const std::string& weaponName, const WeaponType& type);
-	virtual ~BaseMechWeapon() = default;
+	BaseMechHandWeapon(const std::string& weaponName, const HandWeaponType& type);
+	virtual ~BaseMechHandWeapon() = default;
 
 	virtual void Update(MechCore* mechCore) = 0;
 
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 
 	// 武器の種類を取得
-	const WeaponType& GetType()const;
+	const HandWeaponType& GetType()const;
 	// ダメージを取得
 	const int32_t& GetDamage()const;
 	// 弾速を取得
@@ -47,7 +47,7 @@ public:
 
 protected:
 	// 武器タイプ
-	WeaponType type_;
+	HandWeaponType type_;
 
 	// ダメージ
 	int32_t damage_ = 0;

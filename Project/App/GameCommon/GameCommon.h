@@ -16,6 +16,7 @@ enum class FriendlyTag {
 /// </summary>
 enum class AttackType {
 	Bullet,
+	Missile,
 	Melee,
 };
 
@@ -58,4 +59,6 @@ struct InputCommand {
 	bool switchHardLock = false;
 	bool leftHandWeapon = false;
 	bool rightHandWeapon = false;
+	bool leftShoulderWeapon = false;
+	bool rightShoulderWeapon = false;
 };

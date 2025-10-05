@@ -11,7 +11,7 @@
 
 using namespace MAGIMath;
 
-MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bulletManager, bool enableHardlockOn) {
+MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* bulletManager, bool enableHardlockOn) {
 	// ゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", position);
 	coreObject->SetIsUnique(true);
@@ -41,6 +41,13 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 
 	// 右手武器
 	rightHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
+
+	// 左肩武器
+	leftShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Left);
+
+	// 右肩武器
+	rightShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Right);
+
 
 	// パーツを親子付け
 
@@ -77,6 +84,15 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 			leg->GetTransform()->SetParent(body->GetTransform(), false);
 		}
 
+		// 右肩武器
+		if (auto rightShoulderWeapon = rightShoulerWeapon_->GetGameObject().lock()) {
+			rightShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
+		}
+
+		// 左肩武器
+		if (auto leftShoulderWeapon = leftShoulerWeapon_->GetGameObject().lock()) {
+			leftShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
+		}
 	}
 
 	// コンポーネントを作成
@@ -99,7 +115,6 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, BulletManager* bull
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
 
-	
 
 	//===========================
 	// マネージャをセット
@@ -141,6 +156,8 @@ void MechCore::Update() {
 	// 武器を更新
 	rightHandWeapon_->Update(this);
 	leftHandWeapon_->Update(this);
+	leftShoulerWeapon_->Update(this);
+	rightShoulerWeapon_->Update(this);
 
 	// 攻撃コンポーネントを更新
 	attackComponent_->Update(this);
@@ -208,12 +225,20 @@ MechArmRight* MechCore::GetMechArmRight() {
 	return rightArm_.get();
 }
 
-BaseMechWeapon* MechCore::GetLeftHandWeapon() {
+BaseMechHandWeapon* MechCore::GetLeftHandWeapon() {
 	return leftHandWeapon_.get();
 }
 
-BaseMechWeapon* MechCore::GetRightHandWeapon() {
+BaseMechHandWeapon* MechCore::GetRightHandWeapon() {
 	return rightHandWeapon_.get();
+}
+
+BaseMechShoulderWeapon* MechCore::GetLeftShoulderWeapon() {
+	return leftShoulerWeapon_.get();
+}
+
+BaseMechShoulderWeapon* MechCore::GetRightShoulderWeapon() {
+	return rightShoulerWeapon_.get();
 }
 
 MechMovementComponent* MechCore::GetMovementComponent() {

@@ -35,14 +35,14 @@ struct AvoidColliderAABB {
 };
 
 // 弾マネージャ
-class BulletManager;
+class AttackObjectManager;
 
 /// <summary>
 /// 敵のAIクラス
 /// </summary>
 class EnemyAI {
 public:
-	EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore>playerMech, BulletManager* bulletManager);
+	EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore>playerMech, AttackObjectManager* bulletManager);
 	~EnemyAI() = default;
 
 	InputCommand Update();
@@ -70,7 +70,7 @@ public:
 	void SetRootDir(RootDir dir);
 
 	// 弾マネージャを取得
-	BulletManager* GetBulletManager();
+	AttackObjectManager* GetBulletManager();
 
 private:
 	// 対応するステートを取得
@@ -104,5 +104,5 @@ private:
 	AvoidColliderAABB avoidCollider_;
 
 	// 弾マネージャのポインタ
-	BulletManager* bulletManager_ = nullptr;
+	AttackObjectManager* attackObjectManager_ = nullptr;
 };

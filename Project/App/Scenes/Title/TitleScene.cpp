@@ -95,6 +95,8 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadModel("Bullet");
 	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
 
+	MAGISYSTEM::LoadModel("DualMissileLauncher");
+	MAGISYSTEM::CreateModelDrawer("DualMissileLauncher", MAGISYSTEM::FindModel("DualMissileLauncher"));
 
 
 	startData_.position = { WindowApp::kClientWidth * 0.5f, 900.0f };
