@@ -55,7 +55,7 @@ private:
 	// パラメータ
 
 	// オフセットの半径
-	float radius_ = 2.7f;
+	float radius_ = 3.0f;
 
 	// カメラの感度
 	float sensYaw_ = 8.0f;
@@ -72,7 +72,7 @@ private:
 	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
 	// ピボットのオフセット
-	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
+	Vector3 pivotOffset_ = { 0.0f, 2.2f, 0.0f };
 
 	// 機体を受け取る
 	std::weak_ptr<MechCore> core_;

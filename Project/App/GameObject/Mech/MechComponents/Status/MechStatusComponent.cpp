@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "MechStatusComponent.h"
 
 #include "GameObject/Mech/MechCore/MechCore.h"
@@ -26,12 +28,12 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 	for (auto& info : infos) {
 		if (info.isHit) {
 			switch (info.type) {
-			case AttackType::Bullet:
-				hp_ -= info.damage;
+				case AttackType::Bullet:
+					hp_ -= info.damage;
 
-				// 0以下にならないようにする
-				hp_ = std::max(0, hp_);
-				break;
+					// 0以下にならないようにする
+					hp_ = std::max(0, hp_);
+					break;
 			}
 		}
 	}
@@ -39,7 +41,7 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 	// オーバーヒートしているかどうかの処理
 	if (en_ == 0) {
 		isOverHeat_ = true;
-	} 
+	}
 
 	// ENの回復処理
 	if (en_ < kMaxEN_) {

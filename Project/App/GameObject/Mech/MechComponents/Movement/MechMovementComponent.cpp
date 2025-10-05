@@ -83,12 +83,11 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 	quickBoostTimer_ = 0.0f;
 
 	// カメラ揺れ
-	const bool isHardLock = mechCore->GetLockOnComponent()->GetEnableHardLockOn();
-	if (isHardLock) {
-		MAGISYSTEM::ShakeCurrentCamera3D(kQuickBoostCameraShakeTime_, kQuickBoostCameraShakeIntensityHL_);
-	} else {
-		MAGISYSTEM::ShakeCurrentCamera3D(kQuickBoostCameraShakeTime_, kQuickBoostCameraShakeIntensitySL_);
-	}
+
+
+	// エフェクト
+	mechCore->GetQuickBoostParticle()->Emit();
+
 }
 
 void MechMovementComponent::AssultBoostEnter(MechCore* mechCore) {
