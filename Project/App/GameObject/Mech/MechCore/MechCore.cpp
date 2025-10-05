@@ -115,6 +115,13 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
 
+	//===========================
+	// エフェクト初期化
+	//===========================
+
+	// クイックブースト
+	quickBoostparticle_ = std::make_unique<QuickBoostParticle>(this);
+
 
 	//===========================
 	// マネージャをセット
@@ -255,6 +262,10 @@ MechAttackComponent* MechCore::GetAttackComponent() {
 
 MechStatusComponent* MechCore::GetStatusComponent() {
 	return statusComponent_.get();
+}
+
+QuickBoostParticle* MechCore::GetQuickBoostParticle() {
+	return quickBoostparticle_.get();
 }
 
 MechCollider* MechCore::GetCollider() {

@@ -30,6 +30,10 @@
 // コライダー
 #include "GameObject/Mech/MechCollider/MechCollider.h"
 
+// エフェクトクラス
+#include "GameEffects/ParticleEffects/BoostParticle/BoostParticle.h"
+#include "GameEffects/ParticleEffects/QuickBoostParticle/QuickBoostParticle.h"
+
 // 前方宣言
 class GameObject3D;
 class MechCoreBaseState;
@@ -85,6 +89,11 @@ public:
 	MechLockOnComponent* GetLockOnComponent();
 	MechAttackComponent* GetAttackComponent();
 	MechStatusComponent* GetStatusComponent();
+
+	// 
+	// エフェクトの取得
+	// 
+	QuickBoostParticle* GetQuickBoostParticle();
 
 	// 
 	// コライダーの取得(今後コンポーネント化する可能性あり)
@@ -169,6 +178,14 @@ private:
 
 	// 右肩武器
 	std::unique_ptr<BaseMechShoulderWeapon> rightShoulerWeapon_ = nullptr;
+
+	//=======================
+	// エフェクト
+	//=======================
+
+	// クイックブーストのエフェクト
+	std::unique_ptr<QuickBoostParticle> quickBoostparticle_ = nullptr;
+	
 
 	//=======================
 	// コライダー

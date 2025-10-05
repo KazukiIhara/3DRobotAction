@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "MechLockOnComponent.h"
 
 #include "GameObject/Mech/MechCore/MechCore.h"

@@ -7,6 +7,7 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
+// 前方宣言
 class MechCore;
 class Transform3D;
 
