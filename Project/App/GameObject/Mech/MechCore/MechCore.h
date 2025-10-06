@@ -31,8 +31,7 @@
 #include "GameObject/Mech/MechCollider/MechCollider.h"
 
 // エフェクトクラス
-#include "GameEffects/ParticleEffects/BoostParticle/BoostParticle.h"
-#include "GameEffects/ParticleEffects/QuickBoostParticle/QuickBoostParticle.h"
+#include "GameEffects/QuickBoost/QuickBoostParticle/QuickBoostParticle.h"
 
 // 前方宣言
 class GameObject3D;
