@@ -27,7 +27,6 @@ private:
 	void ApplyInput(float dt);
 	void HardLockCamera(float dt);
 	void FollowCamera();
-
 private:
 	// プレイヤーカメラの状態
 	PlayerCameraState state_;
@@ -77,4 +76,11 @@ private:
 	// 機体を受け取る
 	std::weak_ptr<MechCore> core_;
 
+
+	//
+	// カメラシェイク用のステータス
+	//
+	
+
+	
 };

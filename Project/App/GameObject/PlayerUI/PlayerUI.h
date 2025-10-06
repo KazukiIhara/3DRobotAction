@@ -58,7 +58,7 @@ private:
 	SpriteData bossApGaugeData_{};
 	SpriteMaterialData bossApGaugeMaterialData_{};
 	const float kBossApGaugeWidth_ = 912.0f;
-	
+
 	// ボスのAPバーのスプライトデータ
 	SpriteData bossApBarData_{};
 	SpriteMaterialData bossApBarMaterialData_{};
@@ -73,4 +73,12 @@ private:
 	SpriteData enBarData_{};
 	SpriteMaterialData enBarMaterialData_{};
 	const float kENBarWidth_ = 702.0f;
+
+private:
+	// 描画用パラメータ
+
+	// 描画用の現在HP
+	float currentUIHp_ = 0.0f;
+	// 描画用ターゲットHP
+	float targetUIHp_ = 0.0f;
 };
