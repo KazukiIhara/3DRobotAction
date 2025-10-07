@@ -19,15 +19,6 @@ MechShoulderWeaponDualMissileLauncher::MechShoulderWeaponDualMissileLauncher(con
 		obj->GetTransform()->SetTranslateZ(offset_.z);
 	}
 
-	// ミサイルの初速を設定
-	firstSpeed_ = kFirstSpeed_;
-
-	// ミサイルの加速度を設定
-	acc_ = kAcc_;
-
-	// ミサイルの最大速度を設定
-	maxSpeed_ = kMaxSpeed_;
-
 	// ダメージを設定
 	damage_ = kDamage_;
 

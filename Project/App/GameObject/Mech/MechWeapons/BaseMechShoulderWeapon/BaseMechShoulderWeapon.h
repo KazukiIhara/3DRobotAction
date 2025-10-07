@@ -43,12 +43,6 @@ public:
 	const ShoulderWeaponType& GetType()const;
 	// ダメージを取得
 	const int32_t& GetDamage()const;
-	// 初速を取得
-	float GetFirstSpeed()const;
-	// 加速度を取得
-	float GetAcc()const;
-	// 最大速度を取得
-	float GetMaxSpeed()const;
 
 	// クールタイム中かどうか
 	bool IsCoolTime()const;
@@ -79,13 +73,6 @@ protected:
 	bool isCoolTime_ = false;
 	float coolTimer_ = 0.0f;
 	float coolTime_ = 0.0f;
-
-	// 初速
-	float firstSpeed_ = 0.0f;
-	// 加速度
-	float acc_ = 0.0f;
-	// 最大速度
-	float maxSpeed_ = 0.0f;
 
 	// 双対ミサイルが拡散する角度
 	std::array<float, 4> dualMissileAngles_;

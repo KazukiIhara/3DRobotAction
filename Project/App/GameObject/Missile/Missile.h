@@ -30,9 +30,6 @@ public:
 	Missile(
 		const MissileType& missileType,
 		const Vector3& wPos,
-		float speed,
-		float acc,
-		float maxSpeed,
 		const Vector3& dir,
 		std::weak_ptr<MechCore> target,
 		std::weak_ptr<AttackCollider> attackCollider
@@ -50,10 +47,12 @@ public:
 	Vector3 GetWorldPos();
 
 private:
-	// ミサイルの破壊判定を取る
+	// ブーストから追従状態に遷移する時の処理
+	void EnterGuidedDualMissile();
 
 	// 双対ミサイルの更新処理
 	void UpdateDualMissile();
+	
 
 private:
 	// ゲームオブジェクト
@@ -70,19 +69,25 @@ private:
 
 	// 進行方向
 	Vector3 dir_ = { 0.0f,0.0f,0.0f };
-	// 目標進行方向
-	Vector3 targetDir_ = { 0.0f,0.0f,0.0f };
+
+	// ブースト時間
+	float boostTime_ = 0.0f;
 
 	// 速度
 	float speed_ = 0.0f;
 	// ブースト時の加速量
-	float acc_ = 0.0f;
-	// 最大速度
-	float maxSpeed_ = 0.0f;
+	float boostAcc_ = 0.0f;
+	// ブースト時の最大速度
+	float maxBoostSpeed_ = 0.0f;
+
+	// 追尾時の加速量
+	float guidedAcc_ = 0.0f;
+	// 追尾時の最大速度
+	float maxGuidedSpeed_ = 0.0f;
 
 	// 生存フラグ
 	bool isAlive_ = false;
-	
+
 	// 最大生存時間
 	float lifeTime_ = 5.0f;
 
