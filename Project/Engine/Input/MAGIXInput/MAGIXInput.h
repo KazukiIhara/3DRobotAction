@@ -49,7 +49,7 @@ public:
 	// デッドゾーンの取得
 	int GetDeadZone() const;
 
-	// 振動開始
+	// 振動開始 (振動の強さは0.0f~1.0f)
 	void StartVibration(int controllerID, float duration, float leftPower, float rightPower);
 
 	// 振動停止

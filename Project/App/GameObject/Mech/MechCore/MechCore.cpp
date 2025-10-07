@@ -122,6 +122,8 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	// クイックブースト
 	quickBoostparticle_ = std::make_unique<QuickBoostParticle>(this);
 
+	// 弾衝突時エフェクト
+	bulletHitEffect_ = std::make_unique<BulletHitEffect>(this);
 
 	//===========================
 	// マネージャをセット
@@ -145,26 +147,33 @@ void MechCore::Update() {
 		cs->Update(this);
 	}
 
-	// 各パーツを更新
+	//=================== 
+	// パーツ
+	//=================== 
 
 	// 体
 	body_->Update(this);
-
 	// 頭
 	head_->Update(this);
-
 	// 腕
 	rightArm_->Update(this);
 	leftArm_->Update(this);
-
 	// 足
 	leg_->Update(this);
 
-	// 武器を更新
+	//=================== 
+	// 武器
+	//=================== 
+
 	rightHandWeapon_->Update(this);
 	leftHandWeapon_->Update(this);
 	leftShoulerWeapon_->Update(this);
 	rightShoulerWeapon_->Update(this);
+
+
+	//=================== 
+	// コンポーネント
+	//=================== 
 
 	// 攻撃コンポーネントを更新
 	attackComponent_->Update(this);
@@ -175,11 +184,15 @@ void MechCore::Update() {
 	// 状態パラメータコンポーネントを更新
 	statusComponent_->Update(this);
 
+	//=================== 
+	// エフェクト
+	//=================== 
+
+	// 弾衝突時エフェクト
+	bulletHitEffect_->Update();
+
 	// コライダーの更新
 	UpdateCollider();
-
-	// コライダーのデバッグ描画
-	DrawCollider();
 
 }
 
@@ -194,6 +207,14 @@ void MechCore::ChangeState(MechCoreState nextState) {
 	if (auto cs = currentState_.second.lock()) {
 		cs->Enter(this);
 	}
+}
+
+void MechCore::Draw() {
+	// 弾衝突時エフェクト
+	bulletHitEffect_->Draw();
+
+	// コライダーのデバッグ描画
+	DrawCollider();
 }
 
 std::weak_ptr<GameObject3D> MechCore::GetGameObject() const {
@@ -266,6 +287,10 @@ MechStatusComponent* MechCore::GetStatusComponent() {
 
 QuickBoostParticle* MechCore::GetQuickBoostParticle() {
 	return quickBoostparticle_.get();
+}
+
+BulletHitEffect* MechCore::GetBulletHitEffect() {
+	return bulletHitEffect_.get();
 }
 
 MechCollider* MechCore::GetCollider() {

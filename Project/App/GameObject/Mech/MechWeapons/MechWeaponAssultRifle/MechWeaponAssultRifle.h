@@ -6,7 +6,7 @@
 /// <summary>
 /// ライフル武器クラス
 /// </summary>
-class MechWeaponAssultRifle: public BaseMechHandWeapon {
+class MechWeaponAssultRifle : public BaseMechHandWeapon {
 public:
 	MechWeaponAssultRifle();
 	~MechWeaponAssultRifle()override = default;
@@ -24,8 +24,10 @@ private:
 	Matrix4x4 fireLocalTranslateMatrix_;
 	Vector3 fireWorldPosition_ = { 0.0f,0.0f,0.0f };
 
-	// 発射感覚
+	// 発射間隔
 	const float kCoolTime_ = 0.5f;
+	// 弾速
+	const float kBulletSpeed_ = 120.0;
 	// ダメージ
 	const uint32_t kDamage_ = 200;
 };

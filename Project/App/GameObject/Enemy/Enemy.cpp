@@ -47,6 +47,12 @@ void Enemy::Update() {
 	mech_->Update();
 }
 
+void Enemy::Draw() {
+	// エフェクトなど描画
+	mech_->Draw();
+
+}
+
 void Enemy::SetIsAIActive(bool isActive) {
 	isAIActive_ = isActive;
 }

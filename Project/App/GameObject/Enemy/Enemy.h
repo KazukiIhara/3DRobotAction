@@ -19,6 +19,7 @@ public:
 
 	void Update();
 
+	void Draw();
 
 	// 機体を取得
 	std::weak_ptr<MechCore> GetMechCore();

@@ -219,8 +219,11 @@ void PlayScene::Update() {
 }
 
 void PlayScene::Draw() {
-	// プレイヤーにまつわるもの描画
+	// プレイヤーにまつわるものを描画
 	player_->Draw();
+
+	// エネミーにまつわるものを描画
+	enemy_->Draw();
 
 	// 弾マネージャ描画
 	attackObjectManger_->Draw();

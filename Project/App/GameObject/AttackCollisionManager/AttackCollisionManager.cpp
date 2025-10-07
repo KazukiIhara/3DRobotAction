@@ -54,9 +54,12 @@ void AttackCollisionManager::CheckCollision() {
 
 				// 衝突判定
 				if (IsCollisionAABB(mMin, mMax, aMin, aMax)) {
+					// 衝突している
+
 					// コリジョンインフォをセット
 					MechCollider::HitInfo mInfo = {
 						true,
+						atkCollider->GetWPos(),
 						atkCollider->GetType(),
 						atkCollider->GetDamage(),
 					};

@@ -36,7 +36,11 @@ public:
 private:
 	// エネルギー消費処理
 	void UseEnergy(const int32_t& enValue);
+	// 被ダメージ処理
+	void GetDamage(const int32_t& damage, MechCore* mechcore);
+
 private:
+
 	// 
 	// 機体のステータス変数
 	// 

@@ -53,6 +53,10 @@ const Vector3& AttackCollider::GetMaxW() const {
 	return maxW_;
 }
 
+const Vector3& AttackCollider::GetWPos() const {
+	return posW_;
+}
+
 bool AttackCollider::GetIsAlive()const {
 	return isAlive_;
 }

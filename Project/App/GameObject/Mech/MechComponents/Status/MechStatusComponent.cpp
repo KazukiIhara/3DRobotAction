@@ -28,12 +28,17 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 	for (auto& info : infos) {
 		if (info.isHit) {
 			switch (info.type) {
-				case AttackType::Bullet:
-					hp_ -= info.damage;
+			case AttackType::Bullet:
 
-					// 0以下にならないようにする
-					hp_ = std::max(0, hp_);
-					break;
+				// ダメージを受ける
+				GetDamage(info.damage, mechCore);
+				// 衝突時エフェクト発生
+				mechCore->GetBulletHitEffect()->Emit(info.attackPos);
+
+				break;
+			case AttackType::Missile:
+				GetDamage(info.damage, mechCore);
+				break;
 			}
 		}
 	}
@@ -94,4 +99,17 @@ void MechStatusComponent::UseEnergy(const int32_t& enValue) {
 	en_ -= enValue;
 	// 0より小さくならないようにする
 	en_ = std::max(en_, 0);
+}
+
+void MechStatusComponent::GetDamage(const int32_t& damage, MechCore* mechcore) {
+	hp_ -= damage;
+	// 0未満にならないようにする
+	hp_ = std::max(0, hp_);
+
+	//
+	// コントローラを振動させる(攻撃の種類が増えたらダメージに応じて振動を変える)
+	//
+	if (mechcore->GetFriendlyTag() == FriendlyTag::PlayerSide) {
+		MAGISYSTEM::StartPadVibration(0, 0.2f, 1.0f, 1.0f);
+	}
 }
