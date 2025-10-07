@@ -50,6 +50,9 @@ public:
 	void Update();
 	void ChangeState(MechCoreState nextState);
 
+	// 機体そのものではなく、エフェクトなど付随するものの描画処理
+	void Draw();
+
 	//======================= 
 	// ゲッター
 	//======================= 

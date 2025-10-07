@@ -5,9 +5,11 @@
 
 using namespace MAGIMath;
 
-BulletHitParticle::BulletHitParticle(const Vector3& pos, const Vector3& velo) {
+BulletHitParticle::BulletHitParticle(const Vector3& pos, const Vector3& velo, float gravity) {
 	transform_ = std::make_unique<Transform3D>(pos);
 	velocity_ = velo;
+	gravity_ = gravity;
+	mat_.blendMode = BlendMode::Normal;
 }
 
 void BulletHitParticle::Update() {
@@ -21,7 +23,7 @@ void BulletHitParticle::Update() {
 	}
 
 	// 重力加速を追加
-	velocity_.y += gravity_;
+	velocity_.y += gravity_ * MAGISYSTEM::GetDeltaTime();
 
 	// 移動量を加算
 	transform_->AddTranslate(velocity_);
@@ -40,7 +42,7 @@ void BulletHitParticle::Update() {
 
 void BulletHitParticle::Draw() {
 	if (isAlive_) {
-		MAGISYSTEM::DrawModel("Bullet", transform_->GetWorldMatrix(), ModelMaterial{});
+		MAGISYSTEM::DrawModel("Bullet", transform_->GetWorldMatrix(), mat_);
 	}
 }
 

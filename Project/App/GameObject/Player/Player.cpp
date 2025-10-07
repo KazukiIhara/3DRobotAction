@@ -126,6 +126,9 @@ void Player::Update() {
 }
 
 void Player::Draw() {
+	// エフェクトなど描画
+	mech_->Draw();
+
 	// UI描画
 	playerUI_->Draw(mech_.get());
 

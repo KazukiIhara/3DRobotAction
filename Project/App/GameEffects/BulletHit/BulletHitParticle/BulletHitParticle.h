@@ -6,12 +6,14 @@
 // MyHedder
 #include "Transform3D/Transform3D.h"
 
+#include "Structs/ModelStruct.h"
+
 /// <summary>
 /// 弾着弾時のパーティクル
 /// </summary>
 class BulletHitParticle {
 public:
-	BulletHitParticle(const Vector3& pos, const Vector3& velo);
+	BulletHitParticle(const Vector3& pos, const Vector3& velo, float gravity);
 	~BulletHitParticle() = default;
 
 	void Update();
@@ -22,7 +24,7 @@ public:
 
 private:
 	// 重力加速度
-	const float gravity_ = 9.8f;
+	float gravity_ = -9.8f;
 	// 移動量
 	Vector3 velocity_ = { 0.0f,0.0f,1.0f };
 
@@ -31,6 +33,9 @@ private:
 
 	// 生存フラグ
 	bool isAlive_ = true;
+
+	// マテリアル
+	ModelMaterial mat_;
 
 private:
 	// パーティクルのトランスフォーム
