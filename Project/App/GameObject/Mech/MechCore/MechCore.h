@@ -32,6 +32,7 @@
 
 // エフェクトクラス
 #include "GameEffects/QuickBoost/QuickBoostParticle/QuickBoostParticle.h"
+#include "GameEffects/BulletHit/BulletHitEffect/BulletHitEffect.h"
 
 // 前方宣言
 class GameObject3D;
@@ -90,9 +91,11 @@ public:
 	MechStatusComponent* GetStatusComponent();
 
 	// 
-	// エフェクトの取得
+	// エフェクトクラスの取得
 	// 
 	QuickBoostParticle* GetQuickBoostParticle();
+	BulletHitEffect* GetBulletHitEffect();
+
 
 	// 
 	// コライダーの取得(今後コンポーネント化する可能性あり)
@@ -184,6 +187,8 @@ private:
 
 	// クイックブーストのエフェクト
 	std::unique_ptr<QuickBoostParticle> quickBoostparticle_ = nullptr;
+	// 弾衝突時のエフェクト
+	std::unique_ptr<BulletHitEffect> bulletHitEffect_ = nullptr;
 	
 
 	//=======================

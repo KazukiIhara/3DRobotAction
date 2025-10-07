@@ -121,7 +121,9 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 
 	// クイックブースト
 	quickBoostparticle_ = std::make_unique<QuickBoostParticle>(this);
-
+	
+	// 弾衝突時エフェクト
+	bulletHitEffect_ = std::make_unique<BulletHitEffect>();
 
 	//===========================
 	// マネージャをセット
@@ -266,6 +268,10 @@ MechStatusComponent* MechCore::GetStatusComponent() {
 
 QuickBoostParticle* MechCore::GetQuickBoostParticle() {
 	return quickBoostparticle_.get();
+}
+
+BulletHitEffect* MechCore::GetBulletHitEffect() {
+	return bulletHitEffect_.get();
 }
 
 MechCollider* MechCore::GetCollider() {

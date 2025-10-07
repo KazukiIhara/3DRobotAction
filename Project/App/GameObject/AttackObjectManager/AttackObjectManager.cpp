@@ -47,7 +47,7 @@ const std::vector<Bullet>& AttackObjectManager::GetBullets() {
 
 void AttackObjectManager::AddBullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos, int32_t damage) {
 	// コライダーを作成
-	std::shared_ptr<AttackCollider> bulletCollider = std::make_unique<AttackCollider>(tag, AttackType::Bullet, wPos, Vector3(-0.4f, -0.4f, -0.4f), Vector3(0.4f, 0.4f, 0.4f), damage);
+	std::shared_ptr<AttackCollider> bulletCollider = std::make_unique<AttackCollider>(tag, AttackType::Bullet, wPos, Vector3(-0.2f, -0.2f, -0.2f), Vector3(0.2f, 0.2f, 0.2f), damage);
 	// コリジョンマネージャに追加
 	std::weak_ptr<AttackCollider> temp = atkColliderManager_->AddAttackCollider(std::move(bulletCollider));
 

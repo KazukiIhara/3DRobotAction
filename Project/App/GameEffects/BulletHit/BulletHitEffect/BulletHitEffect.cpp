@@ -31,4 +31,7 @@ void BulletHitEffect::Draw() {
 
 void BulletHitEffect::EmitParticle(const Vector3& pos) {
 
+	BulletHitParticle newP = BulletHitParticle(pos, Vector3(0.0f, 0.0f, 0.0f));
+	bulletHitParticles_.push_back(newP);
+
 }

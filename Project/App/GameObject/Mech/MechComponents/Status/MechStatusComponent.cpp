@@ -28,9 +28,17 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 	for (auto& info : infos) {
 		if (info.isHit) {
 			switch (info.type) {
-				case AttackType::Bullet:
-					GetDamage(info.damage, mechCore);
-					break;
+			case AttackType::Bullet:
+
+				// ダメージを受ける
+				GetDamage(info.damage, mechCore);
+				// 衝突時エフェクト発生
+				mechCore->GetBulletHitEffect()->Emit(info.attackPos);
+
+				break;
+			case AttackType::Missile:
+				GetDamage(info.damage, mechCore);
+				break;
 			}
 		}
 	}

@@ -30,6 +30,7 @@ public:
 
 	const Vector3& GetMinW()const;
 	const Vector3& GetMaxW()const;
+	const Vector3& GetWPos()const;
 
 	bool GetIsAlive()const;
 	HitInfo GetHitInfo()const;

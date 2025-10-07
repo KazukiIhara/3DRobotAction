@@ -13,6 +13,7 @@ public:
 	// 衝突に関するデータ
 	struct HitInfo {
 		bool isHit = false;
+		Vector3 attackPos;
 		AttackType type;
 		int32_t damage;
 	};
