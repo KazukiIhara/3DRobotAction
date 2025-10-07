@@ -124,12 +124,6 @@ void MechAttackComponent::AttackLeftShoulder(MechCore* mechCore) {
 		const FriendlyTag tag = mechCore->GetFriendlyTag();
 		// 発射座標を取得
 		const Vector3 wPos = mechCore->GetLeftShoulderWeapon()->GetFireWorldPosition();
-		// 初期速度取得
-		const float firstSpeed = mechCore->GetLeftShoulderWeapon()->GetFirstSpeed();
-		// 加速度取得
-		const float acc = mechCore->GetLeftShoulderWeapon()->GetAcc();
-		// 最大速度取得
-		const float maxSpeed = mechCore->GetLeftShoulderWeapon()->GetMaxSpeed();
 		// ダメージを参照
 		const int32_t damage = mechCore->GetLeftShoulderWeapon()->GetDamage();
 
@@ -162,7 +156,7 @@ void MechAttackComponent::AttackLeftShoulder(MechCore* mechCore) {
 					const Vector3 dir = Normalize(forward + ringDir * ringScale);
 
 					// 発射
-					attackObjectManager_->AddMissile(tag, MissileType::Dual, wPos, firstSpeed, acc, maxSpeed, dir, damage, target);
+					attackObjectManager_->AddMissile(tag, MissileType::Dual, wPos, dir, damage, target);
 				}
 			}
 		}

@@ -38,18 +38,6 @@ const int32_t& BaseMechShoulderWeapon::GetDamage()const {
 	return damage_;
 }
 
-float BaseMechShoulderWeapon::GetFirstSpeed() const {
-	return firstSpeed_;
-}
-
-float BaseMechShoulderWeapon::GetAcc() const {
-	return acc_;
-}
-
-float BaseMechShoulderWeapon::GetMaxSpeed() const {
-	return maxSpeed_;
-}
-
 bool BaseMechShoulderWeapon::IsCoolTime() const {
 	return isCoolTime_;
 }

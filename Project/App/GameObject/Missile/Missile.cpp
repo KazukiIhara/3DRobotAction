@@ -5,15 +5,25 @@
 #include "GameObject/AttackCollider/AttackCollider.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
 
-Missile::Missile(const MissileType& missileType, const Vector3& wPos, float speed, float acc, float maxSpeed, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
+Missile::Missile(const MissileType& missileType, const Vector3& wPos, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
 	lifeTime_ = 5.0f;
 	dir_ = dir;
-	speed_ = speed;
-	acc_ = acc;
-	maxSpeed_ = maxSpeed;
 
 	type_ = missileType;
+
+	switch (type_) {
+	case MissileType::Dual:
+		speed_ = 20.0f;
+		boostAcc_ = 60.0f;
+		maxBoostSpeed_ = 50.0f;
+		boostTime_ = 0.5f;
+		guidedAcc_ = 100.0f;
+		maxGuidedSpeed_ = 80.0f;
+		break;
+	default:
+		break;
+	}
 
 	// レンダラーを作成
 	std::shared_ptr<ModelRenderer> renderer = std::make_shared<ModelRenderer>("Missile", "MechRightArm");
@@ -108,31 +118,39 @@ Vector3 Missile::GetWorldPos() {
 	return pos;
 }
 
+void Missile::EnterGuidedDualMissile() {
+	// 目標角度を計算
+	if (auto obj = missile_.lock()) {
+		if (auto targetObj = target_.lock()) {
+			if (auto targetMechBodyObj = targetObj->GetMechBody()->GetGameObject().lock()) {
+				const Vector3 targetPos = targetMechBodyObj->GetTransform()->GetWorldPosition();
+				const Vector3 pos = obj->GetTransform()->GetWorldPosition();
+				dir_ = Normalize(targetPos - pos);
+			}
+		}
+	}
+
+}
+
 void Missile::UpdateDualMissile() {
 	switch (phase_) {
 	case MissilePhase::Boost:
 		// 加速
-		speed_ += acc_ * MAGISYSTEM::GetDeltaTime();
-		// 最大速度に達したら追従開始
-		if (speed_ > maxSpeed_) {
-			speed_ = maxSpeed_;
+		speed_ += boostAcc_ * MAGISYSTEM::GetDeltaTime();
+		// タイマー更新
+		boostTime_ -= MAGISYSTEM::GetDeltaTime();
+
+		// タイマー終了で追従開始
+		if (boostTime_ <= 0.0f) {
 			phase_ = MissilePhase::Guided;
+			EnterGuidedDualMissile();
 		}
+		speed_ = std::min(speed_, maxBoostSpeed_);
 		break;
 	case MissilePhase::Guided:
-		// 目標角度を計算
-		if (auto obj = missile_.lock()) {
-			if (auto targetObj = target_.lock()) {
-				if (auto targetMechBodyObj = targetObj->GetMechBody()->GetGameObject().lock()) {
-					const Vector3 targetPos = targetMechBodyObj->GetTransform()->GetWorldPosition();
-					targetDir_ = Normalize(targetPos - obj->GetTransform()->GetWorldPosition());
-				}
-			}
-		}
-
-		// 補完
-		dir_ = Lerp(dir_, targetDir_, 0.1f);
-
+		// 加速
+		speed_ += guidedAcc_ * MAGISYSTEM::GetDeltaTime();
+		speed_ = std::min(speed_, maxGuidedSpeed_);
 		break;
 	}
 }
