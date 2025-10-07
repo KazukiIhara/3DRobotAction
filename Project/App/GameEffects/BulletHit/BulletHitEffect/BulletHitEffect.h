@@ -14,7 +14,17 @@ public:
 	BulletHitEffect();
 	~BulletHitEffect() = default;
 
+	void Emit(const Vector3& pos);
+
+	void Update();
+
+	void Draw();
+
 private:
-	std::list<BulletHitParticle> particles_;
+	void EmitParticle(const Vector3& pos);
+
+private:
+	// パーティクル
+	std::list<BulletHitParticle> bulletHitParticles_;
 
 };
