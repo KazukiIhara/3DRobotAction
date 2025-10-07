@@ -43,7 +43,8 @@ void MechArmLeft::Update(MechCore* mechCore) {
 				// 前方ベクトルを計算、正規化
 				forward_ = targetEstPos - obj->GetTransform()->GetWorldPosition();
 				forward_ = Normalize(forward_);
-				// ヨー角を取得
+
+				// ヨーピッチ角を取得
 				const float yaw = std::atan2(forward_.x, forward_.z);
 				const float pitch = std::atan2(-forward_.y, std::sqrt(forward_.x * forward_.x + forward_.z * forward_.z));
 
