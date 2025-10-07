@@ -88,6 +88,9 @@ private:
 
 	// 出力するコマンド
 	InputCommand command_;
+	
+	// 索敵時のロックオンビュー
+	LockOnView lockOnView_;
 
 	// ステートテーブル
 	std::unordered_map<EnemyAIState, std::shared_ptr<BaseEnemyAIState>> states_;

@@ -63,6 +63,9 @@ InputCommand EnemyAI::Update() {
 		cs->Update(this, mechCore_);
 	}
 
+	// カメラの方向を調整
+	RotateCamera(mechCore_);
+
 	// 入力された移動方向をカメラに対しての向きに直す
 	CulDirectionWithCamera(mechCore_);
 
