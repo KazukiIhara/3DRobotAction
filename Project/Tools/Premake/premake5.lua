@@ -1,7 +1,7 @@
-workspace "AC7"
+workspace "3DRobotAction"
    configurations { "Debug", "Develop","Release" }
    platforms { "x64" }
-   startproject "AC7" -- デフォルトのスタートプロジェクトを指定
+   startproject "3DRobotAction" -- デフォルトのスタートプロジェクトを指定
    location "../../"
 
    -- 出力ディレクトリの設定
@@ -34,7 +34,7 @@ workspace "AC7"
 
 -- MAGIの設定
 
-project "AC7" -- プロジェクト名
+project "3DRobotAction" -- プロジェクト名
    kind "WindowedApp" -- デスクトップアプリケーションに設定
    language "C++"
    cppdialect "C++20" -- 言語の設定
