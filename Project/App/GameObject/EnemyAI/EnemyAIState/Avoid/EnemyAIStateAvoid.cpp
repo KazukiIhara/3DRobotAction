@@ -26,8 +26,13 @@ void EnemyAIStateAvoid::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused
 	// QBが終了していたら通常状態に遷移
 	if (currentState != MechCoreState::QuickBoost) {
 		enemyAI->ChangeState(EnemyAIState::Root);
+		return;
 	}
-
+	// ロックオン対象がいない場合は索敵ステートに遷移
+	if (!mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+		enemyAI->ChangeState(EnemyAIState::Search);
+		return;
+	}
 }
 
 void EnemyAIStateAvoid::Exit([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {

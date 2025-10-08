@@ -22,12 +22,23 @@ void EnemyAIStateSearch::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unuse
 
 	// 方向を取得
 	Vector3 dir = pos - playerPos;
+	// カメラの方向
+	Vector3 camDir;
+	if (auto mainCam = mechCore->GetGameObject().lock()->GetCamera3D("MainCamera").lock()) {
+		camDir = mainCam->GetTarget() - mainCam->GetEye();
+	}
 
-	enemyAI->MoveDir(Vector2(dir.x, dir.z));
+	// 方向を正規化
+	Vector3 dirN = Normalize(dir);
+	Vector3 camDirN = Normalize(camDir);
+
+	// 正面に移動
+	enemyAI->MoveDir(Vector2(0.0f, 1.0f));
 
 	// 自機がロックオン対象になったら通常行動に入る
 	if (mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		enemyAI->ChangeState(EnemyAIState::Root);
+		return;
 	}
 
 }
