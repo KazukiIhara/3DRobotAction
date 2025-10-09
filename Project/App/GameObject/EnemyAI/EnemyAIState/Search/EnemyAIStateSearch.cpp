@@ -22,15 +22,15 @@ void EnemyAIStateSearch::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unuse
 
 	// 方向を取得
 	Vector3 dir = pos - playerPos;
+
+	// 方向を正規化
+	Vector3 dirN = Normalize(dir);
 	// カメラの方向
 	Vector3 camDir;
 	if (auto mainCam = mechCore->GetGameObject().lock()->GetCamera3D("MainCamera").lock()) {
 		camDir = mainCam->GetTarget() - mainCam->GetEye();
 	}
 
-	// 方向を正規化
-	Vector3 dirN = Normalize(dir);
-	Vector3 camDirN = Normalize(camDir);
 
 	// 正面に移動
 	enemyAI->MoveDir(Vector2(0.0f, 1.0f));
