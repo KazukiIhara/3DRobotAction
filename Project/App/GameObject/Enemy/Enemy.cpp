@@ -10,7 +10,7 @@ Enemy::Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerM
 	mech_ = std::make_unique<MechCore>(Vector3(0.0f, 0.0f, 30.0f), FriendlyTag::EnemySide, bulletManager, true);
 
 	// 三人称視点カメラの作成
-	std::shared_ptr<PlayerCamera> followCamera = std::make_shared<PlayerCamera>("MainCamera", std::numbers::pi_v<float>);
+	std::shared_ptr<MechCamera> followCamera = std::make_shared<MechCamera>("MainCamera", std::numbers::pi_v<float>);
 	followCamera->SetIsUnique(true);
 	followCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
 	followCamera->SetMechCore(mech_);

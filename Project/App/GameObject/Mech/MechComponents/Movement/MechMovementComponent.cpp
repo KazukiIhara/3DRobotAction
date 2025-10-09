@@ -107,7 +107,7 @@ void MechMovementComponent::AssultBoostUpdate(MechCore* mechCore) {
 	Vector3 cameraDir{};
 
 	if (auto mechCoreObj = mechCore->GetGameObject().lock()) {
-		if (auto camera = dynamic_cast<PlayerCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
+		if (auto camera = dynamic_cast<MechCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
 			const Quaternion localQ = camera->GetCameraQuaternion();
 			const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
 			const Quaternion targetQ = Inverse(bodyQ) * localQ;

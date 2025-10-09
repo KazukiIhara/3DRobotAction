@@ -63,7 +63,7 @@ void MechBody::RotateToMoveDirection(MechCore* mechCore) {
 	case MechCoreState::AssultBoost:
 		// カメラの方向を取得
 		if (auto mechCoreObj = mechCore->GetGameObject().lock()) {
-			if (auto camera = dynamic_cast<PlayerCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
+			if (auto camera = dynamic_cast<MechCamera*>(mechCoreObj->GetCamera3D("MainCamera").lock().get())) {
 				const Quaternion q = camera->GetCameraQuaternion();
 				dir = Normalize(Transform(MakeForwardVector3(), q));
 			}

@@ -10,16 +10,18 @@ enum PlayerCameraState {
 	Root,
 };
 
-class PlayerCamera:public Camera3D {
+class MechCamera:public Camera3D {
 public:
-	PlayerCamera(const std::string& name, float yaw);
-	~PlayerCamera() = default;
+	MechCamera(const std::string& name, float yaw);
+	~MechCamera() = default;
 
 	void Update()override;
 
 	void SetTargetTransform(Transform3D* target);
 
 	void SetMechCore(std::weak_ptr<MechCore> mechCore);
+
+	void SetCameraQuaternion(const Quaternion& q);
 
 	const Quaternion& GetCameraQuaternion()const;
 
