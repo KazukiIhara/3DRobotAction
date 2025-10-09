@@ -7,12 +7,12 @@
 
 using namespace MAGIMath;
 
-PlayerCamera::PlayerCamera(const std::string& name, float yaw)
+MechCamera::MechCamera(const std::string& name, float yaw)
 	:Camera3D(name, false) {
 	pYaw_ = yaw;
 }
 
-void PlayerCamera::Update() {
+void MechCamera::Update() {
 	// デルタタイムを取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
@@ -53,24 +53,32 @@ void PlayerCamera::Update() {
 	UpdateData();
 }
 
-void PlayerCamera::SetTargetTransform(Transform3D* target) {
+void MechCamera::SetTargetTransform(Transform3D* target) {
 	followTargetTransform_ = target;
 }
 
-void PlayerCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
+void MechCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
 	core_ = mechCore;
 	eye_ = core_.lock()->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 }
 
-const Quaternion& PlayerCamera::GetCameraQuaternion() const {
+void MechCamera::SetCameraQuaternion(const Quaternion& q) {
+	cameraRotation_ = q;
+}
+
+const Quaternion& MechCamera::GetCameraQuaternion() const {
 	return cameraRotation_;
 }
 
-void PlayerCamera::ApplyInput(float dt) {
-
+void MechCamera::ApplyInput(float dt) {
 	// 右スティック入力
 	Vector2 rs{};
 	if (auto core = core_.lock()) {
+		// 自機でない場合早期リターン
+		if (core->GetFriendlyTag() == FriendlyTag::EnemySide) {
+			return;
+		}
+
 		rs = core->GetInputCommand().cameraRotDirection;
 	}
 
@@ -92,7 +100,7 @@ void PlayerCamera::ApplyInput(float dt) {
 
 }
 
-void PlayerCamera::HardLockCamera(float dt) {
+void MechCamera::HardLockCamera(float dt) {
 
 	// ターゲット座標取得
 	Vector3 targetWorldPos{};
@@ -131,12 +139,9 @@ void PlayerCamera::HardLockCamera(float dt) {
 
 }
 
-void PlayerCamera::FollowCamera() {
-	// 累積YawPitchからクオータニオンを生成
-	Quaternion qYaw = MakeRotateAxisAngleQuaternion(MakeUpVector3(), pYaw_);
-	Quaternion qPitch = MakeRotateAxisAngleQuaternion(MakeRightVector3(), pPitch_);
-	cameraRotation_ = Normalize(qYaw * qPitch);
+void MechCamera::FollowCamera() {
 
+	// 前方を計算
 	forward_ = Normalize(Transform(MakeForwardVector3(), cameraRotation_));
 
 	// ターゲット設定

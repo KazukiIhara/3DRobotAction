@@ -21,6 +21,7 @@ Project/*.vcxproj
 Project/*.filters
 Project/Logs/
 generated/
+*.ini
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/

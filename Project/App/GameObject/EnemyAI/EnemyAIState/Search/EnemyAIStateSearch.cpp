@@ -4,6 +4,7 @@
 
 #include "GameObject/EnemyAI/EnemyAI.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
+#include "GameObject/PlayerCamera/PlayerCamera.h"
 #include "Math/Utility/MathUtility.h"
 
 using namespace MAGIMath;
@@ -21,16 +22,12 @@ void EnemyAIStateSearch::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unuse
 	Vector3 playerPos = playerMech->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 
 	// 方向を取得
-	Vector3 dir = pos - playerPos;
-	// カメラの方向
-	Vector3 camDir;
-	if (auto mainCam = mechCore->GetGameObject().lock()->GetCamera3D("MainCamera").lock()) {
-		camDir = mainCam->GetTarget() - mainCam->GetEye();
-	}
+	const Vector3 dir = Normalize(playerPos - pos);
 
-	// 方向を正規化
-	Vector3 dirN = Normalize(dir);
-	Vector3 camDirN = Normalize(camDir);
+	// クオータニオンをセット
+	if (auto mainCam = dynamic_cast<MechCamera*>(mechCore->GetGameObject().lock()->GetCamera3D("MainCamera").lock().get())) {
+		mainCam->SetCameraQuaternion(DirectionToQuaternion(dir));
+	}
 
 	// 正面に移動
 	enemyAI->MoveDir(Vector2(0.0f, 1.0f));
