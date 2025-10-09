@@ -82,6 +82,7 @@ void MechCamera::ApplyInput(float dt) {
 		rs = core->GetInputCommand().cameraRotDirection;
 	}
 
+	// 入力がない、小さすぎる場合は早期リターン
 	if (LengthSquared(rs) < 1e-6f) return;
 
 	// 入力を角速度へ
