@@ -51,5 +51,5 @@ void ParticleDrawer3D::Draw(BlendMode mode) {
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // t1000
 
 
-	commandList->DispatchMesh(1, kMaxParticleNum, 1);
+	commandList->DispatchMesh(kParticleThreadsNum, kParticleThreadsNum, 1);
 }

@@ -10,16 +10,14 @@ enum PlayerCameraState {
 	Root,
 };
 
-class MechCamera:public Camera3D {
+class MechCamera :public Camera3D {
 public:
-	MechCamera(const std::string& name, float yaw);
+	MechCamera(const std::string& name, float yaw, MechCore* core);
 	~MechCamera() = default;
 
 	void Update()override;
 
 	void SetTargetTransform(Transform3D* target);
-
-	void SetMechCore(std::weak_ptr<MechCore> mechCore);
 
 	void SetCameraQuaternion(const Quaternion& q);
 
@@ -76,13 +74,13 @@ private:
 	Vector3 pivotOffset_ = { 0.0f, 2.2f, 0.0f };
 
 	// 機体を受け取る
-	std::weak_ptr<MechCore> core_;
+	MechCore* core_;
 
 
 	//
 	// カメラシェイク用のステータス
 	//
-	
 
-	
+
+
 };

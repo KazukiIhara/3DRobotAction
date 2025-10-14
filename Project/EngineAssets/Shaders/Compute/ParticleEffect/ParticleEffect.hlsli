@@ -1,5 +1,6 @@
 
 static const uint kMaxParticles = 262144;
+static const uint kParticleThreadsNum = 512;
 
 static const float4 kPlane[4] =
 {

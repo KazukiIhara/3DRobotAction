@@ -32,7 +32,7 @@ static constexpr uint32_t kThreadsPerGroup = 1024;
 
 // パーティクルの最大数
 static constexpr uint32_t kMaxParticleNum = 262144;
-
+static constexpr uint32_t kParticleThreadsNum = 512;
 
 /// <summary>
 /// パーティクルエフェクトの発生時データ
