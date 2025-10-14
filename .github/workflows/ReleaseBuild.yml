@@ -1,28 +1,54 @@
-name: ReleaseBulid
+name: Build (Release)
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
+    tags: [ 'v*' ]  # 例: v1.0.0 などのタグで起動
 
 env:
- # リポジトリのルートディレクトリを基点としたソリューションファイルのパス
- SOLUTION_FILE_PATH: Project/3DRobotAction.sln
- # VisualStudioの構成
- CONFIGURATION: Release
+  PLATFORM: x64
+  CONFIGURATION: Release
+  PREMAKE_DIR: Project/Tools/Premake
+  PREMAKE_LUA: Project/Tools/Premake/premake5.lua
 
 jobs:
   build:
-    runs-on:  windows-2022
-
+    runs-on: windows-2022
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Add MSBulid to PATH
+        with:
+          lfs: true
+
+      - name: Generate VS solutions with Premake (bundled exe)
+        shell: pwsh
+        run: |
+          $exe = Join-Path $env:PREMAKE_DIR 'premake5.exe'
+          if (-not (Test-Path $exe)) { throw "premake5.exe not found at $exe" }
+          & $exe --version
+          & $exe --file=$env:PREMAKE_LUA vs2022
+
+      - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: x64
 
-      - name: Build
+      - name: Build solutions (auto-discover)
+        shell: pwsh
         run: |
-          msbuild ${{env.SOLUTION_FILE_PATH}} /p:Platform=x64,Configuration=${{env.CONFIGURATION}}
+          $solutions = Get-ChildItem -Path . -Recurse -Filter *.sln
+          if ($solutions.Count -eq 0) { throw "No .sln files found after premake generation." }
+          foreach ($s in $solutions) {
+            Write-Host "Building: $($s.FullName)"
+            msbuild $s.FullName /p:Configuration=$env:CONFIGURATION /p:Platform=$env:PLATFORM /m
+          }
+
+      - name: Upload artifact (optional)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ env.CONFIGURATION }}-bins
+          path: |
+            **/x64/${{ env.CONFIGURATION }}/*.exe
+            **/x64/${{ env.CONFIGURATION }}/*.dll
+          if-no-files-found: ignore
