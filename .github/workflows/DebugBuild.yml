@@ -1,29 +1,43 @@
-name: DebugBulid
+name: DebugBuild
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
 
 env:
- # リポジトリのルートディレクトリを基点としたソリューションファイルのパス
- SOLUTION_FILE_PATH: Project/3DRobotAction.sln
- # VisualStudioの構成
- CONFIGURATION: Debug
+  SOLUTION_FILE_PATH: Project/3DRobotAction.sln   # premake の出力に合わせて調整
+  CONFIGURATION: Debug
+  PLATFORM: x64
 
 jobs:
   build:
-    runs-on:  windows-2022
+    runs-on: windows-2022
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Add MSBulid to PATH
+
+      - name: Install Premake
+        shell: powershell
+        run: |
+          choco install premake --yes
+          premake5 --version
+
+      # ここで指定パスの premake5.lua を使って VS ソリューションを生成
+      - name: Generate VS solutions with Premake
+        shell: powershell
+        run: |
+          premake5 --file=Project/Tools/Premake/premake5.lua vs2022
+
+      - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: x64
 
       - name: Build
+        shell: powershell
         run: |
-          msbuild ${{env.SOLUTION_FILE_PATH}} /p:Platform=x64,Configuration=${{env.CONFIGURATION}}
-          
+          msbuild ${{ env.SOLUTION_FILE_PATH }} `
+            /p:Configuration=${{ env.CONFIGURATION }} `
+            /p:Platform=${{ env.PLATFORM }} `
+            /m
