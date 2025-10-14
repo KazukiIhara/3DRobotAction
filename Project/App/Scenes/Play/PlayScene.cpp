@@ -254,4 +254,5 @@ void PlayScene::Draw() {
 
 void PlayScene::Finalize() {
 	MAGISYSTEM::ClearGameObject3D();
+	MAGISYSTEM::ClearCamera3D();
 }

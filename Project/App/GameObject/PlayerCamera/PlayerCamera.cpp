@@ -10,6 +10,7 @@ using namespace MAGIMath;
 MechCamera::MechCamera(const std::string& name, float yaw, MechCore* core)
 	:Camera3D(name, false) {
 	pYaw_ = yaw;
+	core_ = core;
 
 	if (auto body = core_->GetMechBody()->GetGameObject().lock()) {
 		eye_ = body->GetTransform()->GetWorldPosition();
