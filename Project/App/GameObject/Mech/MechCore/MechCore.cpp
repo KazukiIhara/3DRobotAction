@@ -237,8 +237,8 @@ const FriendlyTag& MechCore::GetFriendlyTag() const {
 	return tag_;
 }
 
-bool MechCore::GetIsInvaildFCS() const {
-	return isInvalidFCS_;
+float MechCore::GetFcsAvoidFactor() const {
+	return fcsAvoidFactor_;
 }
 
 MechBody* MechCore::GetMechBody() {

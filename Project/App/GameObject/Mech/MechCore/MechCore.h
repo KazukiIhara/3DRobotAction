@@ -67,7 +67,7 @@ public:
 	const InputCommand& GetInputCommand()const;
 	const LockOnView& GetLockOnView()const;
 	const FriendlyTag& GetFriendlyTag()const;
-	bool GetIsInvaildFCS()const;
+	float GetFcsAvoidFactor()const;
 
 	// 
 	// 各パーツの取得
@@ -132,8 +132,9 @@ private:
 	LockOnView lockOnView_;
 	// 友好タグ
 	FriendlyTag tag_;
-	// FCS無効状態
-	bool isInvalidFCS_ = false;
+
+	// FCS回避係数(1.0f直撃する、0.0f完全回避)
+	float fcsAvoidFactor_ = 1.0f;
 
 	// オブジェクト
 	std::weak_ptr<GameObject3D> core_;

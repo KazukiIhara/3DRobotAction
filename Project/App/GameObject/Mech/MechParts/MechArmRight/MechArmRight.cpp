@@ -21,6 +21,7 @@ MechArmRight::MechArmRight() {
 }
 
 void MechArmRight::Update(MechCore* mechCore) {
+
 	// ロックオン対象がいるなら
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		// 対象の胴体を取得
