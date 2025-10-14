@@ -237,10 +237,6 @@ const FriendlyTag& MechCore::GetFriendlyTag() const {
 	return tag_;
 }
 
-float MechCore::GetFcsAvoidFactor() const {
-	return fcsAvoidFactor_;
-}
-
 MechBody* MechCore::GetMechBody() {
 	return body_.get();
 }

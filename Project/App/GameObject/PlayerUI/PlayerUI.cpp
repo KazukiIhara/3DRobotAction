@@ -91,7 +91,7 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		if (auto targetBody = target->GetMechBody()->GetGameObject().lock()) {
 			// ロックオン係数
-			const float lockonFactor = target->GetFcsAvoidFactor();
+			const float lockonFactor = mechCore->GetStatusComponent()->GetFcsAvoidFactor();
 
 			// ターゲットのワールド座標を取得
 			// ロックオン対象の胴体のワールド座標を取得

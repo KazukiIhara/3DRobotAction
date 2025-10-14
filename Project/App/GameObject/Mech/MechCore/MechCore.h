@@ -67,7 +67,6 @@ public:
 	const InputCommand& GetInputCommand()const;
 	const LockOnView& GetLockOnView()const;
 	const FriendlyTag& GetFriendlyTag()const;
-	float GetFcsAvoidFactor()const;
 
 	// 
 	// 各パーツの取得

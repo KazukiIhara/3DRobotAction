@@ -19,13 +19,13 @@ public:
 	void Update(MechCore* mechCore);
 
 	// HPを取得
-	const int32_t& GetHp()const;
-	const int32_t& GetMaxHp()const;
+	int32_t GetHp()const;
+	int32_t GetMaxHp()const;
 	float GetHPRaito()const;
 
 	// ENを取得
-	const int32_t& GetEn()const;
-	const int32_t& GetMaxEn()const;
+	int32_t GetEn()const;
+	int32_t GetMaxEn()const;
 	float GetEnRaito()const;
 
 	// オーバーヒート状態かどうかを取得
@@ -33,12 +33,17 @@ public:
 
 	// クイックブーストのエネルギー消費処理
 	void UseQuickBoostEnergy();
+
+	// FCS回避係数を取得
+	float GetFcsAvoidFactor()const;
+
 private:
 	// エネルギー消費処理
 	void UseEnergy(const int32_t& enValue);
 	// 被ダメージ処理
 	void GetDamage(const int32_t& damage, MechCore* mechcore);
-
+	// FCS解除
+	void UpdateFcsAvoidFactor(MechCore* mechCore);
 private:
 
 	// 
@@ -60,6 +65,9 @@ private:
 	// オーバーヒートタイマー
 	float overHeatTimer_ = 0.0f;
 
+	// FCS回避係数
+	float fcsAvoidFactor_ = 0.5f;
+
 	// 
 	// パラメータ
 	// 
@@ -76,5 +84,8 @@ private:
 	const int32_t kQuickBoostUseEn_ = 800;
 	// アサルトブースト時秒間消費EN
 	const int32_t kAssultBoostUseEnPerSec_ = 9000;
+
+	// FCSの復帰時間
+	const float fcsRecoverTime_ = 0.5f;
 
 };
