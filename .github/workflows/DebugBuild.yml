@@ -5,9 +5,13 @@ on:
     branches: [ master ]
 
 env:
-  SOLUTION_FILE_PATH: Project/3DRobotAction.sln   # premake の出力に合わせて調整
   CONFIGURATION: Debug
   PLATFORM: x64
+  # Premake 入力
+  PREMAKE_DIR: Project/Tools/Premake
+  PREMAKE_LUA: Project/Tools/Premake/premake5.lua
+  # Premake 出力で生成される .sln の想定パス（必要に応じて調整）
+  SOLUTION_FILE_PATH: Project/3DRobotAction.sln
 
 jobs:
   build:
@@ -16,28 +20,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # premake5.exe を Git LFS で管理している場合は true にする
+          lfs: true
 
-      - name: Install Premake (winget)
-        shell: powershell
+      # 1) リポジトリ同梱の premake5.exe を実行して .sln/.vcxproj を生成
+      - name: Generate VS solutions with Premake (repo-bundled exe)
+        shell: pwsh
         run: |
-          winget install --id=Premake.Premake.5.Beta -e --source winget
-          premake5 --version
+          $exe = Join-Path $env:PREMAKE_DIR 'premake5.exe'
+          if (-not (Test-Path $exe)) { throw "premake5.exe not found at $exe" }
+          & $exe --version
+          & $exe --file=$env:PREMAKE_LUA vs2022
 
-      # ここで指定パスの premake5.lua を使って VS ソリューションを生成
-      - name: Generate VS solutions with Premake
-        shell: powershell
-        run: |
-          premake5 --file=Project/Tools/Premake/premake5.lua vs2022
-
+      # 2) MSBuild セットアップ
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: x64
 
-      - name: Build
-        shell: powershell
+      # 3-A) 出力場所が固定なら .sln を直接ビルド
+      - name: Build (fixed solution path)
+        shell: pwsh
         run: |
-          msbuild ${{ env.SOLUTION_FILE_PATH }} `
-            /p:Configuration=${{ env.CONFIGURATION }} `
-            /p:Platform=${{ env.PLATFORM }} `
-            /m
+          if (-not (Test-Path $env:SOLUTION_FILE_PATH)) {
+            throw "Solution not found: $env:SOLUTION_FILE_PATH  (Check Premake 'location' or update SOLUTION_FILE_PATH)"
+          }
+          msbuild $env:SOLUTION_FILE_PATH /p:Configuration=$env:CONFIGURATION /p:Platform=$env:PLATFORM /m
