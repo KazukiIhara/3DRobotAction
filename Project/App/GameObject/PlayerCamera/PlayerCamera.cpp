@@ -13,6 +13,8 @@ MechCamera::MechCamera(const std::string& name, float yaw, MechCore* core)
 
 	if (auto body = core_->GetMechBody()->GetGameObject().lock()) {
 		eye_ = body->GetTransform()->GetWorldPosition();
+		target_ = eye_;
+		target_.z += 1.0f;
 	}
 }
 
