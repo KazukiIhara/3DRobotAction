@@ -90,33 +90,43 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 	// ロックオン状態などに応じてUIの座標を更新
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		if (auto targetBody = target->GetMechBody()->GetGameObject().lock()) {
+			// ロックオン係数
+			const float lockonFactor = mechCore->GetStatusComponent()->GetFcsAvoidFactor();
+
 			// ターゲットのワールド座標を取得
 			// ロックオン対象の胴体のワールド座標を取得
 			const Vector3 targetBodyPos = targetBody->GetTransform()->GetWorldPosition();
-
 			const Vector2 targetSPos = TransformWorldToScreen(targetBodyPos);
+
+			// 対象に補間移動
+			lockOnWPos_ = Lerp(lockOnWPos_, targetBodyPos, lockonFactor);
+			const Vector2 targetRedSPos = TransformWorldToScreen(lockOnWPos_);
+
+			// 座標設定
 			lockonGrayData_.position = targetSPos;
+			lockonRedData_.position = targetRedSPos;
 
-			// 弾の発射地点のワールド座標を取得
-			const Vector3 bulletFirePosition = mechCore->GetRightHandWeapon()->GetFireWorldPosition();
-			// 弾の発射地点からターゲットまでの距離
-			const float fireToTarget = Length(bulletFirePosition - targetBodyPos);
-			// 弾速を取得
-			const float bulletSpeed = mechCore->GetRightHandWeapon()->GetBulletSpeed();
-			// 着弾までの予測時間
-			const float timeToImpact = fireToTarget / bulletSpeed;
-
-			// 着弾時の敵の移動後予測地点
-			const Vector3 targetEstPos = targetBodyPos + target->GetMovementComponent()->GetCurrentVelocity() * timeToImpact;
-
-			// 照準で狙うべきワールド座標
-			const Vector2 targetPredictSPos = TransformWorldToScreen(targetEstPos);
-			lockonRedData_.position = targetPredictSPos;
+			// 色変更処理
+			if (lockonFactor == 1.0f) {
+				lockonRedMat_.color = Color::Yellow;
+			} else {
+				lockonRedMat_.color = Color::Red;
+			}
 		}
+
 	} else {
+		// 非ロックオン時の照準位置の初期化
+		if (auto body = mechCore->GetMechBody()->GetGameObject().lock()) {
+			lockOnWPos_ = body->GetTransform()->GetWorldPosition();
+		}
+		// 中心座標
 		lockonGrayData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
 		lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
+		
+		// 非ロックオン時は常に赤色
+		lockonRedMat_.color = Color::Red;
 	}
+
 }
 
 void PlayerUI::UpdateAPUI(MechCore* mechCore) {

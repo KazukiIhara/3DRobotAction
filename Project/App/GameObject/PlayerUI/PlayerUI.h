@@ -3,6 +3,8 @@
 #include <memory>
 #include "Structs/SpriteStruct.h"
 
+#include "Math/Types/AllMathTypes.h"
+
 class MechCore;
 
 /// <summary>
@@ -40,6 +42,7 @@ private:
 	// 射撃盤UIのスプライト設定
 	SpriteData lockonRedData_{};
 	SpriteMaterialData lockonRedMat_{};
+	Vector3 lockOnWPos_{};
 
 	// Apゲージのスプライトデータ
 	SpriteData apGaugeData_{};

@@ -60,14 +60,18 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 
 	// ENの割合を計算
 	enRaito_ = float(en_) / float(kMaxEN_);
+
+	// FCS係数の更新
+	UpdateFcsAvoidFactor(mechCore);
+
 }
 
 
-const int32_t& MechStatusComponent::GetHp() const {
+int32_t MechStatusComponent::GetHp() const {
 	return hp_;
 }
 
-const int32_t& MechStatusComponent::GetMaxHp() const {
+int32_t MechStatusComponent::GetMaxHp() const {
 	return kMaxHP_;
 }
 
@@ -75,11 +79,11 @@ float MechStatusComponent::GetHPRaito() const {
 	return hpRaito_;
 }
 
-const int32_t& MechStatusComponent::GetEn() const {
+int32_t MechStatusComponent::GetEn() const {
 	return en_;
 }
 
-const int32_t& MechStatusComponent::GetMaxEn() const {
+int32_t MechStatusComponent::GetMaxEn() const {
 	return kMaxEN_;
 }
 
@@ -93,6 +97,10 @@ const bool& MechStatusComponent::GetIsOverheat() const {
 
 void MechStatusComponent::UseQuickBoostEnergy() {
 	UseEnergy(kQuickBoostUseEn_);
+}
+
+float MechStatusComponent::GetFcsAvoidFactor() const {
+	return fcsAvoidFactor_;
 }
 
 void MechStatusComponent::UseEnergy(const int32_t& enValue) {
@@ -111,5 +119,20 @@ void MechStatusComponent::GetDamage(const int32_t& damage, MechCore* mechcore) {
 	//
 	if (mechcore->GetFriendlyTag() == FriendlyTag::PlayerSide) {
 		MAGISYSTEM::StartPadVibration(0, 0.2f, 1.0f, 1.0f);
+	}
+}
+
+void MechStatusComponent::UpdateFcsAvoidFactor(MechCore* mechCore) {
+	// 対象を取得
+	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+		// 相手が回避状態
+		if (target->GetCurrentState() == MechCoreState::QuickBoost) {
+			fcsAvoidFactor_ = 0.1f;
+		} else {
+			// FCS復帰
+			fcsAvoidFactor_ += (1.0f / fcsRecoverTime_) * MAGISYSTEM::GetDeltaTime();
+			// 1.0fを超えないようにする
+			fcsAvoidFactor_ = std::min(fcsAvoidFactor_, 1.0f);
+		}
 	}
 }
