@@ -17,10 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Premake
+      - name: Install Premake (winget)
         shell: powershell
         run: |
-          choco install premake --yes
+          winget install --id=Premake.Premake.5.Beta -e --source winget
           premake5 --version
 
       # ここで指定パスの premake5.lua を使って VS ソリューションを生成
