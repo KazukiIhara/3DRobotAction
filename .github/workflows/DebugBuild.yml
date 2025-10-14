@@ -7,7 +7,7 @@ on:
 
 env:
  # リポジトリのルートディレクトリを基点としたソリューションファイルのパス
- SOLUTION_FILE_PATH: project/SUGER.sln
+ SOLUTION_FILE_PATH: Project/3DRobotAction.sln
  # VisualStudioの構成
  CONFIGURATION: Debug
 
