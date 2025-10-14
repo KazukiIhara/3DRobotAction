@@ -105,7 +105,15 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 			// 座標設定
 			lockonGrayData_.position = targetSPos;
 			lockonRedData_.position = targetRedSPos;
+
+			// 色変更処理
+			if (lockonFactor == 1.0f) {
+				lockonRedMat_.color = Color::Yellow;
+			} else {
+				lockonRedMat_.color = Color::Red;
+			}
 		}
+
 	} else {
 		// 非ロックオン時の照準位置の初期化
 		if (auto body = mechCore->GetMechBody()->GetGameObject().lock()) {
@@ -114,7 +122,11 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 		// 中心座標
 		lockonGrayData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
 		lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
+		
+		// 非ロックオン時は常に赤色
+		lockonRedMat_.color = Color::Red;
 	}
+
 }
 
 void PlayerUI::UpdateAPUI(MechCore* mechCore) {
