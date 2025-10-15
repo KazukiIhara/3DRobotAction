@@ -7,7 +7,7 @@ StructuredBuffer<Particle> gInstanceData : register(t0);
 [numthreads(1, 1, 1)]
 void main(uint3 tid : SV_DispatchThreadID)
 {
-    uint instanceID = tid.y;
+    uint instanceID = tid.y * kParticleThreadsNum + tid.x;
     Particle p = gInstanceData[instanceID];
    
     ASPayload payload;

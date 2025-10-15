@@ -7,9 +7,16 @@
 
 using namespace MAGIMath;
 
-MechCamera::MechCamera(const std::string& name, float yaw)
+MechCamera::MechCamera(const std::string& name, float yaw, MechCore* core)
 	:Camera3D(name, false) {
 	pYaw_ = yaw;
+	core_ = core;
+
+	if (auto body = core_->GetMechBody()->GetGameObject().lock()) {
+		eye_ = body->GetTransform()->GetWorldPosition();
+		target_ = eye_;
+		target_.z += 1.0f;
+	}
 }
 
 void MechCamera::Update() {
@@ -29,10 +36,10 @@ void MechCamera::Update() {
 	targetPivot_ = followTargetTransform_->GetWorldPosition() + pivotOffset_;
 	pivot_ = Lerp(pivot_, targetPivot_, pivotT);
 
-	if (auto core = core_.lock()) {
+	if (core_) {
 		// ハードロックオンオフフラグ取得
-		if (core->GetLockOnComponent()->GetEnableHardLockOn()) {
-			if (core->GetLockOnComponent()->GetLockOnTarget().lock()) { // ターゲットあり
+		if (core_->GetLockOnComponent()->GetEnableHardLockOn()) {
+			if (core_->GetLockOnComponent()->GetLockOnTarget().lock()) { // ターゲットあり
 				HardLockCamera(dt);
 			} else { // ターゲットなし
 				FollowCamera();
@@ -57,11 +64,6 @@ void MechCamera::SetTargetTransform(Transform3D* target) {
 	followTargetTransform_ = target;
 }
 
-void MechCamera::SetMechCore(std::weak_ptr<MechCore> mechCore) {
-	core_ = mechCore;
-	eye_ = core_.lock()->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
-}
-
 void MechCamera::SetCameraQuaternion(const Quaternion& q) {
 	cameraRotation_ = q;
 }
@@ -73,13 +75,13 @@ const Quaternion& MechCamera::GetCameraQuaternion() const {
 void MechCamera::ApplyInput(float dt) {
 	// 右スティック入力
 	Vector2 rs{};
-	if (auto core = core_.lock()) {
+	if (core_) {
 		// 自機でない場合早期リターン
-		if (core->GetFriendlyTag() == FriendlyTag::EnemySide) {
+		if (core_->GetFriendlyTag() == FriendlyTag::EnemySide) {
 			return;
 		}
 
-		rs = core->GetInputCommand().cameraRotDirection;
+		rs = core_->GetInputCommand().cameraRotDirection;
 	}
 
 	// 入力がない、小さすぎる場合は早期リターン
@@ -105,8 +107,8 @@ void MechCamera::HardLockCamera(float dt) {
 
 	// ターゲット座標取得
 	Vector3 targetWorldPos{};
-	if (auto core = core_.lock()) {
-		if (auto tgt = core->GetLockOnComponent()->GetLockOnTarget().lock()) {
+	if (core_) {
+		if (auto tgt = core_->GetLockOnComponent()->GetLockOnTarget().lock()) {
 			if (auto obj = tgt->GetMechBody()->GetGameObject().lock()) {
 				targetWorldPos = obj->GetTransform()->GetWorldPosition();
 			}

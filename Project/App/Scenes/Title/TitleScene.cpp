@@ -130,5 +130,6 @@ void TitleScene::Draw() {
 }
 
 void TitleScene::Finalize() {
-
+	MAGISYSTEM::ClearGameObject3D();
+	MAGISYSTEM::ClearCamera3D();
 }
