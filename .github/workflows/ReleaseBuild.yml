@@ -3,7 +3,6 @@ name: ReleaseBuild
 on:
   push:
     branches: [ master ]
-    tags: [ 'v*' ]  # 例: v1.0.0 などのタグで起動
 
 env:
   PLATFORM: x64
@@ -17,8 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          lfs: true
 
       - name: Generate VS solutions with Premake (bundled exe)
         shell: pwsh
