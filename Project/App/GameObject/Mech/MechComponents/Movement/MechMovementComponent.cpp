@@ -210,6 +210,14 @@ float MechMovementComponent::GetQuickBoostMaxSpeed() const {
 	return kQuickBoostFirstSpeed_;
 }
 
+float MechMovementComponent::GetQuickBoostTimer() const {
+	return quickBoostTimer_;
+}
+
+float MechMovementComponent::GetQuickBoostMaxTime() const {
+	return kQuickBoostTime_;
+}
+
 Vector3 MechMovementComponent::GetCurrentVelocity() const {
 	return velocity_;
 }

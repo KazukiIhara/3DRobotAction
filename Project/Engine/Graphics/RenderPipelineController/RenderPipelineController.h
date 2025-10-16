@@ -69,11 +69,17 @@ public:
 	// シーン用のレンダーテクスチャに描画する前の処理
 	void PreSceneRender();
 
+	// 前景スプライトを描画する前の処理
+	void PreFrontSpriteRender();
+
 	// ライト適用
 	void LightingPass();
 
 	// ライト適用後の処理
 	void PostSceneRender();
+
+	// 前景スプライト描画後処理
+	void PostFrontSpriteRender();
 
 	// ポストエフェクトをpingPong方式でかけていく
 	void ApplyPostEffect();

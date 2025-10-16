@@ -342,15 +342,15 @@ void MechCore::QuickBoostRadialBlur() {
 	// クイックブースト中でなければ早期リターン
 	if (currentState_.first != MechCoreState::QuickBoost) return;
 
-	// 機体の速度を取得
-	const float speed = movementComponent_->GetCurrentSpeed();
-	const float kMaxSpeed = movementComponent_->GetQuickBoostMaxSpeed();
+	// クイックブーストタイマー取得
+	const float time = movementComponent_->GetQuickBoostTimer();
+	const float kMaxTime = movementComponent_->GetQuickBoostMaxTime();
 
 	// ブラーの最大値
-	const float kMaxBlurWidth = 0.05f;
+	const float kMaxBlurWidth = 0.02f;
 
 	// ブラーの値を補完計算
-	const float blurWitdh = (speed / kMaxSpeed) * kMaxBlurWidth;
+	const float blurWitdh = (1.0f - time / kMaxTime) * kMaxBlurWidth;
 
 	// 胴体のワールド座標
 	const Vector3 bodyWorldPos = body_->GetGameObject().lock()->GetTransform()->GetWorldPosition();

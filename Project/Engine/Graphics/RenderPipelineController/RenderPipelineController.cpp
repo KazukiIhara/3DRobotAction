@@ -140,6 +140,17 @@ void RenderController::PreSceneRender() {
 	scissorRect_->SettingScissorRect();
 }
 
+void RenderController::PreFrontSpriteRender() {
+	currentRenderTarget_ = currentRenderTexture_;
+
+	currentRenderTarget_->TransitionToWrite();
+	currentRenderTarget_->SetAsRenderTarget();
+
+	// ビューポートとシザー設定
+	viewport_->SettingViewport();
+	scissorRect_->SettingScissorRect();
+}
+
 void RenderController::LightingPass() {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
@@ -181,6 +192,13 @@ void RenderController::PostSceneRender() {
 	sceneRenderTexture_->TransitionToRead();
 	// 現在のテクスチャをシーン描画結果に
 	currentRenderTexture_ = sceneRenderTexture_.get();
+}
+
+void RenderController::PostFrontSpriteRender() {
+	currentRenderTarget_->TransitionToRead();
+	currentRenderTexture_ = currentRenderTarget_;
+
+	currentRenderTarget_ = nullptr;
 }
 
 void RenderController::ApplyPostEffect() {
@@ -314,8 +332,6 @@ void RenderController::DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* c
 	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
 	// 書き込み可能状態にする
 	currentRenderTarget_->TransitionToWrite();
-	// 次のポストエフェクト用にレンダーテクスチャを切り替え
-	SwitchColorRenderTextureIndex();
 
 	// レンダーターゲットを設定
 	currentRenderTarget_->SetAsRenderTarget();
@@ -341,6 +357,10 @@ void RenderController::DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* c
 
 	// 描画した対象を読み取り可能状態にする
 	currentRenderTexture_->TransitionToRead();
+
+	// 次のポストエフェクト用にレンダーテクスチャを切り替え
+	SwitchColorRenderTextureIndex();
+
 }
 
 void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command) {
