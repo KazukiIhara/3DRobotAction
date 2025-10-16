@@ -20,9 +20,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          # premake5.exe を Git LFS で管理している場合は true にする
-          lfs: true
 
       # 1) リポジトリ同梱の premake5.exe を実行して .sln/.vcxproj を生成
       - name: Generate VS solutions with Premake (repo-bundled exe)
