@@ -60,9 +60,12 @@ public:
 	float GetCurrentSpeed()const;
 	// 最大速度を取得
 	float GetMaxSpeed()const;
+	// クイックブーストの最大速度取得
+	float GetQuickBoostMaxSpeed()const;
 
 	// 現在の移動量を取得
 	Vector3 GetCurrentVelocity()const;
+
 
 	//===================================
 	// セッター

@@ -124,6 +124,13 @@ private:
 	// コライダーの描画
 	void DrawCollider();
 
+	// 
+	// プレイヤー機体のみのエフェクト処理
+	// 
+	void PlayerMechEffect();
+	// クイックブースト時のラジアルブラーポストエフェクト
+	void QuickBoostRadialBlur();
+
 private:
 	// インプットコマンド
 	InputCommand inputCommand_;
