@@ -6,6 +6,8 @@
 
 struct DirectionalLightCameraForGPU {
 	Matrix4x4 viewProjection;
+	Vector3 position;
+	float pad_;
 };
 
 struct DirectionalLight {

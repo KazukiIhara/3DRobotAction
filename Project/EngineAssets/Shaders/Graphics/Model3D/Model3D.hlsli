@@ -75,6 +75,8 @@ struct CameraFrustum
 struct DirectionalLightCamera
 {
     float4x4 viewProjection;
+    float3 worldPosition;
+    float pad_;
 };
 
 // ────────── Meshlet関連構造体 ──────────

@@ -1,6 +1,6 @@
 #include "Model3D.hlsli"
 
-ConstantBuffer<Camera> gCamera : register(b0);
+ConstantBuffer<DirectionalLightCamera> gCamera : register(b0);
 ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
 ConstantBuffer<CameraFrustum> gFrustum : register(b3);
 
