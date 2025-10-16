@@ -31,7 +31,7 @@ public:
 	void AssultBoostUpdate(MechCore* mechCore);
 
 	// クイックブースト更新
-	void QuickBoostUpdate();
+	void QuickBoostUpdate(MechCore* mechCore);
 	// クイックブースト終了通知
 	bool QuickBoostEndRequest()const;
 	// クイックブーストキャンセル可能通知

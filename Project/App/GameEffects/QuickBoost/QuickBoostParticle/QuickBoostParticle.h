@@ -17,6 +17,8 @@ public:
 
 	void Emit();
 
+	void Update();
+
 private:
 	void EmitBodyEffect();
 
@@ -27,10 +29,11 @@ private:
 	// パラメータ
 	// 
 
-	uint32_t smokeEffectNum_ = 300;
-	uint32_t particleEffectNum_ = 2500;
+	uint32_t smokeEffectNum_ = 1000;
+
+
+
 private:
 	// 胴体用エフェクトデータ
 	GPUParticleEmitData bodySmokeEffect_;
-	GPUParticleEmitData particleEffect_;
 };

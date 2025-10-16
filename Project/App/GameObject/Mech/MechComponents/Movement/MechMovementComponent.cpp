@@ -121,10 +121,13 @@ void MechMovementComponent::AssultBoostUpdate(MechCore* mechCore) {
 
 }
 
-void MechMovementComponent::QuickBoostUpdate() {
+void MechMovementComponent::QuickBoostUpdate(MechCore* mechCore) {
 	float t = std::clamp(quickBoostTimer_ / kQuickBoostTime_, 0.0f, 1.0f);
 	moveSpeed_ = Lerp(moveSpeed_, kMaxMoveSpeed_, t);
 	quickBoostTimer_ += MAGISYSTEM::GetDeltaTime();
+
+	// エフェクト更新
+	mechCore->GetQuickBoostParticle()->Update();
 }
 
 bool MechMovementComponent::QuickBoostEndRequest() const {

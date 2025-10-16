@@ -40,7 +40,7 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 	}
 
 	// 更新
-	mechCore->GetMovementComponent()->QuickBoostUpdate();
+	mechCore->GetMovementComponent()->QuickBoostUpdate(mechCore);
 
 }
 
