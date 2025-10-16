@@ -347,7 +347,7 @@ void MechCore::QuickBoostRadialBlur() {
 	const float kMaxTime = movementComponent_->GetQuickBoostMaxTime();
 
 	// ブラーの最大値
-	const float kMaxBlurWidth = 0.02f;
+	const float kMaxBlurWidth = 0.003f;
 
 	// ブラーの値を補完計算
 	const float blurWitdh = (1.0f - time / kMaxTime) * kMaxBlurWidth;
@@ -358,7 +358,7 @@ void MechCore::QuickBoostRadialBlur() {
 	const Vector2 bodyScreenPos = TransformWorldToScreen(bodyWorldPos);
 
 	// ウィンドウサイズから0.0f~1.0fの値にクランプ
-	const Vector2 bodyScreenPosClamped = { bodyScreenPos.x / WindowApp::kClientWidth, bodyScreenPos.y / WindowApp::kClientHeight };
+	const Vector2 bodyScreenPosClamped = { std::clamp(bodyScreenPos.x / WindowApp::kClientWidth,0.0f,1.0f), std::clamp(bodyScreenPos.y / WindowApp::kClientHeight,0.0f,1.0f) };
 
 	// 機体のスクリーン0.0f~1.0f座標に補完計算したブラーの値で
 	MAGISYSTEM::ApplyPostEffectRadialBlur(bodyScreenPosClamped, blurWitdh);
