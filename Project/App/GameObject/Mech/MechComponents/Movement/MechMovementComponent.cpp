@@ -82,9 +82,6 @@ void MechMovementComponent::QuickBoostEnter(MechCore* mechCore) {
 	// タイマーセット
 	quickBoostTimer_ = 0.0f;
 
-	// カメラ揺れ
-
-
 	// エフェクト
 	mechCore->GetQuickBoostParticle()->Emit();
 
@@ -207,6 +204,18 @@ float MechMovementComponent::GetCurrentSpeed() const {
 
 float MechMovementComponent::GetMaxSpeed() const {
 	return kMaxMoveSpeed_;
+}
+
+float MechMovementComponent::GetQuickBoostMaxSpeed() const {
+	return kQuickBoostFirstSpeed_;
+}
+
+float MechMovementComponent::GetQuickBoostTimer() const {
+	return quickBoostTimer_;
+}
+
+float MechMovementComponent::GetQuickBoostMaxTime() const {
+	return kQuickBoostTime_;
 }
 
 Vector3 MechMovementComponent::GetCurrentVelocity() const {

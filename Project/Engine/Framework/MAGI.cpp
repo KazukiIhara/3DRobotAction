@@ -740,14 +740,7 @@ void MAGISYSTEM::Draw() {
 
 	}
 
-
 	particleDrawer3D_->Draw(BlendMode::Add);
-
-	// ポストエフェクトの影響を受けるスプライトを描画
-	for (uint32_t i = static_cast<uint32_t>(BlendMode::None); i < kBlendModeNum; ++i) {
-		BlendMode mode = static_cast<BlendMode>(i);
-		spriteDrawer_->DrawFront(mode);
-	}
 
 	// シーン用のレンダーテクスチャ描画後処理
 	renderController_->PostSceneRender();
@@ -760,6 +753,21 @@ void MAGISYSTEM::Draw() {
 	// ポストエフェクトをかける処理
 	renderController_->ApplyPostEffect();
 
+	//==============================================
+	// 前景スプライト
+	//==============================================
+
+	// 描画前処理
+	renderController_->PreFrontSpriteRender();
+
+	// ポストエフェクトの影響を受けない前面スプライトを描画
+	for (uint32_t i = static_cast<uint32_t>(BlendMode::None); i < kBlendModeNum; ++i) {
+		BlendMode mode = static_cast<BlendMode>(i);
+		spriteDrawer_->DrawFront(mode);
+	}
+
+	// 描画後処理
+	renderController_->PostFrontSpriteRender();
 
 	//==============================================
 	// SwapChainに投げる前の最終描画

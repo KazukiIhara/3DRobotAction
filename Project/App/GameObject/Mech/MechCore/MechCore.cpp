@@ -10,6 +10,7 @@
 #include "MechCoreStates/AssultBoost/MechCoreStateAssultBoost.h"
 
 using namespace MAGIMath;
+using namespace MAGIUtility;
 
 MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* bulletManager, bool enableHardlockOn) {
 	// ゲームオブジェクトを作成
@@ -194,6 +195,13 @@ void MechCore::Update() {
 	// コライダーの更新
 	UpdateCollider();
 
+	// 
+	// プレイヤー機体のみの処理
+	// 
+	if (tag_ == FriendlyTag::PlayerSide) {
+		PlayerMechEffect();
+	}
+
 }
 
 void MechCore::ChangeState(MechCoreState nextState) {
@@ -324,4 +332,34 @@ void MechCore::UpdateCollider() {
 
 void MechCore::DrawCollider() {
 	collider_->Draw();
+}
+
+void MechCore::PlayerMechEffect() {
+	QuickBoostRadialBlur();
+}
+
+void MechCore::QuickBoostRadialBlur() {
+	// クイックブースト中でなければ早期リターン
+	if (currentState_.first != MechCoreState::QuickBoost) return;
+
+	// クイックブーストタイマー取得
+	const float time = movementComponent_->GetQuickBoostTimer();
+	const float kMaxTime = movementComponent_->GetQuickBoostMaxTime();
+
+	// ブラーの最大値
+	const float kMaxBlurWidth = 0.003f;
+
+	// ブラーの値を補完計算
+	const float blurWitdh = (1.0f - time / kMaxTime) * kMaxBlurWidth;
+
+	// 胴体のワールド座標
+	const Vector3 bodyWorldPos = body_->GetGameObject().lock()->GetTransform()->GetWorldPosition();
+	// 機体胴体のスクリーン座標を取得
+	const Vector2 bodyScreenPos = TransformWorldToScreen(bodyWorldPos);
+
+	// ウィンドウサイズから0.0f~1.0fの値にクランプ
+	const Vector2 bodyScreenPosClamped = { std::clamp(bodyScreenPos.x / WindowApp::kClientWidth,0.0f,1.0f), std::clamp(bodyScreenPos.y / WindowApp::kClientHeight,0.0f,1.0f) };
+
+	// 機体のスクリーン0.0f~1.0f座標に補完計算したブラーの値で
+	MAGISYSTEM::ApplyPostEffectRadialBlur(bodyScreenPosClamped, blurWitdh);
 }
