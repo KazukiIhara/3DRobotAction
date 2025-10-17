@@ -117,10 +117,10 @@ void Camera3DManager::ShakeCurrentCamera(float duration, const Vector3& intensit
 	}
 }
 
-std::weak_ptr<Camera3D> Camera3DManager::Add(std::shared_ptr<Camera3D> newCamera3D) {
+Camera3D* Camera3DManager::Add(std::unique_ptr<Camera3D> newCamera3D) {
 	MAGIAssert::Assert(newCamera3D.get(), "newCamera3D must not be null");
 	cameras3D_.push_back(std::move(newCamera3D));
-	return cameras3D_.back();
+	return cameras3D_.back().get();
 }
 
 void Camera3DManager::SetCurrentCamera(Camera3D* camera3D) {

@@ -34,7 +34,7 @@ public:
 
 private:
 	// カメラ
-	std::weak_ptr<Camera3D> mainCamera_;
+	Camera3D* mainCamera_;
 	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
 
 

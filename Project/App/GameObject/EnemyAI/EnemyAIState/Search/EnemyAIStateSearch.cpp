@@ -25,7 +25,7 @@ void EnemyAIStateSearch::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unuse
 	const Vector3 dir = Normalize(playerPos - pos);
 
 	// クオータニオンをセット
-	if (auto mainCam = dynamic_cast<MechCamera*>(mechCore->GetGameObject().lock()->GetCamera3D("MainCamera").lock().get())) {
+	if (auto mainCam = dynamic_cast<MechCamera*>(mechCore->GetGameObject().lock()->GetCamera3D("MainCamera"))) {
 		mainCam->SetCameraQuaternion(DirectionToQuaternion(dir));
 	}
 

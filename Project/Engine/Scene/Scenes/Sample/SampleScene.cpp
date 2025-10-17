@@ -51,7 +51,7 @@ void SampleScene::Initialize() {
 	paradinTrans_ = MAGISYSTEM::AddTransform3D(std::move(paradinTransform));
 
 	// シーンカメラ作成
-	std::shared_ptr<ThirdPersonCamera> mainCamera = std::make_shared<ThirdPersonCamera>("MainCamera");
+	std::unique_ptr<ThirdPersonCamera> mainCamera = std::make_unique<ThirdPersonCamera>("MainCamera");
 	// 現在のカメラに設定
 	mainCamera->ApplyCurrent();
 	// 追従対象を設定
@@ -81,34 +81,6 @@ void SampleScene::Initialize() {
 }
 
 void SampleScene::Update() {
-
-	//ImGui::Begin("GrayscaleParamater");
-	//ImGui::Checkbox("On", &isOnGrayscale_);
-	//ImGui::End();
-
-	//ImGui::Begin("VignetteParamater");
-	//ImGui::Checkbox("On", &isOnVignette_);
-	//ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
-	//ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
-	//ImGui::End();
-
-	//ImGui::Begin("GaussianBlurParamater");
-	//ImGui::Checkbox("On", &isOnGaussian_);
-	//ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
-	//ImGui::End();
-
-	//ImGui::Begin("RadialBlurParamater");
-	//ImGui::Checkbox("On", &isRadialBlur_);
-	//ImGui::DragFloat2("Center", &radialBlurCenter_.x, 0.01f);
-	//ImGui::DragFloat("BlurWidth", &radialBlurWidth_, 0.001f);
-	//ImGui::End();
-
-	//ImGui::Begin("DirectionalLight");
-	//ImGui::DragFloat3("Direction", &directionalLight_.direction.x, 0.01f);
-	//directionalLight_.direction = MAGIMath::Normalize(directionalLight_.direction);
-	//ImGui::DragFloat("Intensity", &directionalLight_.intensity, 0.01f);
-	//ImGui::ColorEdit3("Color", &directionalLight_.color.x);
-	//ImGui::End();
 
 	ImGui::Begin("Particle");
 	if (ImGui::Button("Emit")) {

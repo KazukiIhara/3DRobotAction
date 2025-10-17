@@ -10,14 +10,14 @@ Player::Player(AttackObjectManager* bulletManager) {
 	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, bulletManager, false);
 
 	// 三人称視点カメラの作成
-	std::shared_ptr<MechCamera> followCamera = std::make_shared<MechCamera>("MainCamera", 0.0f, mech_.get());
+	std::unique_ptr<MechCamera> followCamera = std::make_unique<MechCamera>("MainCamera", 0.0f, mech_.get());
 	followCamera->SetIsUnique(true);
 	followCamera->SetTargetTransform(mech_->GetGameObject().lock()->GetTransform());
 	followCamera->ApplyCurrent();
 
 	// カメラを追加
 	if (auto mechObj = mech_->GetGameObject().lock()) {
-		mechObj->AddCamera3D(followCamera);
+		mechObj->AddCamera3D(std::move(followCamera));
 	}
 
 
@@ -109,7 +109,7 @@ void Player::Update() {
 
 	// ロックオンコンポーネント用のカメラを作成、セット
 	LockOnView lockOnView{};
-	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera").lock()) {
+	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera")) {
 		lockOnView.eye = camera->GetEye();
 		lockOnView.target = camera->GetTarget();
 	}

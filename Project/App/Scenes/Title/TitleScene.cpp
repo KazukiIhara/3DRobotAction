@@ -9,9 +9,9 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
 	// 3Dカメラ作成
-	std::shared_ptr<Camera3D> sceneCamera3D = std::make_shared<Camera3D>("SceneCamera3D");
+	std::unique_ptr<Camera3D> sceneCamera3D = std::make_unique<Camera3D>("SceneCamera3D");
 	// マネージャに追加
-	MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D)).lock()->ApplyCurrent();
+	MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D))->ApplyCurrent();
 
 
 	// 

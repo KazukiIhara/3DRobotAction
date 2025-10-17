@@ -1375,7 +1375,7 @@ void MAGISYSTEM::ClearCamera2D() {
 	camera2DManager_->Clear();
 }
 
-std::weak_ptr<Camera3D> MAGISYSTEM::AddCamera3D(std::shared_ptr<Camera3D> newCamera3D) {
+Camera3D* MAGISYSTEM::AddCamera3D(std::unique_ptr<Camera3D> newCamera3D) {
 	return camera3DManager_->Add(std::move(newCamera3D));
 }
 
