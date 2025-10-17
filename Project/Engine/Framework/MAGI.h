@@ -459,7 +459,7 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// 3Dカメラの追加
-	static std::weak_ptr<Camera3D> AddCamera3D(std::shared_ptr<Camera3D> newCamera3D);
+	static Camera3D* AddCamera3D(std::unique_ptr<Camera3D> newCamera3D);
 	// 使用する3Dカメラのセット
 	static void SetCurrentCamera3D(Camera3D* camera3D);
 	// 使用している3Dカメラの取得

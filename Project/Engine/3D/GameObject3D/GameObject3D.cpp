@@ -48,7 +48,7 @@ void GameObject3D::Finalize() {
 	{
 		if (!camera3DComponents_.empty()) {
 			for (auto& camera3D : camera3DComponents_) {
-				if (auto it = camera3D.second.lock()) {
+				if (auto it = camera3D.second) {
 					it->SetIsAlive(false);
 				}
 			}
@@ -64,9 +64,9 @@ void GameObject3D::AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer
 	}
 }
 
-void GameObject3D::AddCamera3D(std::shared_ptr<Camera3D> camera3D) {
-	std::weak_ptr<Camera3D> ptr = MAGISYSTEM::AddCamera3D(std::move(camera3D));
-	camera3DComponents_.insert(std::make_pair(ptr.lock()->GetName(), ptr));
+void GameObject3D::AddCamera3D(std::unique_ptr<Camera3D> camera3D) {
+	Camera3D* ptr = MAGISYSTEM::AddCamera3D(std::move(camera3D));
+	camera3DComponents_.insert(std::make_pair(ptr->GetName(), ptr));
 }
 
 void GameObject3D::SetIsAlive(bool isAlive) {
@@ -112,7 +112,7 @@ std::weak_ptr<ModelRenderer> GameObject3D::GetModelRenderer(const std::string& r
 	return {};
 }
 
-std::weak_ptr<Camera3D> GameObject3D::GetCamera3D(const std::string& camera3DName) {
+Camera3D* GameObject3D::GetCamera3D(const std::string& camera3DName) {
 	const auto it = camera3DComponents_.find(camera3DName);
 	if (it != camera3DComponents_.end()) {
 		return it->second;

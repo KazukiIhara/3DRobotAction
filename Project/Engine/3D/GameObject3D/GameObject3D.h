@@ -32,7 +32,7 @@ public:
 	//=======================
 
 	void AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer);
-	void AddCamera3D(std::shared_ptr<Camera3D> camera3D);
+	void AddCamera3D(std::unique_ptr<Camera3D> camera3D);
 
 
 	void SetIsAlive(bool isAlive);
@@ -47,7 +47,7 @@ public:
 
 	[[nodiscard]] Transform3D* GetTransform();
 	[[nodiscard]] std::weak_ptr<ModelRenderer> GetModelRenderer(const std::string& rendererName);
-	[[nodiscard]] std::weak_ptr<Camera3D> GetCamera3D(const std::string& camera3DName);
+	[[nodiscard]] Camera3D* GetCamera3D(const std::string& camera3DName);
 
 private:
 	// 名前
@@ -68,5 +68,5 @@ private:
 	// モデル描画コンポーネント
 	std::unordered_map<std::string, std::weak_ptr<ModelRenderer>> modelRendererComponents_;
 	// カメラコンポーネント
-	std::unordered_map<std::string, std::weak_ptr<Camera3D>> camera3DComponents_;
+	std::unordered_map<std::string, Camera3D*> camera3DComponents_;
 };

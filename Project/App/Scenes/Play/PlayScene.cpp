@@ -108,7 +108,7 @@ void PlayScene::Update() {
 
 	if (ImGui::Button("ApplyImportCamera")) {
 		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
-			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
+			if (auto camera = cameraObj->GetCamera3D("Camera")) {
 				camera->ApplyCurrent();
 			}
 		}
@@ -116,7 +116,7 @@ void PlayScene::Update() {
 
 	if (ImGui::Button("PlayCameraAnimation")) {
 		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
-			if (auto camera = cameraObj->GetCamera3D("Camera").lock()) {
+			if (auto camera = cameraObj->GetCamera3D("Camera")) {
 				camera->ApplyCurrent();
 				camera->StartEyeAnimation();
 				camera->StartTargetAnimation();

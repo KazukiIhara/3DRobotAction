@@ -154,7 +154,7 @@ void EnemyAI::CulDirectionWithCamera(MechCore* mechCore) {
 	// 機体のゲームオブジェクトを取得
 	if (auto mechObj = mechCore->GetGameObject().lock()) {
 		// 機体のカメラを取得
-		if (auto mainCam = mechObj->GetCamera3D("MainCamera").lock()) {
+		if (auto mainCam = mechObj->GetCamera3D("MainCamera")) {
 
 			forward = mainCam->GetTarget() - mainCam->GetEye();
 			forward.y = 0.0f;

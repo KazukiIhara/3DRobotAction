@@ -26,7 +26,7 @@ public:
 	void DrawCurrentCameraFrustum();
 	void ShakeCurrentCamera(float duration, const Vector3& intensity);
 
-	std::weak_ptr<Camera3D> Add(std::shared_ptr<Camera3D> newCamera3D);
+	Camera3D* Add(std::unique_ptr<Camera3D> newCamera3D);
 
 	// 現在使用するカメラをセット
 	void SetCurrentCamera(Camera3D* camera3D);
@@ -44,7 +44,7 @@ private:
 	// デバッグカメラ切り替え変数
 	bool isDebugCamera_ = false;
 	// カメラコンテナ
-	std::vector<std::shared_ptr<Camera3D>> cameras3D_;
+	std::vector<std::unique_ptr<Camera3D>> cameras3D_;
 	// デバッグカメラ
 	std::unique_ptr<DebugCamera3D> debugCamera_;
 	// デフォルトカメラ
