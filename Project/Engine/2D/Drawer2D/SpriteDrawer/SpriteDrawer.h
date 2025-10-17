@@ -22,6 +22,14 @@ class Camera2DManager;
 /// スプライト描画クラス
 /// </summary>
 class SpriteDrawer {
+private:
+	struct Data {
+		ComPtr<ID3D12Resource> instancingResource[static_cast<uint32_t>(BlendMode::Num)];
+		SpriteDataForGPU* instancingData[static_cast<uint32_t>(BlendMode::Num)];
+		uint32_t instancingSrvIndex[static_cast<uint32_t>(BlendMode::Num)];
+		uint32_t instanceCount[static_cast<uint32_t>(BlendMode::Num)];
+		uint32_t currentIndex[static_cast<uint32_t>(BlendMode::Num)];
+	};
 public:
 	SpriteDrawer(
 		DXGI* dxgi,
@@ -54,41 +62,11 @@ private:
 	// インスタンス最大数
 	const uint32_t NumMaxInstance = 65536;
 
-	//===============================
-	// Front
-	//===============================
+	// 正面用データ
+	Data front_;
 
-	// instancing描画用のリソース
-	ComPtr<ID3D12Resource> instancingResourceFront_[static_cast<uint32_t>(BlendMode::Num)];
-	// instancing描画用のデータ
-	SpriteDataForGPU* instancingDataFront_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// SpriteSrvIndex
-	uint32_t instancingSrvIndexFront_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// instance描画する際に使う変数
-	uint32_t instanceCountFront_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// 現在のインデックス
-	uint32_t currentIndexFront_[static_cast<uint32_t>(BlendMode::Num)];
-
-	//===============================
-	// Back
-	//===============================
-
-	// instancing描画用のリソース
-	ComPtr<ID3D12Resource> instancingResourceBack_[static_cast<uint32_t>(BlendMode::Num)];
-	// instancing描画用のデータ
-	SpriteDataForGPU* instancingDataBack_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// SpriteSrvIndex
-	uint32_t instancingSrvIndexBack_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// instance描画する際に使う変数
-	uint32_t instanceCountBack_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// 現在のインデックス
-	uint32_t currentIndexBack_[static_cast<uint32_t>(BlendMode::Num)];
+	// 背面用データ
+	Data back_;
 
 private:
 	DXGI* dxgi_ = nullptr;
