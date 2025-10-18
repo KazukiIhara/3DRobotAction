@@ -3,6 +3,9 @@
 // EngineScenes
 #include "Scenes/Sample/SampleScene.h"
 
+// EditorScene
+#include "Scenes/EditScene/EditScene.h"
+
 // GameScene
 #include "Scenes/Title/TitleScene.h"
 #include "Scenes/Play/PlayScene.h"
@@ -17,6 +20,10 @@ void Game::Initialize() {
 	// サンプルシーン
 	sceneManager_->AddScene<SampleScene>("Sample");
 
+	// エディットシーン
+	sceneManager_->AddScene<EditScene>("Edit");
+
+	// ゲームシーン
 	sceneManager_->AddScene<TitleScene>("Title");
 	sceneManager_->AddScene<PlayScene>("Play");
 
