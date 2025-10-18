@@ -149,3 +149,10 @@ void Camera3DManager::Clear() {
 void Camera3DManager::ClearWithOutUnique() {
 
 }
+
+void Camera3DManager::DeleteGarbage() {
+	// 生存フラグが消えているカメラを削除
+	std::erase_if(cameras3D_, [](const std::unique_ptr<Camera3D>& camera3D) {
+		return camera3D && !camera3D->GetIsAlive();
+		});
+}

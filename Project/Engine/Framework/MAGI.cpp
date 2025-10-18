@@ -833,6 +833,7 @@ void MAGISYSTEM::DeleteGarbages() {
 
 	transformManager_->DeleteGarbage();
 
+	camera3DManager_->DeleteGarbage();
 }
 
 void MAGISYSTEM::Run() {
@@ -840,6 +841,7 @@ void MAGISYSTEM::Run() {
 	Initialize();
 	// メインループ
 	while (true) {
+
 		// 更新
 		Update();
 
@@ -1298,8 +1300,20 @@ void MAGISYSTEM::LoadSceneDataFromJson(const std::string& fileName) {
 	sceneDataContainer_->LoadBlenderLevelDataFromJson(fileName);
 }
 
+void MAGISYSTEM::DeleteAll() {
+	ClearTransform3D();
+	ClearGameObject3D();
+	ClearRenderer3D();
+	ClearCamera3D();
+	ClearCamera2D();
+}
+
 Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
 	return transformManager_->Add(std::move(transform));
+}
+
+void MAGISYSTEM::ClearTransform3D() {
+	transformManager_->Clear();
 }
 
 std::weak_ptr<ModelRenderer> MAGISYSTEM::AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer) {
@@ -1319,7 +1333,7 @@ std::weak_ptr<GameObject3D> MAGISYSTEM::FindGameObject3D(const std::string& obje
 }
 
 void MAGISYSTEM::ClearGameObject3D() {
-	gameObject3DManager_->Clear();
+	gameObject3DManager_->AllDelete();
 }
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {

@@ -82,3 +82,8 @@ void GameObject3DManager::ClearWithOutUnique() {
 		}
 	}
 }
+
+void GameObject3DManager::AllDelete() {
+	gameObjects_.clear();
+	gameObjectList_.clear();
+}

@@ -40,6 +40,8 @@ public:
 	void Clear();
 	void ClearWithOutUnique();
 
+	void DeleteGarbage();
+
 private:
 	// デバッグカメラ切り替え変数
 	bool isDebugCamera_ = false;

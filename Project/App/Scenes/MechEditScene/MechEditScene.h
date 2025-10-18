@@ -1,17 +1,22 @@
 #pragma once
 
+// C++
 #include <memory>
 #include <array>
 
+// MyHedder
 #include "MAGI.h"
 
+// 手持ち武器
+#include "GameObject/MechWeapon/Hand/MechHandWeapon.h"
+
 /// <summary>
-/// エディターシーン
+/// 機体エディットシーン
 /// </summary>
-class EditScene:public BaseScene {
+class MechEditScene:public BaseScene {
 public:
 	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
-	~EditScene()override = default;
+	~MechEditScene()override = default;
 
 	void Initialize() override;
 	void Update() override;
@@ -19,5 +24,7 @@ public:
 	void Finalize() override;
 
 private:
+	// 手持ち武器
+	std::unique_ptr<MechHandWeapon> handWeapon_;
 
 };

@@ -4,7 +4,7 @@
 #include "Scenes/Sample/SampleScene.h"
 
 // EditorScene
-#include "Scenes/EditScene/EditScene.h"
+#include "Scenes/MechEditScene/MechEditScene.h"
 
 // GameScene
 #include "Scenes/Title/TitleScene.h"
@@ -12,6 +12,9 @@
 
 Game::~Game() {}
 
+/// <summary>
+/// アプリ実行クラス
+/// </summary>
 void Game::Initialize() {
 	// 規定システムの初期化
 	MAGISYSTEM::Initialize();
@@ -21,7 +24,7 @@ void Game::Initialize() {
 	sceneManager_->AddScene<SampleScene>("Sample");
 
 	// エディットシーン
-	sceneManager_->AddScene<EditScene>("Edit");
+	sceneManager_->AddScene<MechEditScene>("MechEdit");
 
 	// ゲームシーン
 	sceneManager_->AddScene<TitleScene>("Title");
