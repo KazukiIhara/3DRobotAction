@@ -28,7 +28,9 @@ void MechEditScene::Initialize() {
 
 
 	// 手武器作成
+	handWeaponParam_ = MechHandWeapon::Param{};
 	handWeapon_ = std::make_unique<MechHandWeapon>(handWeaponParam_);
+
 
 	// 手持ち武器のデバッグ描画球体データ
 	firePosSphereData_.radius = 0.2f;
