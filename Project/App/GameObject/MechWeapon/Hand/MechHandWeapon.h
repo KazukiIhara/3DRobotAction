@@ -15,7 +15,7 @@
 /// カスタマイズ対応型手持ち武器ベースクラス
 /// </summary>
 class MechHandWeapon {
-private:
+public:
 	/// <summary>
 	/// 武器の種類
 	/// </summary>
@@ -29,46 +29,64 @@ private:
 	/// </summary>
 	struct Param {
 		// 武器の名前
-		std::string name;
+		std::string name = "Default";
 		// 武器タイプ
-		Type type;
+		Type type = Type::Gun;
 		// ダメージ
-		float damage;
+		float damage = 0.0f;
 		// リロード時間
-		float reloadTime;
+		float reloadTime = 0.0f;
 		// 攻撃間隔
-		float coolTime;
+		float coolTime = 0.0f;
 		// 装弾数
-		uint32_t capacity;
+		uint32_t capacity = 0;
 		// 攻撃が飛ぶスピード
-		float speed;
+		float speed = 0.0f;
 
 		//
 		// 内部パラメータ
 		//
 
 		// モデル名
-		std::string modelName;
+		std::string modelName = "AssultRifle";
 
-		// 攻撃発射位置オフセット
-		Vector3 fireOffsetPos;
+		// 攻撃発射ローカル座標
+		Vector3 fireOffsetLocalPos;
+		// 攻撃発射位置行列
+		Matrix4x4 fireOffsetLocalMatrix;
 
+		// 攻撃発射ワールド座標
+		Vector3 fireOffsetWorldPos;
+		// 攻撃発射ワールド行列
+		Matrix4x4 fireOffsetWorldMatrix;
 	};
 
 public:
 	MechHandWeapon(const MechHandWeapon::Param& param);
-	virtual ~MechHandWeapon() = default;
+	~MechHandWeapon() = default;
 
-	virtual void Initialize();
-	virtual void Update();
-	virtual void Draw();
+	void Update();
+	void Draw();
+
+	// 攻撃
+	void Attack();
+
+	// パラメータ取得
+	MechHandWeapon::Param& GetParam();
+
+	// トランスフォーム取得
+	Transform3D* GetTransform();
+
+private:
+	// 弾の発射座標を計算
+	void CulFirePos();
 
 private:
 	// 武器パラメータ
 	Param param_;
 
 	// トランスフォーム
-	std::unique_ptr<Transform3D> transform_;
+	Transform3D* transform_;
 
 	// マテリアル
 	ModelMaterial material_;

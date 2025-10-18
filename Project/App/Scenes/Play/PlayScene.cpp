@@ -175,19 +175,21 @@ void PlayScene::Update() {
 	// シーン終了判定
 	// 
 
-	if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-		info.judge = FinishJudgment::Enemy;
-		info.finish = true;
-	}
+	if (!info.finish) {
+		if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+			info.judge = FinishJudgment::Enemy;
+			info.finish = true;
+		}
 
-	if (enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-		info.judge = FinishJudgment::Player;
-		info.finish = true;
-	}
+		if (enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+			info.judge = FinishJudgment::Player;
+			info.finish = true;
+		}
 
-	if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0 && enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-		info.judge = FinishJudgment::Draw;
-		info.finish = true;
+		if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0 && enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+			info.judge = FinishJudgment::Draw;
+			info.finish = true;
+		}
 	}
 
 	if (info.battleTime == 0) {

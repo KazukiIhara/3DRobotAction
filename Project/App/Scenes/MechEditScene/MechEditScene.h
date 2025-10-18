@@ -24,7 +24,23 @@ public:
 	void Finalize() override;
 
 private:
+	void UpdateGUI();
+
+	void HandWeaponEditUpdate();
+	void HandWeaponEditDraw();
+
+private:
 	// 手持ち武器
 	std::unique_ptr<MechHandWeapon> handWeapon_;
+	// 手持ち武器のパラメータ
+	MechHandWeapon::Param handWeaponParam_;
+
+	//
+	// デバッグ描画
+	//
+
+	// 手持ち武器の発射位置マテリアル
+	SphereData3D firePosSphereData_;
+	MaterialData3D firePosMaterial_;
 
 };
