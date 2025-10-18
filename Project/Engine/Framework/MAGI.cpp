@@ -1306,6 +1306,10 @@ std::weak_ptr<ModelRenderer> MAGISYSTEM::AddRenderer3D(std::shared_ptr<ModelRend
 	return renderer3DManager_->Add(std::move(modelRenderer));
 }
 
+void MAGISYSTEM::ClearRenderer3D() {
+	renderer3DManager_->Clear();
+}
+
 std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap) {
 	return gameObject3DManager_->Add(std::move(gameObjec3D), insertMap);
 }

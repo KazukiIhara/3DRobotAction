@@ -432,7 +432,8 @@ public: // エンジンの機能
 #pragma region Renderer3DComponent
 	// モデルのレンダラー追加
 	static std::weak_ptr<ModelRenderer> AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer);
-
+	// モデルレンダラーを全削除
+	static void ClearRenderer3D();
 #pragma endregion
 
 #pragma region GameObject3DManager
