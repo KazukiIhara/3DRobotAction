@@ -59,12 +59,13 @@ void LightManager::Update() {
 	// ビュー行列（ライト空間ビュー）
 	lightView_ = MakeLookAtMatrix(position, target_);
 
-	// VP 行列を GPU 定数バッファへ書き込み
-	directionalLightCameraData_->viewProjection = lightView_ * lightProj_;
-
+	// VP行列とワールド座標をGPU定数バッファへ書き込み
 	const Matrix4x4 vp = lightView_ * lightProj_;
-	auto row = [&](int r, int c) { return vp.m[r][c]; };
+	directionalLightCameraData_->viewProjection = vp;
+	directionalLightCameraData_->position = position;
 
+	// 視推台を作る
+	auto row = [&](int r, int c) { return vp.m[r][c]; };
 	frustumPlanes_[0] = NormalizePlane({ row(0,3) + row(0,0),
 										 row(1,3) + row(1,0),
 										 row(2,3) + row(2,0),
@@ -84,12 +85,12 @@ void LightManager::Update() {
 	frustumPlanes_[4] = NormalizePlane({ row(0,2),
 										 row(1,2),
 										 row(2,2),
-										 row(3,2) });          // Near
+										 row(3,2) });            // Near
 	frustumPlanes_[5] = NormalizePlane({ row(0,3) - row(0,2),
 										 row(1,3) - row(1,2),
 										 row(2,3) - row(2,2),
 										 row(3,3) - row(3,2) }); // Far
-
+	// 視推台を定数バッファに書き込み
 	for (int i = 0; i < 6; ++i) {
 		directionalLightFrustumData_->planes[i] = frustumPlanes_[i];
 	}
@@ -147,6 +148,7 @@ void LightManager::MapDirectionalLightCameraData() {
 	directionalLightCameraData_ = nullptr;
 	directionalLightCameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightCameraData_));
 	directionalLightCameraData_->viewProjection = MakeIdentityMatrix4x4();
+	directionalLightCameraData_->position = ExtractionWorldPos(MakeIdentityMatrix4x4());
 }
 
 void LightManager::CreateDirectionalLightFrustumResource() {

@@ -124,12 +124,9 @@ void TitleScene::Update() {
 
 void TitleScene::Draw() {
 	MAGISYSTEM::DrawSprite(bgData_, bgMatData_);
-
 	MAGISYSTEM::DrawSprite(startData_, startMatData_);
-
 }
 
 void TitleScene::Finalize() {
-	MAGISYSTEM::ClearGameObject3D();
-	MAGISYSTEM::ClearCamera3D();
+	MAGISYSTEM::DeleteAll();
 }

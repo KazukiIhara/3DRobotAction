@@ -23,7 +23,6 @@ public:
 	GameObject3D(const std::string& name, const Vector3& translate = Vector3(0.0f, 0.0f, 0.0f));
 
 	virtual ~GameObject3D() = default;
-	virtual void Update();
 
 	void Finalize();
 

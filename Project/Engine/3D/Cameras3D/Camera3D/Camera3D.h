@@ -66,6 +66,7 @@ public:
 	float GetPitch()const;
 	const Vector3& GetEye()const;
 	const Vector3& GetTarget()const;
+	bool GetIsAlive()const;
 
 
 	void SetIsUseYawPitch(bool isUseYawPitch);

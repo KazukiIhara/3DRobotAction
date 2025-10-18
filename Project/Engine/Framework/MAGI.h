@@ -128,7 +128,9 @@
 #include "ImGuiController/ImGuiController.h"
 #include "GUI/GUI.h"
 
-// エンジンの全機能を持つクラス
+/// <summary>
+/// フレームワーククラス
+/// </summary>
 class MAGISYSTEM {
 public:
 	// 仮想デストラクタ
@@ -423,16 +425,23 @@ public: // エンジンの機能
 	static void LoadSceneDataFromJson(const std::string& fileName);
 #pragma endregion
 
+	// TODO: オブジェクトから親子関係で順に削除する実装をする
+
+	// オブジェクトやコンポーネントをすべて削除(応急処置)
+	static void DeleteAll();
 
 #pragma region TransformComponent
 	// トランスフォーム追加
 	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
+	// トランスフォーム全削除
+	static void ClearTransform3D();
 #pragma endregion
 
 #pragma region Renderer3DComponent
 	// モデルのレンダラー追加
 	static std::weak_ptr<ModelRenderer> AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer);
-
+	// モデルレンダラーを全削除
+	static void ClearRenderer3D();
 #pragma endregion
 
 #pragma region GameObject3DManager

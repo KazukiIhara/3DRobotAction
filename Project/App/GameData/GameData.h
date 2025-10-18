@@ -2,6 +2,6 @@
 
 // シーン間共有データ
 struct GameData {
-	// 例えばスコア
+	// スコアなど
 	int score = 0;
 };

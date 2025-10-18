@@ -21,6 +21,7 @@ public:
 	void DeleteGarbage();
 	void Clear();
 	void ClearWithOutUnique();
+	void AllDelete();
 
 private:
 	std::vector<std::shared_ptr<GameObject3D>> gameObjects_;

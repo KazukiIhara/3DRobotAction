@@ -338,6 +338,10 @@ const Vector3& Camera3D::GetTarget() const {
 	return target_;
 }
 
+bool Camera3D::GetIsAlive()const {
+	return isAlive_;
+}
+
 void Camera3D::SetEye(const Vector3& eye) {
 	eye_ = eye;
 }
