@@ -3,6 +3,27 @@
 // フレームワーク
 #include "MAGI.h"
 
+std::string MechHandWeapon::ComvertTypeToString(const MechHandWeapon::Type& type) {
+	switch (type) {
+		case Type::Gun:
+			return "GUN";
+		case Type::Melee:
+			return "Melee";
+		default:
+			return "";
+	}
+}
+
+MechHandWeapon::Type MechHandWeapon::ComvertStringToEnum(const std::string& typeString) {
+	if (typeString == "GUN") {
+		return Type::Gun;
+	} else if (typeString == "Melee") {
+		return Type::Melee;
+	} else {
+		return Type{};
+	}
+}
+
 MechHandWeapon::MechHandWeapon(const MechHandWeapon::Param& param) {
 	// トランスフォーム作成
 	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>();
@@ -24,7 +45,7 @@ void MechHandWeapon::Draw() {
 }
 
 void MechHandWeapon::Attack() {
-	
+
 }
 
 MechHandWeapon::Param& MechHandWeapon::GetParam() {
@@ -37,7 +58,7 @@ Transform3D* MechHandWeapon::GetTransform() {
 
 void MechHandWeapon::CulFirePos() {
 	// ローカル行列を計算
-	param_.fireOffsetLocalMatrix = MakeTranslateMatrix(param_.fireOffsetLocalPos);	
+	param_.fireOffsetLocalMatrix = MakeTranslateMatrix(param_.fireOffsetLocalPos);
 	// ワールド行列を計算
 	param_.fireOffsetWorldMatrix = param_.fireOffsetLocalMatrix * transform_->GetWorldMatrix();
 	// ワールド座標を計算

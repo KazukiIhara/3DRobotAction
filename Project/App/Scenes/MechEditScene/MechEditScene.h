@@ -3,6 +3,7 @@
 // C++
 #include <memory>
 #include <array>
+#include <string>
 
 // MyHedder
 #include "MAGI.h"
@@ -28,11 +29,15 @@ private:
 
 	void HandWeaponEditUpdate();
 	void HandWeaponEditDraw();
+	void HandWeaponTypeUI(MechHandWeapon::Param& param);
 
 private:
 	// 手持ち武器
 	std::unique_ptr<MechHandWeapon> handWeapon_;
-
+	// ロード用バッファ
+	std::string handWeaponLoadNameBuf_ = "";
+	// モデル名変更用バッファ
+	std::string handWeaponModelNameBuf_ = "";
 
 	//
 	// デバッグ描画
