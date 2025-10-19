@@ -3,6 +3,7 @@
 // C++
 #include <vector>
 #include <memory>
+#include <string>
 
 // ImGui
 #include "imgui/imgui.h"
@@ -24,6 +25,9 @@ public:
 
 	// デバッグ表示
 	void ShowDebugUI();
+
+	// InputText std::string対応版
+	static bool InputTextStd(const char* label, std::string& str, ImGuiInputTextFlags flags = 0);
 
 	//
 	// アクセッサ

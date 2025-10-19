@@ -69,11 +69,15 @@ void GUI::ShowMainTab() {
 
 		// ファイルの処理
 		if (ImGui::BeginMenu("File")) {
-			if (ImGui::MenuItem("New Scene")) { /* 新しいシーンの処理 */ }
-			if (ImGui::MenuItem("Open Scene")) { /* シーンを開く処理 */ }
-			if (ImGui::MenuItem("Save Scene")) { /* シーンを保存する処理 */ }
+			if (ImGui::MenuItem("New Scene")) { /* 新しいシーンの処理 */
+			}
+			if (ImGui::MenuItem("Open Scene")) { /* シーンを開く処理 */
+			}
+			if (ImGui::MenuItem("Save Scene")) { /* シーンを保存する処理 */
+			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Exit")) { /* アプリ終了処理 */ }
+			if (ImGui::MenuItem("Exit")) { /* アプリ終了処理 */
+			}
 			ImGui::EndMenu();
 		}
 
@@ -158,6 +162,23 @@ void GUI::ShowMainUI() {
 void GUI::ShowDebugUI() {
 	ShowFPS();
 	ShowDeltaTime();
+}
+
+bool GUI::InputTextStd(const char* label, std::string& str, ImGuiInputTextFlags flags) {
+	// バッファを用意(128文字まで)
+	char buf[128];
+	// 文字列作成
+	std::snprintf(buf, sizeof(buf), "%s", str.c_str());
+
+	// ImGui入力
+	bool changed = ImGui::InputText(label, buf, sizeof(buf), flags);
+
+	// 変更があったら反映
+	if (changed) {
+		str = buf;
+	}
+	// 変更したかどうかを返す
+	return changed;
 }
 
 bool& GUI::GetIsShowMainUI() {

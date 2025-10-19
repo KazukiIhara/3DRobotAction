@@ -28,30 +28,40 @@ public:
 	/// 共通パラメータ
 	/// </summary>
 	struct Param {
+
+		// 
+		// ゲーム内で表示されるパラメータ
+		// 
+
 		// 武器の名前
-		std::string name = "Default";
+		std::string name = "Weapon";
 		// 武器タイプ
 		Type type = Type::Gun;
 		// ダメージ
-		float damage = 0.0f;
+		int damage = 0;
 		// リロード時間
 		float reloadTime = 0.0f;
 		// 攻撃間隔
 		float coolTime = 0.0f;
 		// 装弾数
-		uint32_t capacity = 0;
+		int capacity = 0;
 		// 攻撃が飛ぶスピード
 		float speed = 0.0f;
 
-		//
+		// 
 		// 内部パラメータ
-		//
+		// 
 
 		// モデル名
 		std::string modelName = "AssultRifle";
-
 		// 攻撃発射ローカル座標
 		Vector3 fireOffsetLocalPos;
+
+		//
+		// 内部処理用パラメータ
+		//
+
+
 		// 攻撃発射位置行列
 		Matrix4x4 fireOffsetLocalMatrix;
 
@@ -60,6 +70,11 @@ public:
 		// 攻撃発射ワールド行列
 		Matrix4x4 fireOffsetWorldMatrix;
 	};
+
+	// enumから文字列に変換する
+	static std::string ComvertTypeToString(const MechHandWeapon::Type& type);
+	// 文字列からenumに変換する
+	static MechHandWeapon::Type ComvertStringToEnum(const std::string& typeString);
 
 public:
 	MechHandWeapon(const MechHandWeapon::Param& param);
