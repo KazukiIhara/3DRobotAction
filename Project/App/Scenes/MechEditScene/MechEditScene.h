@@ -5,11 +5,18 @@
 #include <array>
 #include <string>
 
-// MyHedder
+// 
+// MyHedders
+// 
+
+// フレームワーク
 #include "MAGI.h"
 
 // 手持ち武器
 #include "GameObject/MechWeapon/Hand/MechHandWeapon.h"
+
+// データIOクラス
+#include "GameDataIO/HandWeaponDataIO/HandWeaponDataIO.h"
 
 /// <summary>
 /// 機体エディットシーン
@@ -28,7 +35,7 @@ private:
 	void UpdateGUI();
 
 	void HandWeaponEditUpdate();
-	void HandWeaponEditDraw();
+
 	void HandWeaponTypeUI(MechHandWeapon::Param& param);
 
 private:
@@ -39,12 +46,10 @@ private:
 	// モデル名変更用バッファ
 	std::string handWeaponModelNameBuf_ = "";
 
-	//
-	// デバッグ描画
-	//
+private:
+	// データIOクラス
 
-	// 手持ち武器の発射位置マテリアル
-	SphereData3D firePosSphereData_{};
-	MaterialData3D firePosMaterial_{};
+	// 手持ち武器
+	std::unique_ptr<HandWeaponDataIO> handWeaponDataIO_;
 
 };

@@ -60,6 +60,7 @@ public:
 	void SetIsAlive(bool isAlive);
 
 	void SetScale(const Vector3& scale);
+	void SetScaleZ(float z);
 	void SetRotate(const Vector3& rotate);
 	void SetTranslate(const Vector3& translate);
 	void SetTranslateX(float x);

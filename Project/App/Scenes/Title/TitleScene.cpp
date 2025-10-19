@@ -95,6 +95,9 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadModel("Bullet");
 	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
 
+	MAGISYSTEM::LoadModel("Spark");
+	MAGISYSTEM::CreateModelDrawer("Spark", MAGISYSTEM::FindModel("Spark"));
+
 	MAGISYSTEM::LoadModel("DualMissileLauncher");
 	MAGISYSTEM::CreateModelDrawer("DualMissileLauncher", MAGISYSTEM::FindModel("DualMissileLauncher"));
 

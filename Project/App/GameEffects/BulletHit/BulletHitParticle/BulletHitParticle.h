@@ -29,7 +29,7 @@ private:
 	Vector3 velocity_ = { 0.0f,0.0f,1.0f };
 
 	// 生存時間
-	float lifeTime_ = 1.0f;
+	float lifeTime_ = 0.3f;
 
 	// 生存フラグ
 	bool isAlive_ = true;

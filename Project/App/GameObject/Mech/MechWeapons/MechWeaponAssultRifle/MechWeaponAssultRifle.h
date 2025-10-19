@@ -27,7 +27,7 @@ private:
 	// 発射間隔
 	const float kCoolTime_ = 0.5f;
 	// 弾速
-	const float kBulletSpeed_ = 120.0;
+	const float kBulletSpeed_ = 100.0;
 	// ダメージ
 	const uint32_t kDamage_ = 200;
 };

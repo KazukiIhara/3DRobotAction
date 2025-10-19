@@ -9,6 +9,7 @@
 #include "Math/Types/AllMathTypes.h"
 #include "Transform3D/Transform3D.h"
 
+#include "Structs/Primitive3DStruct.h"
 #include "Structs/ModelStruct.h"
 
 /// <summary>
@@ -56,11 +57,12 @@ public:
 		std::string modelName = "AssultRifle";
 		// 攻撃発射ローカル座標
 		Vector3 fireOffsetLocalPos;
+	};
 
-		//
-		// 内部処理用パラメータ
-		//
-
+	// 
+	// 内部処理用データ
+	// 
+	struct Data {
 
 		// 攻撃発射位置行列
 		Matrix4x4 fireOffsetLocalMatrix;
@@ -89,6 +91,9 @@ public:
 	// パラメータ取得
 	MechHandWeapon::Param& GetParam();
 
+	// データ取得
+
+
 	// トランスフォーム取得
 	Transform3D* GetTransform();
 
@@ -100,9 +105,20 @@ private:
 	// 武器パラメータ
 	Param param_;
 
+	// 内部処理用データ
+	Data data_;
+
 	// トランスフォーム
 	Transform3D* transform_;
 
 	// マテリアル
 	ModelMaterial material_;
+
+	// 
+	// デバッグ描画
+	// 
+
+	// 手持ち武器の発射位置マテリアル
+	SphereData3D firePosSphereData_{};
+	MaterialData3D firePosMaterial_{};
 };
