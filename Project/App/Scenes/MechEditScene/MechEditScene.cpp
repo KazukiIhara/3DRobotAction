@@ -36,13 +36,13 @@ void MechEditScene::Initialize() {
 	handWeapon_ = std::make_unique<MechHandWeapon>(MechHandWeapon::Param{});
 
 
-	// 手持ち武器のデバッグ描画球体データ
-	firePosSphereData_.radius = 0.2f;
+	// 
+	// データIOクラス初期化
+	// 
 
-	// 手持ち武器のデバッグ描画マテリアルを設定
-	firePosMaterial_.textureName = "White.png";
-	firePosMaterial_.blendMode = BlendMode::Add;
-	firePosMaterial_.baseColor = Color::Red;
+	// 手持ち武器
+	handWeaponDataIO_ = std::make_unique<HandWeaponDataIO>();
+
 }
 
 void MechEditScene::Update() {
@@ -54,9 +54,8 @@ void MechEditScene::Update() {
 }
 
 void MechEditScene::Draw() {
-
-	// 手持ち武器描画
-	HandWeaponEditDraw();
+	// 手武器描画
+	handWeapon_->Draw();
 }
 
 void MechEditScene::Finalize() {
@@ -76,7 +75,8 @@ void MechEditScene::HandWeaponEditUpdate() {
 
 	// セーブボタン
 	if (ImGui::Button("Save")) {
-
+		// ファイルセーブ
+		handWeaponDataIO_->SaveFile(param);
 	}
 	// ロードボタン
 	if (ImGui::Button("Load")) {
@@ -121,18 +121,6 @@ void MechEditScene::HandWeaponEditUpdate() {
 
 
 	ImGui::End();
-}
-
-void MechEditScene::HandWeaponEditDraw() {
-	// 手武器描画
-	handWeapon_->Draw();
-
-	// パラメータ取得
-	MechHandWeapon::Param& param = handWeapon_->GetParam();
-
-
-	// 攻撃座標デバッグ描画
-	MAGISYSTEM::DrawSphere3D(param.fireOffsetWorldMatrix, firePosSphereData_, firePosMaterial_);
 }
 
 void MechEditScene::HandWeaponTypeUI(MechHandWeapon::Param& param) {
