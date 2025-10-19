@@ -347,18 +347,25 @@ void MechCore::QuickBoostRadialBlur() {
 	const float kMaxTime = movementComponent_->GetQuickBoostMaxTime();
 
 	// ブラーの最大値
-	const float kMaxBlurWidth = 0.003f;
+	const float kMaxBlurWidth = 0.01f;
 
 	// ブラーの値を補完計算
 	const float blurWitdh = (1.0f - time / kMaxTime) * kMaxBlurWidth;
 
-	// 胴体のワールド座標
-	const Vector3 bodyWorldPos = body_->GetGameObject().lock()->GetTransform()->GetWorldPosition();
-	// 機体胴体のスクリーン座標を取得
-	const Vector2 bodyScreenPos = TransformWorldToScreen(bodyWorldPos);
+	// ブラーの座標計算
+	Vector3 blurWorldPos;
+	Vector2 blurScreenPos;
+	if (auto enemy = lockOnComponent_->GetLockOnTarget().lock()) {
+		// 敵の胴体のワールド座標
+		blurWorldPos = enemy->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
+		// 機体胴体のスクリーン座標を取得
+		blurScreenPos = TransformWorldToScreen(blurWorldPos);
+	} else {
+		blurScreenPos = { 0.5f,0.5f };
+	}
 
 	// ウィンドウサイズから0.0f~1.0fの値にクランプ
-	const Vector2 bodyScreenPosClamped = { std::clamp(bodyScreenPos.x / WindowApp::kClientWidth,0.0f,1.0f), std::clamp(bodyScreenPos.y / WindowApp::kClientHeight,0.0f,1.0f) };
+	const Vector2 bodyScreenPosClamped = { std::clamp(blurScreenPos.x / WindowApp::kClientWidth,0.0f,1.0f), std::clamp(blurScreenPos.y / WindowApp::kClientHeight,0.0f,1.0f) };
 
 	// 機体のスクリーン0.0f~1.0f座標に補完計算したブラーの値で
 	MAGISYSTEM::ApplyPostEffectRadialBlur(bodyScreenPosClamped, blurWitdh);
