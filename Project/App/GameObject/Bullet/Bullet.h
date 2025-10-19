@@ -6,6 +6,7 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 #include "GameObject/AttackCollider/AttackCollider.h"
+#include "Common/Particle/ParticleEffectCommon.h"
 
 // 前方宣言
 class GameObject3D;
@@ -30,7 +31,7 @@ public:
 	bool GetIsAlive()const;
 
 	AttackCollider* GetAttackCollider();
-	
+
 	Vector3 GetWorldPos();
 
 private:
@@ -48,4 +49,18 @@ private:
 
 	// 攻撃コライダー
 	std::weak_ptr<AttackCollider> collider_;
+
+	// パーティクルのデータ
+	GPUParticleEmitData particleData_;
+
+	// 直前に軌跡用パーティクルを発生した位置
+	Vector3 lastEmitPos_{};
+
+	// パーティクルの生存時間
+	float particleBaseLife_ = 0.12f;
+
+	// 粒子/秒
+	float emitRate_ = 3000.0f;
+	// 積算レート
+	float emitAcc_ = 0.0f;
 };

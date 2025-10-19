@@ -10,6 +10,7 @@ BulletHitParticle::BulletHitParticle(const Vector3& pos, const Vector3& velo, fl
 	velocity_ = velo;
 	gravity_ = gravity;
 	mat_.blendMode = BlendMode::Normal;
+	mat_.color = Color::Red;
 }
 
 void BulletHitParticle::Update() {
@@ -25,8 +26,15 @@ void BulletHitParticle::Update() {
 	// 重力加速を追加
 	velocity_.y += gravity_ * MAGISYSTEM::GetDeltaTime();
 
+	// 速度取得
+	const float speed = Length(velocity_);
+	const float scale = speed;
+
+	// 速度に合わせて変形
+	transform_->AddScale(Vector3(0.0f, 0.0f, scale) * MAGISYSTEM::GetDeltaTime());
+
 	// 移動量を加算
-	transform_->AddTranslate(velocity_);
+	transform_->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
 
 	// 移動方向を正規化
 	const Vector3 dir = Normalize(velocity_);
@@ -42,7 +50,7 @@ void BulletHitParticle::Update() {
 
 void BulletHitParticle::Draw() {
 	if (isAlive_) {
-		MAGISYSTEM::DrawModel("Bullet", transform_->GetWorldMatrix(), mat_);
+		MAGISYSTEM::DrawModel("Spark", transform_->GetWorldMatrix(), mat_);
 	}
 }
 

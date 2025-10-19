@@ -34,12 +34,12 @@ private:
 	std::list<std::unique_ptr<BulletHitParticle>> bulletHitParticles_;
 
 	// 一度に発生するパーティクルの数
-	uint32_t emitNum_ = 30;
+	uint32_t emitNum_ = 15;
 
 
 	// 
 	// パラメータ
 	// 
-	float diffusionRange_ = 0.25f;
-	float gravity_ = -2.0f;
+	float diffusionRange_ = 20.0f;
+	float gravity_ = -80.0f;
 };

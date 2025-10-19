@@ -127,7 +127,7 @@ void MechStatusComponent::UpdateFcsAvoidFactor(MechCore* mechCore) {
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		// 相手が回避状態
 		if (target->GetCurrentState() == MechCoreState::QuickBoost) {
-			fcsAvoidFactor_ = 0.1f;
+			fcsAvoidFactor_ = 0.02f;
 		} else {
 			// FCS復帰
 			fcsAvoidFactor_ += (1.0f / fcsRecoverTime_) * MAGISYSTEM::GetDeltaTime();

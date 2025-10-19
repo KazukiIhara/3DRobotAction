@@ -18,7 +18,7 @@ PlayerUI::PlayerUI() {
 
 	// 射撃盤用のスプライト設定
 	lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
-	lockonRedData_.size = { 128.0f,128.0f };
+	lockonRedData_.size = { 192.0f,192.0f };
 	lockonRedMat_.anchorPoint = { 0.5f,0.5f };
 	lockonRedMat_.textureName = "LockonUIRed.png";
 
@@ -84,7 +84,6 @@ void PlayerUI::Draw([[maybe_unused]] MechCore* mechCore) {
 #endif
 }
 
-
 void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 
 	// ロックオン状態などに応じてUIの座標を更新
@@ -93,13 +92,18 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 			// ロックオン係数
 			const float lockonFactor = mechCore->GetStatusComponent()->GetFcsAvoidFactor();
 
+			// FCSが外れたフレームに座標を記録
+			if (lockonFactor == 0.02f) {
+				lerpStartPos_ = lockOnWPos_;
+			}
+
 			// ターゲットのワールド座標を取得
 			// ロックオン対象の胴体のワールド座標を取得
 			const Vector3 targetBodyPos = targetBody->GetTransform()->GetWorldPosition();
 			const Vector2 targetSPos = TransformWorldToScreen(targetBodyPos);
 
 			// 対象に補間移動
-			lockOnWPos_ = Lerp(lockOnWPos_, targetBodyPos, lockonFactor);
+			lockOnWPos_ = Lerp(lerpStartPos_, targetBodyPos, lockonFactor);
 			const Vector2 targetRedSPos = TransformWorldToScreen(lockOnWPos_);
 
 			// 座標設定
@@ -108,7 +112,7 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 
 			// 色変更処理
 			if (lockonFactor == 1.0f) {
-				lockonRedMat_.color = Color::Yellow;
+				lockonRedMat_.color = Color::Green;
 			} else {
 				lockonRedMat_.color = Color::Red;
 			}
@@ -122,7 +126,7 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 		// 中心座標
 		lockonGrayData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
 		lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
-		
+
 		// 非ロックオン時は常に赤色
 		lockonRedMat_.color = Color::Red;
 	}

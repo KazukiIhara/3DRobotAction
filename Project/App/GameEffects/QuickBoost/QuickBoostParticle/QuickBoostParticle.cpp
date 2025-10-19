@@ -33,8 +33,8 @@ void QuickBoostParticle::Update() {
 		for (uint32_t i = 0; i < 10; i++) {
 			bodySmokeEffect_.velo = Random::GenerateVector3(-0.5f, 0.5f);
 			bodySmokeEffect_.pos = emitPos + Random::GenerateVector3(-0.2f, 0.2f);
-			bodySmokeEffect_.life = Random::GenerateFloat(1.0f, 1.0f);
-			bodySmokeEffect_.size = Random::GenerateVector2(0.1f, 0.4f);
+			bodySmokeEffect_.life = Random::GenerateFloat(0.5f, 0.8f);
+			bodySmokeEffect_.size = Random::GenerateVector2(0.05f, 0.1f);
 
 			MAGISYSTEM::EmitParticle(bodySmokeEffect_);
 		}

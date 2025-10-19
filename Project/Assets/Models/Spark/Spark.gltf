@@ -15,13 +15,13 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"\u7acb\u65b9\u4f53"
+			"name":"Cube"
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"\u30de\u30c6\u30ea\u30a2\u30eb",
+			"name":"Material",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
 					"index":0
@@ -33,7 +33,7 @@
 	],
 	"meshes":[
 		{
-			"name":"\u7acb\u65b9\u4f53",
+			"name":"Cube",
 			"primitives":[
 				{
 					"attributes":{
@@ -56,37 +56,37 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"BulletTex",
-			"uri":"BulletTex.png"
+			"name":"sparkTex",
+			"uri":"sparkTex.png"
 		}
 	],
 	"accessors":[
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":56,
+			"count":48,
 			"max":[
-				0.06068034470081329,
-				0.06068034470081329,
-				0.30000001192092896
+				0.022145815193653107,
+				0.022145818918943405,
+				0.04000000283122063
 			],
 			"min":[
-				-0.06068034470081329,
-				-0.06068034470081329,
-				-0.30000001192092896
+				-0.022145815193653107,
+				-0.022145811468362808,
+				-0.04000000283122063
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":56,
+			"count":48,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":56,
+			"count":48,
 			"type":"VEC2"
 		},
 		{
@@ -99,26 +99,26 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":672,
+			"byteLength":576,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":672,
-			"byteOffset":672,
+			"byteLength":576,
+			"byteOffset":576,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":448,
-			"byteOffset":1344,
+			"byteLength":384,
+			"byteOffset":1152,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":168,
-			"byteOffset":1792,
+			"byteOffset":1536,
 			"target":34963
 		}
 	],
@@ -130,8 +130,8 @@
 	],
 	"buffers":[
 		{
-			"byteLength":1960,
-			"uri":"Bullet.bin"
+			"byteLength":1704,
+			"uri":"Spark.bin"
 		}
 	]
 }

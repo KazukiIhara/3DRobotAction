@@ -285,6 +285,11 @@ void Transform3D::SetScale(const Vector3& scale) {
 	isChanged_ = true;
 }
 
+void Transform3D::SetScaleZ(float z) {
+	scale_.z = z;
+	isChanged_ = true;
+}
+
 void Transform3D::SetRotate(const Vector3& rotate) {
 	inputRadians_ = rotate;
 	isChanged_ = true;

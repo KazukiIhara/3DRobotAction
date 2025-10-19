@@ -43,6 +43,7 @@ private:
 	SpriteData lockonRedData_{};
 	SpriteMaterialData lockonRedMat_{};
 	Vector3 lockOnWPos_{};
+	Vector3 lerpStartPos_{};
 
 	// Apゲージのスプライトデータ
 	SpriteData apGaugeData_{};
