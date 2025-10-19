@@ -8,6 +8,8 @@ MechHandWeapon::MechHandWeapon(const MechHandWeapon::Param& param) {
 	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>();
 	// マネージャに追加
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(transform));
+
+	// パラメータ挿入
 	param_ = param;
 }
 

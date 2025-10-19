@@ -8,6 +8,11 @@ void MechEditScene::Initialize() {
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
+	// 3Dカメラ作成
+	std::unique_ptr<Camera3D> sceneCamera3D = std::make_unique<Camera3D>("SceneCamera3D");
+	// マネージャに追加
+	MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D))->ApplyCurrent();
+
 
 	//-------------------------------------------------------
 	// アセットのロード
@@ -28,8 +33,7 @@ void MechEditScene::Initialize() {
 
 
 	// 手武器作成
-	handWeaponParam_ = MechHandWeapon::Param{};
-	handWeapon_ = std::make_unique<MechHandWeapon>(handWeaponParam_);
+	handWeapon_ = std::make_unique<MechHandWeapon>(MechHandWeapon::Param{});
 
 
 	// 手持ち武器のデバッグ描画球体データ
@@ -70,7 +74,7 @@ void MechEditScene::UpdateGUI() {
 
 void MechEditScene::HandWeaponEditUpdate() {
 	// パラメータ取得
-	MechHandWeapon::Param &param = handWeapon_->GetParam();
+	MechHandWeapon::Param& param = handWeapon_->GetParam();
 
 	// 発射位置ローカル座標
 	ImGui::DragFloat3("FirePos", &param.fireOffsetLocalPos.x, 0.01f);
