@@ -8,6 +8,7 @@
 
 // 前方宣言
 class GameObject3D;
+class Transform3D;
 class MechCore;
 
 /// <summary>
@@ -22,6 +23,8 @@ public:
 
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 
+	Transform3D* GetHandTransform();
+
 	const Vector3& GetForward()const;
 
 private:
@@ -29,4 +32,7 @@ private:
 	std::weak_ptr<GameObject3D> rightArm_;
 	// 前方ベクトル
 	Vector3 forward_ = { 0.0f,0.0f,1.0f };
+
+	// 武器を親子付けするトランスフォーム
+	Transform3D* handTransform_;
 };

@@ -443,6 +443,14 @@ Vector3 MAGIMath::ExtractionWorldPos(const Matrix4x4& m) {
 	return result;
 }
 
+Vector3 MAGIMath::ExtractionForward(const Matrix4x4& m) {
+	Vector3 result{};
+	result.x = m.m[2][0];
+	result.y = m.m[2][1];
+	result.z = m.m[2][2];
+	return Normalize(result);
+}
+
 Matrix4x4 MAGIMath::MakeRotateAxisAngle(const Vector3& axis, float angle) {
 
 	Vector3 u = axis;

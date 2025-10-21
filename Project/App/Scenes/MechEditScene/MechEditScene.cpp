@@ -33,7 +33,7 @@ void MechEditScene::Initialize() {
 
 
 	// 手武器作成
-	handWeapon_ = std::make_unique<MechHandWeapon>(MechHandWeapon::Param{});
+	//handWeapon_ = std::make_unique<MechHandWeapon>(MechHandWeapon::Param{});
 
 
 	// 

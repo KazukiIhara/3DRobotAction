@@ -80,7 +80,7 @@ public:
 	[[nodiscard]] Transform3D* GetParent()const;
 
 	[[nodiscard]] const bool& GetIsChanged()const;
-	[[nodiscard]] const bool& GetisAlive()const;
+	[[nodiscard]] const bool& GetIsAlive()const;
 
 	[[nodiscard]] const Vector3& GetScale()const;
 	[[nodiscard]] const Vector3& GetRotate()const;

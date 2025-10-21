@@ -7,10 +7,15 @@
 
 // MyHedder
 #include "Math/Types/AllMathTypes.h"
-#include "Transform3D/Transform3D.h"
 
 #include "Structs/Primitive3DStruct.h"
 #include "Structs/ModelStruct.h"
+
+// 前方宣言
+class Transform3D;
+class MechCore;
+class AttackObjectManager;
+
 
 /// <summary>
 /// カスタマイズ対応型手持ち武器ベースクラス
@@ -79,20 +84,25 @@ public:
 	static MechHandWeapon::Type ComvertStringToEnum(const std::string& typeString);
 
 public:
-	MechHandWeapon(const MechHandWeapon::Param& param);
+	MechHandWeapon(const MechHandWeapon::Param& param, AttackObjectManager* attackObjectManager);
 	~MechHandWeapon() = default;
 
 	void Update();
 	void Draw();
 
 	// 攻撃
-	void Attack();
+	void Attack(MechCore* mechCore);
+
+	// リロード
+	void Reload();
+
+	// パラメータセット
+	void SetParam(const MechHandWeapon::Param& param);
 
 	// パラメータ取得
 	MechHandWeapon::Param& GetParam();
-
 	// データ取得
-
+	MechHandWeapon::Data GetData()const;
 
 	// トランスフォーム取得
 	Transform3D* GetTransform();
@@ -100,6 +110,12 @@ public:
 private:
 	// 弾の発射座標を計算
 	void CulFirePos();
+	// 前方ベクトルを計算
+	void CulForward();
+	// クールタイム更新
+	void UpdateCoolTime();
+	// リロード更新
+	void UpdateReload();
 
 private:
 	// 武器パラメータ
@@ -111,6 +127,9 @@ private:
 	// トランスフォーム
 	Transform3D* transform_;
 
+	// 前方ベクトル
+	Vector3 forward_{ 0.0f,0.0f,1.0f };
+
 	// マテリアル
 	ModelMaterial material_;
 
@@ -121,4 +140,9 @@ private:
 	// 手持ち武器の発射位置マテリアル
 	SphereData3D firePosSphereData_{};
 	MaterialData3D firePosMaterial_{};
+
+private:
+	// 攻撃オブジェクトマネージャ
+	AttackObjectManager* attackObjectManager_ = nullptr;
+
 };

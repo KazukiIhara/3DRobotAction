@@ -127,7 +127,7 @@ const bool& Transform3D::GetIsChanged() const {
 	return isChanged_;
 }
 
-const bool& Transform3D::GetisAlive() const {
+const bool& Transform3D::GetIsAlive() const {
 	return isAlive_;
 }
 
