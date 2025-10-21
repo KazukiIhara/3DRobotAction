@@ -86,6 +86,6 @@ private:
 	const int32_t kAssultBoostUseEnPerSec_ = 9000;
 
 	// FCSの復帰時間
-	const float fcsRecoverTime_ = 0.5f;
+	const float fcsRecoverTime_ = 0.3f;
 
 };

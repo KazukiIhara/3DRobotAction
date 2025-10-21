@@ -93,7 +93,7 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 			const float lockonFactor = mechCore->GetStatusComponent()->GetFcsAvoidFactor();
 
 			// FCSが外れたフレームに座標を記録
-			if (lockonFactor == 0.02f) {
+			if (lockonFactor == 0.05f) {
 				lerpStartPos_ = lockOnWPos_;
 			}
 
