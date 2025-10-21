@@ -18,6 +18,10 @@ MechArmRight::MechArmRight() {
 	// ゲームオブジェクトマネージャに追加
 	rightArm_ = MAGISYSTEM::AddGameObject3D(std::move(rightArmObject));
 
+	// 手のトランスフォームを作成
+
+
+
 }
 
 void MechArmRight::Update(MechCore* mechCore) {
@@ -83,6 +87,10 @@ void MechArmRight::Update(MechCore* mechCore) {
 
 std::weak_ptr<GameObject3D> MechArmRight::GetGameObject()const {
 	return rightArm_;
+}
+
+Transform3D* MechArmRight::GetHandTransform() {
+	return handTransform_;
 }
 
 const Vector3& MechArmRight::GetForward() const {

@@ -18,6 +18,10 @@ MechArmLeft::MechArmLeft() {
 	// ゲームオブジェクトマネージャに追加
 	leftArm_ = MAGISYSTEM::AddGameObject3D(std::move(leftArmObject));
 
+	// 手のトランスフォームを作成
+
+
+
 }
 
 void MechArmLeft::Update(MechCore* mechCore) {
@@ -57,6 +61,8 @@ void MechArmLeft::Update(MechCore* mechCore) {
 				const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
 				const Quaternion targetQ = Inverse(bodyQ) * worldQ;
 
+				// TODO: 現在の回転から目標回転までFCSの強度によって補完させるように変更する
+
 				obj->GetTransform()->SetQuaternion(targetQ);
 			}
 
@@ -82,6 +88,10 @@ void MechArmLeft::Update(MechCore* mechCore) {
 
 std::weak_ptr<GameObject3D> MechArmLeft::GetGameObject()const {
 	return leftArm_;
+}
+
+Transform3D* MechArmLeft::GetHandTransform() {
+	return handTransform_;
 }
 
 const Vector3& MechArmLeft::GetForward() const {
