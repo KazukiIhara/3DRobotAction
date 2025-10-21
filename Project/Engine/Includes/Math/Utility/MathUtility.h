@@ -195,6 +195,9 @@ namespace MAGIMath {
 	// ワールド行列からワールド座標取得
 	Vector3 ExtractionWorldPos(const Matrix4x4& m);
 
+	// ワールド行列から前方ベクトルを取得
+	Vector3 ExtractionForward(const Matrix4x4& m);
+
 	// 回転の向きと量から回転行列を作る
 	Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
 

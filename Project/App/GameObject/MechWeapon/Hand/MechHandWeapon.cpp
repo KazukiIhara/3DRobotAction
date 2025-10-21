@@ -54,6 +54,12 @@ MechHandWeapon::MechHandWeapon(const MechHandWeapon::Param& param, AttackObjectM
 void MechHandWeapon::Update() {
 	// 弾発射位置を計算
 	CulFirePos();
+	// 前方ベクトルを計算
+	CulForward();
+	// クールタイムを更新
+	UpdateCoolTime();
+	// リロードを更新
+	UpdateReload();
 }
 
 void MechHandWeapon::Draw() {
@@ -95,6 +101,10 @@ MechHandWeapon::Param& MechHandWeapon::GetParam() {
 	return param_;
 }
 
+MechHandWeapon::Data MechHandWeapon::GetData() const {
+	return data_;
+}
+
 Transform3D* MechHandWeapon::GetTransform() {
 	return transform_;
 }
@@ -109,9 +119,8 @@ void MechHandWeapon::CulFirePos() {
 }
 
 void MechHandWeapon::CulForward() {
-	// クオータニオン角から前方ベクトルを計算
-	const Quaternion q = transform_->GetQuaternion();
-	forward_ = Normalize(Transform(MakeForwardVector3(), q));
+	// ワールド行列から前方ベクトルを取得
+	forward_ = ExtractionForward(transform_->GetWorldMatrix());
 }
 
 void MechHandWeapon::UpdateCoolTime() {

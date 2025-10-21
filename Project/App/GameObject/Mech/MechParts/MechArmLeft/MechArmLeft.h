@@ -27,12 +27,17 @@ public:
 
 	const Vector3& GetForward()const;
 
+	void DebugDraw();
+
 private:
 	// オブジェクト
 	std::weak_ptr<GameObject3D> leftArm_;
 	// 前方ベクトル
 	Vector3 forward_ = { 0.0f,0.0f,1.0f };
 
-	// 武器を親子付けするトランスフォーム
+	// 肘のトランスフォーム
+	Transform3D* elbowTransform_;
+
+	// 手のトランスフォーム
 	Transform3D* handTransform_;
 };

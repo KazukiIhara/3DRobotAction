@@ -21,6 +21,8 @@
 #include "GameObject/Mech/MechWeapons/MechWeaponAssultRifle/MechWeaponAssultRifle.h"
 #include "GameObject/Mech/MechWeapons/MechShoulderWeaponDualMissileLauncher/MechShoulderWeaponDualMissileLauncher.h"
 
+#include "GameObject/MechWeapon/Hand/MechHandWeapon.h"
+
 // コンポーネントクラス
 #include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
 #include "GameObject/Mech/MechComponents/LockOn/MechLockOnComponent.h"
@@ -79,7 +81,7 @@ public:
 	// 
 	// 武器の取得
 	// 
-	BaseMechHandWeapon* GetLeftHandWeapon();
+	MechHandWeapon* GetLeftHandWeapon();
 	BaseMechHandWeapon* GetRightHandWeapon();
 	BaseMechShoulderWeapon* GetLeftShoulderWeapon();
 	BaseMechShoulderWeapon* GetRightShoulderWeapon();
@@ -180,7 +182,7 @@ private:
 	std::unique_ptr<MechLeg> leg_ = nullptr;
 
 	// 左手武器
-	std::unique_ptr<BaseMechHandWeapon> leftHandWeapon_ = nullptr;
+	std::unique_ptr<MechHandWeapon> leftHandWeapon_ = nullptr;
 
 	// 右手武器
 	std::unique_ptr<BaseMechHandWeapon> rightHandWeapon_ = nullptr;
@@ -199,7 +201,7 @@ private:
 	std::unique_ptr<QuickBoostParticle> quickBoostparticle_ = nullptr;
 	// 弾衝突時のエフェクト
 	std::unique_ptr<BulletHitEffect> bulletHitEffect_ = nullptr;
-	
+
 
 	//=======================
 	// コライダー

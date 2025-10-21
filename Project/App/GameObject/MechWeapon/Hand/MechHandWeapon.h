@@ -101,6 +101,8 @@ public:
 
 	// パラメータ取得
 	MechHandWeapon::Param& GetParam();
+	// データ取得
+	MechHandWeapon::Data GetData()const;
 
 	// トランスフォーム取得
 	Transform3D* GetTransform();

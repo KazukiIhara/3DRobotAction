@@ -32,11 +32,11 @@ void MechArmLeft::Update(MechCore* mechCore) {
 			// ロックオン対象の胴体のワールド座標を取得
 			const Vector3 targetBodyPos = targetBodyObj->GetTransform()->GetWorldPosition();
 			// 弾の発射地点のワールド座標を取得
-			const Vector3 bulletFirePosition = mechCore->GetLeftHandWeapon()->GetFireWorldPosition();
+			const Vector3 bulletFirePosition = mechCore->GetLeftHandWeapon()->GetData().fireOffsetWorldPos;
 			// 弾の発射地点からターゲットまでの距離
 			const float fireToTarget = Length(bulletFirePosition - targetBodyPos);
 			// 弾速を取得
-			const float bulletSpeed = mechCore->GetLeftHandWeapon()->GetBulletSpeed();
+			const float bulletSpeed = mechCore->GetLeftHandWeapon()->GetParam().speed;
 			// 着弾までの予測時間
 			const float timeToImpact = fireToTarget / bulletSpeed;
 
@@ -96,4 +96,8 @@ Transform3D* MechArmLeft::GetHandTransform() {
 
 const Vector3& MechArmLeft::GetForward() const {
 	return forward_;
+}
+
+void MechArmLeft::DebugDraw() {
+
 }

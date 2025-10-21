@@ -22,7 +22,7 @@ Transform3D* TransformManager::Add(std::unique_ptr<Transform3D> transform) {
 
 void TransformManager::Update() {
 	for (auto& transform : transforms_) {
-		if (!transform->GetParent()) {
+		if (transform && !transform->GetParent()) {
 			transform->Update();
 		}
 	}
@@ -31,16 +31,20 @@ void TransformManager::Update() {
 void TransformManager::DeleteGarbage() {
 	// 生存フラグが消えているトランスフォームの後始末関数を呼ぶ
 	for (auto& transform : transforms_) {
-		if (transform && !transform->GetisAlive()) {
+		if (transform && !transform->GetIsAlive()) {
 			transform->Finalize();
 		}
 	}
 	// 生存フラグが消えているトランスフォームを削除
 	std::erase_if(transforms_, [](const std::unique_ptr<Transform3D>& transform) {
-		return transform && !transform->GetisAlive();
+		return transform && !transform->GetIsAlive();
 		});
 }
 
 void TransformManager::Clear() {
+	// 全トランスフォームの終了処理を呼ぶ
+	for (auto& t : transforms_) {
+		if (t) t->Finalize();
+	}
 	transforms_.clear();
 }

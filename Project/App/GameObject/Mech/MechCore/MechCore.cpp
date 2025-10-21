@@ -12,7 +12,28 @@
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
-MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* bulletManager, bool enableHardlockOn) {
+MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* attackObjectManager, bool enableHardlockOn) {
+	
+	// 
+	// 今後の実装ココから
+	// 
+	
+	// 機体の名前を引数で取得
+
+
+	// 機体のデータ(パーツ名と武器名)保存しているコンテナから各パーツ名と武器名を取得
+
+
+	// パーツと武器を保存しているコンテナから各パラメータを取得
+
+
+	// 以下機体作成時にパラメータを受け取って生成するように実装
+
+
+	// 
+	// 今後の実装ここまで
+	// 
+	
 	// ゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", position);
 	coreObject->SetIsUnique(true);
@@ -37,8 +58,12 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	// 足
 	leg_ = std::make_unique<MechLeg>();
 
+
+	// 一旦値をそのまま入力
+	MechHandWeapon::Param param;
+
 	// 左手武器
-	leftHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
+	leftHandWeapon_ = std::make_unique<MechHandWeapon>();
 
 	// 右手武器
 	rightHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
@@ -76,9 +101,8 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 			leftArm->GetTransform()->SetParent(body->GetTransform(), false);
 
 			// 左手武器
-			if (auto leftHandWeapon = leftHandWeapon_->GetGameObject().lock()) {
-				leftHandWeapon->GetTransform()->SetParent(leftArm->GetTransform(), false);
-			}
+			leftHandWeapon_->GetTransform()->SetParent(leftArm->GetTransform(), false);
+
 		}
 		// 足
 		if (auto leg = leg_->GetGameObject().lock()) {
@@ -103,7 +127,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	// ロックオン
 	lockOnComponent_ = std::make_unique<MechLockOnComponent>(enableHardlockOn);
 	// 攻撃
-	attackComponent_ = std::make_unique<MechAttackComponent>(bulletManager);
+	attackComponent_ = std::make_unique<MechAttackComponent>(attackObjectManager);
 	// ステータス値管理
 	statusComponent_ = std::make_unique<MechStatusComponent>();
 
@@ -125,11 +149,6 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 
 	// 弾衝突時エフェクト
 	bulletHitEffect_ = std::make_unique<BulletHitEffect>(this);
-
-	//===========================
-	// マネージャをセット
-	//===========================
-	MAGIAssert::Assert(bulletManager, "BulletManager must not be null");
 
 }
 
@@ -167,7 +186,7 @@ void MechCore::Update() {
 	//=================== 
 
 	rightHandWeapon_->Update(this);
-	leftHandWeapon_->Update(this);
+	leftHandWeapon_->Update();
 	leftShoulerWeapon_->Update(this);
 	rightShoulerWeapon_->Update(this);
 
@@ -257,7 +276,7 @@ MechArmRight* MechCore::GetMechArmRight() {
 	return rightArm_.get();
 }
 
-BaseMechHandWeapon* MechCore::GetLeftHandWeapon() {
+MechHandWeapon* MechCore::GetLeftHandWeapon() {
 	return leftHandWeapon_.get();
 }
 
