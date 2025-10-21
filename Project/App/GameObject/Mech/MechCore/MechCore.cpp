@@ -13,11 +13,11 @@ using namespace MAGIMath;
 using namespace MAGIUtility;
 
 MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* attackObjectManager, bool enableHardlockOn) {
-	
+
 	// 
 	// 今後の実装ココから
 	// 
-	
+
 	// 機体の名前を引数で取得
 
 
@@ -33,7 +33,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	// 
 	// 今後の実装ここまで
 	// 
-	
+
 	// ゲームオブジェクトを作成
 	std::shared_ptr<GameObject3D> coreObject = std::make_shared<GameObject3D>("MechCore", position);
 	coreObject->SetIsUnique(true);
@@ -61,9 +61,11 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 
 	// 一旦値をそのまま入力
 	MechHandWeapon::Param param;
+	param.speed = 100.0f;
+	param.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
 
 	// 左手武器
-	leftHandWeapon_ = std::make_unique<MechHandWeapon>();
+	leftHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
 
 	// 右手武器
 	rightHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
