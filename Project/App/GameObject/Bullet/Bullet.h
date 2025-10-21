@@ -57,7 +57,7 @@ private:
 	Vector3 lastEmitPos_{};
 
 	// パーティクルの生存時間
-	float particleBaseLife_ = 0.12f;
+	float particleBaseLife_ = 0.2f;
 
 	// 粒子/秒
 	float emitRate_ = 2500.0f;

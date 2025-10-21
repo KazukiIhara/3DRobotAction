@@ -121,6 +121,10 @@ void TitleScene::Update() {
 		if (MAGISYSTEM::TriggerButton(0, ButtonA)) {
 			this->ChangeScene("Play");
 		}
+	} else {
+		if (MAGISYSTEM::TriggerKey(DIK_SPACE)) {
+			this->ChangeScene("Play"); 
+		}
 	}
 
 }
