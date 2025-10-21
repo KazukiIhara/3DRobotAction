@@ -110,16 +110,24 @@ void MechStatusComponent::UseEnergy(const int32_t& enValue) {
 }
 
 void MechStatusComponent::GetDamage(const int32_t& damage, MechCore* mechcore) {
+
+	// HPを減らす
 	hp_ -= damage;
 	// 0未満にならないようにする
 	hp_ = std::max(0, hp_);
 
-	//
-	// コントローラを振動させる(攻撃の種類が増えたらダメージに応じて振動を変える)
-	//
 	if (mechcore->GetFriendlyTag() == FriendlyTag::PlayerSide) {
+		//
+		// コントローラを振動させる(攻撃の種類が増えたらダメージに応じて振動を変える)
+		//
 		MAGISYSTEM::StartPadVibration(0, 0.2f, 1.0f, 1.0f);
+
+		//
+		// カメラ揺らす
+		//
+		MAGISYSTEM::ShakeCurrentCamera3D(0.3f, Vector3(0.1f, 0.2f, 0.0f));
 	}
+
 }
 
 void MechStatusComponent::UpdateFcsAvoidFactor(MechCore* mechCore) {

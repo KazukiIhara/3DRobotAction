@@ -60,7 +60,7 @@ private:
 	float particleBaseLife_ = 0.12f;
 
 	// 粒子/秒
-	float emitRate_ = 3000.0f;
+	float emitRate_ = 2500.0f;
 	// 積算レート
 	float emitAcc_ = 0.0f;
 };
