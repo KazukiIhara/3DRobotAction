@@ -85,6 +85,16 @@ void Player::Update() {
 
 		// ロックオンモード切り替え
 		command.switchHardLock = MAGISYSTEM::TriggerMouseButton(MouseButton::Middle);
+
+
+		// 左手武器
+		command.leftHandWeapon = MAGISYSTEM::PushMouseButton(MouseButton::Left);
+
+		// 右手武器
+		command.rightHandWeapon = MAGISYSTEM::PushMouseButton(MouseButton::Right);
+
+		// 左肩武器攻撃
+
 	}
 
 	// 移動入力があった場合
