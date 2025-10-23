@@ -6,6 +6,9 @@
 // BaseClass
 #include "GameObject/Mech/MechWeapons/BaseMechShoulderWeapon/BaseMechShoulderWeapon.h"
 
+/// <summary>
+/// 双対ミサイルランチャー
+/// </summary>
 class MechShoulderWeaponDualMissileLauncher :public BaseMechShoulderWeapon {
 public:
 	MechShoulderWeaponDualMissileLauncher(const WitchShoulder& witch);

@@ -3,6 +3,9 @@
 #include "GameObject/EnemyAI/EnemyAIState/BaseEnemyAIState.h"
 #include "Math/Types/AllMathTypes.h"
 
+/// <summary>
+/// 敵捜索ステート
+/// </summary>
 class EnemyAIStateSearch :public BaseEnemyAIState {
 public:
 	~EnemyAIStateSearch() = default;

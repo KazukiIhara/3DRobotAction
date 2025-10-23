@@ -3,6 +3,9 @@
 #include "GameObject/EnemyAI/EnemyAIState/BaseEnemyAIState.h"
 #include "Math/Types/AllMathTypes.h"
 
+/// <summary>
+/// 敵通常行動ステート
+/// </summary>
 class EnemyAIStateRoot:public BaseEnemyAIState {
 public:
 	~EnemyAIStateRoot() = default;

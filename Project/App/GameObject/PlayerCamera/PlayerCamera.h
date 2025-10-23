@@ -10,6 +10,9 @@ enum PlayerCameraState {
 	Root,
 };
 
+/// <summary>
+/// 機体カメラクラス
+/// </summary>
 class MechCamera :public Camera3D {
 public:
 	MechCamera(const std::string& name, float yaw, MechCore* core);
