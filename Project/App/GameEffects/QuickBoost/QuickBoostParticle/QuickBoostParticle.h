@@ -20,6 +20,7 @@ public:
 	void Update();
 
 private:
+	// エフェクト発生
 	void EmitBodyEffect();
 
 private:

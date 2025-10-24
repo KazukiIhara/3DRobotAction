@@ -24,6 +24,7 @@ public:
 	void Draw();
 
 private:
+	// パーティクル発生
 	void EmitParticle(const Vector3& pos);
 
 private:

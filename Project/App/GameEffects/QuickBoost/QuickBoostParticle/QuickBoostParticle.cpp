@@ -29,7 +29,7 @@ void QuickBoostParticle::Update() {
 	if (auto body = mech_->GetMechBody()->GetGameObject().lock()) {
 		// 胴体のワールド座標を取得
 		const Vector3 emitPos = body->GetTransform()->GetWorldPosition();
-
+		// パーティクルを発生
 		for (uint32_t i = 0; i < 10; i++) {
 			bodySmokeEffect_.velo = Random::GenerateVector3(-0.5f, 0.5f);
 			bodySmokeEffect_.pos = emitPos + Random::GenerateVector3(-0.2f, 0.2f);
@@ -45,7 +45,7 @@ void QuickBoostParticle::EmitBodyEffect() {
 	if (auto body = mech_->GetMechBody()->GetGameObject().lock()) {
 		// 胴体のワールド座標を取得
 		const Vector3 emitPos = body->GetTransform()->GetWorldPosition();
-
+		// パーティクルを発生
 		for (uint32_t i = 0; i < smokeEffectNum_; i++) {
 			bodySmokeEffect_.velo = Random::GenerateVector3(-2.0f, 2.0f);
 			bodySmokeEffect_.pos = emitPos + Random::GenerateVector3(-1.0f, 1.0f);

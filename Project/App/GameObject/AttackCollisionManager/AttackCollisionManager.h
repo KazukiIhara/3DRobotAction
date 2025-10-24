@@ -28,6 +28,7 @@ public:
 
 
 private:
+	// AABB同士の当たり判定
 	bool IsCollisionAABB(const Vector3& minA, const Vector3& maxA, const Vector3& minB, const Vector3& maxB);
 
 private:
