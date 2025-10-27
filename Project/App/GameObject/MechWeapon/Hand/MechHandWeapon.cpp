@@ -94,9 +94,12 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 			break;
 	}
 
+	// クールタイマーセット
+
 }
 
 void MechHandWeapon::Reload() {
+	// リロードタイマーセット
 
 }
 
@@ -131,9 +134,14 @@ void MechHandWeapon::CulForward() {
 }
 
 void MechHandWeapon::UpdateCoolTime() {
+	// クールタイム中ならクールタイム更新
+
 
 }
 
 void MechHandWeapon::UpdateReload() {
+	// リロードタイマー更新
+
+	// リロード時間が終了したら残弾を回復、タイマーリセット
 
 }
