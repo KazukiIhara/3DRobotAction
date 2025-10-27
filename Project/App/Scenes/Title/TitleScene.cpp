@@ -65,14 +65,26 @@ void TitleScene::Initialize() {
 	// モデルのロード
 	//===================================
 
+	// 
+	// デバッグ用
+	// 
+
 	MAGISYSTEM::LoadModel("teapot");
 	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
+
+	// 
+	// 地形
+	// 
 
 	MAGISYSTEM::LoadModel("StageObj0");
 	MAGISYSTEM::CreateModelDrawer("StageObj0", MAGISYSTEM::FindModel("StageObj0"));
 
 	MAGISYSTEM::LoadModel("Ground");
 	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
+
+	// 
+	// 機体
+	// 
 
 	MAGISYSTEM::LoadModel("MechHead");
 	MAGISYSTEM::CreateModelDrawer("MechHead", MAGISYSTEM::FindModel("MechHead"));
@@ -89,17 +101,31 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadModel("MechLeg");
 	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
 
+	//
+	// 武器
+	//
+
 	MAGISYSTEM::LoadModel("AssultRifle");
 	MAGISYSTEM::CreateModelDrawer("AssultRifle", MAGISYSTEM::FindModel("AssultRifle"));
 
-	MAGISYSTEM::LoadModel("Bullet");
-	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
-
-	MAGISYSTEM::LoadModel("Spark");
-	MAGISYSTEM::CreateModelDrawer("Spark", MAGISYSTEM::FindModel("Spark"));
+	MAGISYSTEM::LoadModel("RocketLauncher");
+	MAGISYSTEM::CreateModelDrawer("RocketLauncher", MAGISYSTEM::FindModel("RocketLauncher"));
 
 	MAGISYSTEM::LoadModel("DualMissileLauncher");
 	MAGISYSTEM::CreateModelDrawer("DualMissileLauncher", MAGISYSTEM::FindModel("DualMissileLauncher"));
+
+	// 
+	// 弾など
+	// 
+	MAGISYSTEM::LoadModel("Bullet");
+	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
+
+
+	// 
+	// エフェクト
+	// 
+	MAGISYSTEM::LoadModel("Spark");
+	MAGISYSTEM::CreateModelDrawer("Spark", MAGISYSTEM::FindModel("Spark"));
 
 
 	startData_.position = { WindowApp::kClientWidth * 0.5f, 900.0f };
@@ -123,7 +149,7 @@ void TitleScene::Update() {
 		}
 	} else {
 		if (MAGISYSTEM::TriggerKey(DIK_SPACE)) {
-			this->ChangeScene("Play"); 
+			this->ChangeScene("Play");
 		}
 	}
 
