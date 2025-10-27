@@ -27,6 +27,7 @@ public:
 	/// </summary>
 	enum class Type {
 		Gun,
+		RocketLauncher,
 		Melee,
 	};
 

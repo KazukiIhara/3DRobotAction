@@ -68,7 +68,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	leftHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
 
 	// 右手武器
-	rightHandWeapon_ = std::make_unique<MechWeaponAssultRifle>();
+	rightHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
 
 	// 左肩武器
 	leftShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Left);
@@ -94,9 +94,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 			rightArm->GetTransform()->SetParent(body->GetTransform(), false);
 
 			// 右手武器
-			if (auto rightHandWeapon = rightHandWeapon_->GetGameObject().lock()) {
-				rightHandWeapon->GetTransform()->SetParent(rightArm->GetTransform(), false);
-			}
+			rightHandWeapon_->GetTransform()->SetParent(rightArm->GetTransform(), false);
 		}
 		// 左腕
 		if (auto leftArm = leftArm_->GetGameObject().lock()) {
@@ -187,7 +185,7 @@ void MechCore::Update() {
 	// 武器
 	//=================== 
 
-	rightHandWeapon_->Update(this);
+	rightHandWeapon_->Update();
 	leftHandWeapon_->Update();
 	leftShoulerWeapon_->Update(this);
 	rightShoulerWeapon_->Update(this);
@@ -282,7 +280,7 @@ MechHandWeapon* MechCore::GetLeftHandWeapon() {
 	return leftHandWeapon_.get();
 }
 
-BaseMechHandWeapon* MechCore::GetRightHandWeapon() {
+MechHandWeapon* MechCore::GetRightHandWeapon() {
 	return rightHandWeapon_.get();
 }
 

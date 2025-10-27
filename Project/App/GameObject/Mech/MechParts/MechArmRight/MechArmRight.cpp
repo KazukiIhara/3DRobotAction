@@ -34,11 +34,11 @@ void MechArmRight::Update(MechCore* mechCore) {
 			// ロックオン対象の胴体のワールド座標を取得
 			const Vector3 targetBodyPos = targetBodyObj->GetTransform()->GetWorldPosition();
 			// 弾の発射地点のワールド座標を取得
-			const Vector3 bulletFirePosition = mechCore->GetRightHandWeapon()->GetFireWorldPosition();
+			const Vector3 bulletFirePosition = mechCore->GetRightHandWeapon()->GetData().fireOffsetWorldPos;
 			// 弾の発射地点からターゲットまでの距離
 			const float fireToTarget = Length(bulletFirePosition - targetBodyPos);
 			// 弾速を取得
-			const float bulletSpeed = mechCore->GetRightHandWeapon()->GetBulletSpeed();
+			const float bulletSpeed = mechCore->GetRightHandWeapon()->GetParam().speed;
 			// 着弾までの予測時間
 			const float timeToImpact = fireToTarget / bulletSpeed;
 
@@ -62,6 +62,9 @@ void MechArmRight::Update(MechCore* mechCore) {
 				// 胴体の回転の逆行列をかける
 				const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
 				const Quaternion targetQ = Inverse(bodyQ) * worldQ;
+
+				// TODO: 現在の回転から目標回転までFCSの強度によって補完させるように変更する
+
 
 				obj->GetTransform()->SetQuaternion(targetQ);
 			}
