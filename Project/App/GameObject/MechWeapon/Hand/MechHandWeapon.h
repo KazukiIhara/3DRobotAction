@@ -27,6 +27,7 @@ public:
 	/// </summary>
 	enum class Type {
 		Gun,
+		RocketLauncher,
 		Melee,
 	};
 
@@ -132,6 +133,12 @@ private:
 
 	// マテリアル
 	ModelMaterial material_;
+
+	// クールタイム中かどうか
+	bool isCoolTime_ = false;
+
+	// リロード中かどうか
+	bool isReload_ = false;
 
 	// 
 	// デバッグ描画

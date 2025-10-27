@@ -14,7 +14,6 @@ public:
 	void Update(MechCore* mechCore);
 
 	// 攻撃
-	void AttackRightHand(MechCore* mechCore);
 	void AttackLeftShoulder(MechCore* mechCore);
 	void AttackRightShoulder(MechCore* mechCore);
 

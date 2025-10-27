@@ -24,7 +24,7 @@ void MechAttackComponent::Update(MechCore* mechCore) {
 
 	// 右手武器
 	if (command.rightHandWeapon) {
-		AttackRightHand(mechCore);
+		mechCore->GetRightHandWeapon()->Attack(mechCore);
 	}
 
 	// 左肩武器
@@ -35,41 +35,6 @@ void MechAttackComponent::Update(MechCore* mechCore) {
 	// 右肩武器
 	if (command.rightShoulderWeapon) {
 		AttackRightShoulder(mechCore);
-	}
-}
-
-void MechAttackComponent::AttackRightHand(MechCore* mechCore) {
-	// 右手の武器を見に行く
-	const HandWeaponType type = mechCore->GetRightHandWeapon()->GetType();
-
-	// クールタイム中なら早期リターン
-	if (mechCore->GetRightHandWeapon()->IsCoolTime()) {
-		return;
-	}
-
-	// 武騎種類ごとの処理
-	switch (type) {
-	case HandWeaponType::AssultRifle:
-	{
-		// 敵味方の識別を取得
-		const FriendlyTag tag = mechCore->GetFriendlyTag();
-		// 腕の向きを取得(弾の発射向きになる)
-		const Vector3 armFwd = mechCore->GetMechArmRight()->GetForward();
-		// 速度を決定
-		const float bulletSpeed = mechCore->GetRightHandWeapon()->GetBulletSpeed();
-		// 対象武器の弾発射位置を取得
-		const Vector3 fireWPos = mechCore->GetRightHandWeapon()->GetFireWorldPosition();
-		// ダメージを参照
-		const int32_t damage = mechCore->GetRightHandWeapon()->GetDamage();
-
-		// 弾を追加
-		attackObjectManager_->AddBullet(tag, armFwd, bulletSpeed, fireWPos, damage);
-
-		// クールタイムにする
-		mechCore->GetRightHandWeapon()->SetCoolTime();
-	}
-	break;
-
 	}
 }
 
