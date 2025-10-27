@@ -65,7 +65,6 @@ void MechArmRight::Update(MechCore* mechCore) {
 
 				// TODO: 現在の回転から目標回転までFCSの強度によって補完させるように変更する
 
-
 				obj->GetTransform()->SetQuaternion(targetQ);
 			}
 

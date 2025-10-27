@@ -240,6 +240,12 @@ void MechCore::Draw() {
 	// 弾衝突時エフェクト
 	bulletHitEffect_->Draw();
 
+	// 左手武器描画
+	leftHandWeapon_->Draw();
+
+	// 右手武器描画
+	rightHandWeapon_->Draw();
+
 	// コライダーのデバッグ描画
 	DrawCollider();
 }

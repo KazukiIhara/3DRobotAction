@@ -8,12 +8,12 @@
 
 std::string MechHandWeapon::ComvertTypeToString(const MechHandWeapon::Type& type) {
 	switch (type) {
-	case Type::Gun:
-		return "GUN";
-	case Type::Melee:
-		return "Melee";
-	default:
-		return "";
+		case Type::Gun:
+			return "GUN";
+		case Type::Melee:
+			return "Melee";
+		default:
+			return "";
 	}
 }
 
@@ -66,25 +66,32 @@ void MechHandWeapon::Draw() {
 	// 描画
 	MAGISYSTEM::DrawModel(param_.modelName, transform_->GetWorldMatrix(), material_);
 
-	// 攻撃座標デバッグ描画
-	MAGISYSTEM::DrawSphere3D(data_.fireOffsetWorldMatrix, firePosSphereData_, firePosMaterial_);
+	//// 攻撃座標デバッグ描画
+	//MAGISYSTEM::DrawSphere3D(data_.fireOffsetWorldMatrix, firePosSphereData_, firePosMaterial_);
 }
 
 void MechHandWeapon::Attack(MechCore* mechCore) {
 	// クールタイム、リロード中なら早期リターン
+	if (isCoolTime_ || isReload_)return;
 
 	// タグを取得
 	const FriendlyTag tag = mechCore->GetFriendlyTag();
 
 	// 武器タイプごとの攻撃処理
 	switch (param_.type) {
-	case Type::Gun:
-		// 弾を追加
-		attackObjectManager_->AddBullet(tag, forward_, param_.speed, data_.fireOffsetWorldPos, param_.damage);
-		break;
-	default:
+		case Type::Gun:
+			// 通常の弾を追加
+			attackObjectManager_->AddBullet(tag, forward_, param_.speed, data_.fireOffsetWorldPos, param_.damage);
+			break;
 
-		break;
+		case Type::RocketLauncher:
+			// ロケラン用の弾を追加
+
+
+			break;
+		default:
+
+			break;
 	}
 
 }
