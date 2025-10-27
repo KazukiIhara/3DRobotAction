@@ -14,6 +14,7 @@ HandWeaponDataIO::HandWeaponDataIO() {
 }
 
 MechHandWeapon::Param HandWeaponDataIO::GetParam(const std::string& name) {
+	name;
 	return MechHandWeapon::Param();
 }
 
@@ -23,7 +24,7 @@ void HandWeaponDataIO::AddParam(const MechHandWeapon::Param& param) {
 }
 
 void HandWeaponDataIO::LoadFile(const std::string& name) {
-
+	name;
 }
 
 void HandWeaponDataIO::SaveFile(const MechHandWeapon::Param& param) {
