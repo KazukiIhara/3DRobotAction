@@ -72,7 +72,7 @@ void MechHandWeapon::Draw() {
 
 void MechHandWeapon::Attack(MechCore* mechCore) {
 	// クールタイム、リロード中なら早期リターン
-	if (isCoolTime_ || isReload_)return;
+	if (data_.isCoolTime_ || data_.isReload_)return;
 
 	// タグを取得
 	const FriendlyTag tag = mechCore->GetFriendlyTag();
@@ -94,12 +94,16 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 			break;
 	}
 
-	// クールタイマーセット
+	// 残弾を減らす
+	data_.ammo_--;
 
+	// クールタイマーセット
+	data_.coolTimer_ = param_.coolTime;
 }
 
 void MechHandWeapon::Reload() {
 	// リロードタイマーセット
+	data_.reloadTimer_ = param_.reloadTime;
 
 }
 
