@@ -4,9 +4,9 @@
 #include <vector>
 
 // 弾
-#include "GameObject/Bullet/Bullet.h"
+#include "GameObject/AttackObjects/Bullet/Bullet.h"
 // ミサイル
-#include "GameObject/Missile/Missile.h"
+#include "GameObject/AttackObjects/Missile/Missile.h"
 
 // 前方宣言
 class AttackCollisionManager;
@@ -31,6 +31,14 @@ public:
 		float speed,
 		const Vector3& wPos,
 		int32_t damage);
+
+	void AddRocket(
+		const FriendlyTag& tag,
+		const Vector3& dir,
+		float speed,
+		const Vector3& wPos,
+		int32_t damage
+	);
 
 	void AddMissile(
 		const FriendlyTag& tag,
