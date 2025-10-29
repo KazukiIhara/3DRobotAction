@@ -61,8 +61,10 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 
 	// 一旦値をそのまま入力
 	MechHandWeapon::Param param;
-	param.speed = 100.0f;
+	param.speed = 70.0f;
 	param.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
+	param.coolTime = 0.2f;
+	param.damage = 200;
 
 	// 左手武器
 	leftHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);

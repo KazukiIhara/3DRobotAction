@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "MechHandWeapon.h"
 
 // フレームワーク
@@ -72,7 +74,7 @@ void MechHandWeapon::Draw() {
 
 void MechHandWeapon::Attack(MechCore* mechCore) {
 	// クールタイム、リロード中なら早期リターン
-	if (isCoolTime_ || isReload_)return;
+	if (data_.isCoolTime_ || data_.isReload_)return;
 
 	// タグを取得
 	const FriendlyTag tag = mechCore->GetFriendlyTag();
@@ -94,9 +96,16 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 			break;
 	}
 
+	// 残弾を減らす
+	data_.ammo_--;
+
+	// クールタイマーセット
+	data_.coolTimer_ = param_.coolTime;
 }
 
 void MechHandWeapon::Reload() {
+	// リロードタイマーセット
+	data_.reloadTimer_ = param_.reloadTime;
 
 }
 
@@ -131,9 +140,22 @@ void MechHandWeapon::CulForward() {
 }
 
 void MechHandWeapon::UpdateCoolTime() {
+	// クールタイム更新
+	data_.coolTimer_ -= MAGISYSTEM::GetDeltaTime();
+	// 0を下回らないようにする
+	data_.coolTimer_ = std::max(data_.coolTimer_, 0.0f);
 
+	// クールタイム中かチェック
+	if (data_.coolTimer_ != 0.0f) {
+		data_.isCoolTime_ = true;
+	} else {
+		data_.isCoolTime_ = false;
+	}
 }
 
 void MechHandWeapon::UpdateReload() {
+	// リロードタイマー更新
+
+	// リロード時間が終了したら残弾を回復、タイマーリセット
 
 }

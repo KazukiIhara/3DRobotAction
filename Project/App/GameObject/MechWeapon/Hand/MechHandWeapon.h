@@ -69,7 +69,6 @@ public:
 	// 内部処理用データ
 	// 
 	struct Data {
-
 		// 攻撃発射位置行列
 		Matrix4x4 fireOffsetLocalMatrix;
 
@@ -77,6 +76,19 @@ public:
 		Vector3 fireOffsetWorldPos;
 		// 攻撃発射ワールド行列
 		Matrix4x4 fireOffsetWorldMatrix;
+
+		// 残弾数
+		int ammo_ = 0;
+
+		// クールタイム用タイマー
+		float coolTimer_ = 0.0f;
+		// リロード用タイマー
+		float reloadTimer_ = 0.0f;
+
+		// クールタイム中かどうか
+		bool isCoolTime_ = false;
+		// リロード中かどうか
+		bool isReload_ = false;
 	};
 
 	// enumから文字列に変換する
@@ -133,12 +145,6 @@ private:
 
 	// マテリアル
 	ModelMaterial material_;
-
-	// クールタイム中かどうか
-	bool isCoolTime_ = false;
-
-	// リロード中かどうか
-	bool isReload_ = false;
 
 	// 
 	// デバッグ描画
