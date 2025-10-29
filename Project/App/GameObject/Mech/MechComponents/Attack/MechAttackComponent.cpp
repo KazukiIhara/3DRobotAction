@@ -17,10 +17,10 @@ void MechAttackComponent::Update(MechCore* mechCore) {
 	// コマンドを取得
 	const InputCommand command = mechCore->GetInputCommand();
 
-	//// 左手武器
-	//if (command.leftHandWeapon) {
-	//	mechCore->GetLeftHandWeapon()->Attack(mechCore);
-	//}
+	// 左手武器
+	if (command.leftHandWeapon) {
+		mechCore->GetLeftHandWeapon()->Attack(mechCore);
+	}
 
 	// 右手武器
 	if (command.rightHandWeapon) {

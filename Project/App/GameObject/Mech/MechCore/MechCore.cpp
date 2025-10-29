@@ -66,11 +66,16 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	param.coolTime = 0.2f;
 	param.damage = 200;
 
+	// 右手武器
+	rightHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
+
+	// 左手武器をロケランにする
+	param.name = "RocketLauncher";
+	param.modelName = "RocketLauncher";
+
 	// 左手武器
 	leftHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
 
-	// 右手武器
-	rightHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
 
 	// 左肩武器
 	leftShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Left);
