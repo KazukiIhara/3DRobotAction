@@ -4,11 +4,11 @@
 #include "GameObject/Mech/MechCore/MechCoreStates/MechCoreBaseState.h"
 
 /// <summary>
-/// ロケラン等の反動ステート
+/// ロケラン攻撃ステート
 /// </summary>
-class MechCoreStateAftershock:public MechCoreBaseState {
+class MechCoreStateRocketLauncherAttack:public MechCoreBaseState {
 public:
-	~MechCoreStateAftershock()override = default;
+	~MechCoreStateRocketLauncherAttack()override = default;
 	void Enter(MechCore* mechCore)override;
 	void Update(MechCore* mechCore)override;
 	void Exit(MechCore* mechCore)override;

@@ -30,7 +30,8 @@ public:
 		const Vector3& dir,
 		float speed,
 		const Vector3& wPos,
-		int32_t damage);
+		int32_t damage
+	);
 
 	void AddRocket(
 		const FriendlyTag& tag,

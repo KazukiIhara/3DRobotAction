@@ -6,14 +6,14 @@
 
 using namespace MAGIMath;
 
-void MechCoreStateAftershock::Enter(MechCore* mechCore) {
+void MechCoreStateRocketLauncherAttack::Enter(MechCore* mechCore) {
 
 }
 
-void MechCoreStateAftershock::Update(MechCore* mechCore) {
+void MechCoreStateRocketLauncherAttack::Update(MechCore* mechCore) {
 
 }
 
-void MechCoreStateAftershock::Exit(MechCore* mechCore) {
+void MechCoreStateRocketLauncherAttack::Exit(MechCore* mechCore) {
 
 }
