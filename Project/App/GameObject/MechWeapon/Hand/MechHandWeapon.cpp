@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "MechHandWeapon.h"
 
 // フレームワーク
@@ -138,9 +140,17 @@ void MechHandWeapon::CulForward() {
 }
 
 void MechHandWeapon::UpdateCoolTime() {
-	// クールタイム中ならクールタイム更新
+	// クールタイム更新
+	data_.coolTimer_ -= MAGISYSTEM::GetDeltaTime();
+	// 0を下回らないようにする
+	data_.coolTimer_ = std::max(data_.coolTimer_, 0.0f);
 
-
+	// クールタイム中かチェック
+	if (data_.coolTimer_ != 0.0f) {
+		data_.isCoolTime_ = true;
+	} else {
+		data_.isCoolTime_ = false;
+	}
 }
 
 void MechHandWeapon::UpdateReload() {
