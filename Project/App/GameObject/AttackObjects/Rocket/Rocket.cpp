@@ -8,16 +8,18 @@ Rocket::Rocket(const Vector3& dir, float speed, const Vector3& wPos, std::weak_p
 	dir_ = dir;
 	speed_ = speed;
 
-	ModelMaterial material{};
-	material.blendMode = BlendMode::Add;
+	// トランスフォーム作成
+	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>();
 
-	// レンダラーを作成
-	std::shared_ptr<ModelRenderer> rocketRenderer = std::make_shared<ModelRenderer>("Rocket", "Rocket", material);
+	// トランスフォームマネージャに追加
+	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
-	// ゲームオブジェクトを作成
-	std::shared_ptr<GameObject3D> rocket = std::make_shared<GameObject3D>("Rocket", wPos);
-	rocket->AddModelRenderer(rocketRenderer);
-	rocket_ = MAGISYSTEM::AddGameObject3D(std::move(rocket));
+	// 球体データ
+	sphereData_.radius = 0.2f;
+
+	// マテリアル
+	material_.textureName = "White.png";
+
 
 	// 攻撃コライダーを設定
 	collider_ = attackCollider;
@@ -46,16 +48,13 @@ void Rocket::Update() {
 	// 指定方向に移動
 	const Vector3 velocity = dir_ * speed_ * dt;
 
-	if (auto obj = rocket_.lock()) {
-		obj->GetTransform()->SetQuaternion(targetQ);
-		obj->GetTransform()->AddTranslate(velocity);
+	transform_->SetQuaternion(targetQ);
+	transform_->AddTranslate(velocity);
 
-		// コライダーにポジションをセット	
-		if (auto collider = collider_.lock()) {
-			// ワールドポジションの場合まだ更新されていないためトランスレートをセット(親子付けしない前提)
-			collider->SetWorldPos(obj->GetTransform()->GetTranslate());
-		}
-
+	// コライダーにポジションをセット	
+	if (auto collider = collider_.lock()) {
+		// ワールドポジションの場合まだ更新されていないためトランスレートをセット(親子付けしない前提)
+		collider->SetWorldPos(transform_->GetTranslate());
 	}
 
 	// 生存時間を減算
@@ -69,20 +68,18 @@ void Rocket::Update() {
 		}
 	}
 
-
 }
 
 void Rocket::Draw() {
-
+	// 描画
+	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), SphereData3D{}, material_);
 }
 
 void Rocket::Finalize() {
 	// 生存フラグをオフに
 	isAlive_ = false;
 	// オブジェクトを消す
-	if (auto obj = rocket_.lock()) {
-		obj->SetIsAlive(false);
-	}
+	transform_->SetIsAlive(false);
 }
 
 bool Rocket::GetIsAlive()const {
@@ -94,9 +91,5 @@ AttackCollider* Rocket::GetAttackCollider() {
 }
 
 Vector3 Rocket::GetWorldPos() {
-	Vector3 pos{};
-	if (auto bullet = rocket_.lock()) {
-		pos = bullet->GetTransform()->GetWorldPosition();
-	}
-	return pos;
+	return transform_->GetWorldPosition();
 }
