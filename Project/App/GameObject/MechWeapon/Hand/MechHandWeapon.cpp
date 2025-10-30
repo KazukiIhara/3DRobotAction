@@ -10,12 +10,15 @@
 
 std::string MechHandWeapon::ComvertTypeToString(const MechHandWeapon::Type& type) {
 	switch (type) {
-		case Type::Gun:
-			return "GUN";
-		case Type::Melee:
-			return "Melee";
-		default:
-			return "";
+	case Type::Gun:
+		return "GUN";
+	case Type::Melee:
+		return "Melee";
+	case Type::RocketLauncher:
+		return "RocketLauncher";
+
+	default:
+		return "";
 	}
 }
 
@@ -24,6 +27,8 @@ MechHandWeapon::Type MechHandWeapon::ComvertStringToEnum(const std::string& type
 		return Type::Gun;
 	} else if (typeString == "Melee") {
 		return Type::Melee;
+	} else if (typeString == "RocketLauncher") {
+		return Type::RocketLauncher;
 	} else {
 		return Type{};
 	}
@@ -81,19 +86,19 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 
 	// 武器タイプごとの攻撃処理
 	switch (param_.type) {
-		case Type::Gun:
-			// 通常の弾を追加
-			attackObjectManager_->AddBullet(tag, forward_, param_.speed, data_.fireOffsetWorldPos, param_.damage);
-			break;
+	case Type::Gun:
+		// 通常の弾を追加
+		attackObjectManager_->AddBullet(tag, forward_, param_.speed, data_.fireOffsetWorldPos, param_.damage);
+		break;
 
-		case Type::RocketLauncher:
-			// ロケラン用の弾を追加
+	case Type::RocketLauncher:
+		// ロケラン用の弾を追加
 
 
-			break;
-		default:
+		break;
+	default:
 
-			break;
+		break;
 	}
 
 	// 残弾を減らす
