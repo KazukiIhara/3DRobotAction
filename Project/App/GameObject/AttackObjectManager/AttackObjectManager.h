@@ -53,10 +53,17 @@ public:
 	);
 
 private:
+	void UpdateBullets();
+	void UpdateRockets();
+	void UpdateMissiles();
+
+private:
 	// 弾のリスト
 	std::vector<Bullet> bullets_;
 	// ミサイルのリスト
 	std::vector<Missile> missiles_;
+	// ロケットのリスト
+	std::vector	<Rocket> rockets_;
 
 private:
 	AttackCollisionManager* atkColliderManager_ = nullptr;
