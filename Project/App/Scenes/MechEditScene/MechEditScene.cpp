@@ -22,7 +22,7 @@ void MechEditScene::Initialize() {
 	MAGISYSTEM::LoadModel("AssultRifle");
 	MAGISYSTEM::CreateModelDrawer("AssultRifle", MAGISYSTEM::FindModel("AssultRifle"));
 
-	MAGISYSTEM::LoadTexture("White.png");
+	MAGISYSTEM::LoadTexture("white.png");
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
