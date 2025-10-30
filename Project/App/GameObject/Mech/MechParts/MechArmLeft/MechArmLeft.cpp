@@ -43,9 +43,13 @@ void MechArmLeft::Update(MechCore* mechCore) {
 			// 着弾時の敵の移動後予測地点
 			const Vector3 targetEstPos = targetBodyPos + target->GetMovementComponent()->GetCurrentVelocity() * timeToImpact;
 
+			// 移動予測の強度をFCSの強度に依存させる
+			const float fcsFactor = mechCore->GetStatusComponent()->GetFcsAvoidFactor();
+			const Vector3 armTargetPos = Lerp(targetBodyPos, targetEstPos, fcsFactor);
+
 			if (auto obj = leftArm_.lock()) {
 				// 前方ベクトルを計算、正規化
-				forward_ = targetEstPos - obj->GetTransform()->GetWorldPosition();
+				forward_ = armTargetPos - obj->GetTransform()->GetWorldPosition();
 				forward_ = Normalize(forward_);
 
 				// ヨーピッチ角を取得
@@ -60,8 +64,6 @@ void MechArmLeft::Update(MechCore* mechCore) {
 				// 胴体の回転の逆行列をかける
 				const Quaternion bodyQ = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetQuaternion();
 				const Quaternion targetQ = Inverse(bodyQ) * worldQ;
-
-				// TODO: 現在の回転から目標回転までFCSの強度によって補完させるように変更する
 
 				obj->GetTransform()->SetQuaternion(targetQ);
 			}
