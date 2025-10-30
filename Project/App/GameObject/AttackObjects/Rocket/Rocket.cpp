@@ -9,7 +9,7 @@ Rocket::Rocket(const Vector3& dir, float speed, const Vector3& wPos, std::weak_p
 	speed_ = speed;
 
 	// トランスフォーム作成
-	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>();
+	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(wPos);
 
 	// トランスフォームマネージャに追加
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
@@ -18,7 +18,7 @@ Rocket::Rocket(const Vector3& dir, float speed, const Vector3& wPos, std::weak_p
 	sphereData_.radius = 0.2f;
 
 	// マテリアル
-	material_.textureName = "White.png";
+	material_.textureName = "white.png";
 
 
 	// 攻撃コライダーを設定
@@ -72,7 +72,7 @@ void Rocket::Update() {
 
 void Rocket::Draw() {
 	// 描画
-	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), SphereData3D{}, material_);
+	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), sphereData_, material_);
 }
 
 void Rocket::Finalize() {

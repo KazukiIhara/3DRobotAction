@@ -34,14 +34,13 @@ void AttackCollider::Update() {
 void AttackCollider::Draw() {
 	// デバッグ描画
 	switch (type_) {
-		case AttackType::Bullet:
-			MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Crimson);
-			break;
-		case AttackType::Missile:
-			MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Yellow);
-			break;
-		case AttackType::Melee:
-			break;
+	case AttackType::Bullet:
+	case AttackType::Rocket:
+	case AttackType::Missile:
+		MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Crimson);
+		break;
+	case AttackType::Melee:
+		break;
 	}
 }
 

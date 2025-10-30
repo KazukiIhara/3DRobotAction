@@ -14,6 +14,12 @@ MechAttackComponent::MechAttackComponent(AttackObjectManager* attackObjectManage
 }
 
 void MechAttackComponent::Update(MechCore* mechCore) {
+	// QB中は攻撃できない(キャンセル可能状態から攻撃可能)
+	if (mechCore->GetCurrentState() == MechCoreState::QuickBoost &&
+		!mechCore->GetMovementComponent()->QuickBoostEnableCancel()) {
+		return;
+	}
+
 	// コマンドを取得
 	const InputCommand command = mechCore->GetInputCommand();
 

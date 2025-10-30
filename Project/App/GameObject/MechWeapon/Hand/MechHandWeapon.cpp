@@ -93,7 +93,7 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 
 	case Type::RocketLauncher:
 		// ロケラン用の弾を追加
-
+		attackObjectManager_->AddRocket(tag, forward_, param_.speed, data_.fireOffsetWorldPos, param_.damage);
 
 		break;
 	default:

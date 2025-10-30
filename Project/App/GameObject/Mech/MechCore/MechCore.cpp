@@ -26,6 +26,8 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 
 	// パーツと武器を保存しているコンテナから各パラメータを取得
 
+	MechHandWeapon::Param rightHandWeaponParam;
+	MechHandWeapon::Param leftHandWeaponParam;
 
 	// 以下機体作成時にパラメータを受け取って生成するように実装
 
@@ -63,7 +65,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	MechHandWeapon::Param param;
 	param.speed = 70.0f;
 	param.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
-	param.coolTime = 0.2f;
+	param.coolTime = 0.5f;
 	param.damage = 200;
 
 	// 右手武器
@@ -72,6 +74,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	// 左手武器をロケランにする
 	param.name = "RocketLauncher";
 	param.modelName = "RocketLauncher";
+	param.type = MechHandWeapon::Type::RocketLauncher;
 
 	// 左手武器
 	leftHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
