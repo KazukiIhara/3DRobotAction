@@ -7,6 +7,8 @@
 #include "GameObject/AttackObjects/Bullet/Bullet.h"
 // ミサイル
 #include "GameObject/AttackObjects/Missile/Missile.h"
+// ロケット
+#include "GameObject/AttackObjects/Rocket/Rocket.h"
 
 // 前方宣言
 class AttackCollisionManager;

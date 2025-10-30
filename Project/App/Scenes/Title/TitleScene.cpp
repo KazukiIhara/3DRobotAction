@@ -19,15 +19,16 @@ void TitleScene::Initialize() {
 	// 
 
 
-	// テクスチャ
-
-	MAGISYSTEM::LoadTexture("TitleBG.png");
-	MAGISYSTEM::LoadTexture("Start.png");
-	MAGISYSTEM::LoadTexture("Exit.png");
 
 	//===================================
 	// テクスチャのロード
 	//===================================
+
+	// UIテクスチャ
+	MAGISYSTEM::LoadTexture("TitleBG.png");
+	MAGISYSTEM::LoadTexture("Start.png");
+	MAGISYSTEM::LoadTexture("Exit.png");
+
 
 	// ロックオン用テクスチャ
 	MAGISYSTEM::LoadTexture("LockonUIGray.png");

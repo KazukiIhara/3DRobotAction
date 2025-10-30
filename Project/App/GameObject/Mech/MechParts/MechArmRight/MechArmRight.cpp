@@ -19,8 +19,12 @@ MechArmRight::MechArmRight() {
 	rightArm_ = MAGISYSTEM::AddGameObject3D(std::move(rightArmObject));
 
 	// 手のトランスフォームを作成
+	std::unique_ptr<Transform3D> handTrans = std::make_unique<Transform3D>(Vector3(0.0f, 0.0f, 0.6f));
+	// マネージャに追加
+	handTransform_ = MAGISYSTEM::AddTransform3D(std::move(handTrans));
 
-
+	// 親子付け
+	handTransform_->SetParent(rightArm_.lock()->GetTransform(), false);
 
 }
 
@@ -87,6 +91,7 @@ void MechArmRight::Update(MechCore* mechCore) {
 			}
 		}
 	}
+
 }
 
 std::weak_ptr<GameObject3D> MechArmRight::GetGameObject()const {

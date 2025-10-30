@@ -6,9 +6,10 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 #include "GameObject/AttackCollider/AttackCollider.h"
+#include "Structs/Primitive3DStruct.h"
 
 // 前方宣言
-class GameObject3D;
+class Transform3D;
 
 /// <summary>
 /// ロケット弾
@@ -34,9 +35,12 @@ public:
 	Vector3 GetWorldPos();
 
 private:
-	// ゲームオブジェクト
-	std::weak_ptr<GameObject3D> rocket_;
-
+	// トランスフォーム
+	Transform3D* transform_;
+	// 球体データ
+	SphereData3D sphereData_;
+	// マテリアル
+	MaterialData3D material_;
 	// 弾の向き
 	Vector3 dir_ = { 0.0f,0.0f,0.0f };
 	// 弾の速度

@@ -101,14 +101,14 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 			rightArm->GetTransform()->SetParent(body->GetTransform(), false);
 
 			// 右手武器
-			rightHandWeapon_->GetTransform()->SetParent(rightArm->GetTransform(), false);
+			rightHandWeapon_->GetTransform()->SetParent(rightArm_->GetHandTransform(), false);
 		}
 		// 左腕
 		if (auto leftArm = leftArm_->GetGameObject().lock()) {
 			leftArm->GetTransform()->SetParent(body->GetTransform(), false);
 
 			// 左手武器
-			leftHandWeapon_->GetTransform()->SetParent(leftArm->GetTransform(), false);
+			leftHandWeapon_->GetTransform()->SetParent(leftArm_->GetHandTransform(), false);
 
 		}
 		// 足
