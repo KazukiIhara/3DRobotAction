@@ -2,8 +2,6 @@
 
 #include "MAGI.h"
 
-#include "GameObject/AttackCollider/AttackCollider.h"
-
 Bullet::Bullet(const Vector3& dir, float speed, const Vector3& wPos, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
 	lifeTime_ = 5.0f;
@@ -11,7 +9,7 @@ Bullet::Bullet(const Vector3& dir, float speed, const Vector3& wPos, std::weak_p
 	speed_ = speed;
 
 	ModelMaterial material{};
-	material.blendMode = BlendMode::Add;
+	material.blendMode = BlendMode::None;
 
 	// レンダラーを作成
 	std::shared_ptr<ModelRenderer> bulletRenderer = std::make_shared<ModelRenderer>("Bullet", "Bullet", material);

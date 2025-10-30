@@ -175,6 +175,20 @@ void MechCore::Update() {
 	}
 
 	//=================== 
+	// コンポーネント
+	//=================== 
+
+	// 攻撃コンポーネントを更新
+	attackComponent_->Update(this);
+
+	// 移動コンポーネントを更新
+	movementComponent_->Update(this);
+
+	// 状態パラメータコンポーネントを更新
+	statusComponent_->Update(this);
+
+
+	//=================== 
 	// パーツ
 	//=================== 
 
@@ -197,19 +211,6 @@ void MechCore::Update() {
 	leftShoulerWeapon_->Update(this);
 	rightShoulerWeapon_->Update(this);
 
-
-	//=================== 
-	// コンポーネント
-	//=================== 
-
-	// 攻撃コンポーネントを更新
-	attackComponent_->Update(this);
-
-	// 移動コンポーネントを更新
-	movementComponent_->Update(this);
-
-	// 状態パラメータコンポーネントを更新
-	statusComponent_->Update(this);
 
 	//=================== 
 	// エフェクト
