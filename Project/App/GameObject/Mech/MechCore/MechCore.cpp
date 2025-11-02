@@ -27,7 +27,6 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 
 	// パーツと武器を保存しているコンテナから各パラメータを取得
 
-
 	// 右手武器
 	MechHandWeapon::Param rightHandWeaponParam;
 	rightHandWeaponParam.name = "AssultRifle";
