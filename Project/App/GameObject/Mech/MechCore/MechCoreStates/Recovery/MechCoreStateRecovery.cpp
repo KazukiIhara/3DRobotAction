@@ -4,7 +4,7 @@
 
 void MechCoreStateRecovery::Enter(MechCore* mechCore) {
 	// 移動速度を0にする
-	mechCore->GetMovementComponent()->SetMoveSpeed(0.0f);
+	mechCore->GetMovementComponent()->ResetVelocity();
 }
 
 void MechCoreStateRecovery::Update(MechCore* mechCore) {

@@ -44,7 +44,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	leftHandWeaponParam.type = MechHandWeapon::Type::RocketLauncher;
 	leftHandWeaponParam.speed = 70.0f;
 	leftHandWeaponParam.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
-	leftHandWeaponParam.coolTime = 1.2f;
+	leftHandWeaponParam.coolTime = 0.9f;
 	leftHandWeaponParam.damage = 400;
 
 	// 以下機体作成時にパラメータを受け取って生成するように実装

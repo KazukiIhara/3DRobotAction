@@ -17,7 +17,7 @@ public:
 private:
 	Vector2 targetMoveDir_ = { 0.0f,0.0f };
 	Vector2 currentMoveDir_ = { 0.0f,0.0f };
-	float targetRange_ = 10.0f;
+	float targetRange_ = 15.0f;
 
 	float jumpTimer_ = 0.0f;
 	float boostTimer_ = 2.0f;

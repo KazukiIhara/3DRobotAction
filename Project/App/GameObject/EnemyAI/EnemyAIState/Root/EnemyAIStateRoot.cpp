@@ -31,8 +31,17 @@ void EnemyAIStateRoot::Enter([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]]
 
 void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
 	// 攻撃の処理
-	enemyAI->LeftHandWeapon();
-	enemyAI->RightHandWeapon();
+
+	// 通常の銃ならひとまず撃ちまくる
+	MechHandWeapon::Type lefthandWType = mechCore->GetLeftHandWeapon()->GetParam().type;
+	if (lefthandWType == MechHandWeapon::Type::Gun) {
+		enemyAI->LeftHandWeapon();
+	}
+
+	MechHandWeapon::Type righthandWType = mechCore->GetRightHandWeapon()->GetParam().type;
+	if (righthandWType == MechHandWeapon::Type::Gun) {
+		enemyAI->RightHandWeapon();
+	}
 
 	// ジャンプの処理
 
