@@ -37,6 +37,12 @@ public:
 	// FCS回避係数を取得
 	float GetFcsAvoidFactor()const;
 
+	// 硬直時間を取得
+	float GetRecoveryTime()const;
+	
+	// 硬直時間をセット
+	void SetRecoveryTime(float t);
+
 private:
 	// エネルギー消費処理
 	void UseEnergy(const int32_t& enValue);
@@ -44,6 +50,9 @@ private:
 	void GetDamage(const int32_t& damage, MechCore* mechcore);
 	// FCS解除
 	void UpdateFcsAvoidFactor(MechCore* mechCore);
+	// 硬直時間更新
+	void UpdateRecoveryTime(MechCore* mechCore);
+
 private:
 
 	// 
@@ -66,7 +75,10 @@ private:
 	float overHeatTimer_ = 0.0f;
 
 	// FCS回避係数
-	float fcsAvoidFactor_ = 0.5f;
+	float fcsAvoidFactor_ = 0.0f;
+
+	// 硬直時間
+	float recoveryTime_ = 0.0f;
 
 	// 
 	// パラメータ
@@ -88,4 +100,11 @@ private:
 	// FCSの復帰時間
 	const float fcsRecoverTime_ = 0.3f;
 
+
+	// 
+	// 定数
+	// 
+
+	// 相手が回避状態の際のFCS強度
+	const float minFcsFactor_ = 0.05f;
 };

@@ -49,6 +49,9 @@ public:
 	// 重力計算
 	void CulGravityVelocity(MechCore* mechCore);
 
+	// 移動量リセット
+	void ResetVelocity();
+
 	//===================================
 	// ゲッター
 	//===================================

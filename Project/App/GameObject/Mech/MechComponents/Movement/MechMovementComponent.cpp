@@ -197,6 +197,11 @@ void MechMovementComponent::CulGravityVelocity(MechCore* mechCore) {
 	}
 }
 
+void MechMovementComponent::ResetVelocity() {
+	velocity_ = { 0.0f,0.0f,0.0f };
+	moveSpeed_ = 0.0f;
+}
+
 Vector2 MechMovementComponent::GetCurrentMoveDir() const {
 	return currentMoveDir_;
 }

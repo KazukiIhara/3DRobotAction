@@ -8,6 +8,7 @@
 #include "MechCoreStates/Move/MechCoreStateMove.h"
 #include "MechCoreStates/QuickBoost/MechCoreStateQuickBoost.h"
 #include "MechCoreStates/AssultBoost/MechCoreStateAssultBoost.h"
+#include "MechCoreStates/Recovery/MechCoreStateRecovery.h"
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
@@ -26,8 +27,25 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 
 	// パーツと武器を保存しているコンテナから各パラメータを取得
 
+
+	// 右手武器
 	MechHandWeapon::Param rightHandWeaponParam;
+	rightHandWeaponParam.name = "AssultRifle";
+	rightHandWeaponParam.modelName = "AssultRifle";
+	rightHandWeaponParam.speed = 70.0f;
+	rightHandWeaponParam.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
+	rightHandWeaponParam.coolTime = 0.5f;
+	rightHandWeaponParam.damage = 200;
+
+	// 左手武器
 	MechHandWeapon::Param leftHandWeaponParam;
+	leftHandWeaponParam.name = "RocketLauncher";
+	leftHandWeaponParam.modelName = "RocketLauncher";
+	leftHandWeaponParam.type = MechHandWeapon::Type::RocketLauncher;
+	leftHandWeaponParam.speed = 70.0f;
+	leftHandWeaponParam.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
+	leftHandWeaponParam.coolTime = 0.9f;
+	leftHandWeaponParam.damage = 400;
 
 	// 以下機体作成時にパラメータを受け取って生成するように実装
 
@@ -61,23 +79,12 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	leg_ = std::make_unique<MechLeg>();
 
 
-	// 一旦値をそのまま入力
-	MechHandWeapon::Param param;
-	param.speed = 70.0f;
-	param.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
-	param.coolTime = 0.5f;
-	param.damage = 200;
-
 	// 右手武器
-	rightHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
+	rightHandWeapon_ = std::make_unique<MechHandWeapon>(rightHandWeaponParam, attackObjectManager);
 
-	// 左手武器をロケランにする
-	param.name = "RocketLauncher";
-	param.modelName = "RocketLauncher";
-	param.type = MechHandWeapon::Type::RocketLauncher;
 
 	// 左手武器
-	leftHandWeapon_ = std::make_unique<MechHandWeapon>(param, attackObjectManager);
+	leftHandWeapon_ = std::make_unique<MechHandWeapon>(leftHandWeaponParam, attackObjectManager);
 
 
 	// 左肩武器
@@ -146,6 +153,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	states_[MechCoreState::Move] = std::make_shared<MechCoreStateMove>();
 	states_[MechCoreState::QuickBoost] = std::make_shared<MechCoreStateQuickBoost>();
 	states_[MechCoreState::AssultBoost] = std::make_shared<MechCoreStateAssultBoost>();
+	states_[MechCoreState::Recovery] = std::make_shared<MechCoreStateRecovery>();
 
 	// 最初のステートを設定
 	ChangeState(MechCoreState::Idle);
@@ -172,11 +180,6 @@ void MechCore::Update() {
 	// 接地状態かどうかチェック
 	movementComponent_->CheckOnGround(this);
 
-	// ステートごとの更新
-	if (auto cs = currentState_.second.lock()) {
-		cs->Update(this);
-	}
-
 	//=================== 
 	// コンポーネント
 	//=================== 
@@ -190,6 +193,13 @@ void MechCore::Update() {
 	// 状態パラメータコンポーネントを更新
 	statusComponent_->Update(this);
 
+
+	//=================== 
+	// ステート
+	//=================== 
+	if (auto cs = currentState_.second.lock()) {
+		cs->Update(this);
+	}
 
 	//=================== 
 	// パーツ

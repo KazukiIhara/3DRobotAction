@@ -89,14 +89,16 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 	case Type::Gun:
 		// 通常の弾を追加
 		attackObjectManager_->AddBullet(tag, forward_, param_.speed, data_.fireOffsetWorldPos, param_.damage);
-		break;
 
+		break;
 	case Type::RocketLauncher:
 		// ロケラン用の弾を追加
 		attackObjectManager_->AddRocket(tag, forward_, param_.speed, data_.fireOffsetWorldPos, param_.damage);
-
-		break;
-	default:
+		
+		// 硬直時間をセット
+		mechCore->GetStatusComponent()->SetRecoveryTime(param_.coolTime);
+		// 硬直ステートに遷移
+		mechCore->ChangeState(MechCoreState::Recovery);
 
 		break;
 	}
