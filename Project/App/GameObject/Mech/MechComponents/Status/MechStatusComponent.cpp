@@ -31,17 +31,17 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 			GetDamage(info.damage, mechCore);
 
 			switch (info.type) {
-			case AttackType::Bullet:
-				// 衝突時エフェクト発生
-				mechCore->GetBulletHitEffect()->Emit(info.attackPos);
+				case AttackType::Bullet:
+					// 衝突時エフェクト発生
+					mechCore->GetBulletHitEffect()->Emit(info.attackPos);
 
-				break;
-			case AttackType::Rocket:
+					break;
+				case AttackType::Rocket:
 
-				break;
-			case AttackType::Missile:
+					break;
+				case AttackType::Missile:
 
-				break;
+					break;
 			}
 		}
 	}
@@ -67,6 +67,8 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 	// FCS係数の更新
 	UpdateFcsAvoidFactor(mechCore);
 
+	// 硬直の更新
+	UpdateRecoveryTime(mechCore);
 }
 
 
@@ -106,6 +108,14 @@ float MechStatusComponent::GetFcsAvoidFactor() const {
 	return fcsAvoidFactor_;
 }
 
+float MechStatusComponent::GetRecoveryTime() const {
+	return recoveryTime_;
+}
+
+void MechStatusComponent::SetRecoveryTime(float t) {
+	recoveryTime_ = t;
+}
+
 void MechStatusComponent::UseEnergy(const int32_t& enValue) {
 	en_ -= enValue;
 	// 0より小さくならないようにする
@@ -138,12 +148,31 @@ void MechStatusComponent::UpdateFcsAvoidFactor(MechCore* mechCore) {
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		// 相手が回避状態
 		if (target->GetCurrentState() == MechCoreState::QuickBoost) {
-			fcsAvoidFactor_ = 0.05f;
+			fcsAvoidFactor_ = minFcsFactor_;
 		} else {
 			// FCS復帰
 			fcsAvoidFactor_ += (1.0f / fcsRecoverTime_) * MAGISYSTEM::GetDeltaTime();
 			// 1.0fを超えないようにする
 			fcsAvoidFactor_ = std::min(fcsAvoidFactor_, 1.0f);
 		}
+	}
+}
+
+void MechStatusComponent::UpdateRecoveryTime(MechCore* mechCore) {
+	// 機体の状態を取得
+	const MechCoreState state = mechCore->GetCurrentState();
+
+	// 硬直状態でないなら早期リターン
+	if (state != MechCoreState::Recovery)return;
+
+	// 硬直時間を更新
+	recoveryTime_ -= MAGISYSTEM::GetDeltaTime();
+
+	// 0より小さくならないようにする
+	recoveryTime_ = std::max(recoveryTime_, 0.0f);
+
+	// 硬直終了、Idle状態に遷移
+	if (recoveryTime_ == 0.0f) {
+		mechCore->ChangeState(MechCoreState::Idle);
 	}
 }

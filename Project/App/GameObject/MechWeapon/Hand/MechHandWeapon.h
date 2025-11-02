@@ -48,7 +48,7 @@ public:
 		int damage = 0;
 		// リロード時間
 		float reloadTime = 0.0f;
-		// 攻撃間隔
+		// 攻撃間隔(硬直付きの武器は硬直)
 		float coolTime = 0.0f;
 		// 装弾数
 		int capacity = 0;
