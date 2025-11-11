@@ -103,7 +103,7 @@ void MechEditScene::HandWeaponEditUpdate() {
 	ImGui::DragFloat("CoolTime", &param.coolTime, 0.01f);
 
 	// 装弾数
-	ImGui::DragInt("Capacity", &param.capacity);
+	ImGui::DragInt("Capacity", &param.ammoCapacity);
 
 	// スピード
 	ImGui::DragFloat("Speed", &param.speed, 0.01f);

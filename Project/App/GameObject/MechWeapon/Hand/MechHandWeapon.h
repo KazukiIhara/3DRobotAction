@@ -51,7 +51,7 @@ public:
 		// 攻撃間隔(硬直付きの武器は硬直)
 		float coolTime = 0.0f;
 		// 装弾数
-		int capacity = 0;
+		int ammoCapacity = 0;
 		// 攻撃が飛ぶスピード
 		float speed = 0.0f;
 

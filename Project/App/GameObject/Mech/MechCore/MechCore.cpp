@@ -34,6 +34,8 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	rightHandWeaponParam.speed = 70.0f;
 	rightHandWeaponParam.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
 	rightHandWeaponParam.coolTime = 0.5f;
+	rightHandWeaponParam.reloadTime = 1.5f;
+	rightHandWeaponParam.ammoCapacity = 15;
 	rightHandWeaponParam.damage = 200;
 
 	// 左手武器
@@ -44,6 +46,8 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 	leftHandWeaponParam.speed = 100.0f;
 	leftHandWeaponParam.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
 	leftHandWeaponParam.coolTime = 0.9f;
+	leftHandWeaponParam.reloadTime = 3.0f;
+	leftHandWeaponParam.ammoCapacity = 5;
 	leftHandWeaponParam.damage = 800;
 
 	// 以下機体作成時にパラメータを受け取って生成するように実装

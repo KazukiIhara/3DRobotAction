@@ -201,6 +201,8 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	Vector3 worldPosition{};
 	int hp = 0;
 	int en = 0;
+	int rightHandAmmo = 0;
+	int leftHandAmmo = 0;
 	int targetHP = 0;
 	Vector3 targetPos{};
 
@@ -209,8 +211,10 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	}
 
 	hp = mechCore->GetStatusComponent()->GetHp();
-
 	en = mechCore->GetStatusComponent()->GetEn();
+
+	rightHandAmmo = mechCore->GetRightHandWeapon()->GetData().ammo_;
+	leftHandAmmo = mechCore->GetLeftHandWeapon()->GetData().ammo_;
 
 	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
 		targetHP = target->GetStatusComponent()->GetHp();
@@ -225,6 +229,8 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	ImGui::InputFloat3("WorldPosition", &worldPosition.x);
 	ImGui::InputInt("HP", &hp);
 	ImGui::InputInt("EN", &en);
+	ImGui::InputInt("RightHandAmmo", &rightHandAmmo);
+	ImGui::InputInt("LeftHandAmmo", &leftHandAmmo);
 	ImGui::InputInt("TargetHP", &targetHP);
 	ImGui::InputFloat("TargetDistance", &distance);
 	ImGui::End();

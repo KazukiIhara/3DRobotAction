@@ -78,8 +78,16 @@ void MechHandWeapon::Draw() {
 }
 
 void MechHandWeapon::Attack(MechCore* mechCore) {
+	// 残弾なしならリロードして早期リターン
+	if (data_.ammo_ == 0) {
+		Reload();
+		return;
+	}
+
 	// クールタイム、リロード中なら早期リターン
-	if (data_.isCoolTime_ || data_.isReload_)return;
+	if (data_.isCoolTime_ || data_.isReload_) {
+		return;
+	}
 
 	// タグを取得
 	const FriendlyTag tag = mechCore->GetFriendlyTag();
@@ -94,7 +102,7 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 	case Type::RocketLauncher:
 		// ロケラン用の弾を追加
 		attackObjectManager_->AddRocket(tag, forward_, param_.speed, data_.fireOffsetWorldPos, param_.damage);
-		
+
 		// 硬直時間をセット
 		mechCore->GetStatusComponent()->SetRecoveryTime(param_.coolTime);
 		// 硬直ステートに遷移
@@ -106,14 +114,20 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 	// 残弾を減らす
 	data_.ammo_--;
 
-	// クールタイマーセット
+	// クールタイマーセット フラグを立てる
 	data_.coolTimer_ = param_.coolTime;
+	data_.isCoolTime_ = true;
 }
 
 void MechHandWeapon::Reload() {
+	// リロード中なら早期リターン
+	if (data_.isReload_) {
+		return;
+	}
 	// リロードタイマーセット
 	data_.reloadTimer_ = param_.reloadTime;
-
+	// リロードフラグを立てる
+	data_.isReload_ = true;
 }
 
 void MechHandWeapon::SetParam(const MechHandWeapon::Param& param) {
@@ -147,22 +161,32 @@ void MechHandWeapon::CulForward() {
 }
 
 void MechHandWeapon::UpdateCoolTime() {
+	// クールタイム中でなければ早期リターン
+	if (!data_.isCoolTime_) {
+		return;
+	}
 	// クールタイム更新
 	data_.coolTimer_ -= MAGISYSTEM::GetDeltaTime();
 	// 0を下回らないようにする
 	data_.coolTimer_ = std::max(data_.coolTimer_, 0.0f);
-
 	// クールタイム中かチェック
-	if (data_.coolTimer_ != 0.0f) {
-		data_.isCoolTime_ = true;
-	} else {
+	if (data_.coolTimer_ == 0.0f) {
 		data_.isCoolTime_ = false;
 	}
 }
 
 void MechHandWeapon::UpdateReload() {
+	// リロード中でなければ早期リターン
+	if (!data_.isReload_) {
+		return;
+	}
 	// リロードタイマー更新
-
-	// リロード時間が終了したら残弾を回復、タイマーリセット
-
+	data_.reloadTimer_ -= MAGISYSTEM::GetDeltaTime();
+	// 0を下回らないようにする
+	data_.reloadTimer_ = std::max(data_.reloadTimer_, 0.0f);
+	// リロード終了処理
+	if (data_.reloadTimer_ == 0.0f) {
+		data_.isReload_ = false;
+		data_.ammo_ = param_.ammoCapacity;
+	}
 }
