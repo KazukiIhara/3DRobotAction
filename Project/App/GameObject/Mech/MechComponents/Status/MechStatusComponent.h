@@ -31,6 +31,8 @@ public:
 	// オーバーヒート状態かどうかを取得
 	const bool& GetIsOverheat()const;
 
+	// 上昇時のエネルギー消費処理
+	void UseUpBoostEnergy();
 	// クイックブーストのエネルギー消費処理
 	void UseQuickBoostEnergy();
 
@@ -53,6 +55,8 @@ private:
 	// 硬直時間更新
 	void UpdateRecoveryTime(MechCore* mechCore);
 
+	// EN更新処理
+	void ENUpdate();
 private:
 
 	// 
@@ -68,6 +72,9 @@ private:
 	int32_t en_ = 0;
 	// ENの割合
 	float enRaito_ = 0.0f;
+
+	// EN回復クールタイム
+	float enRecoveryCoolTimer_ = 0.0f;
 
 	// オーバーヒートしているかどうか
 	bool isOverHeat_ = false;
@@ -89,11 +96,15 @@ private:
 
 	// 最大EN
 	const int32_t kMaxEN_ = 5000;
+	// EN回復クールタイム
+	const float kEnRecoveryCoolTIme_ = 0.6f;
 	// 秒間EN回復量
 	const int32_t kEnRecoveryPerSec_ = 2000;
 
 	// クイックブースト時消費EN量
 	const int32_t kQuickBoostUseEn_ = 800;
+	// 上昇ブースト時秒間消費EN
+	const int32_t kUpBoostUseEnPerSec_ = 1000;
 	// アサルトブースト時秒間消費EN
 	const int32_t kAssultBoostUseEnPerSec_ = 9000;
 
