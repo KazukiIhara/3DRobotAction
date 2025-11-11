@@ -30,7 +30,11 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 
 	// キャンセル行動
 	if (mechCore->GetMovementComponent()->QuickBoostEnableCancel()) {
-		if (command.quickBoost && Length(command.moveDirection)) { // クイックブーストでキャンセル
+		// クイックブーストでキャンセル
+		if (command.quickBoost &&
+			Length(command.moveDirection) &&
+			!mechCore->GetStatusComponent()->GetIsOverheat()) {
+
 			mechCore->ChangeState(MechCoreState::QuickBoost);
 			return;
 		} else if (command.jump) { // ジャンプでキャンセル

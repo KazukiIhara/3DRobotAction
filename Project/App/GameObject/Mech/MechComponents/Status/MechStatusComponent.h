@@ -99,7 +99,7 @@ private:
 	// EN回復クールタイム
 	const float kEnRecoveryCoolTime_ = 0.6f;
 	// 秒間EN回復量
-	const int32_t kEnRecoveryPerSec_ = 1500;
+	const int32_t kEnRecoveryPerSec_ = 2000;
 
 	// クイックブースト時消費EN量
 	const int32_t kQuickBoostUseEn_ = 800;
