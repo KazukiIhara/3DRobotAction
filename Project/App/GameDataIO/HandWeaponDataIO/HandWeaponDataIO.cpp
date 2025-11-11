@@ -36,7 +36,7 @@ void HandWeaponDataIO::SaveFile(const MechHandWeapon::Param& param) {
 	j["damage"] = param.damage;
 	j["reloadTime"] = param.reloadTime;
 	j["coolTime"] = param.coolTime;
-	j["capacity"] = param.capacity;
+	j["capacity"] = param.ammoCapacity;
 	j["speed"] = param.speed;
 	j["modelName"] = param.modelName;
 	j["fireOffsetLocalPos"] = {
