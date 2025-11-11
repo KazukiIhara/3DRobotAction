@@ -48,6 +48,8 @@ MechHandWeapon::MechHandWeapon(const MechHandWeapon::Param& param, AttackObjectM
 
 	// データ初期化
 	data_ = Data{};
+	// 残弾を最大にする
+	data_.ammo_ = param_.ammoCapacity;
 
 	// 手持ち武器のデバッグ描画球体データ
 	firePosSphereData_.radius = 0.2f;

@@ -31,44 +31,32 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 			GetDamage(info.damage, mechCore);
 
 			switch (info.type) {
-				case AttackType::Bullet:
-					// 衝突時エフェクト発生
-					mechCore->GetBulletHitEffect()->Emit(info.attackPos);
+			case AttackType::Bullet:
+				// 衝突時エフェクト発生
+				mechCore->GetBulletHitEffect()->Emit(info.attackPos);
 
-					break;
-				case AttackType::Rocket:
+				break;
+			case AttackType::Rocket:
 
-					break;
-				case AttackType::Missile:
+				break;
+			case AttackType::Missile:
 
-					break;
+				break;
 			}
 		}
-	}
-
-	// オーバーヒートしているかどうかの処理
-	if (en_ == 0) {
-		isOverHeat_ = true;
-	}
-
-	// ENの回復処理
-	if (en_ < kMaxEN_) {
-		en_ += static_cast<int32_t>(kEnRecoveryPerSec_ * MAGISYSTEM::GetDeltaTime());
-	} else {
-		en_ = kMaxEN_;
 	}
 
 	// HPの割合を計算
 	hpRaito_ = float(hp_) / float(kMaxHP_);
 
-	// ENの割合を計算
-	enRaito_ = float(en_) / float(kMaxEN_);
+	// EN更新処理
+	ENUpdate();
 
 	// FCS係数の更新
 	UpdateFcsAvoidFactor(mechCore);
 
 	// 硬直の更新
-	UpdateRecoveryTime(mechCore);
+	UpdateRecoveryTime();
 }
 
 
@@ -100,6 +88,10 @@ const bool& MechStatusComponent::GetIsOverheat() const {
 	return isOverHeat_;
 }
 
+void MechStatusComponent::UseUpBoostEnergy() {
+	UseEnergy(static_cast<int>(static_cast<float>(kUpBoostUseEnPerSec_) * MAGISYSTEM::GetDeltaTime()));
+}
+
 void MechStatusComponent::UseQuickBoostEnergy() {
 	UseEnergy(kQuickBoostUseEn_);
 }
@@ -117,13 +109,16 @@ void MechStatusComponent::SetRecoveryTime(float t) {
 }
 
 void MechStatusComponent::UseEnergy(const int32_t& enValue) {
+	// ENを消費
 	en_ -= enValue;
 	// 0より小さくならないようにする
 	en_ = std::max(en_, 0);
+
+	// クールタイムをセット
+	enRecoveryCoolTimer_ = kEnRecoveryCoolTime_;
 }
 
 void MechStatusComponent::GetDamage(const int32_t& damage, MechCore* mechcore) {
-
 	// HPを減らす
 	hp_ -= damage;
 	// 0未満にならないようにする
@@ -158,21 +153,40 @@ void MechStatusComponent::UpdateFcsAvoidFactor(MechCore* mechCore) {
 	}
 }
 
-void MechStatusComponent::UpdateRecoveryTime(MechCore* mechCore) {
-	// 機体の状態を取得
-	const MechCoreState state = mechCore->GetCurrentState();
-
-	// 硬直状態でないなら早期リターン
-	if (state != MechCoreState::Recovery)return;
-
+void MechStatusComponent::UpdateRecoveryTime() {
 	// 硬直時間を更新
 	recoveryTime_ -= MAGISYSTEM::GetDeltaTime();
-
 	// 0より小さくならないようにする
 	recoveryTime_ = std::max(recoveryTime_, 0.0f);
 
-	// 硬直終了、Idle状態に遷移
-	if (recoveryTime_ == 0.0f) {
-		mechCore->ChangeState(MechCoreState::Idle);
+}
+
+void MechStatusComponent::ENUpdate() {
+	// EN回復クールタイマーを更新
+	enRecoveryCoolTimer_ -= MAGISYSTEM::GetDeltaTime();
+	// 0を下回らないようにする
+	enRecoveryCoolTimer_ = std::max(enRecoveryCoolTimer_, 0.0f);
+
+	// EN回復処理
+	if (enRecoveryCoolTimer_ == 0.0f) {
+		en_ += static_cast<int32_t>(kEnRecoveryPerSec_ * MAGISYSTEM::GetDeltaTime());
 	}
+	// 最大値を超えないようにする
+	en_ = std::min(en_, kMaxEN_);
+
+	// ENの割合を計算
+	if (en_ != 0.0f) {
+		enRaito_ = float(en_) / float(kMaxEN_);
+	} else {
+		enRaito_ = 0.0f;
+	}
+
+	// オーバーヒート処理
+	if (enRaito_ == 0.0f) {
+		isOverHeat_ = true;
+	} else if (enRaito_ >= 0.5f) {
+		// 半分以上になったらオーバーヒート解除
+		isOverHeat_ = false;
+	}
+
 }

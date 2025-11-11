@@ -153,17 +153,21 @@ void MechMovementComponent::Jump(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 	if (command.jump) {
-		// 重力の影響を消す
-		velocity_.y = std::max(velocity_.y, 0.0f);
-
 		if (onGround_) { 	// 接地状態の場合
 			// ジャンプの初速を与える
 			velocity_.y = kJumpFirstSpeed_;
 			// 空中判定にする
 			onGround_ = false;
 		} else {			// 空中にいる場合
-			// 上昇加速度計算
-			velocity_.y += kJumpAcc_ * MAGISYSTEM::GetDeltaTime();
+			// オーバーヒート状態なら不可にする
+			if (!mechCore->GetStatusComponent()->GetIsOverheat()) {
+				// 重力の影響を消す
+				velocity_.y = std::max(velocity_.y, 0.0f);
+				// 上昇加速度計算
+				velocity_.y += kJumpAcc_ * MAGISYSTEM::GetDeltaTime();
+				// エネルギー消費
+				mechCore->GetStatusComponent()->UseUpBoostEnergy();
+			}
 		}
 		// 上昇移動量をクランプ
 		velocity_.y = std::min(velocity_.y, kMaxJumpSpeed_);
@@ -191,9 +195,11 @@ void MechMovementComponent::CulGravityVelocity(MechCore* mechCore) {
 	const InputCommand command = mechCore->GetInputCommand();
 
 	if (!onGround_) {
-		if (!command.jump) { // ジャンプ入力中は重力の影響を与えない
-			velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
+		// ジャンプ入力かつオーバーヒート状態でなければ重力の影響を消す
+		if (command.jump && !mechCore->GetStatusComponent()->GetIsOverheat()) {
+			return;
 		}
+		velocity_.y += kGravityAcc_ * kGravityScale_ * MAGISYSTEM::GetDeltaTime();
 	}
 }
 

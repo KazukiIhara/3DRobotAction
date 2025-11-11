@@ -12,7 +12,4 @@ public:
 	void Enter(MechCore* mechCore)override;
 	void Update(MechCore* mechCore)override;
 	void Exit(MechCore* mechCore)override;
-
-private:
-	float recoveryTime_ = 0.0f;
 };

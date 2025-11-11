@@ -15,14 +15,14 @@ void MechCoreStateMove::Update(MechCore* mechCore) {
 	// コマンド取得
 	const InputCommand command = mechCore->GetInputCommand();
 
-	// クイックブースト入力あり
-	if (command.quickBoost) {
+	// クイックブースト入力ありかつオーバーヒート状態ではない
+	if (command.quickBoost && !mechCore->GetStatusComponent()->GetIsOverheat()) {
 		mechCore->ChangeState(MechCoreState::QuickBoost);
 		return;
 	}
 
 	// アサルトブースト入力あり
-	if (command.assultBoost) {
+	if (command.assultBoost && !mechCore->GetStatusComponent()->GetIsOverheat()) {
 		mechCore->ChangeState(MechCoreState::AssultBoost);
 		return;
 	}
