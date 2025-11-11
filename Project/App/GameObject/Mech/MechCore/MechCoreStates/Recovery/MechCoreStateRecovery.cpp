@@ -8,9 +8,12 @@ void MechCoreStateRecovery::Enter(MechCore* mechCore) {
 }
 
 void MechCoreStateRecovery::Update(MechCore* mechCore) {
-
+	// 硬直終了、Idle状態に遷移
+	if (mechCore->GetStatusComponent()->GetRecoveryTime() == 0.0f) {
+		mechCore->ChangeState(MechCoreState::Idle);
+	}
 }
 
-void MechCoreStateRecovery::Exit(MechCore* mechCore) {
+void MechCoreStateRecovery::Exit([[maybe_unused]]MechCore* mechCore) {
 
 }

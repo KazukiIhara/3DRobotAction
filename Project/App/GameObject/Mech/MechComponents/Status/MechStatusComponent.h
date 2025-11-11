@@ -53,7 +53,7 @@ private:
 	// FCS解除
 	void UpdateFcsAvoidFactor(MechCore* mechCore);
 	// 硬直時間更新
-	void UpdateRecoveryTime(MechCore* mechCore);
+	void UpdateRecoveryTime();
 
 	// EN更新処理
 	void ENUpdate();
@@ -97,14 +97,14 @@ private:
 	// 最大EN
 	const int32_t kMaxEN_ = 5000;
 	// EN回復クールタイム
-	const float kEnRecoveryCoolTIme_ = 0.6f;
+	const float kEnRecoveryCoolTime_ = 0.6f;
 	// 秒間EN回復量
-	const int32_t kEnRecoveryPerSec_ = 2000;
+	const int32_t kEnRecoveryPerSec_ = 1500;
 
 	// クイックブースト時消費EN量
 	const int32_t kQuickBoostUseEn_ = 800;
 	// 上昇ブースト時秒間消費EN
-	const int32_t kUpBoostUseEnPerSec_ = 1000;
+	const int32_t kUpBoostUseEnPerSec_ = 1200;
 	// アサルトブースト時秒間消費EN
 	const int32_t kAssultBoostUseEnPerSec_ = 9000;
 

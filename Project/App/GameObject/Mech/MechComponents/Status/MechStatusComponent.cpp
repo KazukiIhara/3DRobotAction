@@ -56,7 +56,7 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 	UpdateFcsAvoidFactor(mechCore);
 
 	// 硬直の更新
-	UpdateRecoveryTime(mechCore);
+	UpdateRecoveryTime();
 }
 
 
@@ -115,7 +115,7 @@ void MechStatusComponent::UseEnergy(const int32_t& enValue) {
 	en_ = std::max(en_, 0);
 
 	// クールタイムをセット
-	enRecoveryCoolTimer_ = kEnRecoveryCoolTIme_;
+	enRecoveryCoolTimer_ = kEnRecoveryCoolTime_;
 }
 
 void MechStatusComponent::GetDamage(const int32_t& damage, MechCore* mechcore) {
@@ -153,23 +153,12 @@ void MechStatusComponent::UpdateFcsAvoidFactor(MechCore* mechCore) {
 	}
 }
 
-void MechStatusComponent::UpdateRecoveryTime(MechCore* mechCore) {
-	// 機体の状態を取得
-	const MechCoreState state = mechCore->GetCurrentState();
-
-	// 硬直状態でないなら早期リターン
-	if (state != MechCoreState::Recovery)return;
-
+void MechStatusComponent::UpdateRecoveryTime() {
 	// 硬直時間を更新
 	recoveryTime_ -= MAGISYSTEM::GetDeltaTime();
-
 	// 0より小さくならないようにする
 	recoveryTime_ = std::max(recoveryTime_, 0.0f);
 
-	// 硬直終了、Idle状態に遷移
-	if (recoveryTime_ == 0.0f) {
-		mechCore->ChangeState(MechCoreState::Idle);
-	}
 }
 
 void MechStatusComponent::ENUpdate() {
