@@ -1437,6 +1437,47 @@ void MAGISYSTEM::DrawLineAABB(const Vector3& min, const Vector3& max, const Vect
 	lineDrawer3D_->AddLine(v010, v011, color); // 左上
 }
 
+void MAGISYSTEM::DrawLineSphere(const Vector3& wPos, float radius, const Vector4& color, uint32_t segment) {
+	// セグメント数が少なすぎると円にならないのでガード
+	if (segment < 3) {
+		return;
+	}
+
+	const float twoPi = 3.1415926535f * 2.0f;
+	const float delta = twoPi / static_cast<float>(segment);
+
+	for (uint32_t i = 0; i < segment; ++i) {
+		const float t0 = delta * static_cast<float>(i);
+		const float t1 = delta * static_cast<float>(i + 1);
+
+		const float c0 = std::cos(t0);
+		const float s0 = std::sin(t0);
+		const float c1 = std::cos(t1);
+		const float s1 = std::sin(t1);
+
+		// XY 平面の円
+		{
+			Vector3 p0{ wPos.x + radius * c0, wPos.y + radius * s0, wPos.z };
+			Vector3 p1{ wPos.x + radius * c1, wPos.y + radius * s1, wPos.z };
+			lineDrawer3D_->AddLine(p0, p1, color);
+		}
+
+		// XZ 平面の円
+		{
+			Vector3 p0{ wPos.x + radius * c0, wPos.y, wPos.z + radius * s0 };
+			Vector3 p1{ wPos.x + radius * c1, wPos.y, wPos.z + radius * s1 };
+			lineDrawer3D_->AddLine(p0, p1, color);
+		}
+
+		// YZ 平面の円
+		{
+			Vector3 p0{ wPos.x, wPos.y + radius * c0, wPos.z + radius * s0 };
+			Vector3 p1{ wPos.x, wPos.y + radius * c1, wPos.z + radius * s1 };
+			lineDrawer3D_->AddLine(p0, p1, color);
+		}
+	}
+}
+
 void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const MaterialData3D& material) {
 	triangleDrawer3D_->AddTriangle(worldMatrix, data, material);
 }

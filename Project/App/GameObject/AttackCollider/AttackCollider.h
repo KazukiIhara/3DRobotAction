@@ -28,9 +28,8 @@ public:
 
 	void Draw();
 
-	const Vector3& GetMinW()const;
-	const Vector3& GetMaxW()const;
 	const Vector3& GetWPos()const;
+	float GetRadius()const;
 
 	bool GetIsAlive()const;
 	HitInfo GetHitInfo()const;
@@ -55,13 +54,9 @@ private:
 	// ワールド上の座標
 	Vector3 posW_;
 
-	// ワールド上のminmax
-	Vector3 minW_;
-	Vector3 maxW_;
+	// 半径
+	float radius_;
 
-	// ローカルのminmax
-	Vector3 minL_;
-	Vector3 maxL_;
 
 	// ダメージ
 	int32_t damage_ = 0;
