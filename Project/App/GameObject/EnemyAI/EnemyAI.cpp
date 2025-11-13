@@ -92,7 +92,7 @@ RootDir EnemyAI::GetRootDir() const {
 	return rootDir_;
 }
 
-AvoidColliderAABB EnemyAI::GetAvoidCollider() const {
+AvoidCollider EnemyAI::GetAvoidCollider() const {
 	return avoidCollider_;
 }
 
