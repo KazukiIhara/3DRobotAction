@@ -8,4 +8,9 @@ FontDataContainer::FontDataContainer() {
 }
 
 FontDataContainer::~FontDataContainer() {
+
+}
+
+void FontDataContainer::LoadFont(const std::string& fontName) {
+	fontName;
 }

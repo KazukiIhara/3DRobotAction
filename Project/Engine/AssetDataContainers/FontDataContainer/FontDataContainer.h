@@ -2,6 +2,7 @@
 
 // C++
 #include <unordered_map>
+#include <string>
 
 // MyHedder
 #include "Common/Font/FontCommon.h"
@@ -14,6 +15,12 @@ public:
 	FontDataContainer();
 	~FontDataContainer();
 
-private:
+	// フォントのロード
+	void LoadFont(const std::string& fontName);
 
+
+
+private:
+	// フォントデータ
+	std::unique_ptr<std::string, FontTexture> fontDatas_;
 };
