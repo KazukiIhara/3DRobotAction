@@ -6,14 +6,16 @@
 /// <summary>
 /// 敵通常行動ステート
 /// </summary>
-class EnemyAIStateRoot:public BaseEnemyAIState {
+class EnemyAIStateRoot :public BaseEnemyAIState {
 public:
 	~EnemyAIStateRoot() = default;
 
 	void Enter(EnemyAI* enemyAI, MechCore* mechCore)override;
 	void Update(EnemyAI* enemyAI, MechCore* mechCore)override;
 	void Exit(EnemyAI* enemyAI, MechCore* mechCore)override;
-
+private:
+	// 回避処理
+	void Avoid(EnemyAI* enemyAI);
 private:
 	Vector2 targetMoveDir_ = { 0.0f,0.0f };
 	Vector2 currentMoveDir_ = { 0.0f,0.0f };

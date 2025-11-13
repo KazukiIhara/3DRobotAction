@@ -92,6 +92,23 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	enemyAI->MoveDir(currentMoveDir_);
 
 	// 回避処理
+	Avoid(enemyAI);
+
+
+	// ロックオン対象がいない場合は索敵ステートに遷移
+	if (!mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+		enemyAI->ChangeState(EnemyAIState::Search);
+		return;
+	}
+
+}
+
+void EnemyAIStateRoot::Exit([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
+
+}
+
+void EnemyAIStateRoot::Avoid(EnemyAI* enemyAI) {
+	// 回避処理
 	// 回避クールタイムの処理
 	if (avoidCoolTimer_ >= 0.0f) {
 		avoidCoolTimer_ -= MAGISYSTEM::GetDeltaTime();
@@ -126,16 +143,4 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 		}
 
 	}
-
-
-	// ロックオン対象がいない場合は索敵ステートに遷移
-	if (!mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
-		enemyAI->ChangeState(EnemyAIState::Search);
-		return;
-	}
-
-}
-
-void EnemyAIStateRoot::Exit([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
-
 }
