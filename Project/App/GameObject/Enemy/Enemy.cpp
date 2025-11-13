@@ -25,6 +25,14 @@ Enemy::Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerM
 }
 
 void Enemy::Update() {
+	// ロックオンコンポーネント用のカメラを作成、セット
+	LockOnView lockOnView{};
+	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera")) {
+		lockOnView.eye = camera->GetEye();
+		lockOnView.target = camera->GetTarget();
+	}
+	mech_->SetLockOnView(lockOnView);
+
 	// コマンド
 	InputCommand command{};
 	if (isAIActive_) {
@@ -33,14 +41,6 @@ void Enemy::Update() {
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
-
-	// ロックオンコンポーネント用のカメラを作成、セット
-	LockOnView lockOnView{};
-	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera")) {
-		lockOnView.eye = camera->GetEye();
-		lockOnView.target = camera->GetTarget();
-	}
-	mech_->SetLockOnView(lockOnView);
 
 	// 機体更新
 	mech_->Update();

@@ -26,6 +26,15 @@ enum class RootDir {
 	Right,
 };
 
+struct AvoidCollider {
+	Vector3 wPos;
+	float radius;
+
+	Vector3 target;
+	Vector3 up = { 0.0f,1.0f,0.0f };
+
+};
+
 struct AvoidColliderAABB {
 	const float localMinMax = 4.0f;
 	const float localMinMaxY = 8.0f;
