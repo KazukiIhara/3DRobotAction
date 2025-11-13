@@ -36,7 +36,7 @@ const std::vector<Bullet>& AttackObjectManager::GetBullets() {
 
 void AttackObjectManager::AddBullet(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos, int32_t damage) {
 	// コライダーを作成
-	std::shared_ptr<AttackCollider> bulletCollider = std::make_unique<AttackCollider>(tag, AttackType::Bullet, wPos, Vector3(-0.2f, -0.2f, -0.2f), Vector3(0.2f, 0.2f, 0.2f), damage);
+	std::shared_ptr<AttackCollider> bulletCollider = std::make_unique<AttackCollider>(tag, AttackType::Bullet, wPos, 0.2f, damage);
 	// コリジョンマネージャに追加
 	std::weak_ptr<AttackCollider> temp = atkColliderManager_->AddAttackCollider(std::move(bulletCollider));
 
@@ -47,7 +47,7 @@ void AttackObjectManager::AddBullet(const FriendlyTag& tag, const Vector3& dir, 
 
 void AttackObjectManager::AddRocket(const FriendlyTag& tag, const Vector3& dir, float speed, const Vector3& wPos, int32_t damage) {
 	// コライダーを作成
-	std::shared_ptr<AttackCollider> rocketCollider = std::make_unique<AttackCollider>(tag, AttackType::Rocket, wPos, Vector3(-0.6f, -0.6f, -0.6f), Vector3(0.6f, 0.6f, 0.6f), damage);
+	std::shared_ptr<AttackCollider> rocketCollider = std::make_unique<AttackCollider>(tag, AttackType::Rocket, wPos, 0.6f, damage);
 	// コリジョンマネージャに追加
 	std::weak_ptr<AttackCollider> temp = atkColliderManager_->AddAttackCollider(std::move(rocketCollider));
 
@@ -58,7 +58,7 @@ void AttackObjectManager::AddRocket(const FriendlyTag& tag, const Vector3& dir, 
 
 void AttackObjectManager::AddMissile(const FriendlyTag& tag, const MissileType& missileType, const Vector3& wPos, const Vector3& dir, int32_t damage, std::weak_ptr<MechCore> target) {
 	// コライダーを作成
-	std::shared_ptr<AttackCollider> missileCollider = std::make_unique<AttackCollider>(tag, AttackType::Missile, wPos, Vector3(-0.4f, -0.4f, -0.4f), Vector3(0.4f, 0.4f, 0.4f), damage);
+	std::shared_ptr<AttackCollider> missileCollider = std::make_unique<AttackCollider>(tag, AttackType::Missile, wPos, 0.4f, damage);
 	// コリジョンマネージャに追加
 	std::weak_ptr<AttackCollider> temp = atkColliderManager_->AddAttackCollider(std::move(missileCollider));
 

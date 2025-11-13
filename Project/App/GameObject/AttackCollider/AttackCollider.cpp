@@ -6,14 +6,13 @@ AttackCollider::AttackCollider(
 	const FriendlyTag& tag,
 	const AttackType& type,
 	const Vector3& posW,
-	const Vector3& minL,
-	const Vector3& maxL,
+	float radius,
 	int32_t damage) {
 
 	tag_ = tag;
 	type_ = type;
 	posW_ = posW;
-	radius_ = radius_;
+	radius_ = radius;
 	damage_ = damage;
 
 	Update();
