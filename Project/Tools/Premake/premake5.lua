@@ -76,7 +76,8 @@ project "3DRobotAction" -- プロジェクト名
 
       "../../Externals",
       "../../Externals/assimp/include",
-      "../../Externals/DirectXMesh/Inc"
+      "../../Externals/DirectXMesh/Inc",
+      "../../Externals/stb",
     } 
 
    dependson { "DirectXTex","imgui", "DirectXMesh" } -- 依存していることを指定

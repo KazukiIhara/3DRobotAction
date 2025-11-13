@@ -1,11 +1,10 @@
 #pragma once
 
 // C++
-#include <map>
 #include <unordered_map>
 #include <string>
-#include <vector>
 
+// MyHedder
 #include "Structs/TextureStruct.h"
 
 // 前方宣言
