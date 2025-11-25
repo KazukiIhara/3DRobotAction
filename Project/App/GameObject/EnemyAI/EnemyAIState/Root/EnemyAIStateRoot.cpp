@@ -114,7 +114,7 @@ void EnemyAIStateRoot::Avoid(EnemyAI* enemyAI) {
 		avoidCoolTimer_ -= MAGISYSTEM::GetDeltaTime();
 	} else {
 		// 弾のリストを取得
-		const std::vector<Bullet> bullets_ = enemyAI->GetBulletManager()->GetBullets();
+		const std::vector<Bullet> bullets_ = enemyAI->GetAttackObjectManager()->GetBullets();
 
 		if (!bullets_.empty()) {
 			// 回避用コライダー取得

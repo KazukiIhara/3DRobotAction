@@ -40,8 +40,15 @@ struct AvoidCollider {
 	float farClip = 10.0f;
 };
 
+// 
+// 前方宣言
+// 
+
 // 弾マネージャ
 class AttackObjectManager;
+
+// 攻撃コリジョンマネージャ
+class AttackCollisionManager;
 
 /// <summary>
 /// 敵のAIクラス
@@ -76,7 +83,7 @@ public:
 	void SetRootDir(RootDir dir);
 
 	// 弾マネージャを取得
-	AttackObjectManager* GetBulletManager();
+	AttackObjectManager* GetAttackObjectManager();
 
 private:
 	// 対応するステートを取得
@@ -84,6 +91,9 @@ private:
 
 	// 入力された方向をカメラに対しての向きに直す
 	void CulDirectionWithCamera(MechCore* mechCore);
+
+	// 回避用のコライダーを更新
+	void UpdateAvoidCollider(MechCore* mechCore);
 
 private:
 	// 自機のポインタ
@@ -95,9 +105,6 @@ private:
 	// 出力するコマンド
 	InputCommand command_;
 
-	// 索敵時のロックオンビュー
-	LockOnView lockOnView_;
-
 	// ステートテーブル
 	std::unordered_map<EnemyAIState, std::shared_ptr<BaseEnemyAIState>> states_;
 	// 現在のステート
@@ -106,12 +113,19 @@ private:
 	// 現在の旋回方向
 	RootDir rootDir_ = RootDir::Left;
 
-	// 回避用コライダーのトランスレート
-	Vector3 avoidColliderTranslate_ = { 0.0f,0.0f,8.0f };
-
 	// 回避用コライダー
 	AvoidCollider avoidCollider_;
 
 	// 弾マネージャのポインタ
 	AttackObjectManager* attackObjectManager_ = nullptr;
+
+	// 攻撃コライダーのマネージャ
+	AttackCollisionManager* attackCollisionManager_ = nullptr;
+
+	// 
+	// パラメータ
+	// 
+
+	// 機体周辺探索用の半径
+	float avoidRadius_ = 3.0f;
 };

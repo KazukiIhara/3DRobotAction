@@ -44,18 +44,11 @@ InputCommand EnemyAI::Update() {
 	command_ = InputCommand{};
 
 	// 回避用コライダーの更新
-	const Matrix4x4 lMat = MakeTranslateMatrix(avoidColliderTranslate_);
-	const Matrix4x4 wMat = lMat * mechCore_->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldMatrix();
-	const Vector3 wPos = ExtractionWorldPos(wMat);
-
-	const float size = avoidCollider_.localMinMax;
-	const float sizeY = avoidCollider_.localMinMaxY;
-	avoidCollider_.min = { wPos.x - size, wPos.y - sizeY,wPos.z - size };
-	avoidCollider_.max = { wPos.x + size, wPos.y + sizeY,wPos.z + size };
+	UpdateAvoidCollider(mechCore_);
 
 	// コライダーをデバッグ描画
 #if defined(DEBUG) || defined(DEVELOP)
-	MAGISYSTEM::DrawLineAABB(avoidCollider_.min, avoidCollider_.max, Color::Green);
+
 #endif
 
 	// ステートごとの更新
@@ -128,7 +121,7 @@ void EnemyAI::SetRootDir(RootDir dir) {
 	rootDir_ = dir;
 }
 
-AttackObjectManager* EnemyAI::GetBulletManager() {
+AttackObjectManager* EnemyAI::GetAttackObjectManager() {
 	return attackObjectManager_;
 }
 
@@ -171,4 +164,18 @@ void EnemyAI::CulDirectionWithCamera(MechCore* mechCore) {
 
 	// 移動方向をセット
 	command_.moveDirection = Normalize(moveDir);
+}
+
+void EnemyAI::UpdateAvoidCollider(MechCore* mechCore) {
+	// ロックオン用のビュー情報を取得
+	const LockOnView lockOnView = mechCore->GetLockOnView();
+
+	// 目の座標を取得
+	avoidCollider_.eye = lockOnView.eye;
+
+	// 目標の座標を取得
+	avoidCollider_.target = lockOnView.target;
+
+	// 胴体のワールド座標をセット
+	avoidCollider_.wPos = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 }
