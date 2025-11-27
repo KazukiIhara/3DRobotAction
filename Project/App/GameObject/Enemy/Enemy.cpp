@@ -7,7 +7,8 @@
 
 Enemy::Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	// 機体の作成
-	mech_ = std::make_unique<MechCore>(Vector3(0.0f, 0.0f, 30.0f), FriendlyTag::EnemySide, bulletManager, true);
+	const Vector3 kEnemyPopPosition = { 0.0f,0.0f,30.0f };
+	mech_ = std::make_unique<MechCore>(kEnemyPopPosition, FriendlyTag::EnemySide, bulletManager, true);
 
 	// 三人称視点カメラの作成
 	std::unique_ptr<MechCamera> followCamera = std::make_unique<MechCamera>("MainCamera", std::numbers::pi_v<float>, mech_.get());
@@ -25,6 +26,14 @@ Enemy::Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerM
 }
 
 void Enemy::Update() {
+	// ロックオンコンポーネント用のカメラを作成、セット
+	LockOnView lockOnView{};
+	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera")) {
+		lockOnView.eye = camera->GetEye();
+		lockOnView.target = camera->GetTarget();
+	}
+	mech_->SetLockOnView(lockOnView);
+
 	// コマンド
 	InputCommand command{};
 	if (isAIActive_) {
@@ -33,14 +42,6 @@ void Enemy::Update() {
 
 	// コマンドセット
 	mech_->SetInputCommand(command);
-
-	// ロックオンコンポーネント用のカメラを作成、セット
-	LockOnView lockOnView{};
-	if (auto camera = mech_->GetGameObject().lock()->GetCamera3D("MainCamera")) {
-		lockOnView.eye = camera->GetEye();
-		lockOnView.target = camera->GetTarget();
-	}
-	mech_->SetLockOnView(lockOnView);
 
 	// 機体更新
 	mech_->Update();

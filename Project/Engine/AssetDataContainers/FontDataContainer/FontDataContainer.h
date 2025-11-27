@@ -15,11 +15,6 @@ public:
 	FontDataContainer();
 	~FontDataContainer();
 
-	// フォントのロード
-	void LoadFont(const std::string& fontName);
-
-
-
 private:
 	// フォントデータ
 	std::unordered_map<std::string, FontTexture> fontDatas_;

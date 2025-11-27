@@ -92,40 +92,7 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	enemyAI->MoveDir(currentMoveDir_);
 
 	// 回避処理
-	// 回避クールタイムの処理
-	if (avoidCoolTimer_ >= 0.0f) {
-		avoidCoolTimer_ -= MAGISYSTEM::GetDeltaTime();
-	} else {
-		// 弾のリストを取得
-		const std::vector<Bullet> bullets_ = enemyAI->GetBulletManager()->GetBullets();
-
-		if (!bullets_.empty()) {
-			// 回避用コライダー取得
-			const Vector3 aMin = enemyAI->GetAvoidCollider().min;
-			const Vector3 aMax = enemyAI->GetAvoidCollider().max;
-
-			for (auto bullet : bullets_) {
-				AttackCollider* collider = bullet.GetAttackCollider();
-				// 自軍の弾だったら処理しない
-				if (collider->GetFriendlyTag() == FriendlyTag::EnemySide) {
-					continue;
-				}
-				const Vector3 bulletPos = bullet.GetWorldPos();
-
-				// 弾が回避用コライダーの中にあったら回避行動
-				if (bulletPos.x >= aMin.x && bulletPos.x <= aMax.x &&
-					bulletPos.y >= aMin.y && bulletPos.y <= aMax.y &&
-					bulletPos.z >= aMin.z && bulletPos.z <= aMax.z) {
-					avoidCoolTimer_ = Random::GenerateFloat(0.0f, 2.0f);
-					// 回避ステートに遷移
-					enemyAI->ChangeState(EnemyAIState::Avoid);
-					return;
-				}
-
-			}
-		}
-
-	}
+	Avoid(enemyAI);
 
 
 	// ロックオン対象がいない場合は索敵ステートに遷移
@@ -138,4 +105,92 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 
 void EnemyAIStateRoot::Exit([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
 
+}
+
+void EnemyAIStateRoot::Avoid(EnemyAI* enemyAI) {
+	// 回避処理
+	// 回避クールタイムの処理
+	if (avoidCoolTimer_ >= 0.0f) {
+		avoidCoolTimer_ -= MAGISYSTEM::GetDeltaTime();
+	} else {
+
+		// 回避用コライダー取得
+		const AvoidCollider avoidCollider = enemyAI->GetAvoidCollider();
+
+		// FOV ラジアン変換
+		const float fovYRad = avoidCollider.fovY * (std::numbers::pi_v<float> / 180.0f);
+		const float aspect = 16.0f / 9.0f;
+
+		// View / Projection / VP 行列
+		const Matrix4x4 V = MakeLookAtMatrix(avoidCollider.eye, avoidCollider.target);
+		const Matrix4x4 P = MakePerspectiveFovMatrix(
+			fovYRad,
+			aspect,
+			avoidCollider.nearClip,
+			avoidCollider.farClip
+		);
+		const Matrix4x4 VP = V * P;
+
+		const float radiusSq = avoidCollider.radius * avoidCollider.radius;
+
+		// ミサイルのリストを取得
+
+		// ミサイルの回避処理
+
+
+		// 弾のリストを取得
+		const std::vector<Bullet> bullets_ = enemyAI->GetAttackObjectManager()->GetBullets();
+
+		// 弾の回避処理
+		if (!bullets_.empty()) {
+			for (auto bullet : bullets_) {
+				AttackCollider* collider = bullet.GetAttackCollider();
+				// 自軍の弾だったら処理しない
+				if (collider->GetFriendlyTag() == FriendlyTag::EnemySide) {
+					continue;
+				}
+
+				// 弾の座標を取得
+				const Vector3 bulletPos = bullet.GetWorldPos();
+
+				// 周辺探索半径に入っていたら遷移
+				{
+					const Vector3 diff = bulletPos - avoidCollider.wPos;
+					if (LengthSquared(diff) <= radiusSq) {
+						avoidCoolTimer_ = Random::GenerateFloat(0.0f, 2.0f);
+						enemyAI->ChangeState(EnemyAIState::Avoid);
+						return;
+					}
+				}
+
+				// 視錐台判定
+				Vector4 posH{ bulletPos.x,bulletPos.y,bulletPos.z,1.0f };
+				Vector4 clip = Transform(posH, VP);
+
+				// 背面判定
+				if (clip.w <= 0.0f) {
+					continue;
+				}
+
+				Vector3 ndc{ clip.x, clip.y, clip.z };
+				ndc /= clip.w;
+
+				// NDC 範囲外 → 視錐台外
+				if (std::abs(ndc.x) > 1.0f ||
+					std::abs(ndc.y) > 1.0f ||
+					ndc.z < 0.0f || ndc.z > 1.0f) {
+					continue;
+				}
+
+				// ここまで来たら視錐台内に入っているので遷移
+				avoidCoolTimer_ = Random::GenerateFloat(0.0f, 2.0f);
+				enemyAI->ChangeState(EnemyAIState::Avoid);
+				return;
+
+			}
+		}
+
+
+
+	}
 }

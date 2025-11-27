@@ -26,16 +26,30 @@ enum class RootDir {
 	Right,
 };
 
-struct AvoidColliderAABB {
-	const float localMinMax = 4.0f;
-	const float localMinMaxY = 8.0f;
+struct AvoidCollider {
+	// 胴体のワールド座標
+	Vector3 wPos;
+	// 周辺探索用の半径
+	float radius;
 
-	Vector3 min;
-	Vector3 max;
+	// カメラコライダー用データ
+	Vector3 eye; // 機体の目の座標
+	Vector3 target; // カメラの向いている方向 MechCoreのLockOnViewから取得
+	Vector3 up = { 0.0f,1.0f,0.0f };
+	float nearClip = 0.1f;
+	float farClip = 5.0f;
+	float fovY = 65.0f;
 };
+
+// 
+// 前方宣言
+// 
 
 // 弾マネージャ
 class AttackObjectManager;
+
+// 攻撃コリジョンマネージャ
+class AttackCollisionManager;
 
 /// <summary>
 /// 敵のAIクラス
@@ -55,7 +69,7 @@ public:
 	RootDir GetRootDir() const;
 
 	// 回避用のコライダーを取得
-	AvoidColliderAABB GetAvoidCollider() const;
+	AvoidCollider GetAvoidCollider()const;
 
 	//
 	// 各ステートからコマンドを入力する際に呼ぶ関数
@@ -70,7 +84,7 @@ public:
 	void SetRootDir(RootDir dir);
 
 	// 弾マネージャを取得
-	AttackObjectManager* GetBulletManager();
+	AttackObjectManager* GetAttackObjectManager();
 
 private:
 	// 対応するステートを取得
@@ -78,6 +92,9 @@ private:
 
 	// 入力された方向をカメラに対しての向きに直す
 	void CulDirectionWithCamera(MechCore* mechCore);
+
+	// 回避用のコライダーを更新
+	void UpdateAvoidCollider(MechCore* mechCore);
 
 private:
 	// 自機のポインタ
@@ -88,9 +105,6 @@ private:
 
 	// 出力するコマンド
 	InputCommand command_;
-	
-	// 索敵時のロックオンビュー
-	LockOnView lockOnView_;
 
 	// ステートテーブル
 	std::unordered_map<EnemyAIState, std::shared_ptr<BaseEnemyAIState>> states_;
@@ -100,12 +114,19 @@ private:
 	// 現在の旋回方向
 	RootDir rootDir_ = RootDir::Left;
 
-	// 回避用コライダーのトランスレート
-	Vector3 avoidColliderTranslate_ = { 0.0f,0.0f,8.0f };
-
 	// 回避用コライダー
-	AvoidColliderAABB avoidCollider_;
+	AvoidCollider avoidCollider_;
 
 	// 弾マネージャのポインタ
 	AttackObjectManager* attackObjectManager_ = nullptr;
+
+	// 攻撃コライダーのマネージャ
+	AttackCollisionManager* attackCollisionManager_ = nullptr;
+
+	// 
+	// パラメータ
+	// 
+
+	// 機体周辺探索用の半径
+	float avoidRadius_ = 3.0f;
 };

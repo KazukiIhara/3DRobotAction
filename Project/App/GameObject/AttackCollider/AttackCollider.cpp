@@ -6,18 +6,13 @@ AttackCollider::AttackCollider(
 	const FriendlyTag& tag,
 	const AttackType& type,
 	const Vector3& posW,
-	const Vector3& minL,
-	const Vector3& maxL,
+	float radius,
 	int32_t damage) {
 
 	tag_ = tag;
-
 	type_ = type;
-
 	posW_ = posW;
-	minL_ = minL;
-	maxL_ = maxL;
-
+	radius_ = radius;
 	damage_ = damage;
 
 	Update();
@@ -26,9 +21,6 @@ AttackCollider::AttackCollider(
 void AttackCollider::Update() {
 	// 衝突情報をリセット
 	hitInfo_ = AttackCollider::HitInfo{};
-
-	minW_ = posW_ + minL_;
-	maxW_ = posW_ + maxL_;
 }
 
 void AttackCollider::Draw() {
@@ -37,23 +29,19 @@ void AttackCollider::Draw() {
 	case AttackType::Bullet:
 	case AttackType::Rocket:
 	case AttackType::Missile:
-		MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Crimson);
+		MAGISYSTEM::DrawLineSphere(posW_, radius_, Color::Crimson);
 		break;
 	case AttackType::Melee:
 		break;
 	}
 }
 
-const Vector3& AttackCollider::GetMinW() const {
-	return minW_;
-}
-
-const Vector3& AttackCollider::GetMaxW() const {
-	return maxW_;
-}
-
 const Vector3& AttackCollider::GetWPos() const {
 	return posW_;
+}
+
+float AttackCollider::GetRadius() const {
+	return radius_;
 }
 
 bool AttackCollider::GetIsAlive()const {

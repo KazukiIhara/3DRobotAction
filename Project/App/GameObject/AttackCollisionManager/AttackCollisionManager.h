@@ -30,6 +30,10 @@ public:
 private:
 	// AABB同士の当たり判定
 	bool IsCollisionAABB(const Vector3& minA, const Vector3& maxA, const Vector3& minB, const Vector3& maxB);
+	// 球体同士の当たり判定
+	bool IsCollisionSphereToSphere(const Vector3& posA, float radiusA, const Vector3& posB, float radiusB);
+	// AABBと球体の当たり判定
+	bool IsCollisionAABBToSphere(const Vector3& minA, const Vector3& maxA, const Vector3& posB, float radiusB);
 
 private:
 	// 機体のリスト
