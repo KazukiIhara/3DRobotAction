@@ -152,7 +152,7 @@ void EnemyAI::CulDirectionWithCamera(MechCore* mechCore) {
 			forward = mainCam->GetTarget() - mainCam->GetEye();
 			forward.y = 0.0f;
 			forward = Normalize(forward);
-			right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+			right = Normalize(Cross(MakeRightVector3(), forward));
 
 			const Vector3 tempDir = Normalize(right * inputMoveDir.x + forward * inputMoveDir.y);
 
