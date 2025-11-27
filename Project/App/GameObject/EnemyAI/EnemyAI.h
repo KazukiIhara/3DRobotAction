@@ -37,7 +37,8 @@ struct AvoidCollider {
 	Vector3 target; // カメラの向いている方向 MechCoreのLockOnViewから取得
 	Vector3 up = { 0.0f,1.0f,0.0f };
 	float nearClip = 0.1f;
-	float farClip = 10.0f;
+	float farClip = 5.0f;
+	float fovY = 65.0f;
 };
 
 // 
