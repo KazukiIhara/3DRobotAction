@@ -1,6 +1,9 @@
 #include "DeltaTimer.h"
 
+#include <algorithm>
+
 #include "Logger/Logger.h"
+
 
 DeltaTimer::DeltaTimer() {
 	LARGE_INTEGER freq;
@@ -31,6 +34,9 @@ void DeltaTimer::Update() {
 	lastTime_ = current;
 
 	deltaTime_ = static_cast<float>(deltaTime);
+
+	// 異常な値にならないようにクランプする
+	deltaTime_ = std::clamp(deltaTime_, 0.0f, 0.1f);
 }
 
 float DeltaTimer::GetDeltaTime() const {

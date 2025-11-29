@@ -32,7 +32,6 @@ enum class FinishJudgment {
 struct PlaySceneInfo {
 	int32_t battleTime = 90;
 	FinishJudgment judge;
-	bool finish = false;
 	bool isPause = false;
 };
 
@@ -40,7 +39,7 @@ struct PlaySceneInfo {
 /// プレイシーンの状態
 /// </summary>
 enum class PlaySceneState {
-	Init,
+	Start,
 	Play,
 	Finish,
 };
@@ -58,6 +57,10 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Finalize() override;
+
+private:
+	// 開始ステート更新
+	void StartStateUpdate();
 
 private:
 	// カメラ
@@ -90,6 +93,8 @@ private:
 	// 弾のマネージャ
 	std::unique_ptr<AttackObjectManager> attackObjectManger_;
 
+	// シーンのステート
+	PlaySceneState playSceneState_;
 
 	// ポストエフェクトの用の変数
 	float vignetteScale_ = 18.0f;
@@ -100,6 +105,12 @@ private:
 
 	// プレイシーンの情報
 	PlaySceneInfo info;
+
+	// 最初のフレーム用フラグ
+	bool isFirstFrame_ = true;
+
+	// プレイシーン開始演出のタイマー
+	float startSceneTimer_ = 3.0f;
 
 	// 戦闘タイマー
 	float tempBattleTime_ = 0.0;

@@ -114,8 +114,10 @@ void Player::Update() {
 		command.moveDirection = Normalize(moveDir);
 	}
 
-	// コマンドセット
-	mech_->SetInputCommand(command);
+	if (isOperation_) {
+		// コマンドセット
+		mech_->SetInputCommand(command);
+	}
 
 	// ロックオンコンポーネント用のカメラを作成、セット
 	LockOnView lockOnView{};
@@ -149,5 +151,9 @@ void Player::SetBossMech(std::weak_ptr<MechCore> bossMechCore) {
 
 std::weak_ptr<MechCore> Player::GetMechCore() {
 	return mech_;
+}
+
+void Player::SetIsOperation(bool isOperation) {
+	isOperation_ = isOperation;
 }
 
