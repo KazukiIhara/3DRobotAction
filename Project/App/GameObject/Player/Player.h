@@ -28,6 +28,9 @@ public:
 	// 機体を取得
 	std::weak_ptr<MechCore> GetMechCore();
 
+	// 操作可能フラグをセット
+	void SetIsOperation(bool isOperation);
+
 private:
 	// 機体クラス
 	std::shared_ptr<MechCore> mech_ = nullptr;
@@ -35,6 +38,8 @@ private:
 	// プレイヤーUIクラス
 	std::unique_ptr<PlayerUI> playerUI_ = nullptr;
 
+	// プレイヤー操作可能フラグ
+	bool isOperation_ = false;
 
 	// デバッグ用変数
 	bool isBreak_ = false;

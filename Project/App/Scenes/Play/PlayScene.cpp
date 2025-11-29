@@ -43,6 +43,9 @@ void PlayScene::Initialize() {
 	// 敵作成
 	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), player_->GetMechCore());
 
+	// 最初はAI無効
+	enemy_->SetIsAIActive(false);
+
 	// プレイヤーのターゲット対象に敵を追加
 	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
 	// エネミーのターゲット対象にプレイヤーを追加
@@ -93,6 +96,10 @@ void PlayScene::Initialize() {
 	finishSpriteMatData_.anchorPoint = { 0.5f,0.5f };
 	finishSpriteMatData_.textureName = "YouWin.png";
 
+
+	// シーン中のフェーズ処理用変数
+	playSceneState_ = PlaySceneState::Start;
+
 }
 
 void PlayScene::Update() {
@@ -141,10 +148,7 @@ void PlayScene::Update() {
 	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
 
 
-	// 
 	// タイマー更新
-	// 
-
 	tempBattleTime_ += MAGISYSTEM::GetDeltaTime();
 
 	// 一秒経ったらタイマーをマイナス
@@ -171,50 +175,82 @@ void PlayScene::Update() {
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
 
-	// 
-	// シーン終了判定
-	// 
+	// シーンごとの更新処理
+	switch (playSceneState_) {
+		case PlaySceneState::Start:
+			// 敵AI有効
+			enemy_->SetIsAIActive(false);
+			// プレイヤー操作無効
+			player_->SetIsOperation(false);
 
-	if (!info.finish) {
-		if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-			info.judge = FinishJudgment::Enemy;
-			info.finish = true;
-		}
+			// 開始ステートタイマー更新
+			startSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
 
-		if (enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-			info.judge = FinishJudgment::Player;
-			info.finish = true;
-		}
+			// プレイステートに移行
+			if (startSceneTimer_ <= 0.0f) {
+				playSceneState_ = PlaySceneState::Play;
+			}
 
-		if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0 && enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-			info.judge = FinishJudgment::Draw;
-			info.finish = true;
-		}
-	}
+			break;
+		case PlaySceneState::Play:
+			// 敵AI有効
+			enemy_->SetIsAIActive(true);
+			// プレイヤー操作有効
+			player_->SetIsOperation(true);
 
-	if (info.battleTime == 0) {
-		// 体力割合が多いほうが勝利
-		float playerHPRaito = player_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
-		float enemyHPraito = enemy_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
 
-		if (playerHPRaito > enemyHPraito) {
-			info.judge = FinishJudgment::Player;
-		} else if (enemyHPraito < playerHPRaito) {
-			info.judge = FinishJudgment::Enemy;
-		} else {
-			info.judge = FinishJudgment::Draw;
-		}
+			// 勝敗判定
+			if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+				info.judge = FinishJudgment::Enemy;
+				playSceneState_ = PlaySceneState::Finish;
+			}
 
-		info.finish = true;
-	}
+			if (enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+				info.judge = FinishJudgment::Player;
+				playSceneState_ = PlaySceneState::Finish;
+			}
 
-	if (info.finish) {
-		enemy_->SetIsAIActive(false);
-		finishSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
-	}
+			if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0 && enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+				info.judge = FinishJudgment::Draw;
+				playSceneState_ = PlaySceneState::Finish;
+			}
 
-	if (finishSceneTimer_ <= 0.0f) {
-		ChangeScene("Title");
+			// 時間切れの場合
+			if (info.battleTime == 0) {
+				// 体力割合が多いほうが勝利
+				float playerHPRaito = player_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
+				float enemyHPraito = enemy_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
+
+				if (playerHPRaito > enemyHPraito) {
+					info.judge = FinishJudgment::Player;
+				} else if (enemyHPraito < playerHPRaito) {
+					info.judge = FinishJudgment::Enemy;
+				} else {
+					info.judge = FinishJudgment::Draw;
+				}
+
+				playSceneState_ = PlaySceneState::Finish;
+			}
+
+			break;
+		case PlaySceneState::Finish:
+			// 敵AIを停止
+			enemy_->SetIsAIActive(false);
+
+			// 敵勝利時は自機の操作を停止
+			if (info.judge == FinishJudgment::Enemy) {
+				player_->SetIsOperation(false);
+			}
+
+			// 終了シーンタイマー更新
+			finishSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
+
+			// シーン終了
+			if (finishSceneTimer_ <= 0.0f) {
+				ChangeScene("Title");
+			}
+
+			break;
 	}
 
 }
@@ -232,28 +268,37 @@ void PlayScene::Draw() {
 	// 攻撃判定マネージャ描画
 	attackCollisionManager_->Draw();
 
-	// 戦闘終了時の描画
-	if (info.finish) {
-		switch (info.judge) {
-			case FinishJudgment::Player:
-				finishSpriteMatData_.textureName = "YouWin.png";
-				MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
-				break;
-			case FinishJudgment::Enemy:
-				finishSpriteMatData_.textureName = "YouLose.png";
-				MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
-				break;
-			case FinishJudgment::Draw:
-				finishSpriteMatData_.textureName = "YouWin.png";
-				MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
-				break;
-			default:
-				break;
-		}
+	// ステートごとの描画処理
+	switch (playSceneState_) {
+		case PlaySceneState::Start:
+			break;
+		case PlaySceneState::Play:
+			break;
+		case PlaySceneState::Finish:
+			switch (info.judge) {
+				case FinishJudgment::Player:
+					finishSpriteMatData_.textureName = "YouWin.png";
+					MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
+					break;
+				case FinishJudgment::Enemy:
+					finishSpriteMatData_.textureName = "YouLose.png";
+					MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
+					break;
+				case FinishJudgment::Draw:
+					finishSpriteMatData_.textureName = "YouWin.png";
+					MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
+					break;
+				default:
+					break;
+			}
+			break;
 	}
-
 }
 
 void PlayScene::Finalize() {
 	MAGISYSTEM::DeleteAll();
+}
+
+void PlayScene::StartStateUpdate() {
+
 }
