@@ -91,6 +91,51 @@ void PlayScene::Initialize() {
 	startUiMatR_.textureName = "StartUI_R.png";
 	startUiMatT_[1].textureName = "StartUI_T.png";
 
+
+	battleUiBPosS_ = { 610.0f,-100.0f };
+	battleUiAPosS_ = { 720.0f,-300.0f };
+	battleUiTPosS_[0] = { 830.0f,-500.0f };
+	battleUiTPosS_[1] = { 940.0f,-700.0f };
+	battleUiLPosS_ = { 1050.0f,-900.0f };
+	battleUiEPosS_ = { 1160.0f,-1100.0f };
+
+	startUiSPosS_ = { 665.0f,1180.0f };
+	startUiTPosS_[0] = { 775.0f,1380.0f };
+	startUiAPosS_ = { 885.0f,1580.0f };
+	startUiRPosS_ = { 995.0f,1780.0f };
+	startUiTPosS_[1] = { 1105.0f,1980.0f };
+
+	battleUiBPosE_ = { 610.0f,330.0f };
+	battleUiAPosE_ = { 720.0f,330.0f };
+	battleUiTPosE_[0] = { 830.0f,330.0f };
+	battleUiTPosE_[1] = { 940.0f,330.0f };
+	battleUiLPosE_ = { 1050.0f,330.0f };
+	battleUiEPosE_ = { 1160.0f,330.0f };
+
+	startUiSPosE_ = { 665.0f,490.0f };
+	startUiTPosE_[0] = { 775.0f,490.0f };
+	startUiAPosE_ = { 885.0f,490.0f };
+	startUiRPosE_ = { 995.0f,490.0f };
+	startUiTPosE_[1] = { 1105.0f,490.0f };
+
+
+	animBattleB_ = SimpleAnimation<Vector2>(battleUiBPosS_, battleUiBPosE_);
+	animBattleA_ = SimpleAnimation<Vector2>(battleUiAPosS_, battleUiAPosE_);
+	animBattleL_ = SimpleAnimation<Vector2>(battleUiLPosS_, battleUiLPosE_);
+	animBattleE_ = SimpleAnimation<Vector2>(battleUiEPosS_, battleUiEPosE_);
+
+	for (int i = 0; i < 2; i++) {
+		animBattleT_[i] = SimpleAnimation<Vector2>(battleUiTPosS_[i], battleUiTPosE_[i]);
+	}
+
+	animStartS_ = SimpleAnimation<Vector2>(startUiSPosS_, startUiSPosE_);
+	animStartA_ = SimpleAnimation<Vector2>(startUiAPosS_, startUiAPosE_);
+	animStartR_ = SimpleAnimation<Vector2>(startUiRPosS_, startUiRPosE_);
+
+	for (int i = 0; i < 2; i++) {
+		animStartT_[i] = SimpleAnimation<Vector2>(startUiTPosS_[i], startUiTPosE_[i]);
+	}
+
 	//
 	// 終了時UIの設定
 	//
@@ -212,21 +257,40 @@ void PlayScene::Update() {
 	// シーンごとの更新処理
 	switch (playSceneState_) {
 		case PlaySceneState::Start:
+		{
 			// 敵AI有効
 			enemy_->SetIsAIActive(false);
 			// プレイヤー操作無効
 			player_->SetIsOperation(false);
 
 			// 開始ステートタイマー更新
-			//startSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
+			startSceneTimer_ += MAGISYSTEM::GetDeltaTime();
 
 			// プレイステートに移行
-			if (startSceneTimer_ <= 0.0f) {
+			if (startSceneTimer_ >= kStartSceneTime_) {
 				playSceneState_ = PlaySceneState::Play;
 			}
 
-
 			// UI更新
+			const float t = std::min(startSceneTimer_ / kStartSceneAnimTime_, 1.0f);
+
+			battleUiBPos_ = animBattleB_.GetValue(t);
+			battleUiAPos_ = animBattleA_.GetValue(t);
+			battleUiLPos_ = animBattleL_.GetValue(t);
+			battleUiEPos_ = animBattleE_.GetValue(t);
+
+			for (int i = 0; i < 2; i++) {
+				battleUiTPos_[i] = animBattleT_[i].GetValue(t);
+			}
+
+			startUiSPos_ = animStartS_.GetValue(t);
+			startUiAPos_ = animStartA_.GetValue(t);
+			startUiRPos_ = animStartR_.GetValue(t);
+
+			for (int i = 0; i < 2; i++) {
+				startUiTPos_[i] = animStartT_[i].GetValue(t);
+			}
+
 
 			// Battle UI
 			battleUiB_.position = battleUiBPos_;
@@ -246,8 +310,8 @@ void PlayScene::Update() {
 			for (int i = 0; i < 2; i++) {
 				startUiT_[i].position = startUiTPos_[i];
 			}
-
-			break;
+		}
+		break;
 		case PlaySceneState::Play:
 			// 敵AI有効
 			enemy_->SetIsAIActive(true);
@@ -347,6 +411,7 @@ void PlayScene::Draw() {
 
 			break;
 		case PlaySceneState::Play:
+
 			break;
 		case PlaySceneState::Finish:
 			switch (info.judge) {

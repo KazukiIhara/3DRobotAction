@@ -5,6 +5,7 @@
 
 #include "MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
+#include "SimpleAnimation/SimpleAnimation.h"
 
 using namespace MAGIUtility;
 
@@ -42,6 +43,12 @@ enum class PlaySceneState {
 	Start,
 	Play,
 	Finish,
+};
+
+// 開始アニメーションのフェーズ
+enum class StartAnimPhase {
+	In,
+	Out,
 };
 
 /// <summary>
@@ -106,7 +113,10 @@ private:
 	bool isFirstFrame_ = true;
 
 	// プレイシーン開始演出のタイマー
-	float startSceneTimer_ = 3.0f;
+	float startSceneTimer_ = 0.0f;
+	const float kStartSceneTime_ = 3.0f;
+	const float kStartSceneAnimTime_ = 0.8f;
+	const float kStartSceneEndAnimTime_ = 1.0f;
 
 	// 戦闘タイマー
 	float tempBattleTime_ = 0.0;
@@ -119,7 +129,6 @@ private:
 	// 開始シーンのスプライトデータ
 
 	// BATTLE START
-
 	SpriteData battleUiB_;
 	SpriteData battleUiA_;
 	SpriteData battleUiT_[2];
@@ -143,10 +152,28 @@ private:
 	SpriteMaterialData startUiMatA_;
 	SpriteMaterialData startUiMatR_;
 
-	// 
-	// デバッグ用
-	// 
-	
+	Vector2 battleUiBPosS_{};
+	Vector2 battleUiAPosS_{};
+	Vector2 battleUiTPosS_[2]{};
+	Vector2 battleUiLPosS_{};
+	Vector2 battleUiEPosS_{};
+
+	Vector2 startUiSPosS_{};
+	Vector2 startUiTPosS_[2]{};
+	Vector2 startUiAPosS_{};
+	Vector2 startUiRPosS_{};
+
+	Vector2 battleUiBPosE_{};
+	Vector2 battleUiAPosE_{};
+	Vector2 battleUiTPosE_[2]{};
+	Vector2 battleUiLPosE_{};
+	Vector2 battleUiEPosE_{};
+
+	Vector2 startUiSPosE_{};
+	Vector2 startUiTPosE_[2]{};
+	Vector2 startUiAPosE_{};
+	Vector2 startUiRPosE_{};
+
 	Vector2 battleUiBPos_{};
 	Vector2 battleUiAPos_{};
 	Vector2 battleUiTPos_[2]{};
@@ -158,5 +185,16 @@ private:
 	Vector2 startUiAPos_{};
 	Vector2 startUiRPos_{};
 
+
+	SimpleAnimation<Vector2> animBattleB_;
+	SimpleAnimation<Vector2> animBattleA_;
+	SimpleAnimation<Vector2> animBattleT_[2];
+	SimpleAnimation<Vector2> animBattleL_;
+	SimpleAnimation<Vector2> animBattleE_;
+
+	SimpleAnimation<Vector2> animStartS_;
+	SimpleAnimation<Vector2> animStartT_[2];
+	SimpleAnimation<Vector2> animStartA_;
+	SimpleAnimation<Vector2> animStartR_;
 
 };
