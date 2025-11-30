@@ -92,12 +92,12 @@ void PlayScene::Initialize() {
 	startUiMatT_[1].textureName = "StartUI_T.png";
 
 
-	battleUiBPosS_ = { 610.0f,-100.0f };
-	battleUiAPosS_ = { 720.0f,-300.0f };
-	battleUiTPosS_[0] = { 830.0f,-500.0f };
-	battleUiTPosS_[1] = { 940.0f,-700.0f };
-	battleUiLPosS_ = { 1050.0f,-900.0f };
-	battleUiEPosS_ = { 1160.0f,-1100.0f };
+	battleUiBPosS_ = { 610.0f,-500.0f };
+	battleUiAPosS_ = { 720.0f,-700.0f };
+	battleUiTPosS_[0] = { 830.0f,-900.0f };
+	battleUiTPosS_[1] = { 940.0f,-1100.0f };
+	battleUiLPosS_ = { 1050.0f,-1300.0f };
+	battleUiEPosS_ = { 1160.0f,-1500.0f };
 
 	startUiSPosS_ = { 665.0f,1180.0f };
 	startUiTPosS_[0] = { 775.0f,1380.0f };
@@ -118,22 +118,49 @@ void PlayScene::Initialize() {
 	startUiRPosE_ = { 995.0f,490.0f };
 	startUiTPosE_[1] = { 1105.0f,490.0f };
 
+	battleUiBPosF_ = { 610.0f - 400.0f,-500.0f };
+	battleUiAPosF_ = { 720.0f - 200.0f,-500.0f };
+	battleUiTPosF_[0] = { 830.0f - 100.0f,-500.0f };
+	battleUiTPosF_[1] = { 940.0f + 100.0f,-500.0f };
+	battleUiLPosF_ = { 1050.0f + 200.0f,-500.0f };
+	battleUiEPosF_ = { 1160.0f + 400.0f,-500.0f };
 
-	animBattleB_ = SimpleAnimation<Vector2>(battleUiBPosS_, battleUiBPosE_);
-	animBattleA_ = SimpleAnimation<Vector2>(battleUiAPosS_, battleUiAPosE_);
-	animBattleL_ = SimpleAnimation<Vector2>(battleUiLPosS_, battleUiLPosE_);
-	animBattleE_ = SimpleAnimation<Vector2>(battleUiEPosS_, battleUiEPosE_);
+	startUiSPosF_ = { 665.0f - 400.0f,1180.0f };
+	startUiTPosF_[0] = { 775.0f - 200.0f,1180.0f };
+	startUiAPosF_ = { 885.0f,1180.0f };
+	startUiRPosF_ = { 995.0f + 200.0f,1180.0f };
+	startUiTPosF_[1] = { 1105.0f + 400.0f,1180.0f };
 
+
+	// 開始時アニメーション
+	animBattleB_ = SimpleAnimation<Vector2>(battleUiBPosS_, battleUiBPosE_, EasingType::EaseOutQuad);
+	animBattleA_ = SimpleAnimation<Vector2>(battleUiAPosS_, battleUiAPosE_, EasingType::EaseOutQuad);
+	animBattleL_ = SimpleAnimation<Vector2>(battleUiLPosS_, battleUiLPosE_, EasingType::EaseOutQuad);
+	animBattleE_ = SimpleAnimation<Vector2>(battleUiEPosS_, battleUiEPosE_, EasingType::EaseOutQuad);
 	for (int i = 0; i < 2; i++) {
-		animBattleT_[i] = SimpleAnimation<Vector2>(battleUiTPosS_[i], battleUiTPosE_[i]);
+		animBattleT_[i] = SimpleAnimation<Vector2>(battleUiTPosS_[i], battleUiTPosE_[i], EasingType::EaseOutQuad);
+	}
+	animStartS_ = SimpleAnimation<Vector2>(startUiSPosS_, startUiSPosE_, EasingType::EaseOutQuad);
+	animStartA_ = SimpleAnimation<Vector2>(startUiAPosS_, startUiAPosE_, EasingType::EaseOutQuad);
+	animStartR_ = SimpleAnimation<Vector2>(startUiRPosS_, startUiRPosE_, EasingType::EaseOutQuad);
+	for (int i = 0; i < 2; i++) {
+		animStartT_[i] = SimpleAnimation<Vector2>(startUiTPosS_[i], startUiTPosE_[i], EasingType::EaseOutQuad);
 	}
 
-	animStartS_ = SimpleAnimation<Vector2>(startUiSPosS_, startUiSPosE_);
-	animStartA_ = SimpleAnimation<Vector2>(startUiAPosS_, startUiAPosE_);
-	animStartR_ = SimpleAnimation<Vector2>(startUiRPosS_, startUiRPosE_);
 
-	for (int i = 0; i < 2; i++) {
-		animStartT_[i] = SimpleAnimation<Vector2>(startUiTPosS_[i], startUiTPosE_[i]);
+	// 開始時終了アニメーション
+	animFBattleB_ = SimpleAnimation<Vector2>(battleUiBPosE_, battleUiBPosF_, EasingType::EaseOutQuad);
+	animFBattleA_ = SimpleAnimation<Vector2>(battleUiAPosE_, battleUiAPosF_, EasingType::EaseOutQuad);
+	animFBattleL_ = SimpleAnimation<Vector2>(battleUiLPosE_, battleUiLPosF_, EasingType::EaseOutQuad);
+	animFBattleE_ = SimpleAnimation<Vector2>(battleUiEPosE_, battleUiEPosF_, EasingType::EaseOutQuad);
+	for (int i = 0; i < 2; ++i) {
+		animFBattleT_[i] = SimpleAnimation<Vector2>(battleUiTPosE_[i], battleUiTPosF_[i], EasingType::EaseOutQuad);
+	}
+	animFStartS_ = SimpleAnimation<Vector2>(startUiSPosE_, startUiSPosF_, EasingType::EaseOutQuad);
+	animFStartA_ = SimpleAnimation<Vector2>(startUiAPosE_, startUiAPosF_, EasingType::EaseOutQuad);
+	animFStartR_ = SimpleAnimation<Vector2>(startUiRPosE_, startUiRPosF_, EasingType::EaseOutQuad);
+	for (int i = 0; i < 2; ++i) {
+		animFStartT_[i] = SimpleAnimation<Vector2>(startUiTPosE_[i], startUiTPosF_[i], EasingType::EaseOutQuad);
 	}
 
 	//
@@ -271,26 +298,65 @@ void PlayScene::Update() {
 				playSceneState_ = PlaySceneState::Play;
 			}
 
-			// UI更新
-			const float t = std::min(startSceneTimer_ / kStartSceneAnimTime_, 1.0f);
+			switch (startAnimPhase_) {
+				case StartAnimPhase::In:
+				{
+					// UI更新
+					const float t = std::min(startSceneTimer_ / kStartSceneAnimTime_, 1.0f);
+					battleUiBPos_ = animBattleB_.GetValue(t);
+					battleUiAPos_ = animBattleA_.GetValue(t);
+					battleUiLPos_ = animBattleL_.GetValue(t);
+					battleUiEPos_ = animBattleE_.GetValue(t);
 
-			battleUiBPos_ = animBattleB_.GetValue(t);
-			battleUiAPos_ = animBattleA_.GetValue(t);
-			battleUiLPos_ = animBattleL_.GetValue(t);
-			battleUiEPos_ = animBattleE_.GetValue(t);
+					for (int i = 0; i < 2; i++) {
+						battleUiTPos_[i] = animBattleT_[i].GetValue(t);
+					}
 
-			for (int i = 0; i < 2; i++) {
-				battleUiTPos_[i] = animBattleT_[i].GetValue(t);
+					startUiSPos_ = animStartS_.GetValue(t);
+					startUiAPos_ = animStartA_.GetValue(t);
+					startUiRPos_ = animStartR_.GetValue(t);
+
+					for (int i = 0; i < 2; i++) {
+						startUiTPos_[i] = animStartT_[i].GetValue(t);
+					}
+
+					if (t >= 1.0f) {
+						startAnimPhase_ = StartAnimPhase::Stay;
+					}
+				}
+				break;
+				case StartAnimPhase::Stay:
+				{
+					if (startSceneTimer_ >= 2.0f) {
+						startAnimPhase_ = StartAnimPhase::Out;
+					}
+				}
+				break;
+				case StartAnimPhase::Out:
+				{
+					const float t = std::min((startSceneTimer_ - 2.0f) / kStartSceneAnimFTime_, 1.0f);
+					battleUiBPos_ = animFBattleB_.GetValue(t);
+					battleUiAPos_ = animFBattleA_.GetValue(t);
+					battleUiLPos_ = animFBattleL_.GetValue(t);
+					battleUiEPos_ = animFBattleE_.GetValue(t);
+
+					for (int i = 0; i < 2; ++i) {
+						battleUiTPos_[i] = animFBattleT_[i].GetValue(t);
+					}
+
+					// Start UI
+					startUiSPos_ = animFStartS_.GetValue(t);
+					startUiAPos_ = animFStartA_.GetValue(t);
+					startUiRPos_ = animFStartR_.GetValue(t);
+
+					for (int i = 0; i < 2; ++i) {
+						startUiTPos_[i] = animFStartT_[i].GetValue(t);
+					}
+				}
+				break;
+				default:
+					break;
 			}
-
-			startUiSPos_ = animStartS_.GetValue(t);
-			startUiAPos_ = animStartA_.GetValue(t);
-			startUiRPos_ = animStartR_.GetValue(t);
-
-			for (int i = 0; i < 2; i++) {
-				startUiTPos_[i] = animStartT_[i].GetValue(t);
-			}
-
 
 			// Battle UI
 			battleUiB_.position = battleUiBPos_;

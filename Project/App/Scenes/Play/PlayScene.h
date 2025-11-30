@@ -48,6 +48,7 @@ enum class PlaySceneState {
 // 開始アニメーションのフェーズ
 enum class StartAnimPhase {
 	In,
+	Stay,
 	Out,
 };
 
@@ -109,14 +110,14 @@ private:
 	// プレイシーンの情報
 	PlaySceneInfo info;
 
-	// 最初のフレーム用フラグ
-	bool isFirstFrame_ = true;
 
 	// プレイシーン開始演出のタイマー
 	float startSceneTimer_ = 0.0f;
 	const float kStartSceneTime_ = 3.0f;
-	const float kStartSceneAnimTime_ = 0.8f;
-	const float kStartSceneEndAnimTime_ = 1.0f;
+	const float kStartSceneAnimTime_ = 1.2f;
+	const float kStartSceneAnimFTime_ = 0.8f;
+	// 開始演出の状態
+	StartAnimPhase startAnimPhase_ = StartAnimPhase::In;
 
 	// 戦闘タイマー
 	float tempBattleTime_ = 0.0;
@@ -152,6 +153,8 @@ private:
 	SpriteMaterialData startUiMatA_;
 	SpriteMaterialData startUiMatR_;
 
+
+	// UIアニメーションスタート座標
 	Vector2 battleUiBPosS_{};
 	Vector2 battleUiAPosS_{};
 	Vector2 battleUiTPosS_[2]{};
@@ -163,6 +166,7 @@ private:
 	Vector2 startUiAPosS_{};
 	Vector2 startUiRPosS_{};
 
+	// UIアニメーション終了座標
 	Vector2 battleUiBPosE_{};
 	Vector2 battleUiAPosE_{};
 	Vector2 battleUiTPosE_[2]{};
@@ -174,6 +178,8 @@ private:
 	Vector2 startUiAPosE_{};
 	Vector2 startUiRPosE_{};
 
+
+	// 現在のUIの座標
 	Vector2 battleUiBPos_{};
 	Vector2 battleUiAPos_{};
 	Vector2 battleUiTPos_[2]{};
@@ -186,6 +192,7 @@ private:
 	Vector2 startUiRPos_{};
 
 
+	// UIアニメーション
 	SimpleAnimation<Vector2> animBattleB_;
 	SimpleAnimation<Vector2> animBattleA_;
 	SimpleAnimation<Vector2> animBattleT_[2];
@@ -196,5 +203,30 @@ private:
 	SimpleAnimation<Vector2> animStartT_[2];
 	SimpleAnimation<Vector2> animStartA_;
 	SimpleAnimation<Vector2> animStartR_;
+
+
+	// UIアニメーション最終座標
+	Vector2 battleUiBPosF_{};
+	Vector2 battleUiAPosF_{};
+	Vector2 battleUiTPosF_[2]{};
+	Vector2 battleUiLPosF_{};
+	Vector2 battleUiEPosF_{};
+
+	Vector2 startUiSPosF_{};
+	Vector2 startUiTPosF_[2]{};
+	Vector2 startUiAPosF_{};
+	Vector2 startUiRPosF_{};
+
+	// UIアニメーション
+	SimpleAnimation<Vector2> animFBattleB_;
+	SimpleAnimation<Vector2> animFBattleA_;
+	SimpleAnimation<Vector2> animFBattleT_[2];
+	SimpleAnimation<Vector2> animFBattleL_;
+	SimpleAnimation<Vector2> animFBattleE_;
+
+	SimpleAnimation<Vector2> animFStartS_;
+	SimpleAnimation<Vector2> animFStartT_[2];
+	SimpleAnimation<Vector2> animFStartA_;
+	SimpleAnimation<Vector2> animFStartR_;
 
 };
