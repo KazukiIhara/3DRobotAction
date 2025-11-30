@@ -26,6 +26,7 @@ enum class RootDir {
 	Right,
 };
 
+// 回避用コライダー
 struct AvoidCollider {
 	// 胴体のワールド座標
 	Vector3 wPos;
@@ -39,6 +40,16 @@ struct AvoidCollider {
 	float nearClip = 0.1f;
 	float farClip = 5.0f;
 	float fovY = 65.0f;
+};
+
+// AIの行動決定パラメータ
+struct EnemyAIDecisionParam {
+	// 集中力(次の行動までの間隔が早くなる)
+	float focus = 50.0f;
+	// 合理性(ミスプレイが増える)
+	float logic = 50.0f;
+	// 積極性(攻撃的な行動が増える)
+	float aggressive = 50.0f;
 };
 
 // 
@@ -123,10 +134,15 @@ private:
 	// 攻撃コライダーのマネージャ
 	AttackCollisionManager* attackCollisionManager_ = nullptr;
 
+	// 機体周辺探索用の半径
+	float avoidRadius_ = 3.0f;
+
+
 	// 
 	// パラメータ
 	// 
 
-	// 機体周辺探索用の半径
-	float avoidRadius_ = 3.0f;
+	// 積極性
+	float positivity_ = 0.0f;
+
 };
