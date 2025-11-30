@@ -66,6 +66,7 @@ private:
 	std::vector	<Rocket> rockets_;
 
 private:
+	// 攻撃コライダーマネージャのポインタ
 	AttackCollisionManager* atkColliderManager_ = nullptr;
 
 };

@@ -1,5 +1,7 @@
 #include "EnemyAI.h"
 
+#include <algorithm>
+
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h" 
 
@@ -56,6 +58,9 @@ InputCommand EnemyAI::Update() {
 		cs->Update(this, mechCore_);
 	}
 
+	// 行動決定パラメータの更新
+	UpdateAIDecisionParam(mechCore_);
+
 	// 入力された移動方向をカメラに対しての向きに直す
 	CulDirectionWithCamera(mechCore_);
 
@@ -87,6 +92,10 @@ RootDir EnemyAI::GetRootDir() const {
 
 AvoidCollider EnemyAI::GetAvoidCollider() const {
 	return avoidCollider_;
+}
+
+EnemyAIDecisionParam EnemyAI::GetAIDecisionParam() const {
+	return aiDecisionParam_;
 }
 
 void EnemyAI::MoveDir(const Vector2& dir) {
@@ -178,4 +187,17 @@ void EnemyAI::UpdateAvoidCollider(MechCore* mechCore) {
 
 	// 胴体のワールド座標をセット
 	avoidCollider_.wPos = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
+}
+
+void EnemyAI::UpdateAIDecisionParam(MechCore* mechCore) {
+
+	// ステータスの増減処理
+
+
+
+	// 最大値と最低値をクランプ(0.0f ~ 100.0f)
+	aiDecisionParam_.focus = std::clamp(aiDecisionParam_.focus, aiDecisionParam_.min, aiDecisionParam_.max);
+	aiDecisionParam_.aggressive = std::clamp(aiDecisionParam_.aggressive, aiDecisionParam_.min, aiDecisionParam_.max);
+	aiDecisionParam_.logic = std::clamp(aiDecisionParam_.logic, aiDecisionParam_.min, aiDecisionParam_.max);
+
 }
