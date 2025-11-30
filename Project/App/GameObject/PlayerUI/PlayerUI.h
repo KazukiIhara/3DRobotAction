@@ -30,6 +30,8 @@ private:
 	void DrawAPUI();
 	void DrawENUI();
 
+	void DrawWeaponUI();
+
 	void DrawDebugUI(MechCore* mechCore);
 private:
 	// ボスがいる際のMechCoreのポインタ
@@ -83,6 +85,43 @@ private:
 	SpriteData energyTextData_{};
 	SpriteMaterialData energyTextMatData_{};
 	Vector2 energyTextPos_{ 75.0f,280.0f };
+
+
+	// 右手武器情報のスプライトデータ
+
+	// 武器表示
+	SpriteData rightHandWeaponData_{};
+	SpriteMaterialData rightHandWeaponMat_{};
+	Vector2 rightHandWeaponPos_{};
+
+	// 武器種
+	SpriteData rightHandWeaponTextData_{};
+	SpriteMaterialData rightHandWeaponTextMat_{};
+	Vector2 rightHandWeaponPos_{};
+
+	// 残弾
+	SpriteData rightHandWeaponNumData_[2]{};
+	SpriteMaterialData rightHandWeaponNumMat_{};
+	Vector2 rightHandWeaponNumPos_[2]{};
+
+
+	// 左手武器情報のスプライトデータ
+
+	// 武器表示
+	SpriteData leftHandWeaponData_{};
+	SpriteMaterialData leftHandWeaponMat_{};
+	Vector2 leftHandWeaponPos_{};
+
+	// 武器種
+	SpriteData leftHandWeaponTextData_{};
+	SpriteMaterialData leftHandWeaponTextMat_{};
+	Vector2 leftHandWeaponPos_{};
+
+	// 残弾
+	SpriteData leftHandWeaponNum_[2]{};
+	SpriteMaterialData leftHandWeaponNumMat_{};
+	Vector2 leftHandWeaponNumPos_[2]{};
+
 
 private:
 	// 描画用パラメータ

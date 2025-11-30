@@ -48,6 +48,14 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadTexture("EnergyUI_Bar.png");
 	MAGISYSTEM::LoadTexture("EnergyUI_Gauge.png");
 
+	// 武器UI用テクスチャ
+
+	// 右手表示
+	MAGISYSTEM::LoadTexture("Right.png");
+	// 左手表示
+	MAGISYSTEM::LoadTexture("Left.png");
+
+
 	// 円形テクスチャ
 	MAGISYSTEM::LoadTexture("Circle2.png");
 
