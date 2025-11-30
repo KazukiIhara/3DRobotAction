@@ -68,6 +68,8 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadTexture("gradation.png");
 	// 粒子用
 	MAGISYSTEM::LoadTexture("star.png");
+	// マズルフラッシュ
+	MAGISYSTEM::LoadTexture("muzzleFlash.png");
 
 	// プレイ開始テクスチャ
 	MAGISYSTEM::LoadTexture("StartUI_A.png");

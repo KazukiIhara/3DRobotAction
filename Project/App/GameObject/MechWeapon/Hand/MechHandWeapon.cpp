@@ -58,6 +58,9 @@ MechHandWeapon::MechHandWeapon(const MechHandWeapon::Param& param, AttackObjectM
 	firePosMaterial_.textureName = "White.png";
 	firePosMaterial_.blendMode = BlendMode::Add;
 	firePosMaterial_.baseColor = Color::Red;
+
+	// マズルフラッシュエフェクト初期化
+	muzzleFlashEffect_ = std::make_unique<MuzzleFlashEffect>();
 }
 
 void MechHandWeapon::Update() {
@@ -69,11 +72,17 @@ void MechHandWeapon::Update() {
 	UpdateCoolTime();
 	// リロードを更新
 	UpdateReload();
+
+	// マズルフラッシュエフェクトを更新
+	muzzleFlashEffect_->Update(data_.fireOffsetWorldPos);
 }
 
 void MechHandWeapon::Draw() {
 	// 描画
 	MAGISYSTEM::DrawModel(param_.modelName, transform_->GetWorldMatrix(), material_);
+
+	// マズルフラッシュエフェクト描画
+	muzzleFlashEffect_->Draw();
 
 	//// 攻撃座標デバッグ描画
 	//MAGISYSTEM::DrawSphere3D(data_.fireOffsetWorldMatrix, firePosSphereData_, firePosMaterial_);
@@ -115,6 +124,9 @@ void MechHandWeapon::Attack(MechCore* mechCore) {
 
 	// 残弾を減らす
 	data_.ammo_--;
+
+	// マズルフラッシュ発火
+	muzzleFlashEffect_->Emit();
 
 	// クールタイマーセット フラグを立てる
 	data_.coolTimer_ = param_.coolTime;

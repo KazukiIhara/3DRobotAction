@@ -20,6 +20,7 @@ QuickBoostParticle::QuickBoostParticle(MechCore* mechCore) {
 
 }
 
+
 void QuickBoostParticle::Emit() {
 	EmitBodyEffect();
 
