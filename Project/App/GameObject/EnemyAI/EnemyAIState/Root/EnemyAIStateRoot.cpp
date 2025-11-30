@@ -35,11 +35,19 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	const EnemyAIDecisionParam deciParam = enemyAI->GetAIDecisionParam();
 
 	// 敵との体力差
+	const float hpRaito = mechCore->GetStatusComponent()->GetHPRaito();
+	const float playerHpRaito = enemyAI->GetPlayerMech()->GetStatusComponent()->GetHPRaito();
+
+	// 体力差
+	if (hpRaito < playerHpRaito) {
+		targetRange_ = 40.0f;
+	} else {
+		targetRange_ = 4.0f;
+	}
 
 	// エネルギー残量
 
-	// 
-
+	// 残弾数
 
 	// 攻撃の処理
 
@@ -130,12 +138,11 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	}
 
 
-
 	// 距離によって移動の向きを変更
 	if (distance > targetRange_) {
-		targetMoveDir_.y = 2.0f;
+		targetMoveDir_.y = 3.0f;
 	} else {
-		targetMoveDir_.y = -1.0f;
+		targetMoveDir_.y = -2.0f;
 	}
 
 	// 移動方向を徐々に補間
