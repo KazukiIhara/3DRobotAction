@@ -23,12 +23,12 @@ PlayerUI::PlayerUI() {
 	lockonRedMat_.textureName = "LockonUIRed.png";
 
 	// APバー用のスプライト設定
-	apBarData_.position = Vector2(98.0f, 900.0f);
+	apBarData_.position = Vector2(98.0f, 250.0f);
 	apBarMaterialData_.anchorPoint = { 0.0f,0.5f };
 	apBarMaterialData_.textureName = "ApBar.png";
 
 	// APゲージ用のスプライト設定
-	apGaugeData_.position = Vector2(100.0f, 900.0f);
+	apGaugeData_.position = Vector2(100.0f, 250.0f);
 	apGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
 	apGaugeMaterialData_.textureName = "ApGauge.png";
 
