@@ -59,20 +59,6 @@ void PlayScene::Initialize() {
 	attackCollisionManager_->AddMech(player_->GetMechCore());
 	attackCollisionManager_->AddMech(enemy_->GetMechCore());
 
-	//===========================
-	// 以下ほぼほぼデバッグ用
-	//===========================
-
-
-	planeEffect_.Initialize();
-	planeEffect_.blendMode = BlendMode::Normal;
-	planeEffect_.translate.isAnimated = true;
-	planeEffect_.translate.startTime = 0.0f;
-	planeEffect_.translate.animation.SetEasing(EasingType::EaseInCubic);
-	planeEffect_.translate.animation.SetEnd(Vector3(0.0f, 0.5f, 0.0f));
-	planeEffect_.color.isAnimated = true;
-	planeEffect_.color.animation.SetEnd(Vector4(1.0f, 1.0f, 1.0f, 0.0f));
-
 
 	//-------------------------------------------------------
 	// シーンデータのロード
@@ -88,6 +74,23 @@ void PlayScene::Initialize() {
 	tempBattleTime_ = 0.0f;
 	info.battleTime = kMaxBattleTime_;
 
+	// 
+	// 開始時UIの設定
+	// 
+
+	battleUiMatB_.textureName = "StartUI_B.png";
+	battleUiMatA_.textureName = "StartUI_A.png";
+	battleUiMatT_[0].textureName = "StartUI_T.png";
+	battleUiMatT_[1].textureName = "StartUI_T.png";
+	battleUiMatL_.textureName = "StartUI_L.png";
+	battleUiMatE_.textureName = "StartUI_E.png";
+
+	startUiMatS_.textureName = "StartUI_S.png";
+	startUiMatT_[0].textureName = "StartUI_T.png";
+	startUiMatA_.textureName = "StartUI_A.png";
+	startUiMatR_.textureName = "StartUI_R.png";
+	startUiMatT_[1].textureName = "StartUI_T.png";
+
 	//
 	// 終了時UIの設定
 	//
@@ -99,6 +102,7 @@ void PlayScene::Initialize() {
 
 	// シーン中のフェーズ処理用変数
 	playSceneState_ = PlaySceneState::Start;
+
 
 }
 
@@ -137,6 +141,36 @@ void PlayScene::Update() {
 	}
 
 	ImGui::End();
+
+	ImGui::Begin("UIPos");
+
+	// Battle UI
+	ImGui::Text("Battle UI");
+	ImGui::DragFloat2("B_Pos", &battleUiBPos_.x, 1.0f);
+	ImGui::DragFloat2("A_Pos", &battleUiAPos_.x, 1.0f);
+	ImGui::DragFloat2("L_Pos", &battleUiLPos_.x, 1.0f);
+	ImGui::DragFloat2("E_Pos", &battleUiEPos_.x, 1.0f);
+
+	for (int i = 0; i < 2; i++) {
+		std::string label = "T_Pos_" + std::to_string(i);
+		ImGui::DragFloat2(label.c_str(), &battleUiTPos_[i].x, 1.0f);
+	}
+
+	ImGui::Separator();
+
+	// Start UI
+	ImGui::Text("Start UI");
+	ImGui::DragFloat2("S_Pos", &startUiSPos_.x, 1.0f);
+	ImGui::DragFloat2("A_Pos2", &startUiAPos_.x, 1.0f);
+	ImGui::DragFloat2("R_Pos", &startUiRPos_.x, 1.0f);
+
+	for (int i = 0; i < 2; i++) {
+		std::string label = "Start_T_Pos_" + std::to_string(i);
+		ImGui::DragFloat2(label.c_str(), &startUiTPos_[i].x, 1.0f);
+	}
+
+	ImGui::End();
+
 #endif
 
 	// ライト変数
@@ -184,11 +218,33 @@ void PlayScene::Update() {
 			player_->SetIsOperation(false);
 
 			// 開始ステートタイマー更新
-			startSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
+			//startSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
 
 			// プレイステートに移行
 			if (startSceneTimer_ <= 0.0f) {
 				playSceneState_ = PlaySceneState::Play;
+			}
+
+
+			// UI更新
+
+			// Battle UI
+			battleUiB_.position = battleUiBPos_;
+			battleUiA_.position = battleUiAPos_;
+			battleUiL_.position = battleUiLPos_;
+			battleUiE_.position = battleUiEPos_;
+
+			for (int i = 0; i < 2; i++) {
+				battleUiT_[i].position = battleUiTPos_[i];
+			}
+
+			// Start UI
+			startUiS_.position = startUiSPos_;
+			startUiA_.position = startUiAPos_;
+			startUiR_.position = startUiRPos_;
+
+			for (int i = 0; i < 2; i++) {
+				startUiT_[i].position = startUiTPos_[i];
 			}
 
 			break;
@@ -271,6 +327,24 @@ void PlayScene::Draw() {
 	// ステートごとの描画処理
 	switch (playSceneState_) {
 		case PlaySceneState::Start:
+
+			MAGISYSTEM::DrawSprite(battleUiB_, battleUiMatB_);
+			MAGISYSTEM::DrawSprite(battleUiA_, battleUiMatA_);
+			MAGISYSTEM::DrawSprite(battleUiL_, battleUiMatL_);
+			MAGISYSTEM::DrawSprite(battleUiE_, battleUiMatE_);
+
+			for (int i = 0; i < 2; ++i) {
+				MAGISYSTEM::DrawSprite(battleUiT_[i], battleUiMatT_[i]);
+			}
+
+			MAGISYSTEM::DrawSprite(startUiS_, startUiMatS_);
+			MAGISYSTEM::DrawSprite(startUiA_, startUiMatA_);
+			MAGISYSTEM::DrawSprite(startUiR_, startUiMatR_);
+
+			for (int i = 0; i < 2; ++i) {
+				MAGISYSTEM::DrawSprite(startUiT_[i], startUiMatT_[i]);
+			}
+
 			break;
 		case PlaySceneState::Play:
 			break;
@@ -297,8 +371,4 @@ void PlayScene::Draw() {
 
 void PlayScene::Finalize() {
 	MAGISYSTEM::DeleteAll();
-}
-
-void PlayScene::StartStateUpdate() {
-
 }

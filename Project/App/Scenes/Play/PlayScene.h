@@ -59,10 +59,6 @@ public:
 	void Finalize() override;
 
 private:
-	// 開始ステート更新
-	void StartStateUpdate();
-
-private:
 	// カメラ
 	std::weak_ptr<Camera3D> mainCamera_;
 
@@ -119,11 +115,48 @@ private:
 	// シーン終了演出のタイマー
 	float finishSceneTimer_ = 3.0f;
 
+
+	// 開始シーンのスプライトデータ
+
+	// BATTLE START
+
+	SpriteData battleUiB_;
+	SpriteData battleUiA_;
+	SpriteData battleUiT_[2];
+	SpriteData battleUiL_;
+	SpriteData battleUiE_;
+
+	SpriteData startUiS_;
+	SpriteData startUiT_[2];
+	SpriteData startUiA_;
+	SpriteData startUiR_;
+
+	// 開始シーンのスプライトマテリアル
+	SpriteMaterialData battleUiMatB_;
+	SpriteMaterialData battleUiMatA_;
+	SpriteMaterialData battleUiMatT_[2];
+	SpriteMaterialData battleUiMatL_;
+	SpriteMaterialData battleUiMatE_;
+
+	SpriteMaterialData startUiMatS_;
+	SpriteMaterialData startUiMatT_[2];
+	SpriteMaterialData startUiMatA_;
+	SpriteMaterialData startUiMatR_;
+
 	// 
 	// デバッグ用
 	// 
+	
+	Vector2 battleUiBPos_{};
+	Vector2 battleUiAPos_{};
+	Vector2 battleUiTPos_[2]{};
+	Vector2 battleUiLPos_{};
+	Vector2 battleUiEPos_{};
 
-	// 板ポリエフェクトのパラメータ
-	PlaneEffectParam planeEffect_;
+	Vector2 startUiSPos_{};
+	Vector2 startUiTPos_[2]{};
+	Vector2 startUiAPos_{};
+	Vector2 startUiRPos_{};
+
 
 };
