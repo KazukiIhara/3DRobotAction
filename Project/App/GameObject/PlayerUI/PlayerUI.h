@@ -68,16 +68,6 @@ private:
 	SpriteMaterialData bossApBarMaterialData_{};
 	const float kBossAPBarWidth_ = 916.0f;
 
-	// ENゲージのスプライトデータ
-	SpriteData enGaugeData_{};
-	SpriteMaterialData enGaugeMaterialData_{};
-	const float kENGaugeWidth_ = 696.0f;
-
-	// ENバーのスプライトデータ
-	SpriteData enBarData_{};
-	SpriteMaterialData enBarMaterialData_{};
-	const float kENBarWidth_ = 702.0f;
-
 	// エネルギーバーのスプライトデータ
 	SpriteData energyBarData_{};
 	SpriteMaterialData energyBarMatData_{};

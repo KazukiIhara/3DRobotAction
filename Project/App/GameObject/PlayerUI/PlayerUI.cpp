@@ -42,16 +42,6 @@ PlayerUI::PlayerUI() {
 	bossApGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
 	bossApGaugeMaterialData_.textureName = "BossApGauge.png";
 
-	// ENバー用のスプライト設定
-	enBarData_.position = Vector2(WindowApp::kClientWidth * 0.5f - kENBarWidth_ * 0.5f, 950.0f);
-	enBarMaterialData_.anchorPoint = { 0.0f,0.5f };
-	enBarMaterialData_.textureName = "EnBar.png";
-
-	// ENゲージ用のスプライト設定
-	enGaugeData_.position = Vector2(WindowApp::kClientWidth * 0.5f - kENGaugeWidth_ * 0.5f, 950.0f);
-	enGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
-	enGaugeMaterialData_.textureName = "EnGauge.png";
-
 	// エネルギーUI用のスプライト設定
 	energyBarData_.position = energyBarPos_;
 	energyBarMatData_.anchorPoint = { 0.5f,1.0f };
@@ -220,10 +210,6 @@ void PlayerUI::DrawAPUI() {
 }
 
 void PlayerUI::DrawENUI() {
-	//// ENバー
-	//MAGISYSTEM::DrawSprite(enBarData_, enBarMaterialData_);
-	//// ENゲージ
-	//MAGISYSTEM::DrawSprite(enGaugeData_, enGaugeMaterialData_);
 
 	// エネルギーゲージ
 	MAGISYSTEM::DrawSprite(energyBarData_, energyBarMatData_);
