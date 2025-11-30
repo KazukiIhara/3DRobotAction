@@ -19,10 +19,16 @@ private:
 private:
 	Vector2 targetMoveDir_ = { 0.0f,0.0f };
 	Vector2 currentMoveDir_ = { 0.0f,0.0f };
-	float targetRange_ = 15.0f;
+
+	// 目標距離
+	float targetRange_ = 1.0f;
 
 	float jumpTimer_ = 0.0f;
 	float boostTimer_ = 2.0f;
 
 	float avoidCoolTimer_ = 0.5f;
+
+	float shoulderWeaponTimer_ = 3.0f;
+
+	float launcherWeaponTimer_ = 5.0f;
 };

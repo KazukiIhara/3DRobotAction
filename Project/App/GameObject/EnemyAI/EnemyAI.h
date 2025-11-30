@@ -21,6 +21,7 @@ enum class EnemyAIState {
 	Avoid,		// 回避
 };
 
+// 旋回方向
 enum class RootDir {
 	Left,
 	Right,
@@ -37,19 +38,25 @@ struct AvoidCollider {
 	Vector3 eye; // 機体の目の座標
 	Vector3 target; // カメラの向いている方向 MechCoreのLockOnViewから取得
 	Vector3 up = { 0.0f,1.0f,0.0f };
+
 	float nearClip = 0.1f;
-	float farClip = 5.0f;
+	float farClip = 8.0f;
 	float fovY = 65.0f;
 };
 
 // AIの行動決定パラメータ
 struct EnemyAIDecisionParam {
-	// 集中力(次の行動までの間隔が早くなる)
-	float focus = 50.0f;
-	// 合理性(ミスプレイが増える)
-	float logic = 50.0f;
-	// 積極性(攻撃的な行動が増える)
-	float aggressive = 50.0f;
+	// 集中力 (次の行動までの間隔が早くなる,回避コライダーのサイズが大きくなる)
+	float focus = 0.5f;
+	// 合理性 (高いほど正解の動きをする)
+	float logic = 0.5f;
+	// 積極性 (攻撃的な行動が増える)
+	float aggressive = 0.5f;
+
+	// パラメータ最小値
+	const float min = 0.0f;
+	// パラメータ最大値
+	const float max = 1.0f;
 };
 
 // 
@@ -82,6 +89,9 @@ public:
 	// 回避用のコライダーを取得
 	AvoidCollider GetAvoidCollider()const;
 
+	// 行動決定パラメータの取得
+	EnemyAIDecisionParam GetAIDecisionParam()const;
+
 	//
 	// 各ステートからコマンドを入力する際に呼ぶ関数
 	//
@@ -92,6 +102,7 @@ public:
 	void AssultBoost();
 	void LeftHandWeapon();
 	void RightHandWeapon();
+	void LeftShoulderWeapon();
 	void SetRootDir(RootDir dir);
 
 	// 弾マネージャを取得
@@ -106,6 +117,9 @@ private:
 
 	// 回避用のコライダーを更新
 	void UpdateAvoidCollider(MechCore* mechCore);
+
+	// 行動決定パラメータの更新
+	void UpdateAIDecisionParam(MechCore* mechCore);
 
 private:
 	// 自機のポインタ
@@ -142,7 +156,7 @@ private:
 	// パラメータ
 	// 
 
-	// 積極性
-	float positivity_ = 0.0f;
+	// AI行動決定用パラメータ
+	EnemyAIDecisionParam aiDecisionParam_;
 
 };
