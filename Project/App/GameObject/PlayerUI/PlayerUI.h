@@ -81,8 +81,17 @@ private:
 	// エネルギーバーのスプライトデータ
 	SpriteData energyBarData_{};
 	SpriteMaterialData energyBarMatData_{};
-
 	Vector2 energyBarPos_{ 140.0f,1050.0f };
+
+	// エネルギーゲージのスプライトデータ
+	SpriteData energyGaugeData_{};
+	SpriteMaterialData energyGaugeMatData_{};
+	Vector2 energyGaugePos_{ 140.0f,1050.0f };
+
+	// エネルギーテキストのスプライトデータ
+	SpriteData energyTextData_{};
+	SpriteMaterialData energyTextMatData_{};
+	Vector2 energyTextPos_{};
 
 private:
 	// 描画用パラメータ

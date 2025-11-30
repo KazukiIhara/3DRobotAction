@@ -43,7 +43,10 @@ void TitleScene::Initialize() {
 	// ENUI用テクスチャ
 	MAGISYSTEM::LoadTexture("EnBar.png");
 	MAGISYSTEM::LoadTexture("EnGauge.png");
+
+	MAGISYSTEM::LoadTexture("EnergyUI.png");
 	MAGISYSTEM::LoadTexture("EnergyUI_Bar.png");
+	MAGISYSTEM::LoadTexture("EnergyUI_Gauge.png");
 
 	// 円形テクスチャ
 	MAGISYSTEM::LoadTexture("Circle2.png");
