@@ -135,6 +135,11 @@ void Camera3D::UpdateData() {
 		m.m[2][3] - m.m[2][2],
 		m.m[3][3] - m.m[3][2])); // Far
 
+
+	cameraVector_.forward = forward_;
+	cameraVector_.up = up_;
+	cameraVector_.right = right_;
+
 	ApplyShake();
 
 	UpdateCameraData();
@@ -340,6 +345,10 @@ const Vector3& Camera3D::GetTarget() const {
 
 bool Camera3D::GetIsAlive()const {
 	return isAlive_;
+}
+
+const CameraVector& Camera3D::GetCameraVector() const {
+	return cameraVector_;
 }
 
 void Camera3D::SetEye(const Vector3& eye) {

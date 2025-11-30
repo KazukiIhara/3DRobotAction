@@ -97,7 +97,7 @@ private:
 	// 武器種
 	SpriteData rightHandWeaponTextData_{};
 	SpriteMaterialData rightHandWeaponTextMat_{};
-	Vector2 rightHandWeaponPos_{};
+	Vector2 rightHandWeaponTextPos_{};
 
 	// 残弾
 	SpriteData rightHandWeaponNumData_[2]{};
@@ -115,7 +115,7 @@ private:
 	// 武器種
 	SpriteData leftHandWeaponTextData_{};
 	SpriteMaterialData leftHandWeaponTextMat_{};
-	Vector2 leftHandWeaponPos_{};
+	Vector2 leftHandWeaponTextPos_{};
 
 	// 残弾
 	SpriteData leftHandWeaponNum_[2]{};

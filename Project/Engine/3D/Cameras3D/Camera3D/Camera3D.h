@@ -67,7 +67,7 @@ public:
 	const Vector3& GetEye()const;
 	const Vector3& GetTarget()const;
 	bool GetIsAlive()const;
-
+	const CameraVector& GetCameraVector()const;
 
 	void SetIsUseYawPitch(bool isUseYawPitch);
 	void SetEye(const Vector3& eye);
@@ -102,6 +102,9 @@ protected:
 	Vector3 forward_ = { 0.0f,0.0f,1.0f };
 	// 右ベクトル
 	Vector3 right_ = { 1.0f,0.0f,0.0f };
+
+	// カメラVector
+	CameraVector cameraVector_{};
 
 	// ヨー角
 	float yaw_ = 0.0f;

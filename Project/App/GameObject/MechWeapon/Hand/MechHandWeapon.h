@@ -11,11 +11,13 @@
 #include "Structs/Primitive3DStruct.h"
 #include "Structs/ModelStruct.h"
 
+// マズルフラッシュエフェクト
+#include "GameEffects/MuzzleFlash/MuzzleFlashEffect.h"
+
 // 前方宣言
 class Transform3D;
 class MechCore;
 class AttackObjectManager;
-
 
 /// <summary>
 /// カスタマイズ対応型手持ち武器ベースクラス
@@ -145,6 +147,9 @@ private:
 
 	// マテリアル
 	ModelMaterial material_;
+
+	// マズルフラッシュエフェクト
+	std::unique_ptr<MuzzleFlashEffect> muzzleFlashEffect_;
 
 	// 
 	// デバッグ描画
