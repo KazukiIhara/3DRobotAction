@@ -56,6 +56,17 @@ PlayerUI::PlayerUI() {
 	// エネルギーテキスト用のスプライト設定
 	energyTextData_.position = energyTextPos_;
 	energyTextMatData_.textureName = "EnergyUI.png";
+
+
+	// 右手武器情報スプライト
+	rightHandWeaponData_.position = rightHandWeaponPos_;
+	
+
+
+	// 左手武器情報スプライト
+	leftHandWeaponData_.position = leftHandWeaponPos_;
+
+
 }
 
 void PlayerUI::SetBoss(std::weak_ptr<MechCore> bossMechCore) {
@@ -216,6 +227,11 @@ void PlayerUI::DrawENUI() {
 	MAGISYSTEM::DrawSprite(energyGaugeData_, energyGaugeMatData_);
 	MAGISYSTEM::DrawSprite(energyTextData_, energyTextMatData_);
 
+}
+
+void PlayerUI::DrawWeaponUI() {
+
+	
 }
 
 void PlayerUI::DrawDebugUI(MechCore* mechCore) {
