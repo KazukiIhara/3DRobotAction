@@ -52,12 +52,20 @@ PlayerUI::PlayerUI() {
 	enGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
 	enGaugeMaterialData_.textureName = "EnGauge.png";
 
-	// エネルギーゲージ用のスプライト設定
-	energyBarData_.position = { 0.0f,300.0f };
+	// エネルギーUI用のスプライト設定
+	energyBarData_.position = energyBarPos_;
 	energyBarMatData_.anchorPoint = { 0.5f,1.0f };
 	energyBarMatData_.textureName = "EnergyUI_Bar.png";
-	energyBarData_.position = energyBarPos_;
 
+	// エネルギーバー用のスプライト設定
+	energyGaugeData_.position = energyGaugePos_;
+	energyGaugeMatData_.anchorPoint = { 0.5f,1.0f };
+	energyGaugeMatData_.textureName = "EnergyUI_Gauge.png";
+	energyGaugeMatData_.color = Color::Green;
+
+	// エネルギーテキスト用のスプライト設定
+	energyTextData_.position = energyTextPos_;
+	energyTextMatData_.textureName = "EnergyUI.png";
 }
 
 void PlayerUI::SetBoss(std::weak_ptr<MechCore> bossMechCore) {
@@ -165,14 +173,27 @@ void PlayerUI::UpdateAPUI(MechCore* mechCore) {
 void PlayerUI::UpdateENUI(MechCore* mechCore) {
 	// ポジションセット
 	energyBarData_.position = energyBarPos_;
+	energyGaugeData_.position = energyGaugePos_;
+	energyTextData_.position = energyTextPos_;
 
 	// 現在のenを取得
 	const int32_t currentEn = mechCore->GetStatusComponent()->GetEn();
 	// enの最大値を取得
 	const int32_t maxEn = mechCore->GetStatusComponent()->GetMaxEn();
 
+	// オーバーヒートかどうかを取得
+	const bool isOverHeat = mechCore->GetStatusComponent()->GetIsOverheat();
+
+	// オーバーヒートなら色を変える
+	if (isOverHeat) {
+		energyGaugeMatData_.color = Color::Red;
+	} else {
+		energyGaugeMatData_.color = Color::Green;
+	}
+
 	// ENゲージの長さを設定
-	enGaugeData_.size.x = kENGaugeWidth_ * (static_cast<float>(currentEn) / static_cast<float>(maxEn));
+	energyGaugeData_.size.y = kEnergyGaugeHeight_ * (static_cast<float>(currentEn) / static_cast<float>(maxEn));
+
 }
 
 void PlayerUI::DrawLockonUI() {
@@ -206,6 +227,9 @@ void PlayerUI::DrawENUI() {
 
 	// エネルギーゲージ
 	MAGISYSTEM::DrawSprite(energyBarData_, energyBarMatData_);
+	MAGISYSTEM::DrawSprite(energyGaugeData_, energyGaugeMatData_);
+	MAGISYSTEM::DrawSprite(energyTextData_, energyTextMatData_);
+
 }
 
 void PlayerUI::DrawDebugUI(MechCore* mechCore) {
@@ -247,5 +271,8 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	ImGui::InputFloat("TargetDistance", &distance);
 
 	ImGui::DragFloat2("EnegryUIPos", &energyBarPos_.x, 1.0f);
+	ImGui::DragFloat2("EnergyUITextPos", &energyTextPos_.x, 1.0f);
+	ImGui::DragFloat2("EnegryUIGaugePos", &energyGaugePos_.x, 1.0f);
+
 	ImGui::End();
 }

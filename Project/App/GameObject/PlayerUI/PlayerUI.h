@@ -81,17 +81,18 @@ private:
 	// エネルギーバーのスプライトデータ
 	SpriteData energyBarData_{};
 	SpriteMaterialData energyBarMatData_{};
-	Vector2 energyBarPos_{ 140.0f,1050.0f };
+	Vector2 energyBarPos_{ 140.0f,1090.0f };
 
 	// エネルギーゲージのスプライトデータ
 	SpriteData energyGaugeData_{};
 	SpriteMaterialData energyGaugeMatData_{};
-	Vector2 energyGaugePos_{ 140.0f,1050.0f };
+	Vector2 energyGaugePos_{ 101.0f,978.0f };
+	const float kEnergyGaugeHeight_ = 662.0f;
 
 	// エネルギーテキストのスプライトデータ
 	SpriteData energyTextData_{};
 	SpriteMaterialData energyTextMatData_{};
-	Vector2 energyTextPos_{};
+	Vector2 energyTextPos_{ 75.0f,280.0f };
 
 private:
 	// 描画用パラメータ
