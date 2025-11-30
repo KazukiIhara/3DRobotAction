@@ -41,6 +41,11 @@ struct AvoidCollider {
 	float fovY = 65.0f;
 };
 
+// AIの
+struct AIDecisionParam {
+
+};
+
 // 
 // 前方宣言
 // 
@@ -123,10 +128,15 @@ private:
 	// 攻撃コライダーのマネージャ
 	AttackCollisionManager* attackCollisionManager_ = nullptr;
 
+	// 機体周辺探索用の半径
+	float avoidRadius_ = 3.0f;
+
+
 	// 
 	// パラメータ
 	// 
 
-	// 機体周辺探索用の半径
-	float avoidRadius_ = 3.0f;
+	// 積極性
+	float positivity_ = 0.0f;
+
 };
