@@ -58,6 +58,15 @@ void TitleScene::Initialize() {
 	// 粒子用
 	MAGISYSTEM::LoadTexture("star.png");
 
+	// プレイ開始テクスチャ
+	MAGISYSTEM::LoadTexture("StartUI_A.png");
+	MAGISYSTEM::LoadTexture("StartUI_B.png");
+	MAGISYSTEM::LoadTexture("StartUI_E.png");
+	MAGISYSTEM::LoadTexture("StartUI_L.png");
+	MAGISYSTEM::LoadTexture("StartUI_R.png");
+	MAGISYSTEM::LoadTexture("StartUI_S.png");
+	MAGISYSTEM::LoadTexture("StartUI_T.png");
+
 	// 終了時テクスチャ
 	MAGISYSTEM::LoadTexture("YouWin.png");
 	MAGISYSTEM::LoadTexture("YouLose.png");
