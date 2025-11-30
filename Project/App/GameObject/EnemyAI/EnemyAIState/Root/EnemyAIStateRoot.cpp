@@ -38,16 +38,14 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	const float hpRaito = mechCore->GetStatusComponent()->GetHPRaito();
 	const float playerHpRaito = enemyAI->GetPlayerMech()->GetStatusComponent()->GetHPRaito();
 
-	// 体力差
-	if (hpRaito < playerHpRaito) {
-		targetRange_ = 40.0f;
-	} else {
-		targetRange_ = 4.0f;
-	}
-
 	// エネルギー残量
 
 	// 残弾数
+	int maxAmmo = mechCore->GetLeftHandWeapon()->GetParam().ammoCapacity + mechCore->GetLeftHandWeapon()->GetParam().ammoCapacity;
+	int ammo = mechCore->GetLeftHandWeapon()->GetData().ammo_ + mechCore->GetLeftHandWeapon()->GetData().ammo_;
+
+	const float ammoRaito = static_cast<float>(ammo) / static_cast<float>(maxAmmo);
+
 
 	// 攻撃の処理
 
@@ -137,16 +135,27 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 		targetMoveDir_.x = 1.0f;
 	}
 
-
-	// 距離によって移動の向きを変更
-	if (distance > targetRange_) {
-		targetMoveDir_.y = 3.0f;
+	// 体力差
+	if (hpRaito < playerHpRaito) {
+		// 体力不利
+		targetMoveDir_.y = -2.5f;
 	} else {
-		targetMoveDir_.y = -2.0f;
+		// 体力有利
+		targetMoveDir_.y = 2.5f;
+	}
+
+	// 残弾数3割以下(気持ち後退)
+	if (ammoRaito < 0.3f) {
+		targetMoveDir_.y -= 1.0f;
+	}
+
+	// 離れ過ぎたら巡航
+	if (distance > targetRange_) {
+		targetMoveDir_.y = 1.0f;
 	}
 
 	// 移動方向を徐々に補間
-	currentMoveDir_ = Lerp(currentMoveDir_, targetMoveDir_, 0.01f);
+	currentMoveDir_ = Lerp(currentMoveDir_, targetMoveDir_, 3.0f * MAGISYSTEM::GetDeltaTime());
 
 	// 旋回行動
 	enemyAI->MoveDir(currentMoveDir_);

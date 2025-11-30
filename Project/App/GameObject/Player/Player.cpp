@@ -155,5 +155,6 @@ std::weak_ptr<MechCore> Player::GetMechCore() {
 
 void Player::SetIsOperation(bool isOperation) {
 	isOperation_ = isOperation;
+	mech_->SetInputCommand(InputCommand{});
 }
 
