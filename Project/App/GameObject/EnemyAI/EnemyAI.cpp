@@ -126,6 +126,10 @@ void EnemyAI::RightHandWeapon() {
 	command_.rightHandWeapon = true;
 }
 
+void EnemyAI::LeftShoulderWeapon() {
+	command_.leftShoulderWeapon = true;
+}
+
 void EnemyAI::SetRootDir(RootDir dir) {
 	rootDir_ = dir;
 }

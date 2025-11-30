@@ -46,18 +46,17 @@ struct AvoidCollider {
 
 // AIの行動決定パラメータ
 struct EnemyAIDecisionParam {
-	// 集中力 (次の行動までの間隔が早くなる)
-	float focus = 50.0f;
-	// 合理性 (高いほどミスプレイが増える)
-	float logic = 50.0f;
+	// 集中力 (次の行動までの間隔が早くなる,回避コライダーのサイズが大きくなる)
+	float focus = 0.5f;
+	// 合理性 (高いほど正解の動きをする)
+	float logic = 0.5f;
 	// 積極性 (攻撃的な行動が増える)
-	float aggressive = 50.0f;
-
+	float aggressive = 0.5f;
 
 	// パラメータ最小値
 	const float min = 0.0f;
 	// パラメータ最大値
-	const float max = 100.0f;
+	const float max = 1.0f;
 };
 
 // 
@@ -103,6 +102,7 @@ public:
 	void AssultBoost();
 	void LeftHandWeapon();
 	void RightHandWeapon();
+	void LeftShoulderWeapon();
 	void SetRootDir(RootDir dir);
 
 	// 弾マネージャを取得

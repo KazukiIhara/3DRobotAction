@@ -30,18 +30,69 @@ void EnemyAIStateRoot::Enter([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]]
 }
 
 void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
+
+	// 行動決定パラメータ取得
+	const EnemyAIDecisionParam deciParam = enemyAI->GetAIDecisionParam();
+
+	// 敵との体力差
+
+	// エネルギー残量
+
+	// 
+
+
 	// 攻撃の処理
 
 	// 通常の銃ならひとまず撃ちまくる
 	MechHandWeapon::Type lefthandWType = mechCore->GetLeftHandWeapon()->GetParam().type;
-	if (lefthandWType == MechHandWeapon::Type::Gun) {
-		enemyAI->LeftHandWeapon();
+	switch (lefthandWType) {
+		case MechHandWeapon::Type::Gun:
+			enemyAI->LeftHandWeapon();
+			break;
+		case MechHandWeapon::Type::RocketLauncher:
+			// タイマーが0になったらロケランを撃つ
+			if (launcherWeaponTimer_ >= 0.0f) {
+				launcherWeaponTimer_ -= MAGISYSTEM::GetDeltaTime();
+			} else {
+				enemyAI->LeftHandWeapon();
+				launcherWeaponTimer_ = Random::GenerateFloat(5.0f, 10.0f);
+			}
+			break;
+		case MechHandWeapon::Type::Melee:
+			break;
+		default:
+			break;
 	}
 
 	MechHandWeapon::Type righthandWType = mechCore->GetRightHandWeapon()->GetParam().type;
-	if (righthandWType == MechHandWeapon::Type::Gun) {
-		enemyAI->RightHandWeapon();
+
+	switch (righthandWType) {
+		case MechHandWeapon::Type::Gun:
+			enemyAI->RightHandWeapon();
+			break;
+		case MechHandWeapon::Type::RocketLauncher:
+			// タイマーが0になったらロケランを撃つ
+			if (launcherWeaponTimer_ >= 0.0f) {
+				launcherWeaponTimer_ -= MAGISYSTEM::GetDeltaTime();
+			} else {
+				enemyAI->RightHandWeapon();
+				launcherWeaponTimer_ = Random::GenerateFloat(5.0f, 10.0f);
+			}
+			break;
+		case MechHandWeapon::Type::Melee:
+			break;
+		default:
+			break;
 	}
+
+	// タイマーが0になったら肩武器を撃つ
+	if (shoulderWeaponTimer_ >= 0.0f) {
+		shoulderWeaponTimer_ -= MAGISYSTEM::GetDeltaTime();
+	} else {
+		enemyAI->LeftShoulderWeapon();
+		shoulderWeaponTimer_ = Random::GenerateFloat(3.0f, 5.0f);
+	}
+
 
 	// ジャンプの処理
 
@@ -78,11 +129,13 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 		targetMoveDir_.x = 1.0f;
 	}
 
+
+
 	// 距離によって移動の向きを変更
 	if (distance > targetRange_) {
 		targetMoveDir_.y = 2.0f;
 	} else {
-		targetMoveDir_.y = 0.0f;
+		targetMoveDir_.y = -1.0f;
 	}
 
 	// 移動方向を徐々に補間
@@ -93,7 +146,6 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 
 	// 回避処理
 	Avoid(enemyAI);
-
 
 	// ロックオン対象がいない場合は索敵ステートに遷移
 	if (!mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
