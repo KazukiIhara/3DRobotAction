@@ -29,7 +29,6 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadTexture("Start.png");
 	MAGISYSTEM::LoadTexture("Exit.png");
 
-
 	// ロックオン用テクスチャ
 	MAGISYSTEM::LoadTexture("LockonUIGray.png");
 	MAGISYSTEM::LoadTexture("LockonUIRed.png");
@@ -44,6 +43,7 @@ void TitleScene::Initialize() {
 	// ENUI用テクスチャ
 	MAGISYSTEM::LoadTexture("EnBar.png");
 	MAGISYSTEM::LoadTexture("EnGauge.png");
+	MAGISYSTEM::LoadTexture("EnergyUI_Bar.png");
 
 	// 円形テクスチャ
 	MAGISYSTEM::LoadTexture("Circle2.png");

@@ -52,6 +52,12 @@ PlayerUI::PlayerUI() {
 	enGaugeMaterialData_.anchorPoint = { 0.0f,0.5f };
 	enGaugeMaterialData_.textureName = "EnGauge.png";
 
+	// エネルギーゲージ用のスプライト設定
+	energyBarData_.position = { 0.0f,300.0f };
+	energyBarMatData_.anchorPoint = { 0.5f,1.0f };
+	energyBarMatData_.textureName = "EnergyUI_Bar.png";
+	energyBarData_.position = energyBarPos_;
+
 }
 
 void PlayerUI::SetBoss(std::weak_ptr<MechCore> bossMechCore) {
@@ -157,6 +163,9 @@ void PlayerUI::UpdateAPUI(MechCore* mechCore) {
 }
 
 void PlayerUI::UpdateENUI(MechCore* mechCore) {
+	// ポジションセット
+	energyBarData_.position = energyBarPos_;
+
 	// 現在のenを取得
 	const int32_t currentEn = mechCore->GetStatusComponent()->GetEn();
 	// enの最大値を取得
@@ -190,10 +199,13 @@ void PlayerUI::DrawAPUI() {
 }
 
 void PlayerUI::DrawENUI() {
-	// ENバー
-	MAGISYSTEM::DrawSprite(enBarData_, enBarMaterialData_);
-	// ENゲージ
-	MAGISYSTEM::DrawSprite(enGaugeData_, enGaugeMaterialData_);
+	//// ENバー
+	//MAGISYSTEM::DrawSprite(enBarData_, enBarMaterialData_);
+	//// ENゲージ
+	//MAGISYSTEM::DrawSprite(enGaugeData_, enGaugeMaterialData_);
+
+	// エネルギーゲージ
+	MAGISYSTEM::DrawSprite(energyBarData_, energyBarMatData_);
 }
 
 void PlayerUI::DrawDebugUI(MechCore* mechCore) {
@@ -233,5 +245,7 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	ImGui::InputInt("LeftHandAmmo", &leftHandAmmo);
 	ImGui::InputInt("TargetHP", &targetHP);
 	ImGui::InputFloat("TargetDistance", &distance);
+
+	ImGui::DragFloat2("EnegryUIPos", &energyBarPos_.x, 1.0f);
 	ImGui::End();
 }

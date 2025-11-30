@@ -295,7 +295,13 @@ void PlayScene::Update() {
 
 			// プレイステートに移行
 			if (startSceneTimer_ >= kStartSceneTime_) {
+				// 敵AI有効
+				enemy_->SetIsAIActive(true);
+				// プレイヤー操作有効
+				player_->SetIsOperation(true);
+				// プレイステートに移行
 				playSceneState_ = PlaySceneState::Play;
+				break;
 			}
 
 			switch (startAnimPhase_) {
@@ -379,10 +385,6 @@ void PlayScene::Update() {
 		}
 		break;
 		case PlaySceneState::Play:
-			// 敵AI有効
-			enemy_->SetIsAIActive(true);
-			// プレイヤー操作有効
-			player_->SetIsOperation(true);
 
 
 			// 勝敗判定

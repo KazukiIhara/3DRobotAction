@@ -78,6 +78,12 @@ private:
 	SpriteMaterialData enBarMaterialData_{};
 	const float kENBarWidth_ = 702.0f;
 
+	// エネルギーバーのスプライトデータ
+	SpriteData energyBarData_{};
+	SpriteMaterialData energyBarMatData_{};
+
+	Vector2 energyBarPos_{ 140.0f,1050.0f };
+
 private:
 	// 描画用パラメータ
 
