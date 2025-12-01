@@ -46,6 +46,6 @@ private:
 
 
 	// ロックオン距離
-	float lockOnRange_ = 50.f;
+	float lockOnRange_ = 100.0f;
 
 };

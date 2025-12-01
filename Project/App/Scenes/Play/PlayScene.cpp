@@ -411,7 +411,7 @@ void PlayScene::Update() {
 
 				if (playerHPRaito > enemyHPraito) {
 					info.judge = FinishJudgment::Player;
-				} else if (enemyHPraito < playerHPRaito) {
+				} else if (enemyHPraito > playerHPRaito) {
 					info.judge = FinishJudgment::Enemy;
 				} else {
 					info.judge = FinishJudgment::Draw;

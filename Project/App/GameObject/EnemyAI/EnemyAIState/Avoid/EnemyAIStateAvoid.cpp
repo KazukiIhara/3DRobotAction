@@ -10,10 +10,10 @@ using namespace MAGIMath;
 void EnemyAIStateAvoid::Enter([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {
 	// 現在の旋回方向と逆側にQB
 	if (enemyAI->GetRootDir() == RootDir::Left) {
-		enemyAI->MoveDir(Vector2(1.0f, 0.0f));
+		enemyAI->MoveDir(Vector2(1.0f, 0.5f));
 		enemyAI->SetRootDir(RootDir::Right);
 	} else {
-		enemyAI->MoveDir(Vector2(-1.0f, 0.0f));
+		enemyAI->MoveDir(Vector2(-1.0f, 0.5f));
 		enemyAI->SetRootDir(RootDir::Left);
 	}
 	// クイックブーストする
