@@ -49,9 +49,12 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 
 	// 攻撃の処理
 
-	// 通常の銃ならひとまず撃ちまくる
-	MechHandWeapon::Type lefthandWType = mechCore->GetLeftHandWeapon()->GetParam().type;
-	switch (lefthandWType) {
+	// 一旦攻撃の頻度を激減させる
+
+	if (Random::GenerateFloat(0.0f, 100.0f) > 70.0f) {
+		// 通常の銃ならひとまず撃ちまくる
+		MechHandWeapon::Type lefthandWType = mechCore->GetLeftHandWeapon()->GetParam().type;
+		switch (lefthandWType) {
 		case MechHandWeapon::Type::Gun:
 			enemyAI->LeftHandWeapon();
 			break;
@@ -68,11 +71,11 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 			break;
 		default:
 			break;
-	}
+		}
 
-	MechHandWeapon::Type righthandWType = mechCore->GetRightHandWeapon()->GetParam().type;
+		MechHandWeapon::Type righthandWType = mechCore->GetRightHandWeapon()->GetParam().type;
 
-	switch (righthandWType) {
+		switch (righthandWType) {
 		case MechHandWeapon::Type::Gun:
 			enemyAI->RightHandWeapon();
 			break;
@@ -89,6 +92,7 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 			break;
 		default:
 			break;
+		}
 	}
 
 	// タイマーが0になったら肩武器を撃つ
