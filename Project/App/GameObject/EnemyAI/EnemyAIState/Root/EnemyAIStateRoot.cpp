@@ -51,7 +51,7 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 
 	// 一旦攻撃の頻度を激減させる
 
-	if (Random::GenerateFloat(0.0f, 100.0f) > 70.0f) {
+	if (Random::GenerateInt32_t(0, 50) == 0) {
 		// 通常の銃ならひとまず撃ちまくる
 		MechHandWeapon::Type lefthandWType = mechCore->GetLeftHandWeapon()->GetParam().type;
 		switch (lefthandWType) {
