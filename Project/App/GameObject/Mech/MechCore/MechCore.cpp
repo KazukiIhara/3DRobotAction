@@ -87,7 +87,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager
 
 
 	// 左手武器
-	leftHandWeapon_ = std::make_unique<MechHandWeapon>(leftHandWeaponParam, attackObjectManager);
+	leftHandWeapon_ = std::make_unique<MechHandWeapon>(rightHandWeaponParam, attackObjectManager);
 
 
 	// 左肩武器

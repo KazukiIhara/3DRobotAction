@@ -149,7 +149,7 @@ private:
 	AttackCollisionManager* attackCollisionManager_ = nullptr;
 
 	// 機体周辺探索用の半径
-	float avoidRadius_ = 3.0f;
+	float avoidRadius_ = 1.0f;
 
 
 	// 
