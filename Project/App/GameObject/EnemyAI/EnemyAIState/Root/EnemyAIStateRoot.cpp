@@ -142,10 +142,10 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	// 体力差
 	if (hpRaito < playerHpRaito) {
 		// 体力不利
-		targetMoveDir_.y = -2.5f;
+		targetMoveDir_.y = -2.0f;
 	} else {
 		// 体力有利
-		targetMoveDir_.y = 2.5f;
+		targetMoveDir_.y = 3.0f;
 	}
 
 	// 残弾数3割以下(気持ち後退)
