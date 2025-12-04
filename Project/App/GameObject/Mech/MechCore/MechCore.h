@@ -4,6 +4,7 @@
 // C++
 #include <memory>
 #include <unordered_map>
+#include <string>
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
@@ -47,7 +48,19 @@ class AttackObjectManager;
 /// </summary>
 class MechCore {
 public:
-	MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* bulletManager, bool enableHardlockOn);
+	// 機体データ
+	struct Data {
+		std::string head;
+		std::string body;
+		std::string arm;
+		std::string leg;
+		std::string rightHandWeapon;
+		std::string leftHandWeapon;
+		std::string rightShoulerWeapoan;
+		std::string leftShoulderWeapon;
+	};
+public:
+	MechCore(const Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* bulletManager, bool enableHardlockOn = false);
 	~MechCore() = default;
 
 	void Update();
@@ -135,6 +148,9 @@ private:
 	void QuickBoostRadialBlur();
 
 private:
+	// 機体名
+	std::string mechName_;
+
 	// インプットコマンド
 	InputCommand inputCommand_;
 	// ロックオン用のカメラ情報
