@@ -8,7 +8,9 @@
 
 // GameScene
 #include "Scenes/Title/TitleScene.h"
+#include "Scenes/Menu/MenuScene.h"
 #include "Scenes/Play/PlayScene.h"
+#include "Scenes/MechCustomScene/MechCustomScene.h"
 
 Game::~Game() {}
 
