@@ -145,7 +145,7 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 		targetMoveDir_.y = -2.0f;
 	} else {
 		// 体力有利
-		targetMoveDir_.y = 2.0f;
+		targetMoveDir_.y = 3.0f;
 	}
 
 	// 残弾数3割以下(気持ち後退)

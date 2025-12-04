@@ -32,7 +32,7 @@ struct AvoidCollider {
 	// 胴体のワールド座標
 	Vector3 wPos;
 	// 周辺探索用の半径
-	float radius;
+	float radius = 1.0f;
 
 	// カメラコライダー用データ
 	Vector3 eye; // 機体の目の座標
