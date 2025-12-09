@@ -20,9 +20,12 @@
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
 // 武器クラス
+
+// 手持ち武器
+#include "GameObject/MechWeapon/Hand/MechHandWeapon.h"
+// 肩武器
 #include "GameObject/Mech/MechWeapons/MechShoulderWeaponDualMissileLauncher/MechShoulderWeaponDualMissileLauncher.h"
 
-#include "GameObject/MechWeapon/Hand/MechHandWeapon.h"
 
 // コンポーネントクラス
 #include "GameObject/Mech/MechComponents/Movement/MechMovementComponent.h"
