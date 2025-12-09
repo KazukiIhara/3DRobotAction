@@ -7,7 +7,7 @@
 
 Player::Player(AttackObjectManager* bulletManager) {
 	// 機体の作成
-	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, bulletManager, false);
+	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, "Default", bulletManager, false);
 
 	// 三人称視点カメラの作成
 	std::unique_ptr<MechCamera> followCamera = std::make_unique<MechCamera>("MainCamera", 0.0f, mech_.get());
@@ -19,7 +19,6 @@ Player::Player(AttackObjectManager* bulletManager) {
 	if (auto mechObj = mech_->GetGameObject().lock()) {
 		mechObj->AddCamera3D(std::move(followCamera));
 	}
-
 
 	// プレイヤーUIクラス作成
 	playerUI_ = std::make_unique<PlayerUI>();
