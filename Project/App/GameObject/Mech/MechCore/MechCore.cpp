@@ -23,7 +23,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	mechName_ = mechDataName;
 
 	// 機体のデータ(パーツ名と武器名)保存しているコンテナから各パーツ名と武器名を取得
-
+	MechCore::Data mechData;
 
 	// パーツと武器を保存しているコンテナから各パラメータを取得
 
