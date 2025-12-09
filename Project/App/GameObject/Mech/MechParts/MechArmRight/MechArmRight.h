@@ -2,6 +2,7 @@
 
 // C++
 #include <memory>
+#include <string>
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
