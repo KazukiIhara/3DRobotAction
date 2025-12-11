@@ -6,6 +6,8 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
+
 SkyBoxGraphicsPipeline::SkyBoxGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }

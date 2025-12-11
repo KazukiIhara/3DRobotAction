@@ -2,6 +2,9 @@
 
 #include "Framework/MAGI.h"
 
+using namespace magi;
+using json = nlohmann::json;
+
 GrobalDataManager::GrobalDataManager() {
 	Initialize();
 }

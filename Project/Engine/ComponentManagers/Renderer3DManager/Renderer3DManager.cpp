@@ -4,6 +4,8 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
+
 Renderer3DManager::Renderer3DManager() {
 	Clear();
 	Logger::Log("Renderer3DManager Initialize\n");

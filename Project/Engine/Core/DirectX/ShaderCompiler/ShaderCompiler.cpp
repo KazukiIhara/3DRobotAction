@@ -3,6 +3,8 @@
 #include <cassert>
 #include "Logger/Logger.h"
 
+using namespace magi;
+
 ShaderCompiler::ShaderCompiler() {
 	Initialize();
 	Logger::Log("ShaderCompiler Initialize\n");

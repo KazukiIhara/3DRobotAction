@@ -4,6 +4,8 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
+
 DXGI::DXGI() {}
 
 DXGI::~DXGI() {

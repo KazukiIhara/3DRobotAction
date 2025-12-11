@@ -5,6 +5,8 @@
 #include "Logger/Logger.h"
 #include "WindowApp/WindowApp.h"
 
+using namespace magi;
+
 MAGIDirectInput::MAGIDirectInput(WindowApp* windowApp) {
 	Initialize(windowApp);
 	Logger::Log("DirectInput Initialize\n");

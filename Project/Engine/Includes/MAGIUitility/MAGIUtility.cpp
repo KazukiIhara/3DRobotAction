@@ -4,6 +4,7 @@
 
 #include <cassert>
 
+using namespace magi;
 using namespace MAGIMath;
 
 Vector3 MAGIUtility::CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time) {

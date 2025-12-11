@@ -11,43 +11,44 @@
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
-
-class DXGI;
-class DirectXCommand;
-class SRVUAVManager;
-class GraphicsPipelineManager;
-class ShadowPipelineManager;
-class Camera3DManager;
-class LightManager;
-class ParticleUpdater3D;
-
-/// <summary>
-/// パーティクル3D描画クラス
-/// </summary>
-class ParticleDrawer3D {
-public:
-	ParticleDrawer3D(
-		DXGI* dxgi,
-		DirectXCommand* directXCommand,
-		SRVUAVManager* srvUavManager,
-		GraphicsPipelineManager* graphicsPipelineManager,
-		Camera3DManager* camera3DManager,
-		ParticleUpdater3D* particleUpdater
-	);
-	~ParticleDrawer3D() = default;
+namespace magi {
+	class DXGI;
+	class DirectXCommand;
+	class SRVUAVManager;
+	class GraphicsPipelineManager;
+	class ShadowPipelineManager;
+	class Camera3DManager;
+	class LightManager;
+	class ParticleUpdater3D;
 
 	/// <summary>
-	/// 描画
+	/// パーティクル3D描画クラス
 	/// </summary>
-	void Draw(BlendMode mode);
+	class ParticleDrawer3D {
+	public:
+		ParticleDrawer3D(
+			DXGI* dxgi,
+			DirectXCommand* directXCommand,
+			SRVUAVManager* srvUavManager,
+			GraphicsPipelineManager* graphicsPipelineManager,
+			Camera3DManager* camera3DManager,
+			ParticleUpdater3D* particleUpdater
+		);
+		~ParticleDrawer3D() = default;
 
-private:
-	DXGI* dxgi_ = nullptr;
-	DirectXCommand* directXCommand_ = nullptr;
-	SRVUAVManager* srvUavManager_ = nullptr;
-	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
-	ShadowPipelineManager* shadowPipelineManager_ = nullptr;
-	Camera3DManager* camera3DManager_ = nullptr;
-	LightManager* lightManager_ = nullptr;
-	ParticleUpdater3D* particleUpdater_ = nullptr;
-};
+		/// <summary>
+		/// 描画
+		/// </summary>
+		void Draw(BlendMode mode);
+
+	private:
+		DXGI* dxgi_ = nullptr;
+		DirectXCommand* directXCommand_ = nullptr;
+		SRVUAVManager* srvUavManager_ = nullptr;
+		GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
+		ShadowPipelineManager* shadowPipelineManager_ = nullptr;
+		Camera3DManager* camera3DManager_ = nullptr;
+		LightManager* lightManager_ = nullptr;
+		ParticleUpdater3D* particleUpdater_ = nullptr;
+	};
+}

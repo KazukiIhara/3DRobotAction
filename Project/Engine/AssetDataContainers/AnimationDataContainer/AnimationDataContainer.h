@@ -13,21 +13,23 @@
 // MyHedder
 #include "Structs/AnimationStruct.h"
 
-/// <summary>
-/// アニメーションのデータコンテナ
-/// </summary>
-class AnimationDataContainer {
-public:
-	AnimationDataContainer();
-	~AnimationDataContainer();
+namespace magi {
+	/// <summary>
+	/// アニメーションのデータコンテナ
+	/// </summary>
+	class AnimationDataContainer {
+	public:
+		AnimationDataContainer();
+		~AnimationDataContainer();
 
-	void Initialize();
-	void Load(const std::string& animationFileName);
+		void Initialize();
+		void Load(const std::string& animationFileName);
 
-	AnimationData FindAnimationData(const std::string& animationName);
-private:
-	// 読み込み済みのファイルコンテナ
-	std::list<std::string> loadedAnimationFileNames_;
-	// アニメーションデータコンテナ
-	std::unordered_map<std::string, AnimationData> animationDatas_;
-};
+		AnimationData FindAnimationData(const std::string& animationName);
+	private:
+		// 読み込み済みのファイルコンテナ
+		std::list<std::string> loadedAnimationFileNames_;
+		// アニメーションデータコンテナ
+		std::unordered_map<std::string, AnimationData> animationDatas_;
+	};
+}

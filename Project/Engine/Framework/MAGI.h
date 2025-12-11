@@ -678,121 +678,115 @@ protected:
 	// 
 	// BaseSystems
 	// 
-	static std::unique_ptr<WindowApp> windowApp_;
-	static std::unique_ptr<DeltaTimer> deltaTimer_;
-	static std::unique_ptr<MAGIDirectInput> directInput_;
-	static std::unique_ptr<MAGIXInput> xInput_;
+	static std::unique_ptr<magi::WindowApp> windowApp_;
+	static std::unique_ptr<magi::DeltaTimer> deltaTimer_;
+	static std::unique_ptr<magi::MAGIDirectInput> directInput_;
+	static std::unique_ptr<magi::MAGIXInput> xInput_;
 
 	// 
 	// DirectXBaseSystems
 	// 
-	static std::unique_ptr<DXGI> dxgi_;
-	static std::unique_ptr<DirectXCommand> directXCommand_;
-	static std::unique_ptr<Fence> fence_;
-	static std::unique_ptr<ShaderCompiler> shaderCompiler_;
+	static std::unique_ptr<magi::DXGI> dxgi_;
+	static std::unique_ptr<magi::DirectXCommand> directXCommand_;
+	static std::unique_ptr<magi::Fence> fence_;
+	static std::unique_ptr<magi::ShaderCompiler> shaderCompiler_;
 
 	// 
 	// ViewManagers
 	// 
-	static std::unique_ptr<RTVManager> rtvManager_;
-	static std::unique_ptr<DSVManager> dsvManager_;
-	static std::unique_ptr<SRVUAVManager> srvuavManager_;
+	static std::unique_ptr<magi::RTVManager> rtvManager_;
+	static std::unique_ptr<magi::DSVManager> dsvManager_;
+	static std::unique_ptr<magi::SRVUAVManager> srvuavManager_;
 
 	// 
 	// DirectXRenderSystems
 	// 
-	static std::unique_ptr<Viewport> viewport_;
-	static std::unique_ptr<ScissorRect> scissorRect_;
-	static std::unique_ptr<DepthStencil> depthStencil_;
-	static std::unique_ptr<SwapChain> swapChain_;
+	static std::unique_ptr<magi::Viewport> viewport_;
+	static std::unique_ptr<magi::ScissorRect> scissorRect_;
+	static std::unique_ptr<magi::DepthStencil> depthStencil_;
+	static std::unique_ptr<magi::SwapChain> swapChain_;
 
 	//
 	// PipelineManager
 	//
-	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
-	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
-	static std::unique_ptr<DefferedRenderringPipelineManager> defferedRenderringPipelineManager_;
-	static std::unique_ptr<PostEffectPipelineManager> postEffectPipelineManager_;
-	static std::unique_ptr<ShadowPipelineManager> shadowPipelineManager_;
+	static std::unique_ptr<magi::GraphicsPipelineManager> graphicsPipelineManager_;
+	static std::unique_ptr<magi::ComputePipelineManager> computePipelineManager_;
+	static std::unique_ptr<magi::DefferedRenderringPipelineManager> defferedRenderringPipelineManager_;
+	static std::unique_ptr<magi::PostEffectPipelineManager> postEffectPipelineManager_;
+	static std::unique_ptr<magi::ShadowPipelineManager> shadowPipelineManager_;
 
 	// 
 	// AssetContainer
 	// 
-	static std::unique_ptr<TextureDataContainer> textureDataCantainer_;
-	static std::unique_ptr<PrimitiveShapeDataContainer> primitiveDataContainer_;
-	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
-	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
-	static std::unique_ptr<SoundDataContainer> soundDataContainer_;
-	static std::unique_ptr<SceneDataContainer> sceneDataContainer_;
+	static std::unique_ptr<magi::TextureDataContainer> textureDataCantainer_;
+	static std::unique_ptr<magi::PrimitiveShapeDataContainer> primitiveDataContainer_;
+	static std::unique_ptr<magi::ModelDataContainer> modelDataContainer_;
+	static std::unique_ptr<magi::AnimationDataContainer> animationDataContainer_;
+	static std::unique_ptr<magi::SoundDataContainer> soundDataContainer_;
+	static std::unique_ptr<magi::SceneDataContainer> sceneDataContainer_;
 
 	//
 	// ComponentManagers
 	//
-	static std::unique_ptr<TransformManager> transformManager_;
-	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
+	static std::unique_ptr<magi::TransformManager> transformManager_;
+	static std::unique_ptr<magi::Renderer3DManager> renderer3DManager_;
 
 	//
 	// ObjectManager
 	//
-	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
-	static std::unique_ptr<Camera2DManager> camera2DManager_;
-	static std::unique_ptr<Camera3DManager> camera3DManager_;
-	static std::unique_ptr<LightManager> lightManager_;
+	static std::unique_ptr<magi::GameObject3DManager> gameObject3DManager_;
+	static std::unique_ptr<magi::Camera2DManager> camera2DManager_;
+	static std::unique_ptr<magi::Camera3DManager> camera3DManager_;
+	static std::unique_ptr<magi::LightManager> lightManager_;
 
 	// 
 	// Drawer
 	// 
-	static std::unique_ptr<SpriteDrawer> spriteDrawer_;
+	static std::unique_ptr<magi::SpriteDrawer> spriteDrawer_;
 
-	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
-	static std::unique_ptr<TriangleDrawer3D> triangleDrawer3D_;
-	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
-	static std::unique_ptr<BoxDrawer3D> boxDrawer3D_;
-	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
-	static std::unique_ptr<RingDrawer3D> ringDrawer3D_;
-	static std::unique_ptr<CylinderDrawer3D> cylinderDrawer3D_;
-	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
-	static std::unique_ptr<SkyBoxDrawer> skyBoxDrawer_;
+	static std::unique_ptr<magi::LineDrawer3D> lineDrawer3D_;
+	static std::unique_ptr<magi::TriangleDrawer3D> triangleDrawer3D_;
+	static std::unique_ptr<magi::PlaneDrawer3D> planeDrawer3D_;
+	static std::unique_ptr<magi::BoxDrawer3D> boxDrawer3D_;
+	static std::unique_ptr<magi::SphereDrawer3D> sphereDrawer3D_;
+	static std::unique_ptr<magi::RingDrawer3D> ringDrawer3D_;
+	static std::unique_ptr<magi::CylinderDrawer3D> cylinderDrawer3D_;
+	static std::unique_ptr<magi::ModelDrawerManager> modelDrawerManager_;
+	static std::unique_ptr<magi::SkyBoxDrawer> skyBoxDrawer_;
 
 
 	// 
 	// ParticleSystem
 	// 
-	static std::unique_ptr<ParticleUpdater3D> particleUpdater3D_;
-	static std::unique_ptr<ParticleDrawer3D> particleDrawer3D_;
+	static std::unique_ptr<magi::ParticleUpdater3D> particleUpdater3D_;
+	static std::unique_ptr<magi::ParticleDrawer3D> particleDrawer3D_;
 
 	//
 	// EffectManager
 	//
-	static std::unique_ptr<PlaneEffectManager> planeEffectManager_;
+	static std::unique_ptr<magi::PlaneEffectManager> planeEffectManager_;
 
 	//
 	// AppSystems
 	//
-	static std::unique_ptr<RenderController> renderController_;
+	static std::unique_ptr<magi::RenderController> renderController_;
 
 	// 
 	// GameManager
 	// 
-	static std::unique_ptr<SceneManager> sceneManager_;
+	static std::unique_ptr<magi::SceneManager> sceneManager_;
 
 
 	//
 	// Data入出力クラス
 	//
-	static std::unique_ptr<GrobalDataManager> grobalDataManager_;
-	static std::unique_ptr<SceneDataImporter> sceneDataImporter_;
+	static std::unique_ptr<magi::GrobalDataManager> grobalDataManager_;
+	static std::unique_ptr<magi::SceneDataImporter> sceneDataImporter_;
 
 	//
 	// UIクラス
 	//
-	static std::unique_ptr<ImGuiController> imguiController_;
-	static std::unique_ptr<GUI> gui_;
-
-};
-
-// シーンで使う一部の機能を持つクラス
-class MAGI {
-public:
+	static std::unique_ptr<magi::ImGuiController> imguiController_;
+	static std::unique_ptr<magi::GUI> gui_;
 
 };

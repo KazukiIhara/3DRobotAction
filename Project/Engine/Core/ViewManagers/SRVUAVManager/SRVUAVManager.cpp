@@ -4,6 +4,8 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
+
 SRVUAVManager::SRVUAVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
 	BaseViewManager::Initialize(kMaxViewCount_);

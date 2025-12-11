@@ -5,6 +5,7 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
+using namespace magi;
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -60,7 +61,7 @@ PlayerUI::PlayerUI() {
 
 	// 右手武器情報スプライト
 	rightHandWeaponData_.position = rightHandWeaponPos_;
-	
+
 
 
 	// 左手武器情報スプライト
@@ -139,8 +140,8 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 			lockOnWPos_ = body->GetTransform()->GetWorldPosition();
 		}
 		// 中心座標
-		lockonGrayData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
-		lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
+		lockonGrayData_.position = Vector2(magi::WindowApp::kClientWidth * 0.5f, magi::WindowApp::kClientHeight * 0.5f);
+		lockonRedData_.position = Vector2(magi::WindowApp::kClientWidth * 0.5f, magi::WindowApp::kClientHeight * 0.5f);
 
 		// 非ロックオン時は常に赤色
 		lockonRedMat_.color = Color::Red;
@@ -231,7 +232,7 @@ void PlayerUI::DrawENUI() {
 
 void PlayerUI::DrawWeaponUI() {
 
-	
+
 }
 
 void PlayerUI::DrawDebugUI(MechCore* mechCore) {

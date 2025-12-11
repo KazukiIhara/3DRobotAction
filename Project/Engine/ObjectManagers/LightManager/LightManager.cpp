@@ -10,8 +10,7 @@
 #include "Math/Utility/MathUtility.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-#include "Framework/MAGI.h"
-
+using namespace magi;
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -161,66 +160,6 @@ void LightManager::MapDirectionalLightFrustumData() {
 	for (uint32_t i = 0; i < 6; i++) {
 		directionalLightFrustumData_->planes[i] = { 0.0f,0.0f,0.0f };
 	}
-}
-
-void LightManager::DrawDirectionalLightFrustum() {
-	// NDC空間の8頂点（Z: [0=Near, 1=Far]、左手系）
-	const Vector3 ndcCorners[8] =
-	{
-		{ -1,  1, 0 }, // 0: Near-Top-Left
-		{  1,  1, 0 }, // 1: Near-Top-Right
-		{ -1, -1, 0 }, // 2: Near-Bottom-Left
-		{  1, -1, 0 }, // 3: Near-Bottom-Right
-		{ -1,  1, 1 }, // 4: Far-Top-Left
-		{  1,  1, 1 }, // 5: Far-Top-Right
-		{ -1, -1, 1 }, // 6: Far-Bottom-Left
-		{  1, -1, 1 }, // 7: Far-Bottom-Right
-	};
-
-	// ビュー・プロジェクション逆行列を個別に取得
-	const Matrix4x4 invView = Inverse(lightView_);
-	const Matrix4x4 invProj = Inverse(lightProj_);
-
-	// ワールド空間のFrustum頂点
-	Vector3 worldCorners[8];
-	for (int i = 0; i < 8; ++i) {
-		Vector3 ndc = ndcCorners[i];
-
-		// Clip空間座標
-		Vector4 clip = Vector4(ndc.x, ndc.y, ndc.z, 1.0f);
-
-		// View空間へ
-		Vector4 view = Transform(clip, invProj);
-		if (abs(view.w) > 1e-5f) {
-			view /= view.w;
-		}
-
-		// ワールド空間へ
-		Vector4 world = Transform(view, invView);
-		worldCorners[i] = Vector3(world.x, world.y, world.z) / world.w;
-	}
-
-	// 色指定
-	const Vector4 color = Color::Red;
-
-	// Near平面
-	MAGISYSTEM::DrawLine3D(worldCorners[0], worldCorners[1], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[1], worldCorners[3], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[3], worldCorners[2], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[2], worldCorners[0], color);
-
-	// Far平面
-	MAGISYSTEM::DrawLine3D(worldCorners[4], worldCorners[5], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[5], worldCorners[7], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[7], worldCorners[6], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[6], worldCorners[4], color);
-
-	// Near↔Farの辺
-	MAGISYSTEM::DrawLine3D(worldCorners[0], worldCorners[4], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[1], worldCorners[5], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[2], worldCorners[6], color);
-	MAGISYSTEM::DrawLine3D(worldCorners[3], worldCorners[7], color);
-
 }
 
 void LightManager::SetDXGI(DXGI* dxgi) {

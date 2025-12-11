@@ -5,6 +5,8 @@
 #include "Logger/Logger.h"
 #include "ImGuiController/ImGuiController.h"
 
+using namespace magi;
+
 WindowApp::WindowApp() {
 	Initialize();
 	Logger::Log("WindowApp Initialize\n");

@@ -193,7 +193,7 @@ void EnemyAI::UpdateAvoidCollider(MechCore* mechCore) {
 	avoidCollider_.wPos = mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 }
 
-void EnemyAI::UpdateAIDecisionParam(MechCore* mechCore) {
+void EnemyAI::UpdateAIDecisionParam([[maybe_unused]] MechCore* mechCore) {
 
 	// ステータスの増減処理
 

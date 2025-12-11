@@ -56,7 +56,7 @@ enum class StartAnimPhase {
 /// ゲームプレイシーン
 /// </summary>
 /// <typeparam name="Data"></typeparam>
-class PlayScene:public BaseScene {
+class PlayScene:public magi::BaseScene {
 public:
 	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~PlayScene()override = default;

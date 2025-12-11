@@ -12,6 +12,9 @@
 #ifdef _WIN32
 #include <Windows.h>
 #endif
+
+using namespace magi;
+
 GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager) {
 	// 
 	// インスタンスのセット
