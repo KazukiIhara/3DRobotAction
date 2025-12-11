@@ -1,5 +1,8 @@
 #include "SceneDataContainer.h"
 
+using namespace magi;
+
+
 
 // C++
 #include <fstream>
@@ -12,7 +15,6 @@
 #include "MAGIAssert/MAGIAssert.h"
 
 
-namespace magi {
 SceneDataContainer::SceneDataContainer() {
 	sceneDatas_.clear();
 	Logger::Log("SceneDataContainer Initialize\n");
@@ -174,4 +176,3 @@ const SceneData& SceneDataContainer::GetData(const std::string& dataName) {
 	return it->second;
 }
 
-} // namespace magi

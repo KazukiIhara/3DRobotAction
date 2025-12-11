@@ -1,3 +1,4 @@
+using namespace magi;
 #define NOMINMAX
 
 #include "MechStatusComponent.h"

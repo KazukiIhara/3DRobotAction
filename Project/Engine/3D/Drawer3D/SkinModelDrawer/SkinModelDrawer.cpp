@@ -1,5 +1,8 @@
 #include "SkinModelDrawer.h"
 
+using namespace magi;
+
+
 
 // C++
 #include <cassert>
@@ -10,7 +13,6 @@
 #include "Math/Utility/MathUtility.h"
 
 
-namespace magi {
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -258,4 +260,3 @@ bool SkinModelDrawer::ApplyAnimationLoop(const AnimationData& animation, float a
 	return true;
 }
 
-} // namespace magi

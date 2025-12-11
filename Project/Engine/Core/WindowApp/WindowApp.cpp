@@ -6,8 +6,10 @@
 #include "Logger/Logger.h"
 #include "ImGuiController/ImGuiController.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 WindowApp::WindowApp() {
 	Initialize();
 	Logger::Log("WindowApp Initialize\n");
@@ -164,4 +166,3 @@ LRESULT WindowApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
-} // namespace magi

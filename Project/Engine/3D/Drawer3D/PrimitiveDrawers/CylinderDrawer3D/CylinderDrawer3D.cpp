@@ -14,8 +14,10 @@
 
 #include "Framework/MAGI.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIMath;
 
 CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, ShadowPipelineManager* shadowPipelineManager, Camera3DManager* camera3DManager, LightManager* lightManager) {
@@ -179,4 +181,3 @@ void CylinderDrawer3D::SetLightManager(LightManager* lightManager) {
 	lightManager_ = lightManager;
 }
 
-} // namespace magi

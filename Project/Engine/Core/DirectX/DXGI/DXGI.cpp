@@ -5,8 +5,10 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 DXGI::DXGI() {}
 
 DXGI::~DXGI() {
@@ -326,4 +328,3 @@ IDXGIFactory7* DXGI::GetFactory() {
 	return dxgiFactory_.Get();
 }
 
-} // namespace magi

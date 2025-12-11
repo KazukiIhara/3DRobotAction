@@ -6,8 +6,10 @@
 #include "Framework/MAGI.h"
 #include <Random/Random.h>
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -424,4 +426,3 @@ void Camera3D::SetIsUseYawPitch(bool isUseYawPitch) {
 	isUseYawPitch_ = isUseYawPitch;
 }
 
-} // namespace magi

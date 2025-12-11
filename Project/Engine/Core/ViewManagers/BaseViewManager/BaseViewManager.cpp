@@ -6,8 +6,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 BaseViewManager::BaseViewManager(DXGI* dxgi) {
 	// DXGIのセット
 	SetDXGI(dxgi);
@@ -55,4 +57,3 @@ void BaseViewManager::SetDXGI(DXGI* dxgi) {
 	dxgi_ = dxgi;
 }
 
-} // namespace magi

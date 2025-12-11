@@ -7,8 +7,10 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIMath;
 
 AnimationDataContainer::AnimationDataContainer() {
@@ -143,4 +145,3 @@ AnimationData AnimationDataContainer::FindAnimationData(const std::string& anima
 	return AnimationData{};
 }
 
-} // namespace magi

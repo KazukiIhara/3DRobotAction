@@ -3,8 +3,10 @@
 
 #include "MAGI.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIMath;
 
 DebugCamera3D::DebugCamera3D()
@@ -82,4 +84,3 @@ void DebugCamera3D::HandleCameraZoom(int64_t wheelDelta) {
 	}
 }
 
-} // namespace magi

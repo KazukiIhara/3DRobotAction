@@ -1,8 +1,10 @@
 #include "GBufferPositionRenderTexture.h"
 
+using namespace magi;
 
 
-namespace magi {
+
+
 GBufferPositionRenderTexture::GBufferPositionRenderTexture() {
 }
 
@@ -17,4 +19,3 @@ void GBufferPositionRenderTexture::Initialize() {
 	);
 }
 
-} // namespace magi

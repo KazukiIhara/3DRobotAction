@@ -5,8 +5,10 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 RTVManager::RTVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
 	BaseViewManager::Initialize(kMaxRTVCount);
@@ -31,4 +33,3 @@ void RTVManager::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource
 	dxgi_->GetDevice()->CreateRenderTargetView(pResource, &rtvDesc, GetDescriptorHandleCPU(rtvIndex));
 }
 
-} // namespace magi

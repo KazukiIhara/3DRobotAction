@@ -5,8 +5,10 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 SRVUAVManager::SRVUAVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
 	BaseViewManager::Initialize(kMaxViewCount_);
@@ -83,4 +85,3 @@ void SRVUAVManager::CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource
 	dxgi_->GetDevice()->CreateUnorderedAccessView(pResource, nullptr, &uavDesc, GetDescriptorHandleCPU(viewIndex));
 }
 
-} // namespace magi

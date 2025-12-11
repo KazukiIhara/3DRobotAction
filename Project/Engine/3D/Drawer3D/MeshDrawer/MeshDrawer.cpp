@@ -11,7 +11,6 @@
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-namespace magi {
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -249,4 +248,3 @@ void MeshDrawer::DrawBoundingSphere() {
 	}
 }
 
-} // namespace magi

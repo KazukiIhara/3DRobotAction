@@ -20,8 +20,10 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 RenderController::RenderController(
 	DXGI* dxgi,
 	DirectXCommand* directXCommand,
@@ -579,4 +581,3 @@ void RenderController::SetSkyBoxDrawer(SkyBoxDrawer* skyBoxDrawer) {
 	skyBoxDrawer_ = skyBoxDrawer;
 }
 
-} // namespace magi

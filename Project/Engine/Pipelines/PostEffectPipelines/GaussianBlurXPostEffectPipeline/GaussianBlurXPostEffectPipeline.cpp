@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 GaussianBlurXPostEffectPipeline::GaussianBlurXPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {}
 
@@ -82,4 +84,3 @@ void GaussianBlurXPostEffectPipeline::CompileShaders() {
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-} // namespace magi

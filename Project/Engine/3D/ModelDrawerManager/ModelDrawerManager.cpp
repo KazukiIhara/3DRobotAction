@@ -1,5 +1,8 @@
 #include "ModelDrawerManager.h"
 
+using namespace magi;
+
+
 
 // MyHedder
 #include "MAGIAssert/MAGIAssert.h"
@@ -12,7 +15,6 @@
 #include "Camera3DManager/Camera3DManager.h"
 
 
-namespace magi {
 ModelDrawerManager::ModelDrawerManager(
 	DXGI* dxgi,
 	DirectXCommand* directXCommand,
@@ -160,4 +162,3 @@ void ModelDrawerManager::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	camera3DManager_ = camera3DManager;
 }
 
-} // namespace magi

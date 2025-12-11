@@ -8,8 +8,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 EmitParticleComputePipeline::EmitParticleComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 }
@@ -151,4 +153,3 @@ void EmitParticleComputePipeline::SetShaderCompiler(ShaderCompiler* shaderCompil
 	shaderCompiler_ = shaderCompiler;
 }
 
-} // namespace magi

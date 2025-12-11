@@ -16,8 +16,10 @@
 
 #include "Framework/MAGI.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -184,4 +186,3 @@ void BoxDrawer3D::SetLightManager(LightManager* lightManager) {
 	lightManager_ = lightManager;
 }
 
-} // namespace magi

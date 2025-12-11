@@ -1,8 +1,10 @@
 #include "Skeleton.h"
 
+using namespace magi;
 
 
-namespace magi {
+
+
 using namespace MAGIMath;
 
 Skeleton::Skeleton(const Node& rootNode) {
@@ -49,4 +51,3 @@ int32_t Skeleton::CreateJoint(const Node& node, const std::optional<int32_t>& pa
 	return joint.index;
 }
 
-} // namespace magi

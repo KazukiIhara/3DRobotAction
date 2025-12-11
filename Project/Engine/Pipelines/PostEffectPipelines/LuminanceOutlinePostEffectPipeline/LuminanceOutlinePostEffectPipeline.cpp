@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 LuminanceOutlinePostEffectPipeline::LuminanceOutlinePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {
 }
@@ -23,4 +25,3 @@ void LuminanceOutlinePostEffectPipeline::CompileShaders() {
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-} // namespace magi

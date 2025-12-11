@@ -103,7 +103,7 @@ private:
 	// ポストエフェクトの用の変数
 	float vignetteScale_ = 18.0f;
 	float vignetteFalloff_ = 0.8f;
-	Vector2 radialBlurCenter_ = { 0.5f,0.5f };
+	magi::Vector2 radialBlurCenter_ = { 0.5f,0.5f };
 	float radialBlurWidth_ = 0.01f;
 	float gaussianSigma_ = 0.5f;
 
@@ -155,78 +155,78 @@ private:
 
 
 	// UIアニメーションスタート座標
-	Vector2 battleUiBPosS_{};
-	Vector2 battleUiAPosS_{};
-	Vector2 battleUiTPosS_[2]{};
-	Vector2 battleUiLPosS_{};
-	Vector2 battleUiEPosS_{};
+	magi::Vector2 battleUiBPosS_{};
+	magi::Vector2 battleUiAPosS_{};
+	magi::Vector2 battleUiTPosS_[2]{};
+	magi::Vector2 battleUiLPosS_{};
+	magi::Vector2 battleUiEPosS_{};
 
-	Vector2 startUiSPosS_{};
-	Vector2 startUiTPosS_[2]{};
-	Vector2 startUiAPosS_{};
-	Vector2 startUiRPosS_{};
+	magi::Vector2 startUiSPosS_{};
+	magi::Vector2 startUiTPosS_[2]{};
+	magi::Vector2 startUiAPosS_{};
+	magi::Vector2 startUiRPosS_{};
 
 	// UIアニメーション終了座標
-	Vector2 battleUiBPosE_{};
-	Vector2 battleUiAPosE_{};
-	Vector2 battleUiTPosE_[2]{};
-	Vector2 battleUiLPosE_{};
-	Vector2 battleUiEPosE_{};
+	magi::Vector2 battleUiBPosE_{};
+	magi::Vector2 battleUiAPosE_{};
+	magi::Vector2 battleUiTPosE_[2]{};
+	magi::Vector2 battleUiLPosE_{};
+	magi::Vector2 battleUiEPosE_{};
 
-	Vector2 startUiSPosE_{};
-	Vector2 startUiTPosE_[2]{};
-	Vector2 startUiAPosE_{};
-	Vector2 startUiRPosE_{};
+	magi::Vector2 startUiSPosE_{};
+	magi::Vector2 startUiTPosE_[2]{};
+	magi::Vector2 startUiAPosE_{};
+	magi::Vector2 startUiRPosE_{};
 
 
 	// 現在のUIの座標
-	Vector2 battleUiBPos_{};
-	Vector2 battleUiAPos_{};
-	Vector2 battleUiTPos_[2]{};
-	Vector2 battleUiLPos_{};
-	Vector2 battleUiEPos_{};
+	magi::Vector2 battleUiBPos_{};
+	magi::Vector2 battleUiAPos_{};
+	magi::Vector2 battleUiTPos_[2]{};
+	magi::Vector2 battleUiLPos_{};
+	magi::Vector2 battleUiEPos_{};
 
-	Vector2 startUiSPos_{};
-	Vector2 startUiTPos_[2]{};
-	Vector2 startUiAPos_{};
-	Vector2 startUiRPos_{};
+	magi::Vector2 startUiSPos_{};
+	magi::Vector2 startUiTPos_[2]{};
+	magi::Vector2 startUiAPos_{};
+	magi::Vector2 startUiRPos_{};
 
 
 	// UIアニメーション
-	SimpleAnimation<Vector2> animBattleB_;
-	SimpleAnimation<Vector2> animBattleA_;
-	SimpleAnimation<Vector2> animBattleT_[2];
-	SimpleAnimation<Vector2> animBattleL_;
-	SimpleAnimation<Vector2> animBattleE_;
+	SimpleAnimation<magi::Vector2> animBattleB_;
+	SimpleAnimation<magi::Vector2> animBattleA_;
+	SimpleAnimation<magi::Vector2> animBattleT_[2];
+	SimpleAnimation<magi::Vector2> animBattleL_;
+	SimpleAnimation<magi::Vector2> animBattleE_;
 
-	SimpleAnimation<Vector2> animStartS_;
-	SimpleAnimation<Vector2> animStartT_[2];
-	SimpleAnimation<Vector2> animStartA_;
-	SimpleAnimation<Vector2> animStartR_;
+	SimpleAnimation<magi::Vector2> animStartS_;
+	SimpleAnimation<magi::Vector2> animStartT_[2];
+	SimpleAnimation<magi::Vector2> animStartA_;
+	SimpleAnimation<magi::Vector2> animStartR_;
 
 
 	// UIアニメーション最終座標
-	Vector2 battleUiBPosF_{};
-	Vector2 battleUiAPosF_{};
-	Vector2 battleUiTPosF_[2]{};
-	Vector2 battleUiLPosF_{};
-	Vector2 battleUiEPosF_{};
+	magi::Vector2 battleUiBPosF_{};
+	magi::Vector2 battleUiAPosF_{};
+	magi::Vector2 battleUiTPosF_[2]{};
+	magi::Vector2 battleUiLPosF_{};
+	magi::Vector2 battleUiEPosF_{};
 
-	Vector2 startUiSPosF_{};
-	Vector2 startUiTPosF_[2]{};
-	Vector2 startUiAPosF_{};
-	Vector2 startUiRPosF_{};
+	magi::Vector2 startUiSPosF_{};
+	magi::Vector2 startUiTPosF_[2]{};
+	magi::Vector2 startUiAPosF_{};
+	magi::Vector2 startUiRPosF_{};
 
 	// UIアニメーション
-	SimpleAnimation<Vector2> animFBattleB_;
-	SimpleAnimation<Vector2> animFBattleA_;
-	SimpleAnimation<Vector2> animFBattleT_[2];
-	SimpleAnimation<Vector2> animFBattleL_;
-	SimpleAnimation<Vector2> animFBattleE_;
+	SimpleAnimation<magi::Vector2> animFBattleB_;
+	SimpleAnimation<magi::Vector2> animFBattleA_;
+	SimpleAnimation<magi::Vector2> animFBattleT_[2];
+	SimpleAnimation<magi::Vector2> animFBattleL_;
+	SimpleAnimation<magi::Vector2> animFBattleE_;
 
-	SimpleAnimation<Vector2> animFStartS_;
-	SimpleAnimation<Vector2> animFStartT_[2];
-	SimpleAnimation<Vector2> animFStartA_;
-	SimpleAnimation<Vector2> animFStartR_;
+	SimpleAnimation<magi::Vector2> animFStartS_;
+	SimpleAnimation<magi::Vector2> animFStartT_[2];
+	SimpleAnimation<magi::Vector2> animFStartA_;
+	SimpleAnimation<magi::Vector2> animFStartR_;
 
 };

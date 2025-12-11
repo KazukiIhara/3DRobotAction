@@ -11,7 +11,6 @@
 #include "MAGIUitility/MAGIUtility.h"
 
 
-namespace magi {
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -314,4 +313,3 @@ void SkinMeshDrawer::TransirionSkinResource(ID3D12GraphicsCommandList* cmd, D3D1
 	skinnedVertexResourceState_ = after;
 }
 
-} // namespace magi

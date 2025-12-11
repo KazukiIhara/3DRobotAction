@@ -64,7 +64,7 @@ public:
 		// モデル名
 		std::string modelName = "AssultRifle";
 		// 攻撃発射ローカル座標
-		Vector3 fireOffsetLocalPos;
+		magi::Vector3 fireOffsetLocalPos;
 	};
 
 	// 
@@ -72,12 +72,12 @@ public:
 	// 
 	struct Data {
 		// 攻撃発射位置行列
-		Matrix4x4 fireOffsetLocalMatrix;
+		magi::Matrix4x4 fireOffsetLocalMatrix;
 
 		// 攻撃発射ワールド座標
-		Vector3 fireOffsetWorldPos;
+		magi::Vector3 fireOffsetWorldPos;
 		// 攻撃発射ワールド行列
-		Matrix4x4 fireOffsetWorldMatrix;
+		magi::Matrix4x4 fireOffsetWorldMatrix;
 
 		// 残弾数
 		int ammo_ = 0;
@@ -143,7 +143,7 @@ private:
 	Transform3D* transform_;
 
 	// 前方ベクトル
-	Vector3 forward_{ 0.0f,0.0f,1.0f };
+	magi::Vector3 forward_{ 0.0f,0.0f,1.0f };
 
 	// マテリアル
 	ModelMaterial material_;

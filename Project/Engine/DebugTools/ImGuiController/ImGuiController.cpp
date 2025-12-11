@@ -1,5 +1,8 @@
 #include "ImGuiController.h"
 
+using namespace magi;
+
+
 
 // MyHedder
 #include "Logger/Logger.h"
@@ -9,7 +12,6 @@
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
 
-namespace magi {
 ImGuiController::ImGuiController(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager) {
 	Initialize(windowApp, dxgi, command, srvUavManager);
 	Logger::Log("ImGuiController Initialize\n");
@@ -84,4 +86,3 @@ void ImGuiController::SetSrvUavManager(SRVUAVManager* srvUavManager) {
 	srvUavManager_ = srvUavManager;
 }
 
-} // namespace magi

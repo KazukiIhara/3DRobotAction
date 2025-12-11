@@ -3,8 +3,10 @@
 
 #include "Framework/MAGI.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIMath;
 
 Camera2D::Camera2D(const std::string& name) {
@@ -46,4 +48,3 @@ void Camera2D::MapCameraData() {
 	cameraData_->viewProjection = viewMat * projectionMat;
 }
 
-} // namespace magi

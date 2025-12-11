@@ -8,8 +8,10 @@
 #include <iomanip>
 #include <sstream>
 
+using namespace magi;
 
-namespace magi {
+
+
 std::ofstream Logger::logFile_;
 
 void Logger::Initialize() {
@@ -120,4 +122,3 @@ bool Logger::IsRunningUnderPIX() {
 	return len > 0;      // 文字列長が0より大きければ存在
 }
 
-} // namespace magi

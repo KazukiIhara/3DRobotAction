@@ -1,4 +1,2 @@
 
-namespace magi {
 
-} // namespace magi

@@ -1,5 +1,8 @@
 #include "GraphicsPipelineManager.h"
 
+using namespace magi;
+
+
 
 // C++
 #include <cassert>
@@ -10,7 +13,6 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 
-namespace magi {
 GraphicsPipelineManager::GraphicsPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 	Logger::Log("GraphicsPipelineManager Initialize\n");
@@ -211,4 +213,3 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 	}
 }
 
-} // namespace magi

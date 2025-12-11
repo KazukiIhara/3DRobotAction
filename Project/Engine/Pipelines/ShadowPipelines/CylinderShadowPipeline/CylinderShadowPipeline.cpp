@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 CylinderShadowPipeline::CylinderShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseShadowPipeline(dxgi, shaderCompiler) {
 }
@@ -74,4 +76,3 @@ void CylinderShadowPipeline::CompileShaders() {
 	assert(pixelShaderBlob_);
 }
 
-} // namespace magi

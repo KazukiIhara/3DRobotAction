@@ -5,8 +5,10 @@
 
 #include <cassert>
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIMath;
 
 Vector3 MAGIUtility::CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time) {
@@ -121,4 +123,3 @@ Vector2 MAGIUtility::TransformWorldToScreen(const Vector3& worldPos) {
 	return Vector2(sx, sy);
 }
 
-} // namespace magi

@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 Plane3DGraphicsPipeline::Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
@@ -194,4 +196,3 @@ D3D12_RASTERIZER_DESC Plane3DGraphicsPipeline::RasterizerStateSetting() {
 	return desc;
 }
 
-} // namespace magi

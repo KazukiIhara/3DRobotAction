@@ -5,7 +5,6 @@
 
 
 
-namespace magi {
 SceneManager::SceneManager()
 	: data_(std::make_unique<GameData>()) {
 	Logger::Log("SceneManager Initialize\n");
@@ -54,4 +53,3 @@ void SceneManager::SwitchScene() {
 	}
 }
 
-} // namespace magi

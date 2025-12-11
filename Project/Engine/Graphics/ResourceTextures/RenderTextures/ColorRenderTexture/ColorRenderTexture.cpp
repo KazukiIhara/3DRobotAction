@@ -1,8 +1,10 @@
 #include "ColorRenderTexture.h"
 
+using namespace magi;
 
 
-namespace magi {
+
+
 ColorRenderTexture::ColorRenderTexture() {
 }
 
@@ -18,4 +20,3 @@ void ColorRenderTexture::Initialize() {
 	);
 }
 
-} // namespace magi

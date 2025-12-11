@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 LightingDefferedRenderringPipeline::LightingDefferedRenderringPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseDefferedRenderringPipeline(dxgi, shaderCompiler) {
 }
@@ -248,4 +250,3 @@ D3D12_RASTERIZER_DESC LightingDefferedRenderringPipeline::RasterizerStateSetting
 	return rasterizerDesc;
 }
 
-} // namespace magi

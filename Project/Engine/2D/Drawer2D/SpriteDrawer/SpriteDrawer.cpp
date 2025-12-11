@@ -16,8 +16,10 @@
 
 #include <cassert>
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -228,4 +230,3 @@ void SpriteDrawer::SetCamera2DManager(Camera2DManager* camera2DManager) {
 	camera2DManager_ = camera2DManager;
 }
 
-} // namespace magi

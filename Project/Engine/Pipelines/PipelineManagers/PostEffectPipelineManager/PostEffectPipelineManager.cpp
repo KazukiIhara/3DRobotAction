@@ -1,5 +1,8 @@
 #include "PostEffectPipelineManager.h"
 
+using namespace magi;
+
+
 
 // C++
 #include <cassert>
@@ -10,7 +13,6 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 
-namespace magi {
 PostEffectPipelineManager::PostEffectPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 	Logger::Log("PostEffectPipelineManager Initialize\n");
@@ -184,4 +186,3 @@ void PostEffectPipelineManager::SetPipelineState(PostEffectType pipelineState) {
 	}
 }
 
-} // namespace magi

@@ -9,12 +9,14 @@
 #include "DeltaTimer/DeltaTimer.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
+using namespace magi;
+
+
 // Windows環境限定
 #ifdef _WIN32
 #include <Windows.h>
 #endif
 
-namespace magi {
 GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager) {
 	// 
 	// インスタンスのセット
@@ -188,4 +190,3 @@ bool& GUI::GetIsShowMainUI() {
 	return isShowMainUI_;
 }
 
-} // namespace magi

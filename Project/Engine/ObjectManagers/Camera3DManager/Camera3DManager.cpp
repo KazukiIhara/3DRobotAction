@@ -5,8 +5,10 @@
 
 #include "MAGIAssert/MAGIAssert.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 Camera3DManager::Camera3DManager() {
 	Initialize();
 	Logger::Log("Camera3DManager Initialize\n");
@@ -160,4 +162,3 @@ void Camera3DManager::DeleteGarbage() {
 		});
 }
 
-} // namespace magi

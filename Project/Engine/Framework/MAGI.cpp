@@ -6,8 +6,10 @@
 #include "Random/Random.h"
 #include "MAGIUitility/MAGIUtility.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIUtility;
 
 // Staticメンバ変数の初期化
@@ -1593,4 +1595,3 @@ void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneC
 	sceneDataImporter_->Import(sceneDataName, isSceneClear);
 }
 
-} // namespace magi

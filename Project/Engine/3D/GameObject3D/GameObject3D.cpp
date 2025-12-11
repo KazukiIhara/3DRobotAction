@@ -6,8 +6,10 @@
 #include "framework/MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 GameObject3D::GameObject3D(const std::string& name, const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	name_ = name;
 	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(scale, rotate, translate);
@@ -121,4 +123,3 @@ Camera3D* GameObject3D::GetCamera3D(const std::string& camera3DName) {
 	return {};
 }
 
-} // namespace magi

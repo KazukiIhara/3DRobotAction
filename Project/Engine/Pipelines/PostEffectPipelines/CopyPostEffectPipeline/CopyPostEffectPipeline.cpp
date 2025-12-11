@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 CopyPostEffectPipeline::CopyPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseNoParamaterPostEffectPipeline(dxgi, shaderCompiler) {
 }
@@ -25,4 +27,3 @@ void CopyPostEffectPipeline::CompileShaders() {
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-} // namespace magi

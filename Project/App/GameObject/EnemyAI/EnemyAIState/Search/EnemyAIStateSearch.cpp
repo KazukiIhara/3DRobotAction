@@ -7,6 +7,7 @@
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 #include "Math/Utility/MathUtility.h"
 
+using namespace magi;
 using namespace MAGIMath;
 
 void EnemyAIStateSearch::Enter([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {

@@ -5,8 +5,10 @@
 #include <stdexcept>
 #include <string>
 
+using namespace magi;
 
-namespace magi {
+
+
 static const float EPSILON = 1.0e-6f;
 
 Vector2 operator-(const Vector2& v) {
@@ -1205,4 +1207,3 @@ Quaternion MAGIMath::Slerp(Quaternion q1, Quaternion q2, float t) {
 	return Normalize(result);
 }
 
-} // namespace magi

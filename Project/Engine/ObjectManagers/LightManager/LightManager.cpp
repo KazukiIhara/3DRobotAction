@@ -13,8 +13,10 @@
 
 #include "Framework/MAGI.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -241,4 +243,3 @@ void LightManager::SetSrvUavManager(SRVUAVManager* srvuavManager) {
 	srvuavManager_ = srvuavManager;
 }
 
-} // namespace magi

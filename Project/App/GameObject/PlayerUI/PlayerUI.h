@@ -44,8 +44,8 @@ private:
 	// 射撃盤UIのスプライト設定
 	SpriteData lockonRedData_{};
 	SpriteMaterialData lockonRedMat_{};
-	Vector3 lockOnWPos_{};
-	Vector3 lerpStartPos_{};
+	magi::Vector3 lockOnWPos_{};
+	magi::Vector3 lerpStartPos_{};
 
 	// Apゲージのスプライトデータ
 	SpriteData apGaugeData_{};
@@ -73,18 +73,18 @@ private:
 	// エネルギーバーのスプライトデータ
 	SpriteData energyBarData_{};
 	SpriteMaterialData energyBarMatData_{};
-	Vector2 energyBarPos_{ 140.0f,1090.0f };
+	magi::Vector2 energyBarPos_{ 140.0f,1090.0f };
 
 	// エネルギーゲージのスプライトデータ
 	SpriteData energyGaugeData_{};
 	SpriteMaterialData energyGaugeMatData_{};
-	Vector2 energyGaugePos_{ 101.0f,978.0f };
+	magi::Vector2 energyGaugePos_{ 101.0f,978.0f };
 	const float kEnergyGaugeHeight_ = 662.0f;
 
 	// エネルギーテキストのスプライトデータ
 	SpriteData energyTextData_{};
 	SpriteMaterialData energyTextMatData_{};
-	Vector2 energyTextPos_{ 75.0f,280.0f };
+	magi::Vector2 energyTextPos_{ 75.0f,280.0f };
 
 
 	// 右手武器情報のスプライトデータ
@@ -92,17 +92,17 @@ private:
 	// 武器表示
 	SpriteData rightHandWeaponData_{};
 	SpriteMaterialData rightHandWeaponMat_{};
-	Vector2 rightHandWeaponPos_{};
+	magi::Vector2 rightHandWeaponPos_{};
 
 	// 武器種
 	SpriteData rightHandWeaponTextData_{};
 	SpriteMaterialData rightHandWeaponTextMat_{};
-	Vector2 rightHandWeaponTextPos_{};
+	magi::Vector2 rightHandWeaponTextPos_{};
 
 	// 残弾
 	SpriteData rightHandWeaponNumData_[2]{};
 	SpriteMaterialData rightHandWeaponNumMat_{};
-	Vector2 rightHandWeaponNumPos_[2]{};
+	magi::Vector2 rightHandWeaponNumPos_[2]{};
 
 
 	// 左手武器情報のスプライトデータ
@@ -110,17 +110,17 @@ private:
 	// 武器表示
 	SpriteData leftHandWeaponData_{};
 	SpriteMaterialData leftHandWeaponMat_{};
-	Vector2 leftHandWeaponPos_{};
+	magi::Vector2 leftHandWeaponPos_{};
 
 	// 武器種
 	SpriteData leftHandWeaponTextData_{};
 	SpriteMaterialData leftHandWeaponTextMat_{};
-	Vector2 leftHandWeaponTextPos_{};
+	magi::Vector2 leftHandWeaponTextPos_{};
 
 	// 残弾
 	SpriteData leftHandWeaponNum_[2]{};
 	SpriteMaterialData leftHandWeaponNumMat_{};
-	Vector2 leftHandWeaponNumPos_[2]{};
+	magi::Vector2 leftHandWeaponNumPos_[2]{};
 
 
 private:

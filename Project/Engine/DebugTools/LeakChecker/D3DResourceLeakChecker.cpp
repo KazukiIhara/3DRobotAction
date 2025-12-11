@@ -1,5 +1,8 @@
 #include "D3DResourceLeakChecker.h"
 
+using namespace magi;
+
+
 
 // Microsoft
 #include <wrl.h>
@@ -13,7 +16,6 @@
 #include "logger/Logger.h"
 
 
-namespace magi {
 D3DResourceLeakChecker::~D3DResourceLeakChecker() {
 	// リソースリークチェック
 	Microsoft::WRL::ComPtr<IDXGIDebug1> debug;
@@ -25,4 +27,3 @@ D3DResourceLeakChecker::~D3DResourceLeakChecker() {
 	}
 }
 
-} // namespace magi

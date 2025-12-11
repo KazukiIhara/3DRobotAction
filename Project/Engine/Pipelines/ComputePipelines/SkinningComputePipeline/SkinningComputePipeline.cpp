@@ -8,8 +8,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 SkinningComputePipeline::SkinningComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 }
@@ -150,4 +152,3 @@ void SkinningComputePipeline::SetShaderCompiler(ShaderCompiler* shaderCompiler) 
 	shaderCompiler_ = shaderCompiler;
 }
 
-} // namespace magi

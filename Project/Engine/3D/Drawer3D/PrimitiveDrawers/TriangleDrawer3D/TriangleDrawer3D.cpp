@@ -14,8 +14,10 @@
 
 #include "Framework/MAGI.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -160,4 +162,3 @@ void TriangleDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	camera3DManager_ = camera3DManager;
 }
 
-} // namespace magi

@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 DepthNormalOutlinePostEffectPipeline::DepthNormalOutlinePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {
 }
@@ -120,4 +122,3 @@ void DepthNormalOutlinePostEffectPipeline::CompileShaders() {
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-} // namespace magi

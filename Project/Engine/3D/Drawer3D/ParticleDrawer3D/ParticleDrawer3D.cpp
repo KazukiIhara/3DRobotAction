@@ -16,8 +16,10 @@
 
 #include <cassert>
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -57,4 +59,3 @@ void ParticleDrawer3D::Draw(BlendMode mode) {
 	commandList->DispatchMesh(kParticleThreadsNum, kParticleThreadsNum, 1);
 }
 
-} // namespace magi

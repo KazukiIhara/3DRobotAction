@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 GrayscalePostEffectPipeline::GrayscalePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseNoParamaterPostEffectPipeline(dxgi, shaderCompiler) {}
 
@@ -24,4 +26,3 @@ void GrayscalePostEffectPipeline::CompileShaders() {
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-} // namespace magi

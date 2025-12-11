@@ -1,8 +1,10 @@
 #include "EffectStruct.h"
 
+using namespace magi;
 
 
-namespace magi {
+
+
 PlaneData3D Lerp(const PlaneData3D& p0, const PlaneData3D& p1, float t) {
 	PlaneData3D result{};
 	for (int i = 0; i < 4; ++i) {
@@ -47,4 +49,3 @@ void PlaneEffectParam::Initialize() {
 	};
 }
 
-} // namespace magi

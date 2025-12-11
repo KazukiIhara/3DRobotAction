@@ -6,8 +6,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 Ring3DGraphicsPipeline::Ring3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
@@ -232,4 +234,3 @@ D3D12_INPUT_LAYOUT_DESC Ring3DGraphicsPipeline::InputLayoutSetting() {
 	return { nullptr, 0 };
 }
 
-} // namespace magi

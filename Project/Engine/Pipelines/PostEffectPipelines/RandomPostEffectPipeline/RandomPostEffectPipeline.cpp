@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 RandomPostEffectPipeline::RandomPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {}
 
@@ -22,4 +24,3 @@ void RandomPostEffectPipeline::CompileShaders() {
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-} // namespace magi

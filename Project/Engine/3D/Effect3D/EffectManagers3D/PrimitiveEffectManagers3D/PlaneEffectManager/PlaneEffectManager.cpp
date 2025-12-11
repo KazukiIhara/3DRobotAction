@@ -3,6 +3,9 @@
 
 #include <cassert>
 
+using namespace magi;
+
+
 // MyHedder
 #include "MAGIAssert/MAGIAssert.h"
 #include "Core/DeltaTimer/DeltaTimer.h"
@@ -10,7 +13,6 @@
 #include "3D/Drawer3D/PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 
 
-namespace magi {
 PlaneEffectManager::PlaneEffectManager(DeltaTimer* deltaTimer, TransformManager* transformManager, PlaneDrawer3D* planeDrawer) {
 	assert(deltaTimer);
 	assert(transformManager);
@@ -141,4 +143,3 @@ void PlaneEffectManager::Draw() {
 	}
 }
 
-} // namespace magi

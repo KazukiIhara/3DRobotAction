@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 ParticleEffectGraphicsPipeline::ParticleEffectGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
@@ -234,4 +236,3 @@ D3D12_RASTERIZER_DESC ParticleEffectGraphicsPipeline::RasterizerStateSetting() {
 	return desc;
 }
 
-} // namespace magi

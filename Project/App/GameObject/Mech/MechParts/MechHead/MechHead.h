@@ -36,10 +36,10 @@ public:
 		std::string modelName = "Head";
 
 		// オフセット
-		Vector3 offSetPos = { 0.0f,0.0f,0.0f };
+		magi::Vector3 offSetPos = { 0.0f,0.0f,0.0f };
 
 		// モデルサイズ
-		Vector3 modelSize = { 0.0f,0.0f,0.0f };
+		magi::Vector3 modelSize = { 0.0f,0.0f,0.0f };
 	};
 public:
 	MechHead();

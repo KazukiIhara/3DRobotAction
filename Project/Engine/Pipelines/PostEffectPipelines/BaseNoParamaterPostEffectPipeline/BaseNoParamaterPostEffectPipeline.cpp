@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 BaseNoParamaterPostEffectPipeline::BaseNoParamaterPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BasePostEffectPipeline(dxgi, shaderCompiler) {
 }
@@ -202,4 +204,3 @@ D3D12_RASTERIZER_DESC BaseNoParamaterPostEffectPipeline::RasterizerStateSetting(
 	return rasterizerDesc_;
 }
 
-} // namespace magi

@@ -7,8 +7,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 BaseShadowPipeline::BaseShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	SetDXGI(dxgi);
 	SetShaderCompiler(shaderCompiler);
@@ -119,4 +121,3 @@ void BaseShadowPipeline::SetShaderCompiler(ShaderCompiler* shaderCompiler) {
 	shaderCompiler_ = shaderCompiler;
 }
 
-} // namespace magi

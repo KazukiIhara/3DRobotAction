@@ -5,8 +5,10 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 DSVManager::DSVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
 	BaseViewManager::Initialize(kMaxDSVCount_);
@@ -33,4 +35,3 @@ void DSVManager::CreateDSVTexture2d(uint32_t dsvIndex, ID3D12Resource* pResource
 	dxgi_->GetDevice()->CreateDepthStencilView(pResource, &dsvDesc, GetDescriptorHandleCPU(dsvIndex));
 }
 
-} // namespace magi

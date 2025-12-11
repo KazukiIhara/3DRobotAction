@@ -4,9 +4,11 @@
 #include "Framework/MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
+using namespace magi;
 
 
-namespace magi {
+
+
 using namespace MAGIUtility;
 
 ShadowDepthTexture::ShadowDepthTexture() {
@@ -86,4 +88,3 @@ uint32_t ShadowDepthTexture::GetSrvIndex() const {
 	return srvIndex_;
 }
 
-} // namespace magi

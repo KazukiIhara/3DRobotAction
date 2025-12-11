@@ -3,8 +3,10 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 ComputePipelineManager::ComputePipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 	Logger::Log("ComputePipelineManager Initialize\n");
@@ -85,4 +87,3 @@ void ComputePipelineManager::SetPipelineState(ComputePipelineStateType pipelineS
 	}
 }
 
-} // namespace magi

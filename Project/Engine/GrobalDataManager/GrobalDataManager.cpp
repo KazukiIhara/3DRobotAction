@@ -3,8 +3,10 @@
 
 #include "Framework/MAGI.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 GrobalDataManager::GrobalDataManager() {
 	Initialize();
 }
@@ -403,4 +405,3 @@ void GrobalDataManager::AddItem(const std::string& groupName, const std::string&
 	}
 }
 
-} // namespace magi

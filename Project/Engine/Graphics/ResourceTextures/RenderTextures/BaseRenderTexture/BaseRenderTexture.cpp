@@ -4,8 +4,10 @@
 #include "Framework/MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIUtility;
 
 BaseRenderTexture::BaseRenderTexture() {
@@ -138,4 +140,3 @@ void BaseRenderTexture::CreateSRV() {
 	MAGISYSTEM::CreateSrvTexture2D(srvIndex_, resource_.Get(), format_, 1);
 }
 
-} // namespace magi

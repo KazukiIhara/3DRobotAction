@@ -17,7 +17,7 @@ public:
 	BulletHitEffect(MechCore* mechCore);
 	~BulletHitEffect() = default;
 
-	void Emit(const Vector3& pos);
+	void Emit(const magi::Vector3& pos);
 
 	void Update();
 
@@ -25,7 +25,7 @@ public:
 
 private:
 	// パーティクル発生
-	void EmitParticle(const Vector3& pos);
+	void EmitParticle(const magi::Vector3& pos);
 
 private:
 	// 機体のポインタ

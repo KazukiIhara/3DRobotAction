@@ -9,8 +9,10 @@
 
 #include "TextureDataContainer/TextureDataContainer.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 using namespace MAGIMath;
 
 ModelDataContainer::ModelDataContainer(TextureDataContainer* textureDataContainer) {
@@ -286,4 +288,3 @@ void ModelDataContainer::SetTextureDataContainer(TextureDataContainer* textureDa
 	textureDataContainer_ = textureDataContainer;
 }
 
-} // namespace magi

@@ -4,8 +4,10 @@
 #include <cassert>
 #include "Logger/Logger.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 ShaderCompiler::ShaderCompiler() {
 	Initialize();
 	Logger::Log("ShaderCompiler Initialize\n");
@@ -111,4 +113,3 @@ void ShaderCompiler::LogDxcVersion() {
     }
 }
 
-} // namespace magi

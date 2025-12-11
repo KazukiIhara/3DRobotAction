@@ -1,5 +1,8 @@
 #include "ModelDrawer.h"
 
+using namespace magi;
+
+
 
 // C++
 #include <cassert>
@@ -10,7 +13,6 @@
 #include "Math/Utility/MathUtility.h"
 
 
-namespace magi {
 using namespace MAGIMath;
 
 ModelDrawer::ModelDrawer(const ModelData& modelData) {
@@ -120,4 +122,3 @@ void ModelDrawer::DrawShadow(BlendMode mode) {
 	}
 }
 
-} // namespace magi

@@ -3,8 +3,10 @@
 
 #include "Transform3D/Transform3D.h"
 
+using namespace magi;
 
-namespace magi {
+
+
 PrimitiveRenderer3D::PrimitiveRenderer3D(const std::string& name, const Prim3DType& type) {
 	name, type;
 }
@@ -17,4 +19,3 @@ void PrimitiveRenderer3D::Draw() {
 
 }
 
-} // namespace magi
