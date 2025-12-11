@@ -4,6 +4,8 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
+
 TransformManager::TransformManager() {
 	Clear();
 	Logger::Log("TransformManager Initialized\n");

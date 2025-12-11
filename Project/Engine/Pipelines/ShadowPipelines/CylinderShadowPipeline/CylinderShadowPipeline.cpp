@@ -6,6 +6,8 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+using namespace magi;
+
 CylinderShadowPipeline::CylinderShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseShadowPipeline(dxgi, shaderCompiler) {
 }
