@@ -8,7 +8,7 @@
 Enemy::Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	// 機体の作成
 	const Vector3 kEnemyPopPosition = { 0.0f,0.0f,30.0f };
-	mech_ = std::make_unique<MechCore>(kEnemyPopPosition, FriendlyTag::EnemySide, bulletManager, true);
+	mech_ = std::make_unique<MechCore>(kEnemyPopPosition, FriendlyTag::EnemySide, "Default", bulletManager, true);
 
 	// 三人称視点カメラの作成
 	std::unique_ptr<MechCamera> followCamera = std::make_unique<MechCamera>("MainCamera", std::numbers::pi_v<float>, mech_.get());

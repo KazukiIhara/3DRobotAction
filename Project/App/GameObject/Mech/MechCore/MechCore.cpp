@@ -13,17 +13,17 @@
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
-MechCore::MechCore(const Vector3& position, FriendlyTag tag, AttackObjectManager* attackObjectManager, bool enableHardlockOn) {
+MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* attackObjectManager, bool enableHardlockOn) {
 
 	// 
 	// 今後の実装ココから
 	// 
 
 	// 機体の名前を引数で取得
-
+	mechName_ = mechDataName;
 
 	// 機体のデータ(パーツ名と武器名)保存しているコンテナから各パーツ名と武器名を取得
-
+	MechCore::Data mechData;
 
 	// パーツと武器を保存しているコンテナから各パラメータを取得
 

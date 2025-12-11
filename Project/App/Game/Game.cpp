@@ -4,13 +4,13 @@
 #include "Scenes/Sample/SampleScene.h"
 
 // EditorScene
-#include "Scenes/MechEditScene/MechEditScene.h"
+#include "Scenes/Editor/MechEditScene/MechEditScene.h"
 
 // GameScene
-#include "Scenes/Title/TitleScene.h"
-#include "Scenes/Menu/MenuScene.h"
-#include "Scenes/Play/PlayScene.h"
-#include "Scenes/MechCustomScene/MechCustomScene.h"
+#include "Scenes/Game/Title/TitleScene.h"
+#include "Scenes/Game/Menu/MenuScene.h"
+#include "Scenes/Game/Play/PlayScene.h"
+#include "Scenes/Game/MechCustomScene/MechCustomScene.h"
 
 Game::~Game() {}
 
