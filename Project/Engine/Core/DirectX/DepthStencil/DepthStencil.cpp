@@ -87,8 +87,8 @@ uint32_t DepthStencil::GetSrvIndex() const {
 void DepthStencil::CreateResource() {
 	// DepthStencilTextureをウィンドウのサイズで作成
 	resource_ = dxgi_->CreateDepthStencilTextureResource(
-		WindowApp::kClientWidth,
-		WindowApp::kClientHeight,
+		magi::WindowApp::kClientWidth,
+		magi::WindowApp::kClientHeight,
 		DXGI_FORMAT_R24G8_TYPELESS,
 		DXGI_FORMAT_D24_UNORM_S8_UINT
 	);

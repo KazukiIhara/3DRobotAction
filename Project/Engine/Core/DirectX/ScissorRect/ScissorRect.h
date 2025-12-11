@@ -15,7 +15,7 @@ public:
 	void Initialize(DirectXCommand* command);
 
 	// シザー矩形を設定
-	void SettingScissorRect(uint32_t width = WindowApp::kClientWidth, uint32_t height = WindowApp::kClientHeight);
+	void SettingScissorRect(uint32_t width = magi::WindowApp::kClientWidth, uint32_t height = magi::WindowApp::kClientHeight);
 
 private:
 	// コマンドのインスタンスをセット

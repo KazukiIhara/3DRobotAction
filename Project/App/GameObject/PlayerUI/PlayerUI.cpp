@@ -10,14 +10,14 @@ using namespace MAGIUtility;
 
 PlayerUI::PlayerUI() {
 	// ロックオン用のスプライト設定
-	lockonGrayData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
+	lockonGrayData_.position = Vector2(magi::WindowApp::kClientWidth * 0.5f, magi::WindowApp::kClientHeight * 0.5f);
 	lockonGrayData_.size = { 256.0f,256.0f };
 
 	lockonGrayMat_.anchorPoint = { 0.5f,0.5f };
 	lockonGrayMat_.textureName = "LockonUIGray.png";
 
 	// 射撃盤用のスプライト設定
-	lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
+	lockonRedData_.position = Vector2(WindowApp::kClientWidth * 0.5f, magi::WindowApp::kClientHeight * 0.5f);
 	lockonRedData_.size = { 192.0f,192.0f };
 	lockonRedMat_.anchorPoint = { 0.5f,0.5f };
 	lockonRedMat_.textureName = "LockonUIRed.png";

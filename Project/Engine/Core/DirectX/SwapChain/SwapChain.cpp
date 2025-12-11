@@ -104,8 +104,8 @@ void SwapChain::ClearRenderTarget() {
 
 void SwapChain::CreateSwapChain() {
 	// スワップチェーンの設定
-	swapChainDesc_.Width = WindowApp::kClientWidth;				// 画面の幅、ウィンドウのクライアント領域を同じものにしておく
-	swapChainDesc_.Height = WindowApp::kClientHeight;			// 画面の高さ、ウィンドウのクライアント領域を同じものしておく
+	swapChainDesc_.Width = magi::WindowApp::kClientWidth;				// 画面の幅、ウィンドウのクライアント領域を同じものにしておく
+	swapChainDesc_.Height = magi::WindowApp::kClientHeight;			// 画面の高さ、ウィンドウのクライアント領域を同じものしておく
 	swapChainDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM;			// 色形式
 	swapChainDesc_.SampleDesc.Count = 1;						// マルチサンプルしない
 	swapChainDesc_.BufferCount = 2;								// ダブルバッファ

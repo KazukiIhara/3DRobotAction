@@ -15,7 +15,7 @@ std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 // 
 // BaseSystems
 // 
-std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
+std::unique_ptr<magi::WindowApp> MAGISYSTEM::windowApp_ = nullptr;
 std::unique_ptr<DeltaTimer> MAGISYSTEM::deltaTimer_ = nullptr;
 std::unique_ptr<MAGIDirectInput> MAGISYSTEM::directInput_ = nullptr;
 std::unique_ptr<MAGIXInput> MAGISYSTEM::xInput_ = nullptr;
@@ -136,7 +136,7 @@ void MAGISYSTEM::Initialize() {
 #endif // _DEBUG
 
 	// WindowApp
-	windowApp_ = std::make_unique<WindowApp>();
+	windowApp_ = std::make_unique<magi::WindowApp>();
 	// DeltaTimer
 	deltaTimer_ = std::make_unique<DeltaTimer>();
 	// DirectInput
@@ -1149,7 +1149,7 @@ void MAGISYSTEM::ApplyPostEffectGaussianX(float sigma, uint32_t karnelSize) {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::GaussianX,
 		.param = {
-			.param = {1.0f / WindowApp::kClientWidth,1.0f / WindowApp::kClientHeight,0.0f,0.0f,
+			.param = {1.0f / magi::WindowApp::kClientWidth,1.0f / magi::WindowApp::kClientHeight,0.0f,0.0f,
 				weight[0],weight[1],weight[2],weight[3],
 				weight[4],weight[5],weight[6],0.0f,
 				kernelRadius,
@@ -1168,7 +1168,7 @@ void MAGISYSTEM::ApplyPostEffectGaussianY(float sigma, uint32_t karnelSize) {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::GaussianY,
 		.param = {
-			.param = {1.0f / WindowApp::kClientWidth,1.0f / WindowApp::kClientHeight,0.0f,0.0f,
+			.param = {1.0f / magi::WindowApp::kClientWidth,1.0f / magi::WindowApp::kClientHeight,0.0f,0.0f,
 				weight[0],weight[1],weight[2],weight[3],
 				weight[4],weight[5],weight[6],0.0f,
 				kernelRadius,

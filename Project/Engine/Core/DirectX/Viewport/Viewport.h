@@ -15,7 +15,7 @@ public:
 	void Initialize(DirectXCommand* directXCommand);
 
 	// ビューポートを設定
-	void SettingViewport(uint32_t width = WindowApp::kClientWidth, uint32_t height = WindowApp::kClientHeight);
+	void SettingViewport(uint32_t width = magi::WindowApp::kClientWidth, uint32_t height = magi::WindowApp::kClientHeight);
 
 private:
 	// コマンドのインスタンスをセット

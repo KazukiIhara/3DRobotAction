@@ -678,7 +678,7 @@ protected:
 	// 
 	// BaseSystems
 	// 
-	static std::unique_ptr<WindowApp> windowApp_;
+	static std::unique_ptr<magi::WindowApp> windowApp_;
 	static std::unique_ptr<DeltaTimer> deltaTimer_;
 	static std::unique_ptr<MAGIDirectInput> directInput_;
 	static std::unique_ptr<MAGIXInput> xInput_;
@@ -788,11 +788,5 @@ protected:
 	//
 	static std::unique_ptr<ImGuiController> imguiController_;
 	static std::unique_ptr<GUI> gui_;
-
-};
-
-// シーンで使う一部の機能を持つクラス
-class MAGI {
-public:
 
 };

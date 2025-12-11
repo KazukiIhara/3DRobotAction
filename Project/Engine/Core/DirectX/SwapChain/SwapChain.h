@@ -80,7 +80,7 @@ private:
 	HRESULT hr_ = S_FALSE;
 private:
 	// WindowAppのインスタンスを受け取る箱
-	WindowApp* windowApp_ = nullptr;
+	magi::WindowApp* windowApp_ = nullptr;
 	// dxgiのインスタンスを受け取る箱
 	DXGI* dxgi_ = nullptr;
 	// viewportのインスタンスを受け取る箱
