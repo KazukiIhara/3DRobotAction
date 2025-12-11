@@ -4,6 +4,7 @@
 
 #include "framework/MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
+using namespace MAGI;
 
 GameObject3D::GameObject3D(const std::string& name, const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	name_ = name;

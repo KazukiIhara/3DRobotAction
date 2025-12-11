@@ -1,6 +1,7 @@
 #include "AttackCollider.h"
 
 #include "MAGI.h"
+using namespace MAGI;
 
 AttackCollider::AttackCollider(
 	const FriendlyTag& tag,

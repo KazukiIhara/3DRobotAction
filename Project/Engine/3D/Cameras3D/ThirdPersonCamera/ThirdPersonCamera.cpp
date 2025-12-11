@@ -3,6 +3,7 @@
 #include "MAGI.h"
 
 using namespace MAGIMath;
+using namespace MAGI;
 
 ThirdPersonCamera::ThirdPersonCamera(const std::string& name)
 	:Camera3D(name, false) {

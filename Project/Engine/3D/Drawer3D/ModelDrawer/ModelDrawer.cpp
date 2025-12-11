@@ -5,9 +5,10 @@
 
 // MyHedder
 #include "Logger/Logger.h"
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 #include "Math/Utility/MathUtility.h"
 
+using namespace MAGI;
 using namespace MAGIMath;
 
 ModelDrawer::ModelDrawer(const ModelData& modelData) {

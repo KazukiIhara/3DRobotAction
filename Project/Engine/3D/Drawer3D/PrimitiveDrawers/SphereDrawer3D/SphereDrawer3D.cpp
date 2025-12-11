@@ -13,10 +13,11 @@
 
 #include <cassert>
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, ShadowPipelineManager* shadowPipelineManager, Camera3DManager* camera3DManager, LightManager* lightManager) {
 	SetDXGI(dxgi);
