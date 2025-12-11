@@ -1,10 +1,13 @@
 #include "BaseViewManager.h"
 
+
 #include <cassert>
 
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 
+
+namespace magi {
 BaseViewManager::BaseViewManager(DXGI* dxgi) {
 	// DXGIのセット
 	SetDXGI(dxgi);
@@ -51,3 +54,5 @@ void BaseViewManager::SetDXGI(DXGI* dxgi) {
 	assert(dxgi);
 	dxgi_ = dxgi;
 }
+
+} // namespace magi

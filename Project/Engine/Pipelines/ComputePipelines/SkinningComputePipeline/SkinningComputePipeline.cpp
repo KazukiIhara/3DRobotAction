@@ -1,5 +1,6 @@
 #include "SkinningComputePipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
@@ -7,6 +8,8 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 SkinningComputePipeline::SkinningComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 }
@@ -146,3 +149,5 @@ void SkinningComputePipeline::SetShaderCompiler(ShaderCompiler* shaderCompiler) 
 	assert(shaderCompiler);
 	shaderCompiler_ = shaderCompiler;
 }
+
+} // namespace magi

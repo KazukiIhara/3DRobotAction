@@ -3,6 +3,7 @@
 // C++
 #include <vector>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -12,6 +13,8 @@
 #include "Enums/BlendModeEnum.h"
 
 
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -51,3 +54,5 @@ private:
 	LightManager* lightManager_ = nullptr;
 	ParticleUpdater3D* particleUpdater_ = nullptr;
 };
+
+} // namespace magi

@@ -5,7 +5,10 @@
 #include <cstdint>
 #include <Windows.h>
 
+
 // ウィンドウ管理クラス
+
+namespace magi {
 class WindowApp {
 public:
 	// クライアント領域
@@ -48,3 +51,5 @@ private:
 	// ウィンドウモードの復元用の矩形
 	RECT windowRect_ = { 0, 0, kClientWidth, kClientHeight };
 };
+
+} // namespace magi

@@ -7,9 +7,12 @@
 #include <cassert>
 #include <type_traits>
 
+
 #include "BaseScene/BaseScene.h"
 #include "GameData/GameData.h"
 
+
+namespace magi {
 class SceneManager {
 public:
 	SceneManager();
@@ -54,3 +57,5 @@ private:
 	std::unique_ptr<GameData> data_;
 
 };
+
+} // namespace magi

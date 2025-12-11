@@ -1,5 +1,8 @@
 #include "Transform3D.h"
 
+
+
+namespace magi {
 Transform3D::Transform3D(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	Initialize(scale, rotate, translate);
 }
@@ -339,3 +342,5 @@ void Transform3D::AddQuaterion(const Quaternion& deltaQ) {
 	rotate_ = MAGIMath::Normalize(deltaQ * rotate_);
 	isChanged_ = true;
 }
+
+} // namespace magi

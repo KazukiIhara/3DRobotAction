@@ -2,6 +2,9 @@
 
 #include "ViewManagers/BaseViewManager/BaseViewManager.h"
 
+
+
+namespace magi {
 class RTVManager:public BaseViewManager {
 public:
 	// コンストラクタ
@@ -17,3 +20,5 @@ private:
 	// 最大RTV数
 	const uint32_t kMaxRTVCount = 64;
 };
+
+} // namespace magi

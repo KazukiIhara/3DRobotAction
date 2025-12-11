@@ -5,10 +5,13 @@
 #include <unordered_map>
 #include <memory>
 
+
 #include "Math/Types/Vector3.h"
 #include "Math/Types/Quaternion.h"
 
 // 前方宣言
+
+namespace magi {
 class Transform3D;
 class ModelRenderer;
 class Camera3D;
@@ -69,3 +72,5 @@ private:
 	// カメラコンポーネント
 	std::unordered_map<std::string, Camera3D*> camera3DComponents_;
 };
+
+} // namespace magi

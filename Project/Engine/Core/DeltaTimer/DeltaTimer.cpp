@@ -1,10 +1,13 @@
 #include "DeltaTimer.h"
 
+
 #include <algorithm>
 
 #include "Logger/Logger.h"
 
 
+
+namespace magi {
 DeltaTimer::DeltaTimer() {
 	LARGE_INTEGER freq;
 	QueryPerformanceFrequency(&freq);
@@ -42,3 +45,5 @@ void DeltaTimer::Update() {
 float DeltaTimer::GetDeltaTime() const {
 	return deltaTime_;
 }
+
+} // namespace magi

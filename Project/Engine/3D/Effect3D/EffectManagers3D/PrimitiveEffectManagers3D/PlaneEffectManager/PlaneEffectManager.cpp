@@ -1,5 +1,6 @@
 #include "PlaneEffectManager.h"
 
+
 #include <cassert>
 
 // MyHedder
@@ -8,6 +9,8 @@
 #include "ComponentManagers/TransformManager/TransformManager.h"
 #include "3D/Drawer3D/PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 
+
+namespace magi {
 PlaneEffectManager::PlaneEffectManager(DeltaTimer* deltaTimer, TransformManager* transformManager, PlaneDrawer3D* planeDrawer) {
 	assert(deltaTimer);
 	assert(transformManager);
@@ -137,3 +140,5 @@ void PlaneEffectManager::Draw() {
 		planeDrawer_->AddPlane(effects_[i].currentTrans->GetWorldMatrix(), effects_[i].currentShape, effects_[i].currentMaterial);
 	}
 }
+
+} // namespace magi

@@ -1,5 +1,6 @@
 #include "RingDrawer3D.h"
 
+
 #include <cassert>
 
 #include "DirectX/DXGI/DXGI.h"
@@ -14,6 +15,8 @@
 // TODO::フレームワーク内にあるクラスはMAGIをインクルードしてはいけない
 #include "Framework/MAGI.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 
 RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
@@ -142,3 +145,5 @@ void RingDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
 }
+
+} // namespace magi

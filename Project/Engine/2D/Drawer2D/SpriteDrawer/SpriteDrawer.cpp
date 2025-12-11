@@ -1,5 +1,6 @@
 #include "SpriteDrawer.h"
 
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -15,6 +16,8 @@
 
 #include <cassert>
 
+
+namespace magi {
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -224,3 +227,5 @@ void SpriteDrawer::SetCamera2DManager(Camera2DManager* camera2DManager) {
 	assert(camera2DManager);
 	camera2DManager_ = camera2DManager;
 }
+
+} // namespace magi

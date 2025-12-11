@@ -1,5 +1,8 @@
 #include "PrimitiveShapeDataContainer.h"
 
+
+
+namespace magi {
 using namespace MAGIMath;
 
 PrimitiveShapeDataContainer::PrimitiveShapeDataContainer() {
@@ -93,3 +96,5 @@ void PrimitiveShapeDataContainer::CreateSphere() {
 	// コンテナに挿入
 	primitiveDatas_.insert(std::make_pair(Primitive3DType::Sphere, primitiveData));
 }
+
+} // namespace magi

@@ -1,5 +1,8 @@
 #include "GBufferNormalRenderTexture.h"
 
+
+
+namespace magi {
 GBufferNormalRenderTexture::GBufferNormalRenderTexture() {
 }
 
@@ -13,3 +16,5 @@ void GBufferNormalRenderTexture::Initialize() {
 		Vector4(0.5f, 0.5f, 1.0f, 1.0f)                     // 法線マップは通常 Z+方向(0.5,0.5,1)がデフォ
 	);
 }
+
+} // namespace magi

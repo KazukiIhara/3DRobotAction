@@ -1,8 +1,11 @@
+
 #pragma once
 
 /// <summary>
 /// 四次元ベクトル
 /// </summary>
+
+namespace magi {
 struct Vector4 {
 	float x;
 	float y;
@@ -35,3 +38,5 @@ struct Vector4 {
 		return *this;
 	}
 };
+
+} // namespace magi

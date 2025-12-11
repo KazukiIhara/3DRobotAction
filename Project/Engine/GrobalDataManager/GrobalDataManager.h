@@ -7,6 +7,7 @@
 #include <string>
 #include <variant>
 
+
 // Json
 #include <nlohmann/json.hpp>
 
@@ -16,6 +17,8 @@
 /// <summary>
 /// using宣言
 /// </summary>
+
+namespace magi {
 using json = nlohmann::json;
 
 /// <summary>
@@ -108,3 +111,5 @@ private:
 
 private:
 };
+
+} // namespace magi

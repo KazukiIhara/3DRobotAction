@@ -1,5 +1,6 @@
 #include "TriangleDrawer3D.h"
 
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -13,6 +14,8 @@
 
 #include "Framework/MAGI.h"
 
+
+namespace magi {
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -156,3 +159,5 @@ void TriangleDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
 }
+
+} // namespace magi

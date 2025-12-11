@@ -3,6 +3,7 @@
 // C++
 #include <cstdint>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -10,6 +11,8 @@
 #include "DirectX/ComPtr/ComPtr.h"
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 
 class BaseViewManager {
@@ -50,3 +53,5 @@ protected:
 	// dxgiのインスタンス
 	DXGI* dxgi_ = nullptr;
 };
+
+} // namespace magi

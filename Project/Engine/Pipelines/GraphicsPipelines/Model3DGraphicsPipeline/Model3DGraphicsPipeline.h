@@ -2,9 +2,12 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+
 /// <summary>
 /// モデル描画用のパイプライン
 /// </summary>
+
+namespace magi {
 class Model3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	Model3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -24,3 +27,5 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
+
+} // namespace magi

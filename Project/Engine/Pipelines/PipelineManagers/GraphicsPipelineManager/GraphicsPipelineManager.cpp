@@ -1,5 +1,6 @@
 #include "GraphicsPipelineManager.h"
 
+
 // C++
 #include <cassert>
 
@@ -8,6 +9,8 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 GraphicsPipelineManager::GraphicsPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 	Logger::Log("GraphicsPipelineManager Initialize\n");
@@ -207,3 +210,5 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 		// 他のパイプラインステートが追加された場合はここに追加
 	}
 }
+
+} // namespace magi

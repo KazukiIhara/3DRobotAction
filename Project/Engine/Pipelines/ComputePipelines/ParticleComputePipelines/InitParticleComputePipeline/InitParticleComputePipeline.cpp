@@ -1,5 +1,6 @@
 #include "InitParticleComputePipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
@@ -7,6 +8,8 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 InitParticleComputePipeline::InitParticleComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 }
@@ -128,3 +131,5 @@ void InitParticleComputePipeline::SetShaderCompiler(ShaderCompiler* shaderCompil
 	assert(shaderCompiler);
 	shaderCompiler_ = shaderCompiler;
 }
+
+} // namespace magi

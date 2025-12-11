@@ -1,11 +1,14 @@
 #include "LightingDefferedRenderringPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 LightingDefferedRenderringPipeline::LightingDefferedRenderringPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseDefferedRenderringPipeline(dxgi, shaderCompiler) {
 }
@@ -244,3 +247,5 @@ D3D12_RASTERIZER_DESC LightingDefferedRenderringPipeline::RasterizerStateSetting
 	rasterizerDesc.SlopeScaledDepthBias = 1.5f;    // 法線傾きに応じたスケールバイアス
 	return rasterizerDesc;
 }
+
+} // namespace magi

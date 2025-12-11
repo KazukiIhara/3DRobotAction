@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -14,6 +15,8 @@
 #include "Enums/BlendModeEnum.h"
 
 // 前方宣言
+
+namespace magi {
 class DeltaTimer;
 class DXGI;
 class DirectXCommand;
@@ -73,3 +76,5 @@ private:
 	ComputePipelineManager* computePipelineManager_ = nullptr;
 
 };
+
+} // namespace magi

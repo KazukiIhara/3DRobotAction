@@ -2,9 +2,12 @@
 
 #include "Structs/ObjectStruct.h"
 
+
 /// <summary>
 /// 発生時のパラメータ
 /// </summary>
+
+namespace magi {
 struct EmitParamater {
 	Vector3 scale;
 	Vector3 rotate;
@@ -32,3 +35,5 @@ struct ParticleForGPU {
 	Matrix4x4 World;
 	Vector4 color;
 };
+
+} // namespace magi

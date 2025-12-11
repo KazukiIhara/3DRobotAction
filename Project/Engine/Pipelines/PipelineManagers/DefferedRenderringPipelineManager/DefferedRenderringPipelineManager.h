@@ -4,11 +4,14 @@
 #include <string>
 #include <memory>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxcapi.h>
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 class ShaderCompiler;
 
@@ -50,3 +53,5 @@ private:
 	// LightingDefferedRenderringPipeline
 	std::unique_ptr<LightingDefferedRenderringPipeline> lightingDefferedRenderringPipeline_ = nullptr;
 };
+
+} // namespace magi

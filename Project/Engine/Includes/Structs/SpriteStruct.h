@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -19,6 +20,8 @@
 /// <summary>
 /// スプライトメッシュシェーダー用のパイプラインストリーム
 /// </summary>
+
+namespace magi {
 struct SpritePipelineStateStream {
 	CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE		rootSignature;
 	CD3DX12_PIPELINE_STATE_STREAM_MS					meshShader;
@@ -77,3 +80,5 @@ struct SpriteDataForGPU {
 	Matrix4x4 uvMatrix;
 	float padding0[3];
 };
+
+} // namespace magi

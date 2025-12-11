@@ -4,6 +4,7 @@
 #include <array>
 #include <memory>
 
+
 // MyHedder
 #include "3D/Transform3D/Transform3D.h"
 #include "Structs/Primitive3DStruct.h"
@@ -11,6 +12,8 @@
 #include "SimpleAnimation/SimpleAnimation.h"
 
 // エフェクトの最大数
+
+namespace magi {
 static const uint32_t kMaxEffectNum = 65536;
 
 /// <summary>
@@ -106,3 +109,5 @@ struct PlaneEffect {
 	PlaneData3D currentShape;					// 現在の形状データ
 	float currentTime = 0.0f;					// アニメーションの経過時間
 };
+
+} // namespace magi

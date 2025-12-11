@@ -2,11 +2,14 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+
 #include "Structs/Primitive3DStruct.h"
 
 /// <summary>
 /// 3Dリング描画用のパイプライン
 /// </summary>
+
+namespace magi {
 class Ring3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	Ring3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -27,3 +30,5 @@ private:
 	// InputLayoutの設定を行う
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 };
+
+} // namespace magi

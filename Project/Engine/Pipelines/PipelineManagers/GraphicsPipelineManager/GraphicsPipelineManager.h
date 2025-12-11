@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxcapi.h>
@@ -29,6 +30,8 @@
 #include "GraphicsPipelines/ParticleEffect3DGraphicsPipeline/ParticleEffect3DGraphicsPipeline.h"
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 class ShaderCompiler;
 
@@ -89,3 +92,5 @@ private:
 	// ParticleEffect3DGraphicsPipeline
 	std::unique_ptr<ParticleEffectGraphicsPipeline> particleEffect3DGraphicsPipeline_ = nullptr;
 };
+
+} // namespace magi

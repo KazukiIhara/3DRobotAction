@@ -3,6 +3,7 @@
 // C++
 #include <cstdint>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -12,6 +13,8 @@
 #include "DirectX/ComPtr/ComPtr.h"
 
 // テクスチャ構造体
+
+namespace magi {
 struct Texture {
 	// テクスチャリソース
 	ComPtr<ID3D12Resource> resource;
@@ -20,3 +23,5 @@ struct Texture {
 	// srvIndex
 	uint32_t srvIndex;
 };
+
+} // namespace magi

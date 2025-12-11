@@ -1,5 +1,6 @@
 #include "D3DResourceLeakChecker.h"
 
+
 // Microsoft
 #include <wrl.h>
 
@@ -11,6 +12,8 @@
 // MyHedder
 #include "logger/Logger.h"
 
+
+namespace magi {
 D3DResourceLeakChecker::~D3DResourceLeakChecker() {
 	// リソースリークチェック
 	Microsoft::WRL::ComPtr<IDXGIDebug1> debug;
@@ -21,3 +24,5 @@ D3DResourceLeakChecker::~D3DResourceLeakChecker() {
 		Logger::Log("Leak Check Complete\n");
 	}
 }
+
+} // namespace magi

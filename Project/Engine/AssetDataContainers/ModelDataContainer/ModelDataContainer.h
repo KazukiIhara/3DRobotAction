@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 
+
 // Assimp
 #include <assimp/include/assimp/Importer.hpp>
 #include <assimp/include/assimp/scene.h>
@@ -13,6 +14,8 @@
 #include "Structs/ModelStruct.h"
 
 // 前方宣言
+
+namespace magi {
 class TextureDataContainer;
 
 /// <summary>
@@ -39,3 +42,5 @@ private:
 private:
 	TextureDataContainer* textureDataContainer_ = nullptr;
 };
+
+} // namespace magi

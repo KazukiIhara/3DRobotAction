@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -16,6 +17,8 @@
 /// <summary>
 /// スキンモデル描画クラス
 /// </summary>
+
+namespace magi {
 class SkinModelDrawer {
 public:
 	SkinModelDrawer(const ModelData& modelData);
@@ -62,3 +65,5 @@ private:
 	std::vector<Matrix4x4> inverseBindPoseMatrices_;
 
 };
+
+} // namespace magi

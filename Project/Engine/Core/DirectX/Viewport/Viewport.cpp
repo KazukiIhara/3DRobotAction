@@ -1,10 +1,13 @@
 #include "Viewport.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 
+
+namespace magi {
 Viewport::Viewport(DirectXCommand* directXCommand) {
 	Initialize(directXCommand);
 	Logger::Log("Viewport Initialize\n");
@@ -35,3 +38,5 @@ void Viewport::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
 }
+
+} // namespace magi

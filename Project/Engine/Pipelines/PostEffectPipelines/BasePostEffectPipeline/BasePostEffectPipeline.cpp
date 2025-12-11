@@ -1,11 +1,14 @@
 #include "BasePostEffectPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 BasePostEffectPipeline::BasePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	SetDXGI(dxgi);
 	SetShaderCompiler(shaderCompiler);
@@ -37,3 +40,5 @@ void BasePostEffectPipeline::SetShaderCompiler(ShaderCompiler* shaderCompiler) {
 	assert(shaderCompiler);
 	shaderCompiler_ = shaderCompiler;
 }
+
+} // namespace magi

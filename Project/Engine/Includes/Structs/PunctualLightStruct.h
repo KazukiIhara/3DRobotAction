@@ -3,9 +3,12 @@
 #include <cstdint>
 #include "Math/Utility/MathUtility.h"
 
+
 /// <summary>
 /// ライトのデータ
 /// </summary>
+
+namespace magi {
 struct PunctualLightData {
 	// 全ライト共通
 	bool isAlive = true;
@@ -55,3 +58,5 @@ struct PunctualLightDataForGPU {
 struct PunctualLightCount {
 	uint32_t num;
 };
+
+} // namespace magi

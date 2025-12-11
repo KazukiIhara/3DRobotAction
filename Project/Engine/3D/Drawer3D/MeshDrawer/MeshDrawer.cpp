@@ -2,6 +2,7 @@
 #define NOMINMAX
 #include "MeshDrawer.h"
 
+
 #include <cassert>
 #include <cstring>
 #include <DirectXMath.h>
@@ -9,6 +10,8 @@
 #include "Framework/MAGI.h"
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
+
+namespace magi {
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -245,3 +248,5 @@ void MeshDrawer::DrawBoundingSphere() {
 		//MAGISYSTEM::DrawSphere3D(world, sphere, PrimitiveMaterialData3D{});
 	}
 }
+
+} // namespace magi

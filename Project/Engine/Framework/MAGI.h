@@ -3,6 +3,7 @@
 // C++
 #include <memory>
 
+
 #if defined(DEBUG) || defined(DEVELOP)
 #include "LeakChecker/D3DResourceLeakChecker.h"
 #endif // _DEBUG
@@ -131,6 +132,8 @@
 /// <summary>
 /// フレームワーククラス
 /// </summary>
+
+namespace magi {
 class MAGISYSTEM {
 public:
 	// 仮想デストラクタ
@@ -796,3 +799,5 @@ class MAGI {
 public:
 
 };
+
+} // namespace magi

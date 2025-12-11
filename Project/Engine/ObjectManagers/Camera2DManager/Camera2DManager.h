@@ -5,12 +5,15 @@
 #include <string>
 #include <memory>
 
+
 // MyHedder
 #include "2D/Camera2D/Camera2D.h"
 
 /// <summary>
 /// 2D描画用のカメラマネージャ
 /// </summary>
+
+namespace magi {
 class Camera2DManager {
 public:
 	Camera2DManager();
@@ -34,3 +37,5 @@ private:
 	// 現在使用中のカメラ
 	Camera2D* currentCamera_ = nullptr;
 };
+
+} // namespace magi

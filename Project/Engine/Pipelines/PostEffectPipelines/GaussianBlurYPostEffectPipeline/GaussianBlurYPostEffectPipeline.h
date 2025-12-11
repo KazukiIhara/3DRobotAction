@@ -2,9 +2,12 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
+
 /// <summary>
 /// Y軸ガウシアンブラー
 /// </summary>
+
+namespace magi {
 class GaussianBlurYPostEffectPipeline:public BaseWithParamaterPostEffectPipeline {
 public:
 	GaussianBlurYPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -15,3 +18,5 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
+
+} // namespace magi

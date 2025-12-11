@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxcapi.h>
@@ -12,6 +13,8 @@
 #include "DirectX/ComPtr/ComPtr.h"
 
 // シェーダーコンパイラ
+
+namespace magi {
 class ShaderCompiler {
 public:
 	ShaderCompiler();
@@ -32,3 +35,5 @@ private:
 	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
 	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
 };
+
+} // namespace magi

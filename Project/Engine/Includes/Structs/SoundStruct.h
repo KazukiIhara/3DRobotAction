@@ -3,10 +3,13 @@
 // C++
 #include <stdint.h>
 
+
 // Xaudio
 #include <xaudio2.h>
 
 // チャンクヘッダ
+
+namespace magi {
 struct ChunkHeader {
 	char id[4]; // チャンク毎のID
 	int32_t size; // チャンクサイズ
@@ -30,3 +33,5 @@ struct SoundData {
 	BYTE* pBuffer;
 	unsigned int bufferSize;
 };
+
+} // namespace magi

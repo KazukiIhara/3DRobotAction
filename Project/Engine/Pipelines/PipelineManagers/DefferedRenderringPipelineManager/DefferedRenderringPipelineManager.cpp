@@ -1,5 +1,6 @@
 #include "DefferedRenderringPipelineManager.h"
 
+
 // C++
 #include <cassert>
 
@@ -8,6 +9,8 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 DefferedRenderringPipelineManager::DefferedRenderringPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 	Logger::Log("DefferedRednderringPipelineManager Initialize\n");
@@ -50,3 +53,5 @@ void DefferedRenderringPipelineManager::SetPipelineState(DefferedRenderringType 
 		break;
 	}
 }
+
+} // namespace magi

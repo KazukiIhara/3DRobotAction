@@ -1,5 +1,6 @@
 #include "SwapChain.h"
 
+
 #include "Logger/Logger.h"
 
 #include "WindowApp/WindowApp.h"
@@ -9,6 +10,8 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/RTVManager/RTVManager.h"
 
+
+namespace magi {
 SwapChain::SwapChain(WindowApp* windowApp, DXGI* dxgi, Viewport* viewport, ScissorRect* scissorRect, DirectXCommand* command, RTVManager* rtvManager) {
 	// WindowAppのインスタンスをセット
 	SetWindowApp(windowApp);
@@ -163,3 +166,5 @@ void SwapChain::SetRTVManager(RTVManager* rtvManager) {
 	assert(rtvManager);
 	rtvManager_ = rtvManager;
 }
+
+} // namespace magi

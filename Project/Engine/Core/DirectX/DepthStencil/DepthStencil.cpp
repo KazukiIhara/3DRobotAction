@@ -1,5 +1,6 @@
 #include "DepthStencil.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
@@ -10,6 +11,8 @@
 #include "ViewManagers/DSVManager/DSVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
+
+namespace magi {
 DepthStencil::DepthStencil(DXGI* dxgi, DirectXCommand* command, DSVManager* dsvManager, SRVUAVManager* srvUavManager) {
 	Initialize(dxgi, command, dsvManager, srvUavManager);
 	Logger::Log("DepthStencil Initialize\n");
@@ -132,3 +135,5 @@ void DepthStencil::SetSRVUAVManager(SRVUAVManager* srvUavManager) {
 	assert(srvUavManager);
 	srvUavManager_ = srvUavManager;
 }
+
+} // namespace magi

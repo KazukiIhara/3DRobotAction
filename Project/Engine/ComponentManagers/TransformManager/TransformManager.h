@@ -4,12 +4,15 @@
 #include <vector>
 #include <memory>
 
+
 // MyHedder
 #include "Transform3D/Transform3D.h"
 
 /// <summary>
 /// トランスフォーム管理クラス
 /// </summary>
+
+namespace magi {
 class TransformManager {
 public:
 	TransformManager();
@@ -24,3 +27,5 @@ private:
 	// トランスフォームコンテナ
 	std::vector<std::unique_ptr<Transform3D>> transforms_;
 };
+
+} // namespace magi

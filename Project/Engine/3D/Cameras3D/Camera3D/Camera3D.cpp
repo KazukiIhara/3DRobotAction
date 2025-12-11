@@ -1,10 +1,13 @@
 #include "Camera3D.h"
 
+
 #include <cassert>
 
 #include "Framework/MAGI.h"
 #include <Random/Random.h>
 
+
+namespace magi {
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -420,3 +423,5 @@ void Camera3D::UpdateCameraData() {
 void Camera3D::SetIsUseYawPitch(bool isUseYawPitch) {
 	isUseYawPitch_ = isUseYawPitch;
 }
+
+} // namespace magi

@@ -2,6 +2,9 @@
 
 #include "ViewManagers/BaseViewManager/BaseViewManager.h"
 
+
+
+namespace magi {
 class SRVUAVManager:public BaseViewManager {
 public:
 	SRVUAVManager(DXGI* dxgi);
@@ -23,3 +26,5 @@ private:
 	// 最大SRV数
 	const uint32_t kMaxViewCount_ = 65536;
 };
+
+} // namespace magi

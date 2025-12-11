@@ -1,5 +1,6 @@
 #include "ModelDataContainer.h"
 
+
 #include <iostream>
 #include <cassert>
 #include <filesystem>
@@ -8,6 +9,8 @@
 
 #include "TextureDataContainer/TextureDataContainer.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 
 ModelDataContainer::ModelDataContainer(TextureDataContainer* textureDataContainer) {
@@ -282,3 +285,5 @@ void ModelDataContainer::SetTextureDataContainer(TextureDataContainer* textureDa
 	assert(textureDataContainer);
 	textureDataContainer_ = textureDataContainer;
 }
+
+} // namespace magi

@@ -1,8 +1,11 @@
 #include "ModelRenderer.h"
 
+
 // MyHedder
 #include "MAGI.h"
 
+
+namespace magi {
 ModelRenderer::ModelRenderer(const std::string& name, const std::string& modelName, const ModelMaterial& material) {
 	name_ = name;
 	modelName_ = modelName;
@@ -57,3 +60,5 @@ bool ModelRenderer::GetIsRender() const {
 Transform3D* ModelRenderer::GetTransform() {
 	return transform_;
 }
+
+} // namespace magi

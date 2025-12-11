@@ -1,5 +1,6 @@
 #include "ShadowPipelineManager.h"
 
+
 // C++
 #include <cassert>
 
@@ -8,6 +9,8 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 ShadowPipelineManager::ShadowPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 	Logger::Log("ShadowPipelineManager Initialize\n");
@@ -90,3 +93,5 @@ void ShadowPipelineManager::SetPipelineState(ShadowPipelineStateType pipelineSta
 		break;
 	}
 }
+
+} // namespace magi

@@ -3,7 +3,10 @@
 // C++
 #include <string>
 
+
 // 前方宣言
+
+namespace magi {
 class SceneDataContainer;
 class GameObject3DManager;
 class Camera3DManager;
@@ -28,3 +31,5 @@ private:
 	Renderer3DManager* renderer3DManager_ = nullptr;
 	TransformManager* transformManager_ = nullptr;
 };
+
+} // namespace magi

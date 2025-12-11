@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -15,6 +16,8 @@
 /// <summary>
 /// 2D用カメラ
 /// </summary>
+
+namespace magi {
 class Camera2D {
 public:
 	Camera2D(const std::string& name);
@@ -50,3 +53,5 @@ private:
 	float nearClip_ = 0.0f;
 	float farClip_ = 100.0f;
 };
+
+} // namespace magi

@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxcapi.h>
@@ -18,6 +19,8 @@
 #include "ComputePipelines/ParticleComputePipelines/UpdateParticleComputePipeline/UpdateParticleComputePipeline.h"
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 class ShaderCompiler;
 
@@ -54,3 +57,5 @@ private:
 	// Particle更新用のComputePipeline
 	std::unique_ptr<UpdateParticleComputePipeline> updateParticlePipeline_ = nullptr;
 };
+
+} // namespace magi

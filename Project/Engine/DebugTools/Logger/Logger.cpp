@@ -1,5 +1,6 @@
 #include "Logger.h"
 
+
 #include <Windows.h>
 
 #include <filesystem>
@@ -7,6 +8,8 @@
 #include <iomanip>
 #include <sstream>
 
+
+namespace magi {
 std::ofstream Logger::logFile_;
 
 void Logger::Initialize() {
@@ -116,3 +119,5 @@ bool Logger::IsRunningUnderPIX() {
 	getenv_s(&len, buf, sizeof(buf), "PIX_PROCESS");
 	return len > 0;      // 文字列長が0より大きければ存在
 }
+
+} // namespace magi

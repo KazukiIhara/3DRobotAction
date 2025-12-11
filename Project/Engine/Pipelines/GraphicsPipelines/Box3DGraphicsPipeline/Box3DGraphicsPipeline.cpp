@@ -1,11 +1,14 @@
 #include "Box3DGraphicsPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 Box3DGraphicsPipeline::Box3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
@@ -189,3 +192,5 @@ D3D12_RASTERIZER_DESC Box3DGraphicsPipeline::RasterizerStateSetting() {
 	desc.FrontCounterClockwise = FALSE;
 	return desc;
 }
+
+} // namespace magi

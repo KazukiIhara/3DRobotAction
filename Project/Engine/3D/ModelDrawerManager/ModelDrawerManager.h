@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <memory>
 
+
 // MyHedder
 #include "Structs/ModelStruct.h"
 #include "Math/Utility/MathUtility.h"
@@ -13,6 +14,8 @@
 #include "3D/Drawer3D/SkinModelDrawer/SkinModelDrawer.h"
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -68,3 +71,5 @@ private:
 	ShadowPipelineManager* shadowPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
 };
+
+} // namespace magi

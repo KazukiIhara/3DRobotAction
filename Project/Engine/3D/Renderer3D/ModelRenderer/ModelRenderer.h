@@ -4,10 +4,13 @@
 #include <string>
 #include <memory>
 
+
 // MyHedder
 #include "Structs/ModelStruct.h"
 
 // 前方宣言
+
+namespace magi {
 class Transform3D;
 
 /// <summary>
@@ -46,3 +49,5 @@ private:
 	// 生存フラグ
 	bool isAlive_ = true;
 };
+
+} // namespace magi

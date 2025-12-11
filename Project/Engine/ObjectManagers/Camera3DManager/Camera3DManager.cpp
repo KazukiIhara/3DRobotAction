@@ -1,9 +1,12 @@
 #include "Camera3DManager.h"
 
+
 #include <memory>
 
 #include "MAGIAssert/MAGIAssert.h"
 
+
+namespace magi {
 Camera3DManager::Camera3DManager() {
 	Initialize();
 	Logger::Log("Camera3DManager Initialize\n");
@@ -156,3 +159,5 @@ void Camera3DManager::DeleteGarbage() {
 		return camera3D && !camera3D->GetIsAlive();
 		});
 }
+
+} // namespace magi

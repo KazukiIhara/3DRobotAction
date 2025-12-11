@@ -3,8 +3,11 @@
 // 数学ヘッダ
 #include "Math/Utility/MathUtility.h"
 
+
 #include "Easing/Easing.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 
 /// <summary>
@@ -110,3 +113,5 @@ private:
 	LoopType loopType_;
 
 };
+
+} // namespace magi

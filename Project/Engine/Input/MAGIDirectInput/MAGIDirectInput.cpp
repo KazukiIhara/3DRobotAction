@@ -1,10 +1,13 @@
 #include "MAGIDirectInput.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "WindowApp/WindowApp.h"
 
+
+namespace magi {
 MAGIDirectInput::MAGIDirectInput(WindowApp* windowApp) {
 	Initialize(windowApp);
 	Logger::Log("DirectInput Initialize\n");
@@ -184,3 +187,5 @@ void MAGIDirectInput::SetWindowApp(WindowApp* windowApp) {
 	assert(windowApp);
 	windowApp_ = windowApp;
 }
+
+} // namespace magi

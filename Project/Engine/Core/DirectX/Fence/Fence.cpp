@@ -1,10 +1,13 @@
 #include "Fence.h"
 
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 
 #include "Logger/Logger.h"
 
+
+namespace magi {
 Fence::Fence(DXGI* dxgi, DirectXCommand* directXCommand) {
 	Initialize(dxgi, directXCommand);
 	Logger::Log("Fence Initialize\n");
@@ -55,3 +58,5 @@ void Fence::SetCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
 }
+
+} // namespace magi

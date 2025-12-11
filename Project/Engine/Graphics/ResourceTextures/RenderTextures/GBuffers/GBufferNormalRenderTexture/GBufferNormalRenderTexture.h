@@ -1,6 +1,9 @@
 #pragma once
 #include "ResourceTextures/RenderTextures/BaseRenderTexture/BaseRenderTexture.h"
 
+
+
+namespace magi {
 class GBufferNormalRenderTexture : public BaseRenderTexture {
 public:
     GBufferNormalRenderTexture();
@@ -9,3 +12,4 @@ public:
     void Initialize();
 };
 
+} // namespace magi

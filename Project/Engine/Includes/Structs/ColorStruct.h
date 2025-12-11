@@ -3,9 +3,12 @@
 // MyHedder
 #include "Math/Types/Vector4.h"
 
+
 /// <summary>
 /// 色定数
 /// </summary>
+
+namespace magi {
 struct Color {
     // 赤系
     static constexpr Vector4 Red = { 1.0f, 0.0f, 0.0f, 1.0f }; // 赤
@@ -48,3 +51,5 @@ struct Color {
     static constexpr Vector4 LightGray = { 0.83f, 0.83f, 0.83f, 1.0f }; // 明るい灰色
     static constexpr Vector4 DarkGray = { 0.33f, 0.33f, 0.33f, 1.0f }; // 暗い灰色
 };
+
+} // namespace magi

@@ -2,8 +2,11 @@
 
 #include <cstdint>
 
+
 #include "WindowApp/WindowApp.h"
 
+
+namespace magi {
 class DirectXCommand;
 
 class Viewport {
@@ -25,3 +28,5 @@ private:
 	// コマンドのインスタンスを受け取る箱
 	DirectXCommand* directXCommand_ = nullptr;
 };
+
+} // namespace magi

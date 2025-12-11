@@ -2,9 +2,12 @@
 
 #include <XInput.h>
 
+
 /// <summary>
 /// パッドのボタン
 /// </summary>
+
+namespace magi {
 enum PadNumber {
 	ButtonA = XINPUT_GAMEPAD_A,
 	ButtonB = XINPUT_GAMEPAD_B,
@@ -17,3 +20,5 @@ enum PadNumber {
 	ButtonLeftStick = XINPUT_GAMEPAD_LEFT_THUMB,
 	ButtonRightStick = XINPUT_GAMEPAD_RIGHT_THUMB,
 };
+
+} // namespace magi

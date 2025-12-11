@@ -3,6 +3,7 @@
 // C++
 #include <string>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxcapi.h>
@@ -10,6 +11,8 @@
 // MyHedder
 #include "DirectX/ComPtr/ComPtr.h"
 
+
+namespace magi {
 class DXGI;
 class ShaderCompiler;
 
@@ -50,3 +53,5 @@ private:
 	DXGI* dxgi_ = nullptr;
 	ShaderCompiler* shaderCompiler_ = nullptr;
 };
+
+} // namespace magi

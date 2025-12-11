@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -14,6 +15,8 @@
 /// <summary>
 /// 3D用カメラ
 /// </summary>
+
+namespace magi {
 class Camera3D {
 public:
 	Camera3D(const std::string& name, bool isUseYawPitch = true);
@@ -198,3 +201,5 @@ private:
 	CameraVector* vectorData_ = nullptr;
 
 };
+
+} // namespace magi

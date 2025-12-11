@@ -4,12 +4,15 @@
 #include <vector>
 #include <cstdint>
 
+
 // DirectX
 #include <d3d12.h>
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Math/Utility/MathUtility.h"
 #include "Structs/SkyBoxStruct.h"
 
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -94,3 +97,5 @@ private:
 	Camera3DManager* camera3DManager_ = nullptr;
 
 };
+
+} // namespace magi

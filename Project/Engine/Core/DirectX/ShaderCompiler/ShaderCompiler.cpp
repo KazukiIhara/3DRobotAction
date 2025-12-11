@@ -1,8 +1,11 @@
 #include "ShaderCompiler.h"
 
+
 #include <cassert>
 #include "Logger/Logger.h"
 
+
+namespace magi {
 ShaderCompiler::ShaderCompiler() {
 	Initialize();
 	Logger::Log("ShaderCompiler Initialize\n");
@@ -107,3 +110,5 @@ void ShaderCompiler::LogDxcVersion() {
         Logger::Log(msg);                                 // Logger が char* 系 OK ならこれで完了
     }
 }
+
+} // namespace magi

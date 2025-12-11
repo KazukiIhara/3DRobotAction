@@ -3,6 +3,7 @@
 // DirectX
 #include <d3d12.h>
 
+
 // DirectXMesh
 #include <DirectXMesh/DirectXMesh.h>
 
@@ -14,6 +15,8 @@
 /// <summary>
 /// スキンメッシュ描画クラス
 /// </summary>
+
+namespace magi {
 class SkinMeshDrawer {
 public:
 	SkinMeshDrawer(const MeshData& meshData);
@@ -79,3 +82,5 @@ private:
 	// スキニング用の情報データ
 	SkinningInformationForGPU* skiningInformationData_ = nullptr;
 };
+
+} // namespace magi

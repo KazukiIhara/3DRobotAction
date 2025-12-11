@@ -1,9 +1,12 @@
 #include "TransformManager.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 
+
+namespace magi {
 TransformManager::TransformManager() {
 	Clear();
 	Logger::Log("TransformManager Initialized\n");
@@ -48,3 +51,5 @@ void TransformManager::Clear() {
 	}
 	transforms_.clear();
 }
+
+} // namespace magi
