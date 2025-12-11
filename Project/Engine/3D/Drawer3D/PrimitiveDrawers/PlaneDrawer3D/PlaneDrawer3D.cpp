@@ -15,6 +15,7 @@
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 PlaneDrawer3D::PlaneDrawer3D(
 	DXGI* dxgi,

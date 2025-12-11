@@ -5,6 +5,8 @@
 #include "Random/Random.h"
 #include "MAGIUitility/MAGIUtility.h"
 
+namespace MAGI {
+
 using namespace MAGIUtility;
 
 // Staticメンバ変数の初期化
@@ -1583,9 +1585,11 @@ Vector3 MAGISYSTEM::GetGrobalDataValueVector3(const std::string& groupName, cons
 }
 
 bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std::string& key) {
-	return grobalDataManager_->GetValueBool(groupName, key);
+        return grobalDataManager_->GetValueBool(groupName, key);
 }
 
 void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneClear) {
-	sceneDataImporter_->Import(sceneDataName, isSceneClear);
+        sceneDataImporter_->Import(sceneDataName, isSceneClear);
 }
+
+} // namespace MAGI

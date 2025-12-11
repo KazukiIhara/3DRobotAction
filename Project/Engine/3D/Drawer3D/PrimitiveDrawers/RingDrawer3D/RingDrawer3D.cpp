@@ -10,6 +10,7 @@
 
 #include "Logger/Logger.h"
 #include "Const/Primitive3DConst.h"
+using namespace MAGI;
 
 // TODO::フレームワーク内にあるクラスはMAGIをインクルードしてはいけない
 #include "Framework/MAGI.h"

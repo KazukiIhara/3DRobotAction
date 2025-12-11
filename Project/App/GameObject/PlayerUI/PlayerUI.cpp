@@ -7,6 +7,7 @@
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
+using namespace MAGI;
 
 PlayerUI::PlayerUI() {
 	// ロックオン用のスプライト設定

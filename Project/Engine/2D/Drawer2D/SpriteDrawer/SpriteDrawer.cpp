@@ -17,6 +17,7 @@
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 SpriteDrawer::SpriteDrawer(
 	DXGI* dxgi,

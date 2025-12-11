@@ -14,6 +14,7 @@
 #include "Framework/MAGI.h"
 
 using namespace MAGIMath;
+using namespace MAGI;
 
 CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, ShadowPipelineManager* shadowPipelineManager, Camera3DManager* camera3DManager, LightManager* lightManager) {
 	SetDXGI(dxgi);

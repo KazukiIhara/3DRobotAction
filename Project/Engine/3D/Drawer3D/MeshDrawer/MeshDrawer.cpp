@@ -1,4 +1,5 @@
 // MeshDrawer.cpp ― Mesh Shader + Meshlet （DXMesh v168 10-bit 版）
+using namespace MAGI;
 #define NOMINMAX
 #include "MeshDrawer.h"
 

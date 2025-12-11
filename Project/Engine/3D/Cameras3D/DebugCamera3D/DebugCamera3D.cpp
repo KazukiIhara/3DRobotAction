@@ -3,6 +3,7 @@
 #include "MAGI.h"
 
 using namespace MAGIMath;
+using namespace MAGI;
 
 DebugCamera3D::DebugCamera3D()
 	:Camera3D("DebugCamera", true) {

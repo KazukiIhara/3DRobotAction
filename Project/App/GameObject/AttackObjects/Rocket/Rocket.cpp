@@ -1,6 +1,7 @@
 #include "Rocket.h"
 
 #include "MAGI.h"
+using namespace MAGI;
 
 Rocket::Rocket(const Vector3& dir, float speed, const Vector3& wPos, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
