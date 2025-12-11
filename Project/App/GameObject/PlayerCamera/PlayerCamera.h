@@ -22,9 +22,9 @@ public:
 
 	void SetTargetTransform(Transform3D* target);
 
-	void SetCameraQuaternion(const Quaternion& q);
+	void SetCameraQuaternion(const magi::Quaternion& q);
 
-	const Quaternion& GetCameraQuaternion()const;
+	const magi::Quaternion& GetCameraQuaternion()const;
 
 private:
 	void ApplyInput(float dt);
@@ -42,17 +42,17 @@ private:
 	float pPitch_ = 0.0f;
 
 	// カメラの回転
-	Quaternion cameraRotation_;
+	magi::Quaternion cameraRotation_;
 
 	// ピボット
-	Vector3 pivot_ = { 0.0f,0.0f,0.0f };
+	magi::Vector3 pivot_ = { 0.0f,0.0f,0.0f };
 
 	// 目標ピボット
-	Vector3 targetPivot_ = { 0.0f,0.0f,0.0f };
+	magi::Vector3 targetPivot_ = { 0.0f,0.0f,0.0f };
 	// 目標目線座標
-	Vector3 targetEye_ = { 0.0f,0.0f,0.0f };
+	magi::Vector3 targetEye_ = { 0.0f,0.0f,0.0f };
 	// 目標目標座標
-	Vector3	targetTarget_ = { 0.0f,0.0f,1.0f };
+	magi::Vector3	targetTarget_ = { 0.0f,0.0f,1.0f };
 
 	// パラメータ
 
@@ -74,7 +74,7 @@ private:
 	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
 	// ピボットのオフセット
-	Vector3 pivotOffset_ = { 0.0f, 2.2f, 0.0f };
+	magi::Vector3 pivotOffset_ = { 0.0f, 2.2f, 0.0f };
 
 	// 機体を受け取る
 	MechCore* core_;

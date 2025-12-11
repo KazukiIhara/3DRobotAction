@@ -43,5 +43,5 @@ private:
 
 	// デバッグ用変数
 	bool isBreak_ = false;
-	Vector4 color_ = Color::White;
+    magi::Vector4 color_ = magi::Color::White;
 };

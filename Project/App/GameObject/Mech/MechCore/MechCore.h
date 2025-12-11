@@ -62,7 +62,7 @@ public:
 		std::string leftShoulderWeapon;
 	};
 public:
-	MechCore(const Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* bulletManager, bool enableHardlockOn = false);
+	MechCore(const magi::Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* bulletManager, bool enableHardlockOn = false);
 	~MechCore() = default;
 
 	void Update();
@@ -229,7 +229,7 @@ private:
 	// ひとまず体
 	std::unique_ptr<MechCollider> collider_;
 
-	const Vector3 kColliderMin_ = { -0.5f,-1.0f,-0.5f };
-	const Vector3 kColliderMax_ = { 0.5f,0.8f, 0.5f };
+	const magi::Vector3 kColliderMin_ = { -0.5f,-1.0f,-0.5f };
+	const magi::Vector3 kColliderMax_ = { 0.5f,0.8f, 0.5f };
 
 };

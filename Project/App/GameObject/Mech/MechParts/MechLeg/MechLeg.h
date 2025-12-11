@@ -36,10 +36,10 @@ public:
 		std::string modelName = "Leg";
 
 		// オフセット座標
-		Vector3 offSetPos = { 0.0f,0.0f,0.0f };
+		magi::Vector3 offSetPos = { 0.0f,0.0f,0.0f };
 
 		// モデルサイズ
-		Vector3 modelSize = { 0.0f,0.0f,0.0f };
+		magi::Vector3 modelSize = { 0.0f,0.0f,0.0f };
 	};
 public:
 	MechLeg();

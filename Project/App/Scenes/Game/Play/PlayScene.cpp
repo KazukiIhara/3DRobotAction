@@ -1,5 +1,6 @@
 #include "PlayScene.h"
 
+using namespace magi;
 void PlayScene::Initialize() {
 	//-------------------------------------------------------
 	// シーンの必須設定(はよ基底クラスに移せや)

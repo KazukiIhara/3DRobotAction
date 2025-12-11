@@ -7,6 +7,7 @@
 
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
+using namespace magi;
 using namespace MAGIMath;
 
 MechAttackComponent::MechAttackComponent(AttackObjectManager* attackObjectManager) {

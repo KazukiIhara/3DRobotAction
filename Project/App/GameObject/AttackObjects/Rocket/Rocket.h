@@ -16,9 +16,9 @@ class Transform3D;
 /// </summary>
 class Rocket {
 public:
-	Rocket(const Vector3& dir,
+	Rocket(const magi::Vector3& dir,
 		float speed,
-		const Vector3& wPos,
+		const magi::Vector3& wPos,
 		std::weak_ptr<AttackCollider> attackCollider);
 
 	~Rocket() = default;
@@ -32,7 +32,7 @@ public:
 
 	AttackCollider* GetAttackCollider();
 
-	Vector3 GetWorldPos();
+	magi::Vector3 GetWorldPos();
 
 private:
 	// トランスフォーム
@@ -42,7 +42,7 @@ private:
 	// マテリアル
 	MaterialData3D material_;
 	// 弾の向き
-	Vector3 dir_ = { 0.0f,0.0f,0.0f };
+	magi::Vector3 dir_ = { 0.0f,0.0f,0.0f };
 	// 弾の速度
 	float speed_ = 0.0f;
 

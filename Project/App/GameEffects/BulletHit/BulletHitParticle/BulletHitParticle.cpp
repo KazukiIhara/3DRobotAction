@@ -3,6 +3,7 @@
 #include "MAGI.h"
 #include "Math/Utility/MathUtility.h"
 
+using namespace magi;
 using namespace MAGIMath;
 
 BulletHitParticle::BulletHitParticle(const Vector3& pos, const Vector3& velo, float gravity) {

@@ -11,6 +11,7 @@
 
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
+using namespace magi;
 // 
 // 敵AIのステート
 // 

@@ -5,6 +5,7 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 
 
+using namespace magi;
 using namespace MAGIMath;
 
 MechCamera::MechCamera(const std::string& name, float yaw, MechCore* core)
