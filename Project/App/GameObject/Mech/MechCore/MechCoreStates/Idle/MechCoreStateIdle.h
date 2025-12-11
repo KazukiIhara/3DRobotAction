@@ -3,8 +3,6 @@
 // MyHedder
 #include "GameObject/Mech/MechCore/MechCoreStates/MechCoreBaseState.h"
 
-
-namespace magi {
 /// <summary>
 /// 待機状態
 /// </summary>
@@ -16,4 +14,3 @@ public:
 	void Exit(MechCore* mechCore)override;
 
 };
-}

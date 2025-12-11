@@ -2,8 +2,6 @@
 
 #include "GameObject/Mech/MechCore/MechCore.h"
 
-using namespace magi;
-
 void MechCoreStateRecovery::Enter(MechCore* mechCore) {
 	// 移動速度を0にする
 	mechCore->GetMovementComponent()->ResetVelocity();

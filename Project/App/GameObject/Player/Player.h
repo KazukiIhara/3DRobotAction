@@ -8,8 +8,6 @@
 #include "GameObject/PlayerUI/PlayerUI.h"
 #include "Structs/ColorStruct.h"
 
-
-namespace magi {
 // 前方宣言
 class AttackObjectManager;
 
@@ -47,4 +45,3 @@ private:
 	bool isBreak_ = false;
 	Vector4 color_ = Color::White;
 };
-}

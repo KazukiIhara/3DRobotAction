@@ -1,7 +1,5 @@
 #include "MechCustomScene.h"
 
-using namespace magi;
-
 void MechCustomScene::Initialize() {
 
 }

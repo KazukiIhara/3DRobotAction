@@ -8,8 +8,6 @@
 // MyHedder
 #include "Math/Types/AllMathTypes.h"
 
-
-namespace magi {
 // 前方宣言
 class MechCore;
 class GameObject3D;
@@ -79,4 +77,3 @@ protected:
 	// 双対ミサイルが拡散する角度
 	std::array<float, 4> dualMissileAngles_;
 };
-}

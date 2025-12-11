@@ -10,8 +10,6 @@
 #include "MechCoreStates/AssultBoost/MechCoreStateAssultBoost.h"
 #include "MechCoreStates/Recovery/MechCoreStateRecovery.h"
 
-using namespace magi;
-
 using namespace MAGIMath;
 using namespace MAGIUtility;
 

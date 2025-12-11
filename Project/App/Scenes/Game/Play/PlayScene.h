@@ -18,8 +18,6 @@ using namespace MAGIUtility;
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
-
-namespace magi {
 /// <summary>
 /// 終了判定
 /// </summary>
@@ -232,4 +230,3 @@ private:
 	SimpleAnimation<Vector2> animFStartR_;
 
 };
-}

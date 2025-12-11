@@ -4,8 +4,6 @@
 
 #include "Math/Utility/MathUtility.h"
 
-using namespace magi;
-
 using namespace MAGIMath;
 
 void MechCoreStateAssultBoost::Enter([[maybe_unused]] MechCore* mechCore) {

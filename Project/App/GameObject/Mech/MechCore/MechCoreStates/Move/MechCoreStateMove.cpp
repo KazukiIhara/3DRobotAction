@@ -4,8 +4,6 @@
 
 #include "MAGI.h"
 
-using namespace magi;
-
 using namespace MAGIMath;
 
 void MechCoreStateMove::Enter(MechCore* mechCore) {

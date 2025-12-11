@@ -3,8 +3,6 @@
 #include "Cameras3D/Camera3D/Camera3D.h"
 #include "Transform3D/Transform3D.h"
 
-
-namespace magi {
 class MechCore;
 
 enum PlayerCameraState {
@@ -89,4 +87,3 @@ private:
 
 
 };
-}

@@ -5,8 +5,6 @@
 
 #include "Math/Types/AllMathTypes.h"
 
-
-namespace magi {
 class MechCore;
 
 /// <summary>
@@ -133,4 +131,3 @@ private:
 	// 描画用ターゲットHP
 	float targetUIHp_ = 0.0f;
 };
-}

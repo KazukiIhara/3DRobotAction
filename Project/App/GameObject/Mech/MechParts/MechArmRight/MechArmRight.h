@@ -7,8 +7,6 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
-
-namespace magi {
 // 前方宣言
 class GameObject3D;
 class Transform3D;
@@ -65,4 +63,3 @@ private:
 	// 武器を親子付けするトランスフォーム
 	Transform3D* handTransform_;
 };
-}

@@ -4,8 +4,6 @@
 #include "Math/Utility/MathUtility.h"
 #include "GameCommon/GameCommon.h"
 
-
-namespace magi {
 /// <summary>
 /// 攻撃コライダー
 /// </summary>
@@ -65,4 +63,3 @@ private:
 	// 生存フラグ
 	bool isAlive_ = true;
 };
-}

@@ -4,8 +4,6 @@
 #include "Math/Utility/MathUtility.h"
 #include "SimpleAnimation/SimpleAnimation.h"
 
-
-namespace magi {
 // 前方宣言
 class MechCore;
 
@@ -157,4 +155,3 @@ private:
 	// 接地フラグ
 	bool onGround_ = false;
 };
-}

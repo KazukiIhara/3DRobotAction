@@ -12,8 +12,6 @@
 #include "Scenes/Game/Play/PlayScene.h"
 #include "Scenes/Game/MechCustomScene/MechCustomScene.h"
 
-using namespace magi;
-
 Game::~Game() {}
 
 /// <summary>

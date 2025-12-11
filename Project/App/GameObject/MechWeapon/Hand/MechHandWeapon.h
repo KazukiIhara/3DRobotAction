@@ -14,8 +14,6 @@
 // マズルフラッシュエフェクト
 #include "GameEffects/MuzzleFlash/MuzzleFlashEffect.h"
 
-
-namespace magi {
 // 前方宣言
 class Transform3D;
 class MechCore;
@@ -166,4 +164,3 @@ private:
 	AttackObjectManager* attackObjectManager_ = nullptr;
 
 };
-}

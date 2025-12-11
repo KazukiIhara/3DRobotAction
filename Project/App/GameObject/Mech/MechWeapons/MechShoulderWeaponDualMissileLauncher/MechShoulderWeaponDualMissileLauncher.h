@@ -6,8 +6,6 @@
 // BaseClass
 #include "GameObject/Mech/MechWeapons/BaseMechShoulderWeapon/BaseMechShoulderWeapon.h"
 
-
-namespace magi {
 /// <summary>
 /// 双対ミサイルランチャー
 /// </summary>
@@ -31,4 +29,3 @@ private:
 	// 胴体からのオフセット
 	Vector3 offset_ = { 0.3f,0.3f,-0.3f };
 };
-}

@@ -8,8 +8,6 @@
 #include "GameCommon/GameCommon.h"
 
 
-
-namespace magi {
 // 前方宣言
 class MechCore;
 class BaseEnemyAIState;
@@ -162,4 +160,3 @@ private:
 	EnemyAIDecisionParam aiDecisionParam_;
 
 };
-}

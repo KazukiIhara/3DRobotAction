@@ -10,8 +10,6 @@
 // ロケット
 #include "GameObject/AttackObjects/Rocket/Rocket.h"
 
-
-namespace magi {
 // 前方宣言
 class AttackCollisionManager;
 class MechCore;
@@ -72,4 +70,3 @@ private:
 	AttackCollisionManager* atkColliderManager_ = nullptr;
 
 };
-}

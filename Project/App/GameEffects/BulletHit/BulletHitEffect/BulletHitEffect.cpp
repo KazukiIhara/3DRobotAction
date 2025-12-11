@@ -5,8 +5,6 @@
 
 #include "GameObject/Mech/MechCore/MechCore.h"
 
-using namespace magi;
-
 BulletHitEffect::BulletHitEffect(MechCore* mechCore) {
 	mech_ = mechCore;
 }

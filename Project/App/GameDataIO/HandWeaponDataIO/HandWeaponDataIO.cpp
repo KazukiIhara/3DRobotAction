@@ -6,8 +6,6 @@
 
 #include "MAGIAssert/MAGIAssert.h"
 
-using namespace magi;
-
 using nlohmann::json;
 
 HandWeaponDataIO::HandWeaponDataIO() {

@@ -1,7 +1,5 @@
 #include "MechEditScene.h"
 
-using namespace magi;
-
 void MechEditScene::Initialize() {
 	// 2Dカメラ作成
 	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");

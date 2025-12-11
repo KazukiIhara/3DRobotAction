@@ -3,8 +3,6 @@
 // 数学ヘッダ
 #include "Math/Utility/MathUtility.h"
 
-
-namespace magi {
 /// <summary>
 /// 識別タグ
 /// </summary>
@@ -66,4 +64,3 @@ struct InputCommand {
 	bool leftShoulderWeapon = false;
 	bool rightShoulderWeapon = false;
 };
-}

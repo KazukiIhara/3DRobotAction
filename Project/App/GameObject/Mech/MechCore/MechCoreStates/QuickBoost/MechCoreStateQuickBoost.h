@@ -3,8 +3,6 @@
 // MyHedder
 #include "GameObject/Mech/MechCore/MechCoreStates/MechCoreBaseState.h"
 
-
-namespace magi {
 /// <summary>
 /// 移動
 /// </summary>
@@ -15,4 +13,3 @@ public:
 	void Update(MechCore* mechCore)override;
 	void Exit(MechCore* mechCore)override;
 };
-}

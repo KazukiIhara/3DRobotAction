@@ -7,8 +7,6 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
-
-namespace magi {
 // 前方宣言
 class MechCore;
 class Transform3D;
@@ -51,4 +49,3 @@ private:
 	float lockOnRange_ = 100.0f;
 
 };
-}

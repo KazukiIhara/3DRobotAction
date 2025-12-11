@@ -3,8 +3,6 @@
 #include "GameObject/EnemyAI/EnemyAIState/BaseEnemyAIState.h"
 #include "Math/Types/AllMathTypes.h"
 
-
-namespace magi {
 /// <summary>
 /// 敵通常行動ステート
 /// </summary>
@@ -36,4 +34,3 @@ private:
 
 	float launcherWeaponTimer_ = 5.0f;
 };
-}

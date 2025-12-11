@@ -2,8 +2,6 @@
 
 #include "MAGI.h"
 
-using namespace magi;
-
 MechShoulderWeaponDualMissileLauncher::MechShoulderWeaponDualMissileLauncher(const WitchShoulder& witch)
 	:BaseMechShoulderWeapon("DualMissileLauncher", ShoulderWeaponType::DualMissileLauncher, witch) {
 

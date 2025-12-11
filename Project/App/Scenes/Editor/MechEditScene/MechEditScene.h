@@ -18,8 +18,6 @@
 // データIOクラス
 #include "GameDataIO/HandWeaponDataIO/HandWeaponDataIO.h"
 
-
-namespace magi {
 /// <summary>
 /// 機体エディットシーン
 /// </summary>
@@ -55,4 +53,3 @@ private:
 	std::unique_ptr<HandWeaponDataIO> handWeaponDataIO_;
 
 };
-}

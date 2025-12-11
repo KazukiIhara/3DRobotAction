@@ -8,8 +8,6 @@
 #include "GameObject/AttackCollider/AttackCollider.h"
 #include "Structs/Primitive3DStruct.h"
 
-
-namespace magi {
 // 前方宣言
 class Transform3D;
 
@@ -56,4 +54,3 @@ private:
 	// 攻撃コライダー
 	std::weak_ptr<AttackCollider> collider_;
 };
-}

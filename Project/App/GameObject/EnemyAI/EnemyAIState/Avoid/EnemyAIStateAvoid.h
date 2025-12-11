@@ -3,8 +3,6 @@
 #include "GameObject/EnemyAI/EnemyAIState/BaseEnemyAIState.h"
 #include "Math/Types/AllMathTypes.h"
 
-
-namespace magi {
 /// <summary>
 /// 敵回避ステート
 /// </summary>
@@ -17,4 +15,3 @@ public:
 	void Exit(EnemyAI* enemyAI, MechCore* mechCore)override;
 
 };
-}
