@@ -16,6 +16,7 @@
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 SkyBoxDrawer::SkyBoxDrawer(
 	DXGI* dxgi,

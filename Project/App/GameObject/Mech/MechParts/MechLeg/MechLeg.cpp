@@ -6,6 +6,7 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 
 using namespace MAGIMath;
+using namespace MAGI;
 
 MechLeg::MechLeg() {
 	// レンダラーとゲームオブジェクトを作成

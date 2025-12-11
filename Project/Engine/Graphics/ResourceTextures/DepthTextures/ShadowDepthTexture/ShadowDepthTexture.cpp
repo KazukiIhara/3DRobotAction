@@ -5,6 +5,7 @@
 
 
 using namespace MAGIUtility;
+using namespace MAGI;
 
 ShadowDepthTexture::ShadowDepthTexture() {
 	CreateResource();

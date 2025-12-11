@@ -14,6 +14,7 @@
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
+using namespace MAGI;
 
 LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	SetDXGI(dxgi);

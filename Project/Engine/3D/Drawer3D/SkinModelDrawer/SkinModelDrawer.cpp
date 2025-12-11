@@ -1,4 +1,5 @@
 #include "SkinModelDrawer.h"
+using namespace MAGI;
 
 // C++
 #include <cassert>

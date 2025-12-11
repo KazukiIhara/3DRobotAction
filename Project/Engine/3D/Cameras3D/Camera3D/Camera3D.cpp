@@ -7,6 +7,7 @@
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 Camera3D::Camera3D(const std::string& name, bool isUseYawPitch) {
 	name_ = name;

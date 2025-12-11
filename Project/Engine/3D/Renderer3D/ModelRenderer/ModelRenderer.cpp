@@ -1,4 +1,5 @@
 #include "ModelRenderer.h"
+using namespace MAGI;
 
 // MyHedder
 #include "MAGI.h"

@@ -1,4 +1,5 @@
 #include "ModelDrawer.h"
+using namespace MAGI;
 
 // C++
 #include <cassert>

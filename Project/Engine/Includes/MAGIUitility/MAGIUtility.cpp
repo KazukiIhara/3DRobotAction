@@ -5,6 +5,7 @@
 #include <cassert>
 
 using namespace MAGIMath;
+using namespace MAGI;
 
 Vector3 MAGIUtility::CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time) {
 	assert(!keyframes.empty());

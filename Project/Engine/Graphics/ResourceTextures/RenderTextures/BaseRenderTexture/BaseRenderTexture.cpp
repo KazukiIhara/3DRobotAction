@@ -4,6 +4,7 @@
 #include "MAGIUitility/MAGIUtility.h"
 
 using namespace MAGIUtility;
+using namespace MAGI;
 
 BaseRenderTexture::BaseRenderTexture() {
 

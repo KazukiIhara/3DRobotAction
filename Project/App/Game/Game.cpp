@@ -1,4 +1,5 @@
 #include "Game.h"
+using namespace MAGI;
 
 // EngineScenes
 #include "Scenes/Sample/SampleScene.h"
