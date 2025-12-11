@@ -10,8 +10,6 @@
 #include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 #include "Camera3DManager/Camera3DManager.h"
 
-using namespace magi;
-
 ModelDrawerManager::ModelDrawerManager(
 	DXGI* dxgi,
 	DirectXCommand* directXCommand,

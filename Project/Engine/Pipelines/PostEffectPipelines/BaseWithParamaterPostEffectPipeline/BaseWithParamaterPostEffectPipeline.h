@@ -2,8 +2,6 @@
 
 #include "PostEffectPipelines/BasePostEffectPipeline/BasePostEffectPipeline.h"
 
-
-namespace magi {
 /// <summary>
 /// 追加情報をシェーダーに送るポストエフェクトのパイプライン基底クラス
 /// </summary>
@@ -28,4 +26,3 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
-}

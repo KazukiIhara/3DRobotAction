@@ -1,7 +1,5 @@
 #pragma once
 
-
-namespace magi {
 /// <summary>
 /// クオータニオン
 /// </summary>
@@ -11,4 +9,3 @@ struct Quaternion {
 	float z = 0.0f;
 	float w = 1.0f;
 };
-}

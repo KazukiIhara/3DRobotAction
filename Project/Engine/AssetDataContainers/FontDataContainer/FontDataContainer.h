@@ -7,8 +7,6 @@
 // MyHedder
 #include "Common/Font/FontCommon.h"
 
-
-namespace magi {
 /// <summary>
 /// フォントデータコンテナクラス
 /// </summary>
@@ -21,4 +19,3 @@ private:
 	// フォントデータ
 	std::unordered_map<std::string, FontTexture> fontDatas_;
 };
-}

@@ -9,8 +9,6 @@
 // MyHedder
 #include "Math/Types/AllMathTypes.h"
 
-
-namespace magi {
 ///
 /// Vector2
 ///
@@ -303,5 +301,4 @@ namespace MAGIMath {
 
 	// 球面線形補完
 	Quaternion Slerp(Quaternion q1, Quaternion q2, float t);
-}
 }

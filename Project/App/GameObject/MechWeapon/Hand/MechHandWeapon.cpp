@@ -8,7 +8,6 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
-using namespace magi;
 std::string MechHandWeapon::ComvertTypeToString(const MechHandWeapon::Type& type) {
 	switch (type) {
 	case Type::Gun:

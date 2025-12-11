@@ -30,14 +30,14 @@ enum class RootDir {
 // 回避用コライダー
 struct AvoidCollider {
 	// 胴体のワールド座標
-	magi::Vector3 wPos;
+	Vector3 wPos;
 	// 周辺探索用の半径
 	float radius = 1.0f;
 
 	// カメラコライダー用データ
-	magi::Vector3 eye; // 機体の目の座標
-	magi::Vector3 target; // カメラの向いている方向 MechCoreのLockOnViewから取得
-	magi::Vector3 up = { 0.0f,1.0f,0.0f };
+	Vector3 eye; // 機体の目の座標
+	Vector3 target; // カメラの向いている方向 MechCoreのLockOnViewから取得
+	Vector3 up = { 0.0f,1.0f,0.0f };
 
 	float nearClip = 0.1f;
 	float farClip = 8.0f;
@@ -95,8 +95,8 @@ public:
 	//
 	// 各ステートからコマンドを入力する際に呼ぶ関数
 	//
-	void MoveDir(const magi::Vector2& dir);
-	void CameraRotDir(const magi::Vector2& camRDir);
+	void MoveDir(const Vector2& dir);
+	void CameraRotDir(const Vector2& camRDir);
 	void Jump();
 	void QuickBoost();
 	void AssultBoost();

@@ -2,8 +2,6 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
-
-namespace magi {
 /// <summary>
 /// ラジアルブラー
 /// </summary>
@@ -17,4 +15,3 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
-}

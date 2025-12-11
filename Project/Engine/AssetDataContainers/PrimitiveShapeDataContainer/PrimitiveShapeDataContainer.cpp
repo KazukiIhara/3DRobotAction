@@ -1,7 +1,5 @@
 #include "PrimitiveShapeDataContainer.h"
 
-using namespace magi;
-
 using namespace MAGIMath;
 
 PrimitiveShapeDataContainer::PrimitiveShapeDataContainer() {

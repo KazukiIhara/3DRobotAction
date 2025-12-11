@@ -12,8 +12,6 @@
 #include "Math/Utility/MathUtility.h"
 #include "DirectX/ComPtr/ComPtr.h"
 
-
-namespace magi {
 // 頂点が影響を受けるボーンの数
 static const uint32_t kNumMaxInfluence = 4;
 // 頂点が影響を受けるボーンのスロット
@@ -44,4 +42,3 @@ struct JointWeightData {
 	Matrix4x4 inverseBindPoseMatrix;
 	std::vector<JointToVertexWeightData> jointToVertexWeights;
 };
-}

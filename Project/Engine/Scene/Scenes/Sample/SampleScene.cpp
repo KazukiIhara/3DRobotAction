@@ -1,7 +1,5 @@
 #include "SampleScene.h"
 
-using namespace magi;
-
 void SampleScene::Initialize() {
 
 	//

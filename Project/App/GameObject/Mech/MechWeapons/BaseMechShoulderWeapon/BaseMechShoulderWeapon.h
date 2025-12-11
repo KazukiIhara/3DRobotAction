@@ -37,7 +37,7 @@ public:
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 
 	// 攻撃を発射するワールド座標の取得
-	magi::Vector3 GetFireWorldPosition();
+	Vector3 GetFireWorldPosition();
 
 	// 武器の種類を取得
 	const ShoulderWeaponType& GetType()const;
@@ -58,7 +58,7 @@ protected:
 	std::weak_ptr<GameObject3D> weapon_;
 
 	// 攻撃発生座標
-	magi::Vector3 fireWorldPosition_ = { 0.0f,0.0f,0.0f };
+	Vector3 fireWorldPosition_ = { 0.0f,0.0f,0.0f };
 
 	// 武器タイプ
 	ShoulderWeaponType type_;

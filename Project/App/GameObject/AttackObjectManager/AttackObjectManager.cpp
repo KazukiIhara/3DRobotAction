@@ -4,7 +4,6 @@
 
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 
-using namespace magi;
 AttackObjectManager::AttackObjectManager(AttackCollisionManager* attackColliderManager) {
 	bullets_.clear();
 	MAGIAssert::Assert(attackColliderManager, "AttackColliderManager is Null");

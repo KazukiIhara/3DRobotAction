@@ -14,8 +14,6 @@
 #include "Structs/ColorStruct.h"
 #include "Math/Types/Vector4.h"
 
-
-namespace magi {
 /// <summary>
 /// レンダーテクスチャの基底クラス
 /// </summary>
@@ -76,4 +74,3 @@ protected:
 	// SRVリソースのインデックス
 	uint32_t srvIndex_ = 0;
 };
-}

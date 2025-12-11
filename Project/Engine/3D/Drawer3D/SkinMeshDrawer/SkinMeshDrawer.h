@@ -11,8 +11,6 @@
 #include "Structs/ModelStruct.h"
 #include "Structs/Primitive3DStruct.h"
 
-
-namespace magi {
 /// <summary>
 /// スキンメッシュ描画クラス
 /// </summary>
@@ -81,4 +79,3 @@ private:
 	// スキニング用の情報データ
 	SkinningInformationForGPU* skiningInformationData_ = nullptr;
 };
-}

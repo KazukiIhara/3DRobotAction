@@ -16,8 +16,6 @@
 
 #include "Enums/BlendModeEnum.h"
 
-
-namespace magi {
 /// <summary>
 /// スプライトメッシュシェーダー用のパイプラインストリーム
 /// </summary>
@@ -79,4 +77,3 @@ struct SpriteDataForGPU {
 	Matrix4x4 uvMatrix;
 	float padding0[3];
 };
-}

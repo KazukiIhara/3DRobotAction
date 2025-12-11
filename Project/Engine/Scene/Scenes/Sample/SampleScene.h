@@ -12,8 +12,6 @@
 
 #include "Random/Random.h"
 
-
-namespace magi {
 using namespace MAGIUtility;
 
 enum class ParadinState {
@@ -79,4 +77,3 @@ private:
 	float debugTimer_ = 0.0f;
 
 };
-}

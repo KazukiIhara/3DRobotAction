@@ -57,7 +57,7 @@ public:
 	//===================================
 
 	// 現在の進行方向を取得
-	magi::Vector2 GetCurrentMoveDir()const;
+	Vector2 GetCurrentMoveDir()const;
 
 	// 現在の速度を取得
 	float GetCurrentSpeed()const;
@@ -71,7 +71,7 @@ public:
 	float GetQuickBoostMaxTime()const;
 
 	// 現在の移動量を取得
-	magi::Vector3 GetCurrentVelocity()const;
+	Vector3 GetCurrentVelocity()const;
 
 
 	//===================================
@@ -117,9 +117,9 @@ private:
 	// クイックブースト時にカメラが揺れる時間
 	const float kQuickBoostCameraShakeTime_ = 0.05f;
 	// ソフトロック時のクイックブースト時にカメラが揺れる量
-	const magi::Vector3 kQuickBoostCameraShakeIntensitySL_ = { 0.0f,0.03f,0.0f };
+	const Vector3 kQuickBoostCameraShakeIntensitySL_ = { 0.0f,0.03f,0.0f };
 	// ハードロック時のクイックブースト時にカメラが揺れる量
-	const magi::Vector3 kQuickBoostCameraShakeIntensityHL_ = { 0.0f,0.1f,0.0f };
+	const Vector3 kQuickBoostCameraShakeIntensityHL_ = { 0.0f,0.1f,0.0f };
 
 	// アサルトブーストの最大速度
 	const float kMaxAssultBoostSpeed_ = 30.0f;
@@ -137,15 +137,15 @@ private:
 	//===================================
 
 	// 進行方向
-	magi::Vector2 currentMoveDir_ = { 0.0f,0.0f };
+	Vector2 currentMoveDir_ = { 0.0f,0.0f };
 	// スピード
 	float moveSpeed_ = 0.0f;
 	// 移動量
-	magi::Vector3 velocity_ = { 0.0f,0.0f,0.0f };
+	Vector3 velocity_ = { 0.0f,0.0f,0.0f };
 
 
 	// クイックブースト
-	magi::Vector2 quickBoostDir_ = { 0.0f,0.0f };
+	Vector2 quickBoostDir_ = { 0.0f,0.0f };
 	// クイックブーストのタイマー
 	float quickBoostTimer_ = 0.0f;
 	// クイックブーストの移動量アニメーション

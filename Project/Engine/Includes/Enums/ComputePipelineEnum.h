@@ -1,7 +1,5 @@
 #pragma once
 
-
-namespace magi {
 /// <summary>
 /// 計算パイプラインのタイプ
 /// </summary>
@@ -16,4 +14,3 @@ enum class ComputePipelineStateType {
 
 // パイプラインの種類の数 
 inline constexpr uint32_t kComputePipelineStateNum = static_cast<uint32_t>(ComputePipelineStateType::Num);
-}

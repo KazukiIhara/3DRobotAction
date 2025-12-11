@@ -17,7 +17,7 @@ public:
 	AttackCollider(
 		const FriendlyTag& tag,
 		const AttackType& type,
-		const magi::Vector3& posW,
+		const Vector3& posW,
 		float radius,
 		int32_t damage);
 
@@ -27,7 +27,7 @@ public:
 
 	void Draw();
 
-	const magi::Vector3& GetWPos()const;
+	const Vector3& GetWPos()const;
 	float GetRadius()const;
 
 	bool GetIsAlive()const;
@@ -36,7 +36,7 @@ public:
 	int32_t GetDamage()const;
 	FriendlyTag GetFriendlyTag()const;
 
-	void SetWorldPos(const magi::Vector3& posW);
+	void SetWorldPos(const Vector3& posW);
 	void SetIsAlive(bool isAlve);
 	void SetHitInfo(HitInfo hitInfo);
 
@@ -51,7 +51,7 @@ private:
 	HitInfo hitInfo_;
 
 	// ワールド上の座標
-	magi::Vector3 posW_;
+	Vector3 posW_;
 
 	// 半径
 	float radius_;

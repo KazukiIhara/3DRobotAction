@@ -6,8 +6,6 @@
 
 #include "Logger/Logger.h"
 
-using namespace magi;
-
 DirectXCommand::DirectXCommand(DXGI* dxgi, bool isSupportDirectX12Ultimate) {
 	Initialize(dxgi, isSupportDirectX12Ultimate);
 	Logger::Log("DirectXCommand Initialize\n");

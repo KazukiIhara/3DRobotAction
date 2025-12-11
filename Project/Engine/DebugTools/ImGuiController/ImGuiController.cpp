@@ -7,8 +7,6 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
-using namespace magi;
-
 ImGuiController::ImGuiController(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager) {
 	Initialize(windowApp, dxgi, command, srvUavManager);
 	Logger::Log("ImGuiController Initialize\n");

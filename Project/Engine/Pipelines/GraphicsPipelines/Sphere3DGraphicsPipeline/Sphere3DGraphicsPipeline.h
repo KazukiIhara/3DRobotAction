@@ -4,8 +4,6 @@
 
 #include "Structs/Primitive3DStruct.h"
 
-
-namespace magi {
 /// <summary>
 /// 3D球体描画用のパイプライン
 /// </summary>
@@ -29,4 +27,3 @@ private:
 	// InputLayoutの設定を行う
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 };
-}

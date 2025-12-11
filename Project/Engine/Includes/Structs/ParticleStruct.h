@@ -2,8 +2,6 @@
 
 #include "Structs/ObjectStruct.h"
 
-
-namespace magi {
 /// <summary>
 /// 発生時のパラメータ
 /// </summary>
@@ -34,4 +32,3 @@ struct ParticleForGPU {
 	Matrix4x4 World;
 	Vector4 color;
 };
-}

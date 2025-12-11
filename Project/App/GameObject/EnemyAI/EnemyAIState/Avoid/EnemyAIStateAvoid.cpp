@@ -5,7 +5,6 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "Math/Utility/MathUtility.h"
 
-using namespace magi;
 using namespace MAGIMath;
 
 void EnemyAIStateAvoid::Enter([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {

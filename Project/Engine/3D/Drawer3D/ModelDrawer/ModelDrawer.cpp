@@ -8,8 +8,6 @@
 #include "Framework/MAGI.h"
 #include "Math/Utility/MathUtility.h"
 
-using namespace magi;
-
 using namespace MAGIMath;
 
 ModelDrawer::ModelDrawer(const ModelData& modelData) {

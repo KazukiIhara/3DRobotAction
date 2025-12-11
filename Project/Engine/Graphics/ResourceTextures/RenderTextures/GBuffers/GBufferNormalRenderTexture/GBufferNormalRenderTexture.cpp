@@ -1,7 +1,5 @@
 #include "GBufferNormalRenderTexture.h"
 
-using namespace magi;
-
 GBufferNormalRenderTexture::GBufferNormalRenderTexture() {
 }
 

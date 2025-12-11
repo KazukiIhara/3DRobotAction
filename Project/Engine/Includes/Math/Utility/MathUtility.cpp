@@ -4,8 +4,6 @@
 #include <stdexcept>
 #include <string>
 
-using namespace magi;
-
 static const float EPSILON = 1.0e-6f;
 
 Vector2 operator-(const Vector2& v) {

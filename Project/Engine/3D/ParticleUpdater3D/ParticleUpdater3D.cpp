@@ -9,8 +9,6 @@
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
 
-using namespace magi;
-
 ParticleUpdater3D::ParticleUpdater3D(DeltaTimer* deltaTimer, DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager, ComputePipelineManager* computePipelineManager) {
 	deltaTimer_ = deltaTimer;
 	dxgi_ = dxgi;

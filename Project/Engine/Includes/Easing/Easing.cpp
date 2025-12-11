@@ -2,8 +2,6 @@
 
 #include "Math/Utility/MathUtility.h"
 
-using namespace magi;
-
 // イージング用定数
 static const float c1 = 1.70158f;
 static const float c2 = c1 * 1.525f;

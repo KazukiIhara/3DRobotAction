@@ -10,8 +10,6 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "3D/Drawer3D/MeshDrawer/MeshDrawer.h"
 
-
-namespace magi {
 /// <summary>
 /// モデル描画用クラス
 /// </summary>
@@ -45,4 +43,3 @@ private:
 	// 現在のインデックス
 	uint32_t currentIndex_[static_cast<uint32_t>(BlendMode::Num)];
 };
-}

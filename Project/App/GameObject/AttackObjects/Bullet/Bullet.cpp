@@ -2,7 +2,6 @@
 
 #include "MAGI.h"
 
-using namespace magi;
 Bullet::Bullet(const Vector3& dir, float speed, const Vector3& wPos, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
 	lifeTime_ = 5.0f;

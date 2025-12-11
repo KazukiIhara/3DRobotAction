@@ -15,8 +15,6 @@
 
 #include "Framework/MAGI.h"
 
-using namespace magi;
-
 using namespace MAGIUtility;
 using namespace MAGIMath;
 

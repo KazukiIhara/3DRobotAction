@@ -9,7 +9,6 @@
 
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
-using namespace magi;
 using namespace MAGIMath;
 
 void EnemyAIStateRoot::Enter([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]] MechCore* mechCore) {

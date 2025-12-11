@@ -4,8 +4,6 @@
 
 #include "MAGIAssert/MAGIAssert.h"
 
-using namespace magi;
-
 Camera3DManager::Camera3DManager() {
 	Initialize();
 	Logger::Log("Camera3DManager Initialize\n");

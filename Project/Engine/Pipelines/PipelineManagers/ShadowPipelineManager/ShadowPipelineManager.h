@@ -20,8 +20,6 @@
 #include "ShadowPipelines/CylinderShadowPipeline/CylinderShadowPipeline.h"
 #include "ShadowPipelines/ModelShadowPipeline/ModelShadowPipeline.h"
 
-
-namespace magi {
 // 前方宣言
 class DXGI;
 class ShaderCompiler;
@@ -64,4 +62,3 @@ private:
 	std::unique_ptr<ModelShadowPipeline> modelShadowPipeline_ = nullptr;
 
 };
-}

@@ -2,8 +2,6 @@
 
 #include <Xinput.h>
 
-
-namespace magi {
 /// <summary>
 /// パッド振動用構造体
 /// </summary>
@@ -14,4 +12,3 @@ struct VibrationState {
 	WORD leftMotor = 0;
 	WORD rightMotor = 0;
 };
-}

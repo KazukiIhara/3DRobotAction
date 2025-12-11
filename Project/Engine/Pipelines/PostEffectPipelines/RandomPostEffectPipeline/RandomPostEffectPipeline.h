@@ -2,8 +2,6 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
-
-namespace magi {
 class RandomPostEffectPipeline:public BaseWithParamaterPostEffectPipeline {
 public:
 	RandomPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -13,4 +11,3 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
-}

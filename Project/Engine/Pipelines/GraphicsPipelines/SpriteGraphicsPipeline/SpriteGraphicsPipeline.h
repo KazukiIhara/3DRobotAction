@@ -4,8 +4,6 @@
 
 #include "Structs/SpriteStruct.h"
 
-
-namespace magi {
 /// <summary>
 /// スプライト描画用パイプライン
 /// </summary>
@@ -28,4 +26,3 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
-}

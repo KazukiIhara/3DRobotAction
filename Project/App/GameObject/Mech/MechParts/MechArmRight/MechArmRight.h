@@ -9,7 +9,7 @@
 
 // 前方宣言
 class GameObject3D;
-class magi::Transform3D;
+class Transform3D;
 class MechCore;
 
 /// <summary>
@@ -37,10 +37,10 @@ public:
 		std::string modelName = "ArmR";
 
 		// オフセット
-		magi::Vector3 offSetPos = { 0.0f,0.0f,0.0f };
+		Vector3 offSetPos = { 0.0f,0.0f,0.0f };
 
 		// モデルサイズ
-		magi::Vector3 modelSize = { 0.0f,0.0f,0.0f };
+		Vector3 modelSize = { 0.0f,0.0f,0.0f };
 	};
 public:
 	MechArmRight();
@@ -50,16 +50,16 @@ public:
 
 	std::weak_ptr<GameObject3D> GetGameObject()const;
 
-	magi::Transform3D* GetHandTransform();
+	Transform3D* GetHandTransform();
 
-	const magi::Vector3& GetForward()const;
+	const Vector3& GetForward()const;
 
 private:
 	// オブジェクト
 	std::weak_ptr<GameObject3D> rightArm_;
 	// 前方ベクトル
-	magi::Vector3 forward_ = { 0.0f,0.0f,1.0f };
+	Vector3 forward_ = { 0.0f,0.0f,1.0f };
 
 	// 武器を親子付けするトランスフォーム
-	magi::Transform3D* handTransform_;
+	Transform3D* handTransform_;
 };

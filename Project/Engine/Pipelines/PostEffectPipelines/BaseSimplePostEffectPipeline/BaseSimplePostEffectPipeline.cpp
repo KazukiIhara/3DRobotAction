@@ -6,8 +6,6 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-using namespace magi;
-
 BaseSimplePostEffectPipeline::BaseSimplePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BasePostEffectPipeline(dxgi, shaderCompiler) {}
 

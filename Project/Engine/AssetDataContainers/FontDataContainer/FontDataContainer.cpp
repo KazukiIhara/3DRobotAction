@@ -3,8 +3,6 @@
 // stb
 #include "stb_truetype.h"
 
-using namespace magi;
-
 FontDataContainer::FontDataContainer() {
 
 }

@@ -17,8 +17,6 @@
 // シャドウマップ用の深度テクスチャ
 #include "ResourceTextures/DepthTextures/ShadowDepthTexture/ShadowDepthTexture.h"
 
-
-namespace magi {
 // 前方宣言
 class DXGI;
 class DirectXCommand;
@@ -198,4 +196,3 @@ private:
 	std::unique_ptr<ShadowDepthTexture> shadowDepthTexture_ = nullptr;
 
 };
-}

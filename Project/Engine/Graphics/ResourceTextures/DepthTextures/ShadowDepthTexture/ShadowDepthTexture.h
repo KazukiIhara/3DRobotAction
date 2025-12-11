@@ -7,8 +7,6 @@
 #include "DirectX/ComPtr/ComPtr.h"
 
 
-
-namespace magi {
 /// <summary>
 /// シャドウマップ用の深度テクスチャリソース管理クラス
 /// </summary>
@@ -39,4 +37,3 @@ private:
 	uint32_t dsvIndex_ = 0;
 	uint32_t srvIndex_ = 0;
 };
-}

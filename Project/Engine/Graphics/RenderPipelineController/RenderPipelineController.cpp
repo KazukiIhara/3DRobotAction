@@ -19,8 +19,6 @@
 
 #include "Logger/Logger.h"
 
-using namespace magi;
-
 RenderController::RenderController(
 	DXGI* dxgi,
 	DirectXCommand* directXCommand,

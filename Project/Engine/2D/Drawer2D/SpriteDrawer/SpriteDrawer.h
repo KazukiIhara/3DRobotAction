@@ -12,8 +12,6 @@
 #include "Structs/SpriteStruct.h"
 #include "Enums/BlendModeEnum.h"
 
-
-namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -77,4 +75,3 @@ private:
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	Camera2DManager* camera2DManager_ = nullptr;
 };
-}

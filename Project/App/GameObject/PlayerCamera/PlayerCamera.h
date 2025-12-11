@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Cameras3D/Camera3D/Camera3D.h"
-#include "magi::Transform3D/magi::Transform3D.h"
+#include "Transform3D/Transform3D.h"
 
 class MechCore;
 
@@ -20,11 +20,11 @@ public:
 
 	void Update()override;
 
-	void SetTargetTransform(magi::Transform3D* target);
+	void SetTargetTransform(Transform3D* target);
 
-	void SetCameraQuaternion(const magi::Quaternion& q);
+	void SetCameraQuaternion(const Quaternion& q);
 
-	const magi::Quaternion& GetCameraQuaternion()const;
+	const Quaternion& GetCameraQuaternion()const;
 
 private:
 	void ApplyInput(float dt);
@@ -35,24 +35,24 @@ private:
 	PlayerCameraState state_;
 
 	// 追従対象のトランスフォーム
-	magi::Transform3D* followTargetTransform_ = nullptr;
+	Transform3D* followTargetTransform_ = nullptr;
 
 	// 累積用変数
 	float pYaw_ = 0.0f;
 	float pPitch_ = 0.0f;
 
 	// カメラの回転
-	magi::Quaternion cameraRotation_;
+	Quaternion cameraRotation_;
 
 	// ピボット
-	magi::Vector3 pivot_ = { 0.0f,0.0f,0.0f };
+	Vector3 pivot_ = { 0.0f,0.0f,0.0f };
 
 	// 目標ピボット
-	magi::Vector3 targetPivot_ = { 0.0f,0.0f,0.0f };
+	Vector3 targetPivot_ = { 0.0f,0.0f,0.0f };
 	// 目標目線座標
-	magi::Vector3 targetEye_ = { 0.0f,0.0f,0.0f };
+	Vector3 targetEye_ = { 0.0f,0.0f,0.0f };
 	// 目標目標座標
-	magi::Vector3	targetTarget_ = { 0.0f,0.0f,1.0f };
+	Vector3	targetTarget_ = { 0.0f,0.0f,1.0f };
 
 	// パラメータ
 
@@ -74,7 +74,7 @@ private:
 	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
 	// ピボットのオフセット
-	magi::Vector3 pivotOffset_ = { 0.0f, 2.2f, 0.0f };
+	Vector3 pivotOffset_ = { 0.0f, 2.2f, 0.0f };
 
 	// 機体を受け取る
 	MechCore* core_;

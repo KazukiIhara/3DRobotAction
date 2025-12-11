@@ -17,8 +17,8 @@ private:
 	// 回避処理
 	void Avoid(EnemyAI* enemyAI);
 private:
-	magi::Vector2 targetMoveDir_ = { 0.0f,0.0f };
-	magi::Vector2 currentMoveDir_ = { 0.0f,0.0f };
+	Vector2 targetMoveDir_ = { 0.0f,0.0f };
+	Vector2 currentMoveDir_ = { 0.0f,0.0f };
 
 	// 目標距離
 

@@ -1,7 +1,5 @@
 #include "Skeleton.h"
 
-using namespace magi;
-
 using namespace MAGIMath;
 
 Skeleton::Skeleton(const Node& rootNode) {

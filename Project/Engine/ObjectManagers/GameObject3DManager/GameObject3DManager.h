@@ -8,8 +8,6 @@
 // MyHedder
 #include "GameObject3D/GameObject3D.h"
 
-
-namespace magi {
 /// <summary>
 /// 3Dゲームオブジェクトマネージャー
 /// </summary>
@@ -29,4 +27,3 @@ private:
 	std::vector<std::shared_ptr<GameObject3D>> gameObjects_;
 	std::unordered_map<std::string, std::weak_ptr<GameObject3D>> gameObjectList_;
 };
-}

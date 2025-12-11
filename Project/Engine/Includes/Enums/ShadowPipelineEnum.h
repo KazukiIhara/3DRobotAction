@@ -3,8 +3,6 @@
 // C++
 #include <cstdint>
 
-
-namespace magi {
 /// <summary>
 /// シャドウ用のパイプラインの種類
 /// </summary>
@@ -22,4 +20,3 @@ enum class ShadowPipelineStateType {
 
 // パイプラインの種類の数 
 static const uint32_t kShadowPipelineStateNum = static_cast<uint32_t>(ShadowPipelineStateType::Num);
-}

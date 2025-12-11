@@ -2,8 +2,6 @@
 
 #include "Framework/MAGI.h"
 
-using namespace magi;
-
 GrobalDataManager::GrobalDataManager() {
 	Initialize();
 }

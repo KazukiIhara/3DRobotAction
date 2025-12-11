@@ -9,8 +9,6 @@
 // ComPtr
 #include "DirectX/ComPtr/ComPtr.h"
 
-
-namespace magi {
 // 前方宣言
 class DXGI;
 
@@ -52,4 +50,3 @@ protected:
 	// dxgiのインスタンス
 	DXGI* dxgi_ = nullptr;
 };
-}

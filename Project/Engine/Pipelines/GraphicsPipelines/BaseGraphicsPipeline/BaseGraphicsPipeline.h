@@ -11,8 +11,6 @@
 #include "Includes/Enums/BlendModeEnum.h"
 #include "Structs/Primitive3DStruct.h"
 
-
-namespace magi {
 // 前方宣言
 class DXGI;
 class ShaderCompiler;
@@ -78,4 +76,3 @@ protected:
 	DXGI* dxgi_ = nullptr;
 	ShaderCompiler* shaderCompiler_ = nullptr;
 };
-}

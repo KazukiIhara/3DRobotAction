@@ -13,6 +13,3 @@
 #include "Math/Types/Matrix4x4.h"
 
 #include "Math/Types/Quaternion.h"
-
-namespace magi {
-}

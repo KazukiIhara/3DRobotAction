@@ -12,8 +12,6 @@
 #include "3D/Drawer3D/ModelDrawer/ModelDrawer.h"
 #include "3D/Drawer3D/SkinModelDrawer/SkinModelDrawer.h"
 
-
-namespace magi {
 // 前方宣言
 class DXGI;
 class DirectXCommand;
@@ -70,4 +68,3 @@ private:
 	ShadowPipelineManager* shadowPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
 };
-}

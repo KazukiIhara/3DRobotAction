@@ -11,8 +11,6 @@
 
 #include <cassert>
 
-using namespace magi;
-
 using namespace MAGIUtility;
 
 LineDrawer3D::LineDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {

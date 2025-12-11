@@ -8,8 +8,6 @@
 // MyHedder
 #include "Structs/SoundStruct.h"
 
-
-namespace magi {
 class SoundDataContainer {
 public:
 	SoundDataContainer();
@@ -47,4 +45,3 @@ private:
 	// サウンドデータコンテナ
 	std::map<std::string, std::unique_ptr<SoundData>> sounds_;
 };
-}

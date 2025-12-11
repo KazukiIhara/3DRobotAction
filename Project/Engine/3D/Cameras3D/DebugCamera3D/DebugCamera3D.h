@@ -2,8 +2,6 @@
 
 #include "3D/Cameras3D/Camera3D/Camera3D.h"
 
-
-namespace magi {
 class DebugCamera3D:public Camera3D {
 public:
 
@@ -18,4 +16,3 @@ public:
 
 	void HandleCameraZoom(int64_t wheelDelta);
 };
-}

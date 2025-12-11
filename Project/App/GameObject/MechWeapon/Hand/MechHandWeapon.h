@@ -15,7 +15,7 @@
 #include "GameEffects/MuzzleFlash/MuzzleFlashEffect.h"
 
 // 前方宣言
-class magi::Transform3D;
+class Transform3D;
 class MechCore;
 class AttackObjectManager;
 
@@ -64,7 +64,7 @@ public:
 		// モデル名
 		std::string modelName = "AssultRifle";
 		// 攻撃発射ローカル座標
-		magi::Vector3 fireOffsetLocalPos;
+		Vector3 fireOffsetLocalPos;
 	};
 
 	// 
@@ -75,7 +75,7 @@ public:
 		Matrix4x4 fireOffsetLocalMatrix;
 
 		// 攻撃発射ワールド座標
-		magi::Vector3 fireOffsetWorldPos;
+		Vector3 fireOffsetWorldPos;
 		// 攻撃発射ワールド行列
 		Matrix4x4 fireOffsetWorldMatrix;
 
@@ -120,7 +120,7 @@ public:
 	MechHandWeapon::Data GetData()const;
 
 	// トランスフォーム取得
-	magi::Transform3D* GetTransform();
+	Transform3D* GetTransform();
 
 private:
 	// 弾の発射座標を計算
@@ -140,10 +140,10 @@ private:
 	Data data_;
 
 	// トランスフォーム
-	magi::Transform3D* transform_;
+	Transform3D* transform_;
 
 	// 前方ベクトル
-	magi::Vector3 forward_{ 0.0f,0.0f,1.0f };
+	Vector3 forward_{ 0.0f,0.0f,1.0f };
 
 	// マテリアル
 	ModelMaterial material_;

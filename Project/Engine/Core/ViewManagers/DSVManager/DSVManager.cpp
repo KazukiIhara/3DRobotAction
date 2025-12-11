@@ -4,8 +4,6 @@
 
 #include "Logger/Logger.h"
 
-using namespace magi;
-
 DSVManager::DSVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
 	BaseViewManager::Initialize(kMaxDSVCount_);

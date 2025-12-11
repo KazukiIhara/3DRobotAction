@@ -14,8 +14,6 @@
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
-
-namespace magi {
 /// <summary>
 /// プリミティブメッシュシェーダー用のパイプラインストリーム
 /// </summary>
@@ -195,4 +193,3 @@ struct RootConstants {
 	uint32_t _pad1 = 0;
 	uint32_t _pad2 = 0;
 };
-}

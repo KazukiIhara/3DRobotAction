@@ -8,8 +8,6 @@
 // MyHedder
 #include "2D/Camera2D/Camera2D.h"
 
-
-namespace magi {
 /// <summary>
 /// 2D描画用のカメラマネージャ
 /// </summary>
@@ -36,4 +34,3 @@ private:
 	// 現在使用中のカメラ
 	Camera2D* currentCamera_ = nullptr;
 };
-}

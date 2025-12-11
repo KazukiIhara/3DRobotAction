@@ -5,8 +5,6 @@
 
 #include "Easing/Easing.h"
 
-
-namespace magi {
 using namespace MAGIMath;
 
 /// <summary>
@@ -112,4 +110,3 @@ private:
 	LoopType loopType_;
 
 };
-}

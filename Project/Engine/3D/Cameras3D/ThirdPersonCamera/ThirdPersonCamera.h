@@ -3,8 +3,6 @@
 #include "Cameras3D/Camera3D/Camera3D.h"
 #include "Transform3D/Transform3D.h"
 
-
-namespace magi {
 /// <summary>
 /// 三人称カメラ
 /// </summary>
@@ -69,4 +67,3 @@ private:
 	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
 
 };
-}

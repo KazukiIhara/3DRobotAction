@@ -1,7 +1,5 @@
 #pragma once
 
-
-namespace magi {
 /// <summary>
 /// 三次元ベクトル
 /// </summary>
@@ -36,4 +34,3 @@ struct Vector3 {
 		return *this;
 	}
 };
-}

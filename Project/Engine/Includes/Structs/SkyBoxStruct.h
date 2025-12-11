@@ -9,8 +9,6 @@
 
 #include "Math/Types/Matrix4x4.h"
 
-
-namespace magi {
 /// <summary>
 /// 背景ボックスの頂点データ
 /// </summary>
@@ -24,4 +22,3 @@ struct SkyBoxVertexData3D {
 struct SkyBoxDataForGPU {
 	Matrix4x4 worldMatrix;
 };
-}

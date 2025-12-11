@@ -7,8 +7,6 @@
 #include "Structs/ColorStruct.h"
 #include "Enums/EmitterEnum.h" 
 
-
-namespace magi {
 /// <summary>
 /// エミッターの設定構造体
 /// </summary>
@@ -37,4 +35,3 @@ struct EmitterSetting {
 	// 発生頻度
 	float frequency = 1.0f;
 };
-}

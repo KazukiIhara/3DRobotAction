@@ -12,8 +12,6 @@
 #include "Enums/BlendModeEnum.h"
 
 
-
-namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -53,4 +51,3 @@ private:
 	LightManager* lightManager_ = nullptr;
 	ParticleUpdater3D* particleUpdater_ = nullptr;
 };
-}

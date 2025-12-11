@@ -10,8 +10,6 @@
 #include "Math/Types/AllMathTypes.h"
 #include "SimpleAnimation/SimpleAnimation.h"
 
-
-namespace magi {
 // エフェクトの最大数
 static const uint32_t kMaxEffectNum = 65536;
 
@@ -108,4 +106,3 @@ struct PlaneEffect {
 	PlaneData3D currentShape;					// 現在の形状データ
 	float currentTime = 0.0f;					// アニメーションの経過時間
 };
-}

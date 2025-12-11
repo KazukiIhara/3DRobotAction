@@ -7,8 +7,6 @@
 // MyHedder
 #include "Structs/TextureStruct.h"
 
-
-namespace magi {
 // 前方宣言
 class DXGI;
 class DirectXCommand;
@@ -72,4 +70,3 @@ private:
 	// エンジンのデフォルトテクスチャのインデックス
 	uint32_t defaultTextureIndex_ = 0;
 };
-}

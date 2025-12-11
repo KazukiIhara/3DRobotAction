@@ -10,8 +10,6 @@
 #include "Math/Utility/MathUtility.h"
 #include "Structs/SkyBoxStruct.h"
 
-
-namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -96,4 +94,3 @@ private:
 	Camera3DManager* camera3DManager_ = nullptr;
 
 };
-}

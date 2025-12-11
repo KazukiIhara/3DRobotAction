@@ -11,8 +11,6 @@
 // MyHedder
 #include "logger/Logger.h"
 
-using namespace magi;
-
 D3DResourceLeakChecker::~D3DResourceLeakChecker() {
 	// リソースリークチェック
 	Microsoft::WRL::ComPtr<IDXGIDebug1> debug;

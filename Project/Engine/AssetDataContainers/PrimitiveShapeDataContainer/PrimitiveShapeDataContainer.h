@@ -7,8 +7,6 @@
 #include "Enums/Primitive3DEnum.h"
 #include "Structs/ModelStruct.h"
 
-
-namespace magi {
 /// <summary>
 /// シンプル形状のデータコンテナクラス
 /// </summary>
@@ -26,4 +24,3 @@ private:
 	// シンプル形状のデータ
 	std::unordered_map<Primitive3DType, PrimitiveData> primitiveDatas_;
 };
-}

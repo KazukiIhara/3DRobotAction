@@ -16,9 +16,9 @@ class GameObject3D;
 /// </summary>
 class Bullet {
 public:
-	Bullet(const magi::Vector3& dir,
+	Bullet(const Vector3& dir,
 		float speed,
-		const magi::Vector3& wPos,
+		const Vector3& wPos,
 		std::weak_ptr<AttackCollider> attackCollider);
 
 	~Bullet() = default;
@@ -32,13 +32,13 @@ public:
 
 	AttackCollider* GetAttackCollider();
 
-	magi::Vector3 GetWorldPos();
+	Vector3 GetWorldPos();
 
 private:
 	// ゲームオブジェクト
 	std::weak_ptr<GameObject3D> bullet_;
 	// 弾の向き
-	magi::Vector3 dir_ = { 0.0f,0.0f,0.0f };
+	Vector3 dir_ = { 0.0f,0.0f,0.0f };
 	// 弾の速度
 	float speed_ = 0.0f;
 
@@ -54,7 +54,7 @@ private:
 	GPUParticleEmitData particleData_;
 
 	// 直前に軌跡用パーティクルを発生した位置
-	magi::Vector3 lastEmitPos_{};
+	Vector3 lastEmitPos_{};
 
 	// パーティクルの生存時間
 	float particleBaseLife_ = 0.5f;

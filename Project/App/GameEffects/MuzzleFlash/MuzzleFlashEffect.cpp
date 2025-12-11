@@ -4,7 +4,6 @@
 
 #include "MAGI.h"
 
-using namespace magi;
 MuzzleFlashEffect::MuzzleFlashEffect() {
 	// マテリアルの設定
 	mat_.textureName = "muzzleFlash.png";

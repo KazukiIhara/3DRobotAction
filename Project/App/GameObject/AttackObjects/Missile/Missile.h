@@ -29,8 +29,8 @@ class Missile {
 public:
 	Missile(
 		const MissileType& missileType,
-		const magi::Vector3& wPos,
-		const magi::Vector3& dir,
+		const Vector3& wPos,
+		const Vector3& dir,
 		std::weak_ptr<MechCore> target,
 		std::weak_ptr<AttackCollider> attackCollider
 	);
@@ -44,7 +44,7 @@ public:
 
 	AttackCollider* GetAttackCollider();
 
-	magi::Vector3 GetWorldPos();
+	Vector3 GetWorldPos();
 
 private:
 	// ブーストから追従状態に遷移する時の処理
@@ -68,7 +68,7 @@ private:
 	MissilePhase phase_;
 
 	// 進行方向
-	magi::Vector3 dir_ = { 0.0f,0.0f,0.0f };
+	Vector3 dir_ = { 0.0f,0.0f,0.0f };
 
 	// ブースト時間
 	float boostTime_ = 0.0f;

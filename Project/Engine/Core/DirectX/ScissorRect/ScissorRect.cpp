@@ -7,8 +7,6 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "WindowApp/WindowApp.h"
 
-using namespace magi;
-
 ScissorRect::ScissorRect(DirectXCommand* directXCommand) {
 	Initialize(directXCommand);
 	Logger::Log("ScissorRect Initialize\n");

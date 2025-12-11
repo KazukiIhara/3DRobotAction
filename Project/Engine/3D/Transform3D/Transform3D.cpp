@@ -1,7 +1,5 @@
 #include "Transform3D.h"
 
-using namespace magi;
-
 Transform3D::Transform3D(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	Initialize(scale, rotate, translate);
 }
