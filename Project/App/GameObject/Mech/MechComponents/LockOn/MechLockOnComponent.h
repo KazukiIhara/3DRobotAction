@@ -9,7 +9,7 @@
 
 // 前方宣言
 class MechCore;
-class Transform3D;
+class magi::Transform3D;
 
 /// <summary>
 /// ロックオンコンポーネント

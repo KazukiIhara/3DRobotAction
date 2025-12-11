@@ -2,6 +2,7 @@
 
 #include "MAGI.h"
 
+using namespace magi;
 MechCollider::MechCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL) {
 	tag_ = tag;
 

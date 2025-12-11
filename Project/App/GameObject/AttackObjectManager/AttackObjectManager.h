@@ -29,25 +29,25 @@ public:
 
 	void AddBullet(
 		const FriendlyTag& tag,
-		const Vector3& dir,
+		const magi::Vector3& dir,
 		float speed,
-		const Vector3& wPos,
+		const magi::Vector3& wPos,
 		int32_t damage
 	);
 
 	void AddRocket(
 		const FriendlyTag& tag,
-		const Vector3& dir,
+		const magi::Vector3& dir,
 		float speed,
-		const Vector3& wPos,
+		const magi::Vector3& wPos,
 		int32_t damage
 	);
 
 	void AddMissile(
 		const FriendlyTag& tag,
 		const MissileType& missileType,
-		const Vector3& wPos,
-		const Vector3& dir,
+		const magi::Vector3& wPos,
+		const magi::Vector3& dir,
 		int32_t damage,
 		std::weak_ptr<MechCore> target
 	);

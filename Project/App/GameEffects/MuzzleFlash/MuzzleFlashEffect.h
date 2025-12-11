@@ -7,7 +7,7 @@
 #include "Structs/Primitive3DStruct.h"
 
 // 前方宣言
-class Transform3D;
+class magi::Transform3D;
 
 /// <summary>
 /// 武器発砲時のマズルフラッシュ
@@ -18,7 +18,7 @@ public:
 	~MuzzleFlashEffect() = default;
 
 	void Emit();
-	void Update(const Vector3& worldPos);
+	void Update(const magi::Vector3& worldPos);
 	void Draw();
 
 private:
@@ -29,7 +29,7 @@ private:
 	// ワールド行列
 	Matrix4x4 wMat_;
 
-	Vector3 scale_ = { 0.5f,0.5f,1.0f };
+	magi::Vector3 scale_ = { 0.5f,0.5f,1.0f };
 
 	// 板ポリデータ
 	PlaneData3D data_;

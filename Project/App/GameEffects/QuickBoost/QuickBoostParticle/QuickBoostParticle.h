@@ -1,7 +1,7 @@
 #pragma once
 
 // MyHedder
-#include "Transform3D/Transform3D.h"
+#include "magi::Transform3D/magi::Transform3D.h"
 #include "Common/Particle/ParticleEffectCommon.h"
 
 // 前方宣言

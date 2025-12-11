@@ -27,5 +27,5 @@ private:
 	const int32_t kDamage_ = 500;
 
 	// 胴体からのオフセット
-	Vector3 offset_ = { 0.3f,0.3f,-0.3f };
+	magi::Vector3 offset_ = { 0.3f,0.3f,-0.3f };
 };

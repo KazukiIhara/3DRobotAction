@@ -8,6 +8,7 @@
 #include "MAGIAssert/MAGIAssert.h"
 #include "GameObject/AttackCollider/AttackCollider.h"
 
+using namespace magi;
 using namespace MAGIMath;
 
 

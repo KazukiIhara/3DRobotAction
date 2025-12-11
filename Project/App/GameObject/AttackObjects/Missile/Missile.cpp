@@ -5,6 +5,7 @@
 #include "GameObject/AttackCollider/AttackCollider.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
 
+using namespace magi;
 Missile::Missile(const MissileType& missileType, const Vector3& wPos, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
 	isAlive_ = true;
 	lifeTime_ = 5.0f;
