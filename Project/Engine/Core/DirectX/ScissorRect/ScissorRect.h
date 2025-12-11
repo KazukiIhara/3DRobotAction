@@ -4,25 +4,27 @@
 
 #include "WindowApp/WindowApp.h"
 
-class DirectXCommand;
+namespace magi {
+	class DirectXCommand;
 
-class ScissorRect {
-public:
-	ScissorRect(DirectXCommand* command);
-	~ScissorRect();
+	class ScissorRect {
+	public:
+		ScissorRect(DirectXCommand* command);
+		~ScissorRect();
 
-	// 初期化
-	void Initialize(DirectXCommand* command);
+		// 初期化
+		void Initialize(DirectXCommand* command);
 
-	// シザー矩形を設定
-	void SettingScissorRect(uint32_t width = magi::WindowApp::kClientWidth, uint32_t height = magi::WindowApp::kClientHeight);
+		// シザー矩形を設定
+		void SettingScissorRect(uint32_t width = magi::WindowApp::kClientWidth, uint32_t height = magi::WindowApp::kClientHeight);
 
-private:
-	// コマンドのインスタンスをセット
-	void SetDirectXCommand(DirectXCommand* command);
+	private:
+		// コマンドのインスタンスをセット
+		void SetDirectXCommand(DirectXCommand* command);
 
-private:
-	// コマンドのインスタンスを受け取る箱
-	DirectXCommand* directXCommand_ = nullptr;
+	private:
+		// コマンドのインスタンスを受け取る箱
+		DirectXCommand* directXCommand_ = nullptr;
 
-};
+	};
+}

@@ -10,6 +10,8 @@
 #include "ViewManagers/DSVManager/DSVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
+using namespace magi;
+
 DepthStencil::DepthStencil(DXGI* dxgi, DirectXCommand* command, DSVManager* dsvManager, SRVUAVManager* srvUavManager) {
 	Initialize(dxgi, command, dsvManager, srvUavManager);
 	Logger::Log("DepthStencil Initialize\n");

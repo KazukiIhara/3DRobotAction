@@ -4,24 +4,26 @@
 
 #include "WindowApp/WindowApp.h"
 
-class DirectXCommand;
+namespace magi {
+	class DirectXCommand;
 
-class Viewport {
-public:
-	Viewport(DirectXCommand* directXCommand);
-	~Viewport();
+	class Viewport {
+	public:
+		Viewport(DirectXCommand* directXCommand);
+		~Viewport();
 
-	// 初期化
-	void Initialize(DirectXCommand* directXCommand);
+		// 初期化
+		void Initialize(DirectXCommand* directXCommand);
 
-	// ビューポートを設定
-	void SettingViewport(uint32_t width = magi::WindowApp::kClientWidth, uint32_t height = magi::WindowApp::kClientHeight);
+		// ビューポートを設定
+		void SettingViewport(uint32_t width = magi::WindowApp::kClientWidth, uint32_t height = magi::WindowApp::kClientHeight);
 
-private:
-	// コマンドのインスタンスをセット
-	void SetDirectXCommand(DirectXCommand* directXCommand);
+	private:
+		// コマンドのインスタンスをセット
+		void SetDirectXCommand(DirectXCommand* directXCommand);
 
-private:
-	// コマンドのインスタンスを受け取る箱
-	DirectXCommand* directXCommand_ = nullptr;
-};
+	private:
+		// コマンドのインスタンスを受け取る箱
+		DirectXCommand* directXCommand_ = nullptr;
+	};
+}

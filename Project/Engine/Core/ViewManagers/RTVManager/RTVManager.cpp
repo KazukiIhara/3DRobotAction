@@ -4,6 +4,8 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
+
 RTVManager::RTVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
 	BaseViewManager::Initialize(kMaxRTVCount);
