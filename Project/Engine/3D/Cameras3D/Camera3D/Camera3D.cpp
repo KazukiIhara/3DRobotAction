@@ -2,11 +2,12 @@
 
 #include <cassert>
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 #include <Random/Random.h>
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 Camera3D::Camera3D(const std::string& name, bool isUseYawPitch) {
 	name_ = name;

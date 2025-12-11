@@ -4,6 +4,7 @@
 #include "Math/Utility/MathUtility.h"
 
 using namespace MAGIMath;
+using namespace MAGI;
 
 BulletHitParticle::BulletHitParticle(const Vector3& pos, const Vector3& velo, float gravity) {
 	transform_ = std::make_unique<Transform3D>(pos);

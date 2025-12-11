@@ -11,12 +11,13 @@
 
 #include "DirectXTex/DirectXTex.h"
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 
 #include <cassert>
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 SpriteDrawer::SpriteDrawer(
 	DXGI* dxgi,

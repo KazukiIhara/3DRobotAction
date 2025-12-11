@@ -4,6 +4,7 @@
 #include "MAGIAssert/MAGIAssert.h" 
 
 #include "GameObject/Mech/MechCore/MechCore.h"
+using namespace MAGI;
 
 BaseMechShoulderWeapon::BaseMechShoulderWeapon(const std::string& weaponName, const ShoulderWeaponType& type, const WitchShoulder& witch) {
 	// レンダラーとゲームオブジェクトを作成

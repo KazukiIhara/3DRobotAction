@@ -128,6 +128,8 @@
 #include "ImGuiController/ImGuiController.h"
 #include "GUI/GUI.h"
 
+namespace MAGI {
+
 /// <summary>
 /// フレームワーククラス
 /// </summary>
@@ -796,3 +798,5 @@ class MAGI {
 public:
 
 };
+
+} // namespace MAGI

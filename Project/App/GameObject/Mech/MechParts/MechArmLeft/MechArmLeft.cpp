@@ -7,6 +7,7 @@
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
 using namespace MAGIMath;
+using namespace MAGI;
 
 MechArmLeft::MechArmLeft() {
 	// レンダラーとゲームオブジェクトを作成
