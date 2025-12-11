@@ -5,6 +5,8 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 
+using namespace magi;
+
 BaseViewManager::BaseViewManager(DXGI* dxgi) {
 	// DXGIのセット
 	SetDXGI(dxgi);

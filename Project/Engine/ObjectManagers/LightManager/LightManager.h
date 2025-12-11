@@ -11,74 +11,75 @@
 #include "Structs/LightStruct.h"
 #include "Math/Utility/MathUtility.h"
 
-class DXGI;
-class DirectXCommand;
-class SRVUAVManager;
+namespace magi {
 
-/// <summary>
-/// ライト管理クラス
-/// </summary>
-class LightManager {
-public:
-	LightManager(DXGI* dxgi, DirectXCommand* directXCommand);
-	~LightManager();
+	class DXGI;
+	class DirectXCommand;
+	class SRVUAVManager;
 
-	void Update();
+	/// <summary>
+	/// ライト管理クラス
+	/// </summary>
+	class LightManager {
+	public:
+		LightManager(DXGI* dxgi, DirectXCommand* directXCommand);
+		~LightManager();
 
-	void SetDirectionalLight(const DirectionalLight& directionalLight);
-	void SetDirectionalLightCameraTarget(const Vector3& target);
+		void Update();
 
-	void TransferDirectionalLight(uint32_t paramIndex);
-	void TransferDirectionalLightCamera(uint32_t paramIndex);
-	void TransferDirectionalLightFrustum(uint32_t paramIndex);
-private:
-	void CreateDirectionalLightResource();
-	void MapDirectionalLightData();
+		void SetDirectionalLight(const DirectionalLight& directionalLight);
+		void SetDirectionalLightCameraTarget(const Vector3& target);
 
-	void CreateDirectionalLightCameraResource();
-	void MapDirectionalLightCameraData();
+		void TransferDirectionalLight(uint32_t paramIndex);
+		void TransferDirectionalLightCamera(uint32_t paramIndex);
+		void TransferDirectionalLightFrustum(uint32_t paramIndex);
+	private:
+		void CreateDirectionalLightResource();
+		void MapDirectionalLightData();
 
-	void CreateDirectionalLightFrustumResource();
-	void MapDirectionalLightFrustumData();
+		void CreateDirectionalLightCameraResource();
+		void MapDirectionalLightCameraData();
 
-	void DrawDirectionalLightFrustum();
+		void CreateDirectionalLightFrustumResource();
+		void MapDirectionalLightFrustumData();
 
-private:
-	void SetDXGI(DXGI* dxgi);
-	void SetDirectXCommand(DirectXCommand* directXCommand);
-	void SetSrvUavManager(SRVUAVManager* srvuavManager);
+	private:
+		void SetDXGI(DXGI* dxgi);
+		void SetDirectXCommand(DirectXCommand* directXCommand);
+		void SetSrvUavManager(SRVUAVManager* srvuavManager);
 
-private:
-	//========================
-	// DirectionalLight
-	//========================
-	DirectionalLight directionalLight_{};
-	ComPtr<ID3D12Resource> directionalLightResource_ = nullptr;
-	DirectionalLightForGPU* directionalLightData_ = nullptr;
+	private:
+		//========================
+		// DirectionalLight
+		//========================
+		DirectionalLight directionalLight_{};
+		ComPtr<ID3D12Resource> directionalLightResource_ = nullptr;
+		DirectionalLightForGPU* directionalLightData_ = nullptr;
 
-	//========================
-	// DirectionalLightCamera
-	//========================
-	ComPtr<ID3D12Resource> directionalLightCameraResource_;
-	DirectionalLightCameraForGPU* directionalLightCameraData_ = nullptr;
-	// ニアクリップ距離
-	const float nearClipRange_ = 1.0f;
-	// ファークリップ距離
-	const float farClipRange_ = 500.0f;
+		//========================
+		// DirectionalLightCamera
+		//========================
+		ComPtr<ID3D12Resource> directionalLightCameraResource_;
+		DirectionalLightCameraForGPU* directionalLightCameraData_ = nullptr;
+		// ニアクリップ距離
+		const float nearClipRange_ = 1.0f;
+		// ファークリップ距離
+		const float farClipRange_ = 500.0f;
 
-	Matrix4x4 lightView_{};
-	Matrix4x4 lightProj_{};
-	Vector3 target_ = { 0.0f,0.0f,0.0f };
+		Matrix4x4 lightView_{};
+		Matrix4x4 lightProj_{};
+		Vector3 target_ = { 0.0f,0.0f,0.0f };
 
-	//========================
-	// DirectionalLightFrustum
-	//========================
-	ComPtr<ID3D12Resource> directionalLightFrustumResource_;
-	DirectionalLightFrustumForGPU* directionalLightFrustumData_{};
-	Vector4 frustumPlanes_[6]{};
+		//========================
+		// DirectionalLightFrustum
+		//========================
+		ComPtr<ID3D12Resource> directionalLightFrustumResource_;
+		DirectionalLightFrustumForGPU* directionalLightFrustumData_{};
+		Vector4 frustumPlanes_[6]{};
 
-private:
-	DXGI* dxgi_ = nullptr;
-	DirectXCommand* directXCommand_ = nullptr;
-	SRVUAVManager* srvuavManager_ = nullptr;
-};
+	private:
+		DXGI* dxgi_ = nullptr;
+		DirectXCommand* directXCommand_ = nullptr;
+		SRVUAVManager* srvuavManager_ = nullptr;
+	};
+}

@@ -8,10 +8,6 @@
 #include <d3d12.h>
 #include <dxcapi.h>
 
-// 前方宣言
-class DXGI;
-class ShaderCompiler;
-
 // MyHedder
 #include "Enums/DefferedRenderringPipelineEnum.h"
 
@@ -19,34 +15,40 @@ class ShaderCompiler;
 
 #include "DefferedRenderringPipeline/LightingDefferedRenderringPipeline/LightingDefferedRenderringPipeline.h"
 
-/// <summary>
-/// ディファードレンダリングのパイプラインマネージャ
-/// </summary>
-class DefferedRenderringPipelineManager {
-public:
-	DefferedRenderringPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~DefferedRenderringPipelineManager();
+namespace magi {
+	// 前方宣言
+	class DXGI;
+	class ShaderCompiler;
 
-	void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	/// <summary>
+	/// ディファードレンダリングのパイプラインマネージャ
+	/// </summary>
+	class DefferedRenderringPipelineManager {
+	public:
+		DefferedRenderringPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+		~DefferedRenderringPipelineManager();
 
-	// ルートシグネイチャのゲッター
-	ID3D12RootSignature* GetRootSignature(DefferedRenderringType pipelineState);
+		void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 
-	// パイプラインステイトのゲッター
-	ID3D12PipelineState* GetPipelineState(DefferedRenderringType pipelineState);
+		// ルートシグネイチャのゲッター
+		ID3D12RootSignature* GetRootSignature(DefferedRenderringType pipelineState);
 
-	// ルートシグネイチャをセット
-	void SetRootSignature(DefferedRenderringType pipelineState);
+		// パイプラインステイトのゲッター
+		ID3D12PipelineState* GetPipelineState(DefferedRenderringType pipelineState);
 
-	// パイプラインをセット
-	void SetPipelineState(DefferedRenderringType pipelineState);
+		// ルートシグネイチャをセット
+		void SetRootSignature(DefferedRenderringType pipelineState);
 
-private:
-	// ルートシグネイチャ
-	ComPtr<ID3D12RootSignature> rootSignatures_[kDefferedRenderringPipelineStateNum];
-	// グラフィックスパイプライン
-	ComPtr<ID3D12PipelineState> defferedRenderringPipelineStates_[kDefferedRenderringPipelineStateNum];
-private:
-	// LightingDefferedRenderringPipeline
-	std::unique_ptr<LightingDefferedRenderringPipeline> lightingDefferedRenderringPipeline_ = nullptr;
-};
+		// パイプラインをセット
+		void SetPipelineState(DefferedRenderringType pipelineState);
+
+	private:
+		// ルートシグネイチャ
+		ComPtr<ID3D12RootSignature> rootSignatures_[kDefferedRenderringPipelineStateNum];
+		// グラフィックスパイプライン
+		ComPtr<ID3D12PipelineState> defferedRenderringPipelineStates_[kDefferedRenderringPipelineStateNum];
+	private:
+		// LightingDefferedRenderringPipeline
+		std::unique_ptr<LightingDefferedRenderringPipeline> lightingDefferedRenderringPipeline_ = nullptr;
+	};
+}

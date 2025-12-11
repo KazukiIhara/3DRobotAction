@@ -216,8 +216,8 @@ public: // エンジンの機能
 	static bool ReleaseButton(int controllerID, int buttonNumber);
 
 	// スティックの入力を取得
-	static magi::Vector2 GetLeftStick(int controllerID);
-	static magi::Vector2 GetRightStick(int controllerID);
+	static Vector2 GetLeftStick(int controllerID);
+	static Vector2 GetRightStick(int controllerID);
 
 	// トリガーの位置取得
 	static float GetLeftTrigger(int controllerID);
@@ -353,7 +353,7 @@ public: // エンジンの機能
 	// シーンにY軸ガウスぼかしをかける(karnelSizeは、3,5,7,9,11,13)
 	static void ApplyPostEffectGaussianY(float sigma, uint32_t karnelSize);
 	// シーンに集中ぼかしをかける
-	static void ApplyPostEffectRadialBlur(magi::Vector2 center, float blurWidth);
+	static void ApplyPostEffectRadialBlur(Vector2 center, float blurWidth);
 	// シーンに輝度比較アウトラインをかける
 	static void ApplyPostEffectLuminanceOutline();
 	// シーンに深度比較アウトラインをかける

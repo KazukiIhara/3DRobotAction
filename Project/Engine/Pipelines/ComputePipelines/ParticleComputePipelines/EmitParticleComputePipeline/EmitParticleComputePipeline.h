@@ -10,44 +10,46 @@
 // MyHedder
 #include "DirectX/ComPtr/ComPtr.h"
 
-class DXGI;
-class ShaderCompiler;
+namespace magi {
+	class DXGI;
+	class ShaderCompiler;
 
-class EmitParticleComputePipeline {
-public:
-	EmitParticleComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~EmitParticleComputePipeline() = default;
+	class EmitParticleComputePipeline {
+	public:
+		EmitParticleComputePipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+		~EmitParticleComputePipeline() = default;
 
-	// 初期化
-	void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	// ルートシグネチャを取得する
-	ID3D12RootSignature* GetRootSignature();
-	// パイプラインステートを取得する
-	ID3D12PipelineState* GetPipelineState();
+		// 初期化
+		void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+		// ルートシグネチャを取得する
+		ID3D12RootSignature* GetRootSignature();
+		// パイプラインステートを取得する
+		ID3D12PipelineState* GetPipelineState();
 
-private:
-	// ルートシグネチャを作成する
-	void CreateRootSignature();
-	// シェーダーをコンパイルする
-	void CompileShaders();
-	// グラフィックスパイプラインオブジェクトを作成する
-	void CreatePipelineStateObject();
+	private:
+		// ルートシグネチャを作成する
+		void CreateRootSignature();
+		// シェーダーをコンパイルする
+		void CompileShaders();
+		// グラフィックスパイプラインオブジェクトを作成する
+		void CreatePipelineStateObject();
 
-private:
-	// DXGIのインスタンスをセット
-	void SetDXGI(DXGI* dxgi);
-	// ShaderCompilerのインスタンスをセット
-	void SetShaderCompiler(ShaderCompiler* shaderCompiler);
+	private:
+		// DXGIのインスタンスをセット
+		void SetDXGI(DXGI* dxgi);
+		// ShaderCompilerのインスタンスをセット
+		void SetShaderCompiler(ShaderCompiler* shaderCompiler);
 
-private:
-	// ルートシグネチャ
-	ComPtr<ID3D12RootSignature> rootSignature_;
-	// パイプラインステート
-	ComPtr<ID3D12PipelineState> pipelineState_;
-	// コンピュートシェーダーのバイナリデータ
-	ComPtr<ID3DBlob> computeShaderBlob_;
-private:
-	DXGI* dxgi_ = nullptr;
-	ShaderCompiler* shaderCompiler_ = nullptr;
+	private:
+		// ルートシグネチャ
+		ComPtr<ID3D12RootSignature> rootSignature_;
+		// パイプラインステート
+		ComPtr<ID3D12PipelineState> pipelineState_;
+		// コンピュートシェーダーのバイナリデータ
+		ComPtr<ID3DBlob> computeShaderBlob_;
+	private:
+		DXGI* dxgi_ = nullptr;
+		ShaderCompiler* shaderCompiler_ = nullptr;
 
-};
+	};
+}

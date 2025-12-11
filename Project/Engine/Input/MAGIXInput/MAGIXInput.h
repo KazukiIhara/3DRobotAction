@@ -33,8 +33,8 @@ namespace magi {
 		bool ReleaseButton(int controllerID, int buttonNumber) const;
 
 		// スティックやトリガーの位置取得
-		magi::Vector2 GetLeftStick(int controllerID)const;
-		magi::Vector2 GetRightStick(int controllerID)const;
+		Vector2 GetLeftStick(int controllerID)const;
+		Vector2 GetRightStick(int controllerID)const;
 
 		float GetLeftTrigger(int controllerID) const;
 		float GetRightTrigger(int controllerID) const;
@@ -59,7 +59,7 @@ namespace magi {
 
 	private:
 		float ProcessDeadZone(float value) const;
-		magi::Vector2 ProcessRadialDeadZone(float rawX, float rawY) const;
+		Vector2 ProcessRadialDeadZone(float rawX, float rawY) const;
 	private:
 		// 最大4つのコントローラの状態を管理
 		XINPUT_STATE gamepadStates[4]{};

@@ -9,49 +9,51 @@
 #include "Math/Types/Vector3.h"
 #include "Math/Types/Quaternion.h"
 
-struct SceneCameraData {
-	std::string name;
-	Vector3 eye;
-	Vector3 target;
-	float fovY;
-	float nearClip;
-	float farClip;
-	std::vector<Vector3> eyeControlPoints;
-	std::vector<Vector3> targetControlPoints;
-};
+namespace magi {
+	struct SceneCameraData {
+		std::string name;
+		Vector3 eye;
+		Vector3 target;
+		float fovY;
+		float nearClip;
+		float farClip;
+		std::vector<Vector3> eyeControlPoints;
+		std::vector<Vector3> targetControlPoints;
+	};
 
-struct SceneObjectData {
-	std::string objectName;
-	std::string modelName;
-	Vector3 scale;
-	Quaternion rotate;
-	Vector3 translate;
-	bool isVisible;
-};
+	struct SceneObjectData {
+		std::string objectName;
+		std::string modelName;
+		Vector3 scale;
+		Quaternion rotate;
+		Vector3 translate;
+		bool isVisible;
+	};
 
-struct SceneData {
-	std::string name;
-	std::vector<SceneObjectData> objects;
-	std::vector<SceneCameraData> cameras;
-};
+	struct SceneData {
+		std::string name;
+		std::vector<SceneObjectData> objects;
+		std::vector<SceneCameraData> cameras;
+	};
 
-/// <summary>
-/// シーンデータコンテナ
-/// </summary>
-class SceneDataContainer {
-public:
-	SceneDataContainer();
-	~SceneDataContainer();
+	/// <summary>
+	/// シーンデータコンテナ
+	/// </summary>
+	class SceneDataContainer {
+	public:
+		SceneDataContainer();
+		~SceneDataContainer();
 
-	// シーンデータをロード
-	void LoadBlenderLevelDataFromJson(const std::string& fileName);
+		// シーンデータをロード
+		void LoadBlenderLevelDataFromJson(const std::string& fileName);
 
-	// シーンデータを取得
-	const SceneData& GetData(const std::string& dataName);
+		// シーンデータを取得
+		const SceneData& GetData(const std::string& dataName);
 
-private:
-	// シーンデータコンテナ
-	std::unordered_map<std::string, SceneData> sceneDatas_;
+	private:
+		// シーンデータコンテナ
+		std::unordered_map<std::string, SceneData> sceneDatas_;
 
-	const std::string kDirectoryPath_ = "Assets/SceneData/";
-};
+		const std::string kDirectoryPath_ = "Assets/SceneData/";
+	};
+}

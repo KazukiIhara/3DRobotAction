@@ -8,10 +8,6 @@
 #include <d3d12.h>
 #include <dxcapi.h>
 
-// 前方宣言
-class DXGI;
-class ShaderCompiler;
-
 // MyHedder
 #include "Enums/PostEffectPipelineEnum.h"
 
@@ -26,53 +22,59 @@ class ShaderCompiler;
 #include "PostEffectPipelines/DepthNormalOutlinePostEffectPipeline/DepthNormalOutlinePostEffectPipeline.h"
 #include "PostEffectPipelines/RandomPostEffectPipeline/RandomPostEffectPipeline.h"
 
-/// <summary>
-/// ポストエフェクトパイプラインマネージャ
-/// </summary>
-class PostEffectPipelineManager {
-public:
-	PostEffectPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~PostEffectPipelineManager();
+namespace magi {
+	// 前方宣言
+	class DXGI;
+	class ShaderCompiler;
 
-	void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	/// <summary>
+	/// ポストエフェクトパイプラインマネージャ
+	/// </summary>
+	class PostEffectPipelineManager {
+	public:
+		PostEffectPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+		~PostEffectPipelineManager();
 
-	// ルートシグネイチャのゲッター
-	ID3D12RootSignature* GetRootSignature(PostEffectType pipelineState);
+		void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 
-	// パイプラインステイトのゲッター
-	ID3D12PipelineState* GetPipelineState(PostEffectType pipelineState, BlendMode blendMode);
+		// ルートシグネイチャのゲッター
+		ID3D12RootSignature* GetRootSignature(PostEffectType pipelineState);
 
-	// ルートシグネイチャをセット
-	void SetRootSignature(PostEffectType pipelineState);
+		// パイプラインステイトのゲッター
+		ID3D12PipelineState* GetPipelineState(PostEffectType pipelineState, BlendMode blendMode);
 
-	// パイプラインをセット
-	void SetPipelineState(PostEffectType pipelineState);
+		// ルートシグネイチャをセット
+		void SetRootSignature(PostEffectType pipelineState);
 
-private:
-	// ルートシグネイチャ
-	ComPtr<ID3D12RootSignature> rootSignatures_[kPostEffectPipelineStateNum];
-	// グラフィックスパイプライン
-	ComPtr<ID3D12PipelineState> postEffectPipelineStates_[kPostEffectPipelineStateNum][kBlendModeNum];
-private:
-	// NonePostEffectPipeline
-	std::unique_ptr<CopyPostEffectPipeline> copyPostEffectPipeline_ = nullptr;
-	// GrayscalePostEffectPipeline
-	std::unique_ptr<GrayscalePostEffectPipeline> grayscalePostEffectPipeline_ = nullptr;
-	// VignettePostEffectPipeline
-	std::unique_ptr<VignettePostEffectPipeline> vignettePostEffectPipeline_ = nullptr;
-	// GaussianBlurXPostEffectPipeline
-	std::unique_ptr<GaussianBlurXPostEffectPipeline> gaussianBlurXPostEffectPipeline_ = nullptr;
-	// GaussianBlurYPostEffectPipeline
-	std::unique_ptr<GaussianBlurYPostEffectPipeline> gaussianBlurYPostEffectPipeline_ = nullptr;
-	// RadialBlurPostEffectPipeline
-	std::unique_ptr<RadialBlurPostEffectPipeline> radialBlurPostEffectPipeline_ = nullptr;
-	// LuminanceOutlinePostEffectPipeline
-	std::unique_ptr<LuminanceOutlinePostEffectPipeline> luminanceOutlinePostEffectPipeline_ = nullptr;
-	// DepthPostEffectPipeline
-	std::unique_ptr<DepthOutlinePostEffectPipeline> depthOutlinePostEffectPipeline_ = nullptr;
-	// DepthNormalOutlinePostEffectPipeline
-	std::unique_ptr<DepthNormalOutlinePostEffectPipeline> depthNormalOutlinePostEffectPipeline_ = nullptr;
-	// RandomPostEffectPipeline
-	std::unique_ptr<RandomPostEffectPipeline> randomPostEffectPipeline_ = nullptr;
+		// パイプラインをセット
+		void SetPipelineState(PostEffectType pipelineState);
 
-};
+	private:
+		// ルートシグネイチャ
+		ComPtr<ID3D12RootSignature> rootSignatures_[kPostEffectPipelineStateNum];
+		// グラフィックスパイプライン
+		ComPtr<ID3D12PipelineState> postEffectPipelineStates_[kPostEffectPipelineStateNum][kBlendModeNum];
+	private:
+		// NonePostEffectPipeline
+		std::unique_ptr<CopyPostEffectPipeline> copyPostEffectPipeline_ = nullptr;
+		// GrayscalePostEffectPipeline
+		std::unique_ptr<GrayscalePostEffectPipeline> grayscalePostEffectPipeline_ = nullptr;
+		// VignettePostEffectPipeline
+		std::unique_ptr<VignettePostEffectPipeline> vignettePostEffectPipeline_ = nullptr;
+		// GaussianBlurXPostEffectPipeline
+		std::unique_ptr<GaussianBlurXPostEffectPipeline> gaussianBlurXPostEffectPipeline_ = nullptr;
+		// GaussianBlurYPostEffectPipeline
+		std::unique_ptr<GaussianBlurYPostEffectPipeline> gaussianBlurYPostEffectPipeline_ = nullptr;
+		// RadialBlurPostEffectPipeline
+		std::unique_ptr<RadialBlurPostEffectPipeline> radialBlurPostEffectPipeline_ = nullptr;
+		// LuminanceOutlinePostEffectPipeline
+		std::unique_ptr<LuminanceOutlinePostEffectPipeline> luminanceOutlinePostEffectPipeline_ = nullptr;
+		// DepthPostEffectPipeline
+		std::unique_ptr<DepthOutlinePostEffectPipeline> depthOutlinePostEffectPipeline_ = nullptr;
+		// DepthNormalOutlinePostEffectPipeline
+		std::unique_ptr<DepthNormalOutlinePostEffectPipeline> depthNormalOutlinePostEffectPipeline_ = nullptr;
+		// RandomPostEffectPipeline
+		std::unique_ptr<RandomPostEffectPipeline> randomPostEffectPipeline_ = nullptr;
+
+	};
+}
