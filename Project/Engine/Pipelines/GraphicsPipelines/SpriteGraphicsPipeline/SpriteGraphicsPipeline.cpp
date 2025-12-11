@@ -1,11 +1,14 @@
 #include "SpriteGraphicsPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 SpriteGraphicsPipeline::SpriteGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {}
 
@@ -215,3 +218,5 @@ D3D12_RASTERIZER_DESC SpriteGraphicsPipeline::RasterizerStateSetting() {
 	desc.FrontCounterClockwise = FALSE;
 	return desc;
 }
+
+} // namespace magi

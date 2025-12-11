@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cassert>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxgi1_6.h>
@@ -17,6 +18,8 @@
 /// <summary>
 /// レンダーテクスチャの基底クラス
 /// </summary>
+
+namespace magi {
 class BaseRenderTexture {
 public:
 	BaseRenderTexture();
@@ -74,3 +77,5 @@ protected:
 	// SRVリソースのインデックス
 	uint32_t srvIndex_ = 0;
 };
+
+} // namespace magi

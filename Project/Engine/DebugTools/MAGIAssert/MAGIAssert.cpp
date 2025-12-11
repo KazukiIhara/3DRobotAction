@@ -1,9 +1,12 @@
 #include "MAGIAssert.h"
 
+
 #include <cstdlib> 
 #include <cassert>
 #include <combaseapi.h>
 
+
+namespace magi {
 void MAGIAssert::Assert(bool test, const std::string& message) {
 	if (test) {
 		return;
@@ -21,3 +24,5 @@ void MAGIAssert::Assert(bool test, const std::string& message) {
 #endif
 
 }
+
+} // namespace magi

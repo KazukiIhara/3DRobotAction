@@ -1,11 +1,14 @@
 #include "BaseSimplePostEffectPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 BaseSimplePostEffectPipeline::BaseSimplePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BasePostEffectPipeline(dxgi, shaderCompiler) {}
 
@@ -197,3 +200,5 @@ D3D12_RASTERIZER_DESC BaseSimplePostEffectPipeline::RasterizerStateSetting() {
 	rasterizerDesc_.FillMode = D3D12_FILL_MODE_SOLID;
 	return rasterizerDesc_;
 }
+
+} // namespace magi

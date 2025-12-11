@@ -1,10 +1,13 @@
 #pragma once
 #include <cstdint>
 
+
 #include <d3d12.h>
 
 #include "DirectX/ComPtr/ComPtr.h"
 
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class DSVManager;
@@ -60,3 +63,5 @@ private:
 	// SRVUAVマネージャのインスタンスを受け取る箱
 	SRVUAVManager* srvUavManager_ = nullptr;
 };
+
+} // namespace magi

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 
+
 #include <d3d12.h>
 
 #include "DirectX/ComPtr/ComPtr.h"
@@ -10,6 +11,8 @@
 /// <summary>
 /// シャドウマップ用の深度テクスチャリソース管理クラス
 /// </summary>
+
+namespace magi {
 class ShadowDepthTexture {
 public:
 	ShadowDepthTexture();
@@ -37,3 +40,5 @@ private:
 	uint32_t dsvIndex_ = 0;
 	uint32_t srvIndex_ = 0;
 };
+
+} // namespace magi

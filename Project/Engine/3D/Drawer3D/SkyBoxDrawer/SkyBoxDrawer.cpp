@@ -1,5 +1,6 @@
 #include "SkyBoxDrawer.h"
 
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -14,6 +15,8 @@
 
 #include <cassert>
 
+
+namespace magi {
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -233,3 +236,5 @@ void SkyBoxDrawer::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
 }
+
+} // namespace magi

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 
+
 #include "Math/Types/Vector3.h"
 
 #include "Structs/ColorStruct.h"
@@ -10,6 +11,8 @@
 /// <summary>
 /// エミッターの設定構造体
 /// </summary>
+
+namespace magi {
 struct EmitterSetting {
 	// 発生のタイプ
 	EmitType emitType = EmitType::Default;
@@ -35,3 +38,5 @@ struct EmitterSetting {
 	// 発生頻度
 	float frequency = 1.0f;
 };
+
+} // namespace magi

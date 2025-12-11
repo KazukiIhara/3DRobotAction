@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 
+
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 #include "Structs/SkeletonStruct.h"
@@ -13,6 +14,8 @@
 /// <summary>
 /// 3D頂点データ
 /// </summary>
+
+namespace magi {
 struct VertexData3D {
 	Vector4 position;
 	Vector2 texcoord;
@@ -115,3 +118,5 @@ struct MeshInfo {
 	uint32_t indexSize;
 	uint32_t meshletCount;
 };
+
+} // namespace magi

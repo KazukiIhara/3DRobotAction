@@ -1,11 +1,14 @@
 #include "AnimationDataContainer.h"
 
+
 #include <iostream>
 #include <cassert>
 #include <filesystem>
 
 #include "Logger/Logger.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 
 AnimationDataContainer::AnimationDataContainer() {
@@ -139,3 +142,5 @@ AnimationData AnimationDataContainer::FindAnimationData(const std::string& anima
 	assert(false && "Warning: Not Found Animation!!");
 	return AnimationData{};
 }
+
+} // namespace magi

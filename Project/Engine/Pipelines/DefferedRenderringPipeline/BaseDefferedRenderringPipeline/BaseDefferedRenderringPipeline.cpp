@@ -1,11 +1,14 @@
 #include "BaseDefferedRenderringPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 BaseDefferedRenderringPipeline::BaseDefferedRenderringPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	SetDXGI(dxgi);
 	SetShaderCompiler(shaderCompiler);
@@ -37,3 +40,5 @@ void BaseDefferedRenderringPipeline::SetShaderCompiler(ShaderCompiler* shaderCom
 	assert(shaderCompiler);
 	shaderCompiler_ = shaderCompiler;
 }
+
+} // namespace magi

@@ -7,7 +7,10 @@
 #include "Structs/XInputStruct.h"
 #include "Math/Types/Vector2.h"
 
+
 // 前方宣言
+
+namespace magi {
 class DeltaTimer;
 
 /// <summary>
@@ -71,3 +74,5 @@ private:
 private:
 	DeltaTimer* deltaTimer_ = nullptr;
 };
+
+} // namespace magi

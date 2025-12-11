@@ -5,10 +5,13 @@
 #include <memory>
 #include <string>
 
+
 // ImGui
 #include "imgui/imgui.h"
 
 // 前方宣言
+
+namespace magi {
 class DeltaTimer;
 class SRVUAVManager;
 
@@ -78,3 +81,5 @@ private:
 	// SrvUavManagerのインスタンス
 	SRVUAVManager* srvUavManager_ = nullptr;
 };
+
+} // namespace magi

@@ -3,9 +3,12 @@
 // Windows
 #include <windows.h>
 
+
 // C++
 #include <cstdint>
 
+
+namespace magi {
 class DeltaTimer {
 public:
 	DeltaTimer();
@@ -20,3 +23,5 @@ private:
 	int64_t lastTime_;
 	double frequency_;
 };
+
+} // namespace magi

@@ -2,11 +2,14 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+
 #include "Structs/SpriteStruct.h"
 
 /// <summary>
 /// スプライト描画用パイプライン
 /// </summary>
+
+namespace magi {
 class SpriteGraphicsPipeline: public BaseGraphicsPipeline {
 public:
 	SpriteGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -26,3 +29,5 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
+
+} // namespace magi

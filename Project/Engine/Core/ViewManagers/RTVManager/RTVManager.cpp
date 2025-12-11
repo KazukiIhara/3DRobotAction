@@ -1,9 +1,12 @@
 #include "RTVManager.h"
 
+
 #include "DirectX/DXGI/DXGI.h"
 
 #include "Logger/Logger.h"
 
+
+namespace magi {
 RTVManager::RTVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
 	BaseViewManager::Initialize(kMaxRTVCount);
@@ -27,3 +30,5 @@ void RTVManager::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;	// 2Dテクスチャとして書き込む
 	dxgi_->GetDevice()->CreateRenderTargetView(pResource, &rtvDesc, GetDescriptorHandleCPU(rtvIndex));
 }
+
+} // namespace magi

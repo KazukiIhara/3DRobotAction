@@ -1,5 +1,8 @@
 #include "GBufferPositionRenderTexture.h"
 
+
+
+namespace magi {
 GBufferPositionRenderTexture::GBufferPositionRenderTexture() {
 }
 
@@ -13,3 +16,5 @@ void GBufferPositionRenderTexture::Initialize() {
 		Vector4(0.0f, 0.0f, 0.0f, 1.0f)                     // 空の位置（ゼロ初期化）
 	);
 }
+
+} // namespace magi

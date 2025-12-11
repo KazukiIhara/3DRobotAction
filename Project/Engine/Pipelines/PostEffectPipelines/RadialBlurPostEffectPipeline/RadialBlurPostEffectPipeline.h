@@ -2,9 +2,12 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
+
 /// <summary>
 /// ラジアルブラー
 /// </summary>
+
+namespace magi {
 class RadialBlurPostEffectPipeline:public BaseWithParamaterPostEffectPipeline {
 public:
 	RadialBlurPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -15,3 +18,5 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
+
+} // namespace magi

@@ -4,7 +4,10 @@
 #include <string>
 #include "Structs/Primitive3DStruct.h"
 
+
 // 前方宣言
+
+namespace magi {
 class Transform3D;
 
 /// <summary>
@@ -48,3 +51,5 @@ private:
 	SphereData3D sphereData_{};
 
 };
+
+} // namespace magi

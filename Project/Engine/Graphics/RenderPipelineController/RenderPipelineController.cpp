@@ -1,5 +1,6 @@
 #include "RenderPipelineController.h"
 
+
 #include <cassert>
 #include <format>
 #include <array>
@@ -19,6 +20,8 @@
 
 #include "Logger/Logger.h"
 
+
+namespace magi {
 RenderController::RenderController(
 	DXGI* dxgi,
 	DirectXCommand* directXCommand,
@@ -575,3 +578,5 @@ void RenderController::SetSkyBoxDrawer(SkyBoxDrawer* skyBoxDrawer) {
 	assert(skyBoxDrawer);
 	skyBoxDrawer_ = skyBoxDrawer;
 }
+
+} // namespace magi

@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 
+
 // 数学ヘッダ
 #include "Math/Types/AllMathTypes.h"
 
@@ -15,6 +16,8 @@
 /// <summary>
 /// パーティクル用のパイプラインストリーム
 /// </summary>
+
+namespace magi {
 struct Particle3DPipelineStateStream {
 	CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE		rootSignature;
 	CD3DX12_PIPELINE_STATE_STREAM_AS					amplificationShader;
@@ -75,3 +78,5 @@ struct GPUParticleInfo {
 	float deltaTime;
 	Vector2 pad0;
 };
+
+} // namespace magi

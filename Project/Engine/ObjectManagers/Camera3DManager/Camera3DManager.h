@@ -5,12 +5,15 @@
 #include <string>
 #include <memory>
 
+
 // MyHedder
 #include "3D/Cameras3D/DebugCamera3D/DebugCamera3D.h"
 
 /// <summary>
 /// 3D描画用カメラのマネージャ
 /// </summary>
+
+namespace magi {
 class Camera3DManager {
 public:
 	Camera3DManager();
@@ -54,3 +57,5 @@ private:
 	// 現在使用中のカメラ
 	Camera3D* currentCamera_;
 };
+
+} // namespace magi

@@ -3,6 +3,7 @@
 // C++
 #include <string>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxcapi.h>
@@ -12,6 +13,8 @@
 #include "Structs/Primitive3DStruct.h"
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 class ShaderCompiler;
 
@@ -76,3 +79,5 @@ protected:
 	DXGI* dxgi_ = nullptr;
 	ShaderCompiler* shaderCompiler_ = nullptr;
 };
+
+} // namespace magi

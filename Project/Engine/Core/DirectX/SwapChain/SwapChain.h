@@ -5,6 +5,7 @@
 #include <cassert>
 #include <memory>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxgi1_6.h>
@@ -14,6 +15,8 @@
 #include "Math/Types/Vector4.h"
 
 // 前方宣言
+
+namespace magi {
 class WindowApp;
 class DXGI;
 class DirectXCommand;
@@ -92,3 +95,5 @@ private:
 	// RTVmanagerのインスタンスを受け取る箱
 	RTVManager* rtvManager_ = nullptr;
 };
+
+} // namespace magi

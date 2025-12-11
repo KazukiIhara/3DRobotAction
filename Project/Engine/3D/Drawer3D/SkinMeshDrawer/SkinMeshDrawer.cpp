@@ -1,6 +1,7 @@
 #define NOMINMAX
 #include "SkinMeshDrawer.h"
 
+
 #include <cassert>
 #include <cstring>
 #include <DirectXMath.h>
@@ -9,6 +10,8 @@
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -311,3 +314,4 @@ void SkinMeshDrawer::TransirionSkinResource(ID3D12GraphicsCommandList* cmd, D3D1
 	skinnedVertexResourceState_ = after;
 }
 
+} // namespace magi

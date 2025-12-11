@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 
+
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Structs/PostEffectStruct.h"
 
@@ -18,6 +19,8 @@
 #include "ResourceTextures/DepthTextures/ShadowDepthTexture/ShadowDepthTexture.h"
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class DepthStencil;
@@ -196,3 +199,5 @@ private:
 	std::unique_ptr<ShadowDepthTexture> shadowDepthTexture_ = nullptr;
 
 };
+
+} // namespace magi

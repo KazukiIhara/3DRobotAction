@@ -2,6 +2,9 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+
+
+namespace magi {
 class Line3DGraphicsPipeline :public BaseGraphicsPipeline {
 public:
 	Line3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -23,3 +26,5 @@ private:
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 
 };
+
+} // namespace magi

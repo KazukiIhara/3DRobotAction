@@ -1,10 +1,13 @@
 #include "MAGIXInput.h"
 
+
 #include <cassert>
 #include <iostream>
 
 #include "DeltaTimer/DeltaTimer.h"
 
+
+namespace magi {
 MAGIXInput::MAGIXInput(DeltaTimer* deltaTimer) {
 	assert(deltaTimer);
 	deltaTimer_ = deltaTimer;
@@ -175,3 +178,5 @@ Vector2 MAGIXInput::ProcessRadialDeadZone(float rawX, float rawY) const {
 	float scale = scaledMag / mag;
 	return { x * scale, y * scale };
 }
+
+} // namespace magi

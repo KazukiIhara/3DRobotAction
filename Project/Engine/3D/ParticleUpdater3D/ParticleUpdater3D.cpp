@@ -1,5 +1,6 @@
 #include "ParticleUpdater3D.h"
 
+
 #include <cassert>
 
 #include "MAGIAssert/MAGIAssert.h"
@@ -9,6 +10,8 @@
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
 
+
+namespace magi {
 ParticleUpdater3D::ParticleUpdater3D(DeltaTimer* deltaTimer, DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager, ComputePipelineManager* computePipelineManager) {
 	deltaTimer_ = deltaTimer;
 	dxgi_ = dxgi;
@@ -245,3 +248,5 @@ void ParticleUpdater3D::TransitionResource(ID3D12Resource* pResource, D3D12_RESO
 
 	current = after;
 }
+
+} // namespace magi

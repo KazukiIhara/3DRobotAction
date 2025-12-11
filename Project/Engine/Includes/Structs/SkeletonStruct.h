@@ -4,10 +4,13 @@
 #include <unordered_map>
 #include <optional>
 
+
 // MyHedder
 #include "Structs/ObjectStruct.h"
 
 // ジョイント
+
+namespace magi {
 struct Joint {
 	QuaternionTransform3D transform;
 	Matrix4x4 localMatrix;
@@ -17,3 +20,5 @@ struct Joint {
 	int32_t index;
 	std::optional<int32_t> parent;
 };
+
+} // namespace magi

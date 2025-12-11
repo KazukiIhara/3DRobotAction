@@ -3,10 +3,13 @@
 #include <memory>
 #include <string>
 
+
 // MyHedder
 #include "GameData/GameData.h"
 
 // 前方宣言
+
+namespace magi {
 class SceneManager;
 
 class BaseScene {
@@ -31,3 +34,5 @@ protected:
 	// シーンマネージャのポインタ
 	SceneManager* sceneManager_;
 };
+
+} // namespace magi

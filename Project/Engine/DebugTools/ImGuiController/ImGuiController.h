@@ -3,6 +3,7 @@
 // WindowsAPI
 #include <Windows.h>
 
+
 // C++
 #include <cstdint>
 
@@ -12,6 +13,8 @@
 #include "imgui/imgui_impl_win32.h"
 
 // 前方宣言
+
+namespace magi {
 class WindowApp;
 class DXGI;
 class DirectXCommand;
@@ -53,3 +56,5 @@ private: // インスタンスを受け取る変数
 	// SrvManager
 	SRVUAVManager* srvUavManager_ = nullptr;
 };
+
+} // namespace magi

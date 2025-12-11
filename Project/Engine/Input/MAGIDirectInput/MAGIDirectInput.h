@@ -4,10 +4,13 @@
 #include <dinput.h>
 #include <cstdint>
 
+
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Enums/MouseInputEnum.h"
 
 // 前方宣言
+
+namespace magi {
 class WindowApp;
 
 // DirectInputクラス
@@ -76,3 +79,5 @@ private:
 	// 1フレーム前の状態を保持
 	DIMOUSESTATE prevMouseState_{};
 };
+
+} // namespace magi

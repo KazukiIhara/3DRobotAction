@@ -1,6 +1,7 @@
 #include "ParticleDrawer3D.h"
 
 
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -15,6 +16,8 @@
 
 #include <cassert>
 
+
+namespace magi {
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -53,3 +56,5 @@ void ParticleDrawer3D::Draw(BlendMode mode) {
 
 	commandList->DispatchMesh(kParticleThreadsNum, kParticleThreadsNum, 1);
 }
+
+} // namespace magi

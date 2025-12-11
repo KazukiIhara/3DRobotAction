@@ -1,8 +1,11 @@
+
 #pragma once
 
 /// <summary>
 /// 二次元ベクトル
 /// </summary>
+
+namespace magi {
 struct Vector2 {
 	float x;
 	float y;
@@ -33,3 +36,5 @@ struct Vector2 {
 		return *this;
 	}
 };
+
+} // namespace magi

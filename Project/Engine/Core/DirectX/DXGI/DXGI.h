@@ -3,12 +3,15 @@
 // C++
 #include <cstdint>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxgi1_6.h>
 
 #include "DirectX/ComPtr/ComPtr.h"
 
+
+namespace magi {
 class DXGI {
 public:
 	// コンストラクタ
@@ -47,3 +50,5 @@ private:
 	ComPtr<ID3D12Device10> device10_;
 
 };
+
+} // namespace magi

@@ -2,8 +2,11 @@
 
 #include <cstdint>
 
+
 #include "WindowApp/WindowApp.h"
 
+
+namespace magi {
 class DirectXCommand;
 
 class ScissorRect {
@@ -26,3 +29,5 @@ private:
 	DirectXCommand* directXCommand_ = nullptr;
 
 };
+
+} // namespace magi

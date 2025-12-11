@@ -1,0 +1,4 @@
+
+namespace magi {
+
+} // namespace magi

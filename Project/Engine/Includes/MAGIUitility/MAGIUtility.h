@@ -7,6 +7,7 @@
 #include <array>
 #include <cstdint>
 
+
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
@@ -17,6 +18,8 @@
 /// <summary>
 /// 便利関数
 /// </summary>
+
+namespace magi {
 namespace MAGIUtility {
 
 	constexpr uint32_t AS_GROUP_SIZE = 32;
@@ -39,3 +42,5 @@ namespace MAGIUtility {
 	Vector2 TransformWorldToScreen(const Vector3& worldPos);
 
 }
+
+} // namespace magi

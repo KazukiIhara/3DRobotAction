@@ -2,11 +2,14 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+
 #include "Structs/Primitive3DStruct.h"
 
 /// <summary>
 /// 3Dボックス描画用のパイプライン
 /// </summary>
+
+namespace magi {
 class Box3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	Box3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -25,3 +28,5 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
+
+} // namespace magi

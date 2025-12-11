@@ -1,9 +1,12 @@
 #include "DXGI.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 
+
+namespace magi {
 DXGI::DXGI() {}
 
 DXGI::~DXGI() {
@@ -322,3 +325,5 @@ ID3D12Device10* DXGI::GetDevice10() {
 IDXGIFactory7* DXGI::GetFactory() {
 	return dxgiFactory_.Get();
 }
+
+} // namespace magi

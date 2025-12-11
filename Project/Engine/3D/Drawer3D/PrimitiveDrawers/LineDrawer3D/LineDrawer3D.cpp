@@ -1,5 +1,6 @@
 #include "LineDrawer3D.h"
 
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -11,6 +12,8 @@
 
 #include <cassert>
 
+
+namespace magi {
 using namespace MAGIUtility;
 
 LineDrawer3D::LineDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
@@ -120,3 +123,5 @@ void LineDrawer3D::MapInstancingData() {
 		instancingData_[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }
+
+} // namespace magi

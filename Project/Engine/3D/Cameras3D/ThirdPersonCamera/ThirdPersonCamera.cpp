@@ -1,7 +1,10 @@
 #include "ThirdPersonCamera.h"
 
+
 #include "MAGI.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 
 ThirdPersonCamera::ThirdPersonCamera(const std::string& name)
@@ -122,3 +125,5 @@ void ThirdPersonCamera::FollowCamera() {
 	targetTarget_ = pivot_;
 
 }
+
+} // namespace magi

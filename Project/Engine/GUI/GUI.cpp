@@ -1,5 +1,6 @@
 #include "GUI.h"
 
+
 #include <cassert>
 
 
@@ -12,6 +13,8 @@
 #ifdef _WIN32
 #include <Windows.h>
 #endif
+
+namespace magi {
 GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager) {
 	// 
 	// インスタンスのセット
@@ -184,3 +187,5 @@ bool GUI::InputTextStd(const char* label, std::string& str, ImGuiInputTextFlags 
 bool& GUI::GetIsShowMainUI() {
 	return isShowMainUI_;
 }
+
+} // namespace magi

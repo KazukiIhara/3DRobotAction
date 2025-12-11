@@ -1,5 +1,6 @@
 #include "LightManager.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
@@ -12,6 +13,8 @@
 
 #include "Framework/MAGI.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -237,3 +240,5 @@ void LightManager::SetSrvUavManager(SRVUAVManager* srvuavManager) {
 	assert(srvuavManager);
 	srvuavManager_ = srvuavManager;
 }
+
+} // namespace magi

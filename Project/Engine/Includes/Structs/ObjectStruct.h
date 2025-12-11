@@ -3,6 +3,7 @@
 // C++
 #include <string>
 
+
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 #include "Structs/ColorStruct.h"
@@ -10,6 +11,8 @@
 /// <summary>
 /// UVトランスフォーム
 /// </summary>
+
+namespace magi {
 struct UVTransform {
 	Vector2 scale = { 1.0f,1.0f };
 	float rotateZ = 0.0f;
@@ -58,3 +61,5 @@ struct LineData3D {
 	Vector3 end;
 	Vector4 color;
 };
+
+} // namespace magi

@@ -3,11 +3,14 @@
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
 
+
 #include "Common/Particle/ParticleEffectCommon.h"
 
 /// <summary>
 /// パーティクル描画用パイプライン
 /// </summary>
+
+namespace magi {
 class ParticleEffectGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	ParticleEffectGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -28,3 +31,5 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
+
+} // namespace magi

@@ -3,6 +3,7 @@
 // C++
 #include <memory>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -13,6 +14,8 @@
 /// <summary>
 /// モデル描画用クラス
 /// </summary>
+
+namespace magi {
 class ModelDrawer {
 public:
 	ModelDrawer(const ModelData& modelData);
@@ -43,3 +46,5 @@ private:
 	// 現在のインデックス
 	uint32_t currentIndex_[static_cast<uint32_t>(BlendMode::Num)];
 };
+
+} // namespace magi

@@ -1,5 +1,6 @@
 #include "ScissorRect.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
@@ -7,6 +8,8 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "WindowApp/WindowApp.h"
 
+
+namespace magi {
 ScissorRect::ScissorRect(DirectXCommand* directXCommand) {
 	Initialize(directXCommand);
 	Logger::Log("ScissorRect Initialize\n");
@@ -35,3 +38,5 @@ void ScissorRect::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
 }
+
+} // namespace magi

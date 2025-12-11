@@ -4,9 +4,12 @@
 #include <string>
 #include <format>
 
+
 // 
 // デバッグログ表示用クラス
 // 
+
+namespace magi {
 class Logger {
 public:
 	// 初期化
@@ -27,3 +30,5 @@ private:
 private:
 	static std::ofstream logFile_;
 };
+
+} // namespace magi

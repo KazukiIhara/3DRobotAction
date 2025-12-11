@@ -1,11 +1,14 @@
 #include "RandomPostEffectPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 RandomPostEffectPipeline::RandomPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {}
 
@@ -18,3 +21,5 @@ void RandomPostEffectPipeline::CompileShaders() {
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/Random/Random.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }
+
+} // namespace magi

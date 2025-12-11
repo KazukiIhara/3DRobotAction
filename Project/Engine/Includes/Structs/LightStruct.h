@@ -4,6 +4,9 @@
 #include "Math/Types/Vector4.h"
 #include "Math/Types/Matrix4x4.h"
 
+
+
+namespace magi {
 struct DirectionalLightCameraForGPU {
 	Matrix4x4 viewProjection;
 	Vector3 position;
@@ -26,3 +29,5 @@ struct DirectionalLightForGPU {
 struct DirectionalLightFrustumForGPU {
 	Vector4 planes[6];   // Left, Right, Bottom, Top, Near, Far
 };
+
+} // namespace magi

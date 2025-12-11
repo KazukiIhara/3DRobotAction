@@ -2,6 +2,7 @@
 // DirectX
 #include <d3d12.h>
 
+
 // DirectXMesh
 #include <DirectXMesh/DirectXMesh.h>
 
@@ -13,6 +14,8 @@
 /// <summary>
 /// メッシュ描画クラス
 /// </summary>
+
+namespace magi {
 class MeshDrawer {
 public:
 	MeshDrawer(const MeshData& meshData);
@@ -54,3 +57,5 @@ private:
 	ComPtr<ID3D12Resource> materialBuffer_;
 	ModelMaterialDataForGPU* material_ = nullptr;
 };
+
+} // namespace magi

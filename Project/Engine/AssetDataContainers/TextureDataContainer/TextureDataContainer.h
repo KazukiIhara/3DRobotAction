@@ -4,10 +4,13 @@
 #include <unordered_map>
 #include <string>
 
+
 // MyHedder
 #include "Structs/TextureStruct.h"
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class Fence;
@@ -70,3 +73,5 @@ private:
 	// エンジンのデフォルトテクスチャのインデックス
 	uint32_t defaultTextureIndex_ = 0;
 };
+
+} // namespace magi

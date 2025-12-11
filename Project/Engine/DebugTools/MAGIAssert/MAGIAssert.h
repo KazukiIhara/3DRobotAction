@@ -2,11 +2,16 @@
 
 #include "Logger/Logger.h"
 
+
 /// <summary>
 /// 自作Assertクラス
 /// </summary>
+
+namespace magi {
 class MAGIAssert {
 public:
 	static void Assert(bool test, const std::string& message);
 
 };
+
+} // namespace magi

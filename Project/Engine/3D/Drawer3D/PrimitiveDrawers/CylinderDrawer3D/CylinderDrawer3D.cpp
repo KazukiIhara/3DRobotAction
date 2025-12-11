@@ -1,5 +1,6 @@
 #include "CylinderDrawer3D.h"
 
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -13,6 +14,8 @@
 
 #include "Framework/MAGI.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 
 CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, ShadowPipelineManager* shadowPipelineManager, Camera3DManager* camera3DManager, LightManager* lightManager) {
@@ -175,3 +178,5 @@ void CylinderDrawer3D::SetLightManager(LightManager* lightManager) {
 	assert(lightManager);
 	lightManager_ = lightManager;
 }
+
+} // namespace magi

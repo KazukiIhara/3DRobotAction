@@ -3,6 +3,7 @@
 // C++
 #include <vector>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -12,6 +13,8 @@
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -78,3 +81,5 @@ private:
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
 };
+
+} // namespace magi

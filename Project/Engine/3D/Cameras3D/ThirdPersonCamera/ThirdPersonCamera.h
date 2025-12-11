@@ -3,9 +3,12 @@
 #include "Cameras3D/Camera3D/Camera3D.h"
 #include "Transform3D/Transform3D.h"
 
+
 /// <summary>
 /// 三人称カメラ
 /// </summary>
+
+namespace magi {
 class ThirdPersonCamera :public Camera3D {
 public:
 	ThirdPersonCamera(const std::string& name);
@@ -67,3 +70,5 @@ private:
 	Vector3 pivotOffset_ = { 0.0f, 2.0f, 0.0f };
 
 };
+
+} // namespace magi

@@ -1,6 +1,9 @@
 #include "Random.h"
 #include <random>
 
+
+
+namespace magi {
 uint32_t Random::GenerateUint32_t(uint32_t min, uint32_t max) {
 	static thread_local std::mt19937 generator(std::random_device{}());
 	std::uniform_int_distribution<uint32_t> distribution(min, max);
@@ -54,3 +57,5 @@ float Random::GenerateSeed1Sec() {
 
 	return static_cast<float>(secondsSinceMidnight);
 }
+
+} // namespace magi

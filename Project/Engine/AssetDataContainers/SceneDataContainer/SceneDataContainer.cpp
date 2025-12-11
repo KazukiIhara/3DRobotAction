@@ -1,5 +1,6 @@
 #include "SceneDataContainer.h"
 
+
 // C++
 #include <fstream>
 #include <cassert>
@@ -10,6 +11,8 @@
 // MyHedder
 #include "MAGIAssert/MAGIAssert.h"
 
+
+namespace magi {
 SceneDataContainer::SceneDataContainer() {
 	sceneDatas_.clear();
 	Logger::Log("SceneDataContainer Initialize\n");
@@ -170,3 +173,5 @@ const SceneData& SceneDataContainer::GetData(const std::string& dataName) {
 	MAGIAssert::Assert(it != sceneDatas_.end(), "SceneData not found! DataName: " + dataName);
 	return it->second;
 }
+
+} // namespace magi

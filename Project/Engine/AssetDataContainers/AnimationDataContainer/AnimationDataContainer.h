@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <list>
 
+
 // Assimp
 #include <assimp/include/assimp/Importer.hpp>
 #include <assimp/include/assimp/scene.h>
@@ -16,6 +17,8 @@
 /// <summary>
 /// アニメーションのデータコンテナ
 /// </summary>
+
+namespace magi {
 class AnimationDataContainer {
 public:
 	AnimationDataContainer();
@@ -31,3 +34,5 @@ private:
 	// アニメーションデータコンテナ
 	std::unordered_map<std::string, AnimationData> animationDatas_;
 };
+
+} // namespace magi

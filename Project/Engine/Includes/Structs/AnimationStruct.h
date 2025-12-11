@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <string>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -11,6 +12,8 @@
 #include "Math/Utility/MathUtility.h"
 
 // Vector3のアニメーションキーフレーム
+
+namespace magi {
 struct KeyframeVector3 {
 	Vector3 value;
 	float time;
@@ -35,3 +38,5 @@ struct AnimationData {
 	float duration;
 	std::unordered_map<std::string, NodeAnimation> nodeAnimations;
 };
+
+} // namespace magi

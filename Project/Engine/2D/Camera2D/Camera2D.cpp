@@ -1,7 +1,10 @@
 #include "Camera2D.h"
 
+
 #include "Framework/MAGI.h"
 
+
+namespace magi {
 using namespace MAGIMath;
 
 Camera2D::Camera2D(const std::string& name) {
@@ -42,3 +45,5 @@ void Camera2D::MapCameraData() {
 	Matrix4x4 projectionMat = MakeOrthographicMatrix(0.0f, 0.0f, WindowApp::kClientWidth, WindowApp::kClientHeight, nearClip_, farClip_);
 	cameraData_->viewProjection = viewMat * projectionMat;
 }
+
+} // namespace magi

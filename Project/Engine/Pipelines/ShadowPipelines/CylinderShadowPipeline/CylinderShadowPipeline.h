@@ -2,9 +2,12 @@
 
 #include "ShadowPipelines/BaseShadowPipeline/BaseShadowPipeline.h"
 
+
 /// <summary>
 /// シリンダーのシャドウマップ描画用パイプライン
 /// </summary>
+
+namespace magi {
 class CylinderShadowPipeline :public BaseShadowPipeline {
 public:
 	CylinderShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -16,3 +19,5 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
+
+} // namespace magi

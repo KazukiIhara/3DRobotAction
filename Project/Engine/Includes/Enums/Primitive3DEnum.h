@@ -2,9 +2,12 @@
 
 #include <string>
 
+
 /// <summary>
 /// プリミティブ3Dの種類
 /// </summary>
+
+namespace magi {
 enum class Primitive3DType {
 	Plane,
 	Sphere,
@@ -27,3 +30,4 @@ inline std::string PrimitiveTypeToString(Primitive3DType type) {
 	}
 }
 
+} // namespace magi

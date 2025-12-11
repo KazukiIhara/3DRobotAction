@@ -2,9 +2,12 @@
 
 #include <Xinput.h>
 
+
 /// <summary>
 /// パッド振動用構造体
 /// </summary>
+
+namespace magi {
 struct VibrationState {
 	bool isActive = false;
 	float timer = 0.0f;
@@ -12,3 +15,5 @@ struct VibrationState {
 	WORD leftMotor = 0;
 	WORD rightMotor = 0;
 };
+
+} // namespace magi

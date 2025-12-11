@@ -1,5 +1,8 @@
 #include "SampleScene.h"
 
+
+
+namespace magi {
 void SampleScene::Initialize() {
 
 	//
@@ -256,3 +259,5 @@ void SampleScene::Draw() {
 void SampleScene::Finalize() {
 
 }
+
+} // namespace magi

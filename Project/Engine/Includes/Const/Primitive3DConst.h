@@ -3,9 +3,12 @@
 // C++
 #include <cstdint>
 
+
 /// <summary>
 /// 3Dプリミティブ形状で汎用的に使える定数
 /// </summary>
+
+namespace magi {
 namespace PrimitiveCommonConst {
 	static const uint32_t NumMaxInstance = 65536;										// 全プリミティブ共通の最大インスタンス数
 	static const uint32_t MaxThreadGroupCount = 4194303;								// DispatchMesh制限（全体上限）
@@ -48,3 +51,5 @@ namespace Plane3DVertices {
 	static const uint32_t LeftBottom = 2;
 	static const uint32_t RightBottom = 3;
 }
+
+} // namespace magi

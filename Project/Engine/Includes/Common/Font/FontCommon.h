@@ -2,6 +2,7 @@
 // C++
 #include <cstdint>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -11,6 +12,8 @@
 #include "DirectX/ComPtr/ComPtr.h"
 
 // フォントテクスチャ構造体
+
+namespace magi {
 struct FontTexture {
 	// テクスチャリソース
 	ComPtr<ID3D12Resource> resource;
@@ -19,3 +22,5 @@ struct FontTexture {
 	// srvIndex
 	uint32_t srvIndex;
 };
+
+} // namespace magi

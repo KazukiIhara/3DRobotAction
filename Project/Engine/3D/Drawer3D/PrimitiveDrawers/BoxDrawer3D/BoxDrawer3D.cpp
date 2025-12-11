@@ -1,5 +1,6 @@
 #include "BoxDrawer3D.h"
 
+
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
@@ -15,6 +16,8 @@
 
 #include "Framework/MAGI.h"
 
+
+namespace magi {
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -180,3 +183,5 @@ void BoxDrawer3D::SetLightManager(LightManager* lightManager) {
 	assert(lightManager);
 	lightManager_ = lightManager;
 }
+
+} // namespace magi

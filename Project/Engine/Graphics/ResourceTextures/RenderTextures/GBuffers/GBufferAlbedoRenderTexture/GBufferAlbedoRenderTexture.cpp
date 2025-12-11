@@ -1,5 +1,8 @@
 #include "GBufferAlbedoRenderTexture.h"
 
+
+
+namespace magi {
 GBufferAlbedoRenderTexture::GBufferAlbedoRenderTexture() {
 }
 
@@ -13,3 +16,5 @@ void GBufferAlbedoRenderTexture::Initialize() {
 		Vector4(0.0f, 0.0f, 0.0f, 1.0f)                     // 黒クリア
 	);
 }
+
+} // namespace magi

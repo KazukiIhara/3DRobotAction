@@ -3,10 +3,13 @@
 // C++
 #include <vector>
 
+
 // MyHedder
 #include "Structs/EffectStruct.h"
 
 // 前方宣言
+
+namespace magi {
 class DeltaTimer;
 class TransformManager;
 class PlaneDrawer3D;
@@ -37,3 +40,5 @@ private:
 	TransformManager* transformManager_ = nullptr;
 	PlaneDrawer3D* planeDrawer_ = nullptr;
 };
+
+} // namespace magi

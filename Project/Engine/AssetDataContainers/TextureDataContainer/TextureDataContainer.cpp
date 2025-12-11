@@ -1,5 +1,6 @@
 #include "TextureDataContainer.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
@@ -9,6 +10,8 @@
 #include "DirectX/Fence/Fence.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
+
+namespace magi {
 TextureDataContainer::TextureDataContainer(DXGI* dxgi, DirectXCommand* directXCommand, Fence* fence, SRVUAVManager* srvUavManager) {
 	Initialize(dxgi, directXCommand, fence, srvUavManager);
 	Logger::Log("TextureDataContainer Initialize\n");
@@ -245,3 +248,5 @@ void TextureDataContainer::SetSrvUavManager(SRVUAVManager* srvUavManager) {
 	assert(srvUavManager);
 	srvUavManager_ = srvUavManager;
 }
+
+} // namespace magi

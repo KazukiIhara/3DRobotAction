@@ -6,6 +6,7 @@
 #include <numbers>
 #include <vector>
 
+
 // MyHedder
 #include "Math/Types/AllMathTypes.h"
 
@@ -13,6 +14,8 @@
 /// Vector2
 ///
 
+
+namespace magi {
 Vector2 operator-(const Vector2& v);
 Vector2 operator+(const Vector2& v);
 
@@ -302,3 +305,5 @@ namespace MAGIMath {
 	// 球面線形補完
 	Quaternion Slerp(Quaternion q1, Quaternion q2, float t);
 }
+
+} // namespace magi

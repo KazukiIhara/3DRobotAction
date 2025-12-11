@@ -1,11 +1,14 @@
 #include "VignettePostEffectPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 VignettePostEffectPipeline::VignettePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {}
 
@@ -20,3 +23,5 @@ void VignettePostEffectPipeline::CompileShaders() {
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/Vignette/Vignette.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }
+
+} // namespace magi

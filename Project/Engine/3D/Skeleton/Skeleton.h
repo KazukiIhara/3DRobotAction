@@ -6,8 +6,11 @@
 #include <vector>
 #include <memory>
 
+
 #include "Structs/ModelStruct.h"
 
+
+namespace magi {
 class Skeleton {
 public:
 	Skeleton(const Node& rootNode);
@@ -24,3 +27,5 @@ public:
 	std::map<std::string, int32_t> jointMap;
 	std::vector<Joint> joints;
 };
+
+} // namespace magi

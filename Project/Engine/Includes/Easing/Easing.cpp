@@ -1,8 +1,11 @@
 #include "Easing.h"
 
+
 #include "Math/Utility/MathUtility.h"
 
 // イージング用定数
+
+namespace magi {
 static const float c1 = 1.70158f;
 static const float c2 = c1 * 1.525f;
 static const float c3 = c1 + 1.0f;
@@ -223,3 +226,5 @@ float Easing::EaseInOutBounce(float t) {
 		? (1.0f - EaseOutBounceInternal(1.0f - 2.0f * t)) * 0.5f
 		: (1.0f + EaseOutBounceInternal(2.0f * t - 1.0f)) * 0.5f;
 }
+
+} // namespace magi

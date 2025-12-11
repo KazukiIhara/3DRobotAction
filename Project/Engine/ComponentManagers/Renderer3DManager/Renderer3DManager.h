@@ -4,12 +4,15 @@
 #include <vector>
 #include <memory>
 
+
 // MyHedder
 #include "Renderer3D/ModelRenderer/ModelRenderer.h"
 
 /// <summary>
 /// 3D描画オブジェクト管理クラス
 /// </summary>
+
+namespace magi {
 class Renderer3DManager {
 public:
 	Renderer3DManager();
@@ -25,3 +28,5 @@ private:
 	std::vector<std::shared_ptr<ModelRenderer>> modelRenderers_;
 
 };
+
+} // namespace magi

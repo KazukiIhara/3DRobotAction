@@ -3,6 +3,7 @@
 // C++
 #include <vector>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -11,6 +12,8 @@
 #include "Structs/LightStruct.h"
 #include "Math/Utility/MathUtility.h"
 
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -82,3 +85,5 @@ private:
 	DirectXCommand* directXCommand_ = nullptr;
 	SRVUAVManager* srvuavManager_ = nullptr;
 };
+
+} // namespace magi

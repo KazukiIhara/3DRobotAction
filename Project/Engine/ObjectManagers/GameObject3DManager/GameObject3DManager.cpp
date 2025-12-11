@@ -1,10 +1,13 @@
 #include "GameObject3DManager.h"
 
+
 #include <cassert>
 
 // MyHedder
 #include "Logger/Logger.h" 
 
+
+namespace magi {
 GameObject3DManager::GameObject3DManager() {
 	Clear();
 	Logger::Log("GameObject3DManager Initialize\n");
@@ -87,3 +90,5 @@ void GameObject3DManager::AllDelete() {
 	gameObjects_.clear();
 	gameObjectList_.clear();
 }
+
+} // namespace magi

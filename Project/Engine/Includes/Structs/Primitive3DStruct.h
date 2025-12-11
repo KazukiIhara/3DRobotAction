@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdint>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -17,6 +18,8 @@
 /// <summary>
 /// プリミティブメッシュシェーダー用のパイプラインストリーム
 /// </summary>
+
+namespace magi {
 struct Primitive3DPipelineStateStream {
 	CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE		rootSignature;
 	CD3DX12_PIPELINE_STATE_STREAM_AS					amplificationShader;
@@ -193,3 +196,5 @@ struct RootConstants {
 	uint32_t _pad1 = 0;
 	uint32_t _pad2 = 0;
 };
+
+} // namespace magi

@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 
+
 // DirectX
 #include <d3d12.h>
 #include <dxcapi.h>
@@ -21,6 +22,8 @@
 #include "ShadowPipelines/ModelShadowPipeline/ModelShadowPipeline.h"
 
 // 前方宣言
+
+namespace magi {
 class DXGI;
 class ShaderCompiler;
 
@@ -62,3 +65,5 @@ private:
 	std::unique_ptr<ModelShadowPipeline> modelShadowPipeline_ = nullptr;
 
 };
+
+} // namespace magi

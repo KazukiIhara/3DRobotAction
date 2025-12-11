@@ -2,6 +2,9 @@
 
 #include "ViewManagers/BaseViewManager/BaseViewManager.h"
 
+
+
+namespace magi {
 class DSVManager:public BaseViewManager {
 public:
 	DSVManager(DXGI* dxgi);
@@ -16,3 +19,5 @@ private:
 	// 最大dsv数
 	const uint32_t kMaxDSVCount_ = 2;
 };
+
+} // namespace magi

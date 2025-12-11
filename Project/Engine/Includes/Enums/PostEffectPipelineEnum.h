@@ -3,9 +3,12 @@
 // C++
 #include <cstdint>
 
+
 /// <summary>
 /// ポストエフェクトパイプラインの種類
 /// </summary>
+
+namespace magi {
 enum class PostEffectType {
 	Copy, // ポストエフェクトなし
 	Grayscale, // グレースケール
@@ -23,3 +26,5 @@ enum class PostEffectType {
 
 // パイプラインの種類の数 
 inline constexpr uint32_t kPostEffectPipelineStateNum = static_cast<uint32_t>(PostEffectType::Num);
+
+} // namespace magi

@@ -5,6 +5,7 @@
 #include <array>
 #include <span>
 
+
 // DirectX
 #include <d3d12.h>
 
@@ -13,6 +14,8 @@
 #include "DirectX/ComPtr/ComPtr.h"
 
 // 頂点が影響を受けるボーンの数
+
+namespace magi {
 static const uint32_t kNumMaxInfluence = 4;
 // 頂点が影響を受けるボーンのスロット
 struct VertexInfluenceJoints {
@@ -42,3 +45,5 @@ struct JointWeightData {
 	Matrix4x4 inverseBindPoseMatrix;
 	std::vector<JointToVertexWeightData> jointToVertexWeights;
 };
+
+} // namespace magi

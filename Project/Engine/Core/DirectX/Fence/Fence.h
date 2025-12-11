@@ -4,12 +4,15 @@
 #include <cstdint>
 #include <cassert>
 
+
 // DirectX
 #include <d3d12.h>
 
 // ComPtr
 #include "DirectX/ComPtr/ComPtr.h"
 
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 
@@ -43,3 +46,5 @@ private:
 	// Commandのインスタンスを受け取る箱
 	DirectXCommand* directXCommand_ = nullptr;
 };
+
+} // namespace magi

@@ -5,12 +5,15 @@
 #include <unordered_map>
 #include <memory>
 
+
 // MyHedder
 #include "GameObject3D/GameObject3D.h"
 
 /// <summary>
 /// 3Dゲームオブジェクトマネージャー
 /// </summary>
+
+namespace magi {
 class GameObject3DManager {
 public:
 	GameObject3DManager();
@@ -27,3 +30,5 @@ private:
 	std::vector<std::shared_ptr<GameObject3D>> gameObjects_;
 	std::unordered_map<std::string, std::weak_ptr<GameObject3D>> gameObjectList_;
 };
+
+} // namespace magi

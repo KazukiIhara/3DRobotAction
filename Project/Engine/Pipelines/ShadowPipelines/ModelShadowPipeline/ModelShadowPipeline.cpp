@@ -1,11 +1,14 @@
 #include "ModelShadowPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 ModelShadowPipeline::ModelShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseShadowPipeline(dxgi, shaderCompiler) {}
 
@@ -132,3 +135,5 @@ void ModelShadowPipeline::CompileShaders() {
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DShadow.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_);
 }
+
+} // namespace magi

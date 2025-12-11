@@ -1,11 +1,14 @@
 #include "GaussianBlurYPostEffectPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 GaussianBlurYPostEffectPipeline::GaussianBlurYPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {
 }
@@ -79,3 +82,5 @@ void GaussianBlurYPostEffectPipeline::CompileShaders() {
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlurY.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }
+
+} // namespace magi

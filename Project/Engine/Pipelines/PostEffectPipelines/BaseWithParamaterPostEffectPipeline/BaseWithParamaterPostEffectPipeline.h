@@ -2,9 +2,12 @@
 
 #include "PostEffectPipelines/BasePostEffectPipeline/BasePostEffectPipeline.h"
 
+
 /// <summary>
 /// 追加情報をシェーダーに送るポストエフェクトのパイプライン基底クラス
 /// </summary>
+
+namespace magi {
 class BaseWithParamaterPostEffectPipeline:public BasePostEffectPipeline {
 public:
 	BaseWithParamaterPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -26,3 +29,5 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
+
+} // namespace magi

@@ -1,9 +1,12 @@
 #include "Renderer3DManager.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 
+
+namespace magi {
 Renderer3DManager::Renderer3DManager() {
 	Clear();
 	Logger::Log("Renderer3DManager Initialize\n");
@@ -41,3 +44,5 @@ void Renderer3DManager::DeleteGarbage() {
 void Renderer3DManager::Clear() {
 	modelRenderers_.clear();
 }
+
+} // namespace magi

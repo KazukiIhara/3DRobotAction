@@ -1,5 +1,6 @@
 #include "SoundDataContainer.h"
 
+
 // C++
 #include <cassert>
 #include <unordered_map>
@@ -7,6 +8,8 @@
 #include "Logger/Logger.h"
 
 // 通常再生中のVoiceを管理するコンテナ
+
+namespace magi {
 std::unordered_map<std::string, std::vector<IXAudio2SourceVoice*>> playingVoices_;
 // ループ再生中のVoiceを管理するコンテナ
 std::unordered_map<std::string, IXAudio2SourceVoice*> loopingVoices_;
@@ -239,3 +242,5 @@ SoundData* SoundDataContainer::FindWave(const std::string& filename) {
 	// ファイル名一致なし
 	return nullptr;
 }
+
+} // namespace magi

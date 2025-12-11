@@ -2,9 +2,12 @@
 
 #include "DefferedRenderringPipeline/BaseDefferedRenderringPipeline/BaseDefferedRenderringPipeline.h"
 
+
 /// <summary>
 /// ディファードレンダリングでライティングをするパイプライン
 /// </summary>
+
+namespace magi {
 class LightingDefferedRenderringPipeline :public BaseDefferedRenderringPipeline {
 public:
 	LightingDefferedRenderringPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -27,3 +30,5 @@ private:
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 
 };
+
+} // namespace magi

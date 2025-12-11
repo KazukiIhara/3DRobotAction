@@ -2,9 +2,12 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
+
 /// <summary>
 /// 深度比較でアウトラインを出す
 /// </summary>
+
+namespace magi {
 class DepthOutlinePostEffectPipeline :public BaseWithParamaterPostEffectPipeline {
 public:
 	DepthOutlinePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -16,3 +19,5 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
+
+} // namespace magi

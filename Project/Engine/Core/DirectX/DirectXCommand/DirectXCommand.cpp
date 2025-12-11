@@ -1,11 +1,14 @@
 #include "DirectXCommand.h"
 
+
 #include <cassert>
 
 #include "DirectX/DXGI/DXGI.h"
 
 #include "Logger/Logger.h"
 
+
+namespace magi {
 DirectXCommand::DirectXCommand(DXGI* dxgi, bool isSupportDirectX12Ultimate) {
 	Initialize(dxgi, isSupportDirectX12Ultimate);
 	Logger::Log("DirectXCommand Initialize\n");
@@ -77,3 +80,5 @@ void DirectXCommand::SetDXGI(DXGI* dxgi) {
 	assert(dxgi);
 	dxgi_ = dxgi;
 }
+
+} // namespace magi

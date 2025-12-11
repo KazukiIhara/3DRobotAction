@@ -3,9 +3,12 @@
 // C++
 #include <cstdint>
 
+
 /// <summary>
 /// ブレンドモードの種類
 /// </summary>
+
+namespace magi {
 enum class BlendMode {
 	None,
 	Normal,
@@ -19,3 +22,5 @@ enum class BlendMode {
 
 // ブレンドモードの種類の数
 inline constexpr uint32_t kBlendModeNum = static_cast<uint32_t>(BlendMode::Num);
+
+} // namespace magi

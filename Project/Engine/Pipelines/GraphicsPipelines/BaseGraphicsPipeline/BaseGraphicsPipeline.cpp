@@ -1,11 +1,14 @@
 #include "BaseGraphicsPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 BaseGraphicsPipeline::BaseGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	SetDXGI(dxgi);
 	SetShaderCompiler(shaderCompiler);
@@ -141,3 +144,5 @@ void BaseGraphicsPipeline::SetShaderCompiler(ShaderCompiler* shaderCompiler) {
 	assert(shaderCompiler);
 	shaderCompiler_ = shaderCompiler;
 }
+
+} // namespace magi

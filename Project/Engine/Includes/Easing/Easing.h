@@ -1,8 +1,11 @@
+
 #pragma once
 
 /// <summary>
 /// イージングのタイプ
 /// </summary>
+
+namespace magi {
 enum class EasingType {
 	Linear,
 
@@ -89,3 +92,5 @@ namespace Easing {
 	float EaseOutBounce(float t);
 	float EaseInOutBounce(float t);
 }
+
+} // namespace magi

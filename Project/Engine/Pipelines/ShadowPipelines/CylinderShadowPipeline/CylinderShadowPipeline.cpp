@@ -1,11 +1,14 @@
 #include "CylinderShadowPipeline.h"
 
+
 #include <cassert>
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+
+namespace magi {
 CylinderShadowPipeline::CylinderShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseShadowPipeline(dxgi, shaderCompiler) {
 }
@@ -70,3 +73,5 @@ void CylinderShadowPipeline::CompileShaders() {
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3DShadow.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_);
 }
+
+} // namespace magi

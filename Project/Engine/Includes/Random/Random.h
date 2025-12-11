@@ -5,8 +5,11 @@
 #include <ctime>
 #include <bit> 
 
+
 #include "Math/Utility/MathUtility.h"
 
+
+namespace magi {
 class Random {
 public:
 	// uint32_t型の乱数を生成
@@ -27,3 +30,5 @@ public:
 	// 秒ごとに違うシード値を返す
 	static float GenerateSeed1Sec();
 };
+
+} // namespace magi

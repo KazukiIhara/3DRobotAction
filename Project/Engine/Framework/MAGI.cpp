@@ -1,10 +1,13 @@
 #include "MAGI.h"
 
+
 #include "Logger/Logger.h"
 
 #include "Random/Random.h"
 #include "MAGIUitility/MAGIUtility.h"
 
+
+namespace magi {
 using namespace MAGIUtility;
 
 // Staticメンバ変数の初期化
@@ -1589,3 +1592,5 @@ bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std:
 void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneClear) {
 	sceneDataImporter_->Import(sceneDataName, isSceneClear);
 }
+
+} // namespace magi
