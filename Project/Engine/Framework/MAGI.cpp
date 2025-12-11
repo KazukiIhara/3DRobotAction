@@ -5,6 +5,7 @@
 #include "Random/Random.h"
 #include "MAGIUitility/MAGIUtility.h"
 
+using namespace magi;
 using namespace MAGIUtility;
 
 // Staticメンバ変数の初期化
@@ -15,7 +16,7 @@ std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 // 
 // BaseSystems
 // 
-std::unique_ptr<magi::WindowApp> MAGISYSTEM::windowApp_ = nullptr;
+std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
 std::unique_ptr<DeltaTimer> MAGISYSTEM::deltaTimer_ = nullptr;
 std::unique_ptr<MAGIDirectInput> MAGISYSTEM::directInput_ = nullptr;
 std::unique_ptr<MAGIXInput> MAGISYSTEM::xInput_ = nullptr;
@@ -136,7 +137,7 @@ void MAGISYSTEM::Initialize() {
 #endif // _DEBUG
 
 	// WindowApp
-	windowApp_ = std::make_unique<magi::WindowApp>();
+	windowApp_ = std::make_unique<WindowApp>();
 	// DeltaTimer
 	deltaTimer_ = std::make_unique<DeltaTimer>();
 	// DirectInput

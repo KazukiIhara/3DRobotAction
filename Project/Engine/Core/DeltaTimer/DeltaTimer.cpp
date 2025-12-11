@@ -4,6 +4,7 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
 
 DeltaTimer::DeltaTimer() {
 	LARGE_INTEGER freq;

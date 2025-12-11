@@ -8,73 +8,76 @@
 // ImGui
 #include "imgui/imgui.h"
 
-// 前方宣言
-class DeltaTimer;
-class SRVUAVManager;
+namespace magi {
+	// 前方宣言
+	class DeltaTimer;
+	class SRVUAVManager;
 
-// エンジンのグラフィックUIクラス
-class GUI {
-public:
-	GUI(
-		DeltaTimer* deltaTimer,
-		SRVUAVManager* srvUavManager
-	);
+	// エンジンのグラフィックUIクラス
+	class GUI {
+	public:
+		GUI(
+			DeltaTimer* deltaTimer,
+			SRVUAVManager* srvUavManager
+		);
 
-	// メインUI描画
-	void ShowMainUI();
+		// メインUI描画
+		void ShowMainUI();
 
-	// デバッグ表示
-	void ShowDebugUI();
+		// デバッグ表示
+		void ShowDebugUI();
 
-	// InputText std::string対応版
-	static bool InputTextStd(const char* label, std::string& str, ImGuiInputTextFlags flags = 0);
+		// InputText std::string対応版
+		static bool InputTextStd(const char* label, std::string& str, ImGuiInputTextFlags flags = 0);
 
-	//
-	// アクセッサ
-	//
+		//
+		// アクセッサ
+		//
 
-	// エンジンウィンドウの表示フラグ
-	bool& GetIsShowMainUI();
+		// エンジンウィンドウの表示フラグ
+		bool& GetIsShowMainUI();
 
-private:
-	// FPS表示
-	void ShowFPS();
-	// DeltaTime表示
-	void ShowDeltaTime();
+	private:
+		// FPS表示
+		void ShowFPS();
+		// DeltaTime表示
+		void ShowDeltaTime();
 
-	// メインタブ描画
-	void ShowMainTab();
+		// メインタブ描画
+		void ShowMainTab();
 
-	// シーンウィンドウ描画
-	void ShowSceneWindow();
+		// シーンウィンドウ描画
+		void ShowSceneWindow();
 
-	// ヒエラルキー描画
-	void ShowHierarchyWindow();
+		// ヒエラルキー描画
+		void ShowHierarchyWindow();
 
-	// インスペクター描画
-	void ShowInspectorWindow();
+		// インスペクター描画
+		void ShowInspectorWindow();
 
-	// プロジェクトファイル描画
-	void ShowProjectWindow();
+		// プロジェクトファイル描画
+		void ShowProjectWindow();
 
-private:
-	// エンジンのウィンドウを描画するフラグ
-	bool isShowMainUI_ = false;
+	private:
+		// エンジンのウィンドウを描画するフラグ
+		bool isShowMainUI_ = false;
 
-private:
-	// 
-	// UI変数
-	// 
+	private:
+		// 
+		// UI変数
+		// 
 
-	// ヒエラルキーウィンドウ
-	ImVec2 hierarchyWindowPosition_ = { 0.0f,64.0f };
+		// ヒエラルキーウィンドウ
+		ImVec2 hierarchyWindowPosition_ = { 0.0f,64.0f };
 
-	// シーンウィンドウ
-	ImVec2 sceneTextureSize_ = { 1024.0f,576.0f };
+		// シーンウィンドウ
+		ImVec2 sceneTextureSize_ = { 1024.0f,576.0f };
 
-private:
-	// DeltaTimerのインスタンス
-	DeltaTimer* deltaTimer_ = nullptr;
-	// SrvUavManagerのインスタンス
-	SRVUAVManager* srvUavManager_ = nullptr;
-};
+	private:
+		// DeltaTimerのインスタンス
+		DeltaTimer* deltaTimer_ = nullptr;
+		// SrvUavManagerのインスタンス
+		SRVUAVManager* srvUavManager_ = nullptr;
+	};
+
+}

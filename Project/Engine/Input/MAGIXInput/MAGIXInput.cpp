@@ -5,6 +5,8 @@
 
 #include "DeltaTimer/DeltaTimer.h"
 
+using namespace magi;
+
 MAGIXInput::MAGIXInput(DeltaTimer* deltaTimer) {
 	assert(deltaTimer);
 	deltaTimer_ = deltaTimer;

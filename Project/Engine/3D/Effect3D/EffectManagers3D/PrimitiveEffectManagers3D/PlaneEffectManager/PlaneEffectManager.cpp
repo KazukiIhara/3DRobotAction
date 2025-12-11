@@ -8,6 +8,8 @@
 #include "ComponentManagers/TransformManager/TransformManager.h"
 #include "3D/Drawer3D/PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 
+using namespace magi;
+
 PlaneEffectManager::PlaneEffectManager(DeltaTimer* deltaTimer, TransformManager* transformManager, PlaneDrawer3D* planeDrawer) {
 	assert(deltaTimer);
 	assert(transformManager);
