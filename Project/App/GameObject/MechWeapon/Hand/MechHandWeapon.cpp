@@ -1,5 +1,4 @@
 #define NOMINMAX
-using namespace MAGI;
 
 #include "MechHandWeapon.h"
 
@@ -8,6 +7,8 @@ using namespace MAGI;
 
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
+
+using namespace MAGI;
 
 std::string MechHandWeapon::ComvertTypeToString(const MechHandWeapon::Type& type) {
 	switch (type) {
