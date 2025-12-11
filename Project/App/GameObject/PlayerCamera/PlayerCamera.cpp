@@ -6,6 +6,7 @@
 
 
 using namespace MAGIMath;
+using namespace MAGI;
 
 MechCamera::MechCamera(const std::string& name, float yaw, MechCore* core)
 	:Camera3D(name, false) {

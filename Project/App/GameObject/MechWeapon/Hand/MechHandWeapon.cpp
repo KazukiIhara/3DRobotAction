@@ -1,4 +1,5 @@
 #define NOMINMAX
+using namespace MAGI;
 
 #include "MechHandWeapon.h"
 

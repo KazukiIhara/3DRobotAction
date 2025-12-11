@@ -6,9 +6,11 @@
 #include <cstring>
 #include <DirectXMath.h>
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
+
+using namespace MAGI;
 using namespace MAGIMath;
 using namespace MAGIUtility;
 

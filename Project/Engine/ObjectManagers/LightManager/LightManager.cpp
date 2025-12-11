@@ -10,10 +10,11 @@
 #include "Math/Utility/MathUtility.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
+using namespace MAGI;
 
 LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	SetDXGI(dxgi);

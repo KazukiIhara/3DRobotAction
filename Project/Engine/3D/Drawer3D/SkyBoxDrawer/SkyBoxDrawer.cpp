@@ -9,13 +9,14 @@
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
 #include <cassert>
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 SkyBoxDrawer::SkyBoxDrawer(
 	DXGI* dxgi,

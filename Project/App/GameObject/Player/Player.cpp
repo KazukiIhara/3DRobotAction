@@ -4,6 +4,7 @@
 #include "MAGIAssert/MAGIAssert.h"
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
+using namespace MAGI;
 
 Player::Player(AttackObjectManager* bulletManager) {
 	// 機体の作成

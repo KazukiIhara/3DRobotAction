@@ -11,10 +11,11 @@
 
 #include <cassert>
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 
 using namespace MAGIUtility;
 using namespace MAGIMath;
+using namespace MAGI;
 
 TriangleDrawer3D::TriangleDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
 	SetDXGI(dxgi);

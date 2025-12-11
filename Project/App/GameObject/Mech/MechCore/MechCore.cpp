@@ -12,6 +12,7 @@
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
+using namespace MAGI;
 
 MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* attackObjectManager, bool enableHardlockOn) {
 

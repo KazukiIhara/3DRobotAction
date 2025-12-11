@@ -5,9 +5,11 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "MAGI.h"
 
+using namespace MAGI;
+
 MechStatusComponent::MechStatusComponent() {
-	// HPを初期化
-	hp_ = kMaxHP_;
+        // HPを初期化
+        hp_ = kMaxHP_;
 	// HPの割合を計算
 	hpRaito_ = float(hp_) / float(kMaxHP_);
 

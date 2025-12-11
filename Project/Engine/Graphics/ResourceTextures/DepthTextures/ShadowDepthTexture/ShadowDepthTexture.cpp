@@ -1,10 +1,11 @@
 #include "ShadowDepthTexture.h"
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
 
 using namespace MAGIUtility;
+using namespace MAGI;
 
 ShadowDepthTexture::ShadowDepthTexture() {
 	CreateResource();

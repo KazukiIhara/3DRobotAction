@@ -10,10 +10,10 @@
 
 #include "Logger/Logger.h"
 #include "Const/Primitive3DConst.h"
-
 // TODO::フレームワーク内にあるクラスはMAGIをインクルードしてはいけない
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 
+using namespace MAGI;
 using namespace MAGIMath;
 
 RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {

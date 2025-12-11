@@ -6,6 +6,7 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 
 #include "Random/Random.h"
+using namespace MAGI;
 
 QuickBoostParticle::QuickBoostParticle(MechCore* mechCore) {
 	MAGIAssert::Assert(mechCore, "QuickBoostParticle Mechcore is null!");

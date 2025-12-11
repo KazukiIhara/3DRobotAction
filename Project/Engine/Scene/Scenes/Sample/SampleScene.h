@@ -3,7 +3,7 @@
 #include <memory>
 #include <array>
 
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
 #include "SimpleAnimation/SimpleAnimation.h"
