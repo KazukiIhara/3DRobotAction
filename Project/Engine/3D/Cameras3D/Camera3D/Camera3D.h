@@ -11,6 +11,8 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Structs/CameraStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// 3D用カメラ
 /// </summary>
@@ -198,3 +200,4 @@ private:
 	CameraVector* vectorData_ = nullptr;
 
 };
+}

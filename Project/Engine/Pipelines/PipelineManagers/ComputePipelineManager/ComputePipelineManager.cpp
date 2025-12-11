@@ -2,6 +2,8 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
+
 ComputePipelineManager::ComputePipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
 	Logger::Log("ComputePipelineManager Initialize\n");

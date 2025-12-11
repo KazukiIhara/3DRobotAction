@@ -13,6 +13,8 @@
 #include "3D/Skeleton/Skeleton.h"
 #include "Structs/AnimationStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// スキンモデル描画クラス
 /// </summary>
@@ -62,3 +64,4 @@ private:
 	std::vector<Matrix4x4> inverseBindPoseMatrices_;
 
 };
+}

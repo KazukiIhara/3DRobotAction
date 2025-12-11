@@ -4,6 +4,8 @@
 #include "Transform3D/Transform3D.h"
 #include "Common/Particle/ParticleEffectCommon.h"
 
+
+namespace magi {
 // 前方宣言
 class MechCore;
 
@@ -38,3 +40,4 @@ private:
 	// 胴体用エフェクトデータ
 	GPUParticleEmitData bodySmokeEffect_;
 };
+}

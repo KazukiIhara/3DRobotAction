@@ -3,3 +3,6 @@
 // C++
 #include <chrono>
 
+
+namespace magi {
+}

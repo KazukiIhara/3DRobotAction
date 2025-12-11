@@ -12,6 +12,8 @@
 #include "Math/Utility/MathUtility.h"
 #include "Structs/CameraStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// 2D用カメラ
 /// </summary>
@@ -50,3 +52,4 @@ private:
 	float nearClip_ = 0.0f;
 	float farClip_ = 100.0f;
 };
+}

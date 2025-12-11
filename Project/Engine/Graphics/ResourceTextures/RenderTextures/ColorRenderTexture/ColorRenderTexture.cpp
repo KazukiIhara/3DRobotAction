@@ -1,5 +1,7 @@
 #include "ColorRenderTexture.h"
 
+using namespace magi;
+
 ColorRenderTexture::ColorRenderTexture() {
 }
 

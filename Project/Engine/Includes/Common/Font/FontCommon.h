@@ -10,6 +10,8 @@
 #include "DirectX-Headers/include/directx/d3dx12.h"
 #include "DirectX/ComPtr/ComPtr.h"
 
+
+namespace magi {
 // フォントテクスチャ構造体
 struct FontTexture {
 	// テクスチャリソース
@@ -19,3 +21,4 @@ struct FontTexture {
 	// srvIndex
 	uint32_t srvIndex;
 };
+}

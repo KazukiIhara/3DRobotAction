@@ -7,6 +7,8 @@
 #include <iomanip>
 #include <sstream>
 
+using namespace magi;
+
 std::ofstream Logger::logFile_;
 
 void Logger::Initialize() {

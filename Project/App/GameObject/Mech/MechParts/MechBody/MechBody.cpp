@@ -6,6 +6,8 @@
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
 
+using namespace magi;
+
 using namespace MAGIMath;
 
 MechBody::MechBody() {

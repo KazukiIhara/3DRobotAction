@@ -2,6 +2,8 @@
 
 #include <string>
 
+
+namespace magi {
 /// <summary>
 /// プリミティブ3Dの種類
 /// </summary>
@@ -27,3 +29,4 @@ inline std::string PrimitiveTypeToString(Primitive3DType type) {
 	}
 }
 
+}

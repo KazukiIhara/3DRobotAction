@@ -3,6 +3,8 @@
 // C++
 #include <cstdint>
 
+
+namespace magi {
 /// <summary>
 /// 3Dプリミティブ形状で汎用的に使える定数
 /// </summary>
@@ -47,4 +49,5 @@ namespace Plane3DVertices {
 	static const uint32_t RightTop = 1;
 	static const uint32_t LeftBottom = 2;
 	static const uint32_t RightBottom = 3;
+}
 }

@@ -3,6 +3,8 @@
 // フレームワーク
 #include "MAGI.h"
 
+
+namespace magi {
 /// <summary>
 /// 機体カスタマイズシーン
 /// </summary>
@@ -19,3 +21,4 @@ public:
 private:
 
 };
+}

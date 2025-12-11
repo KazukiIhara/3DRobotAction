@@ -10,6 +10,8 @@
 #include "Structs/SkinningStruct.h"
 #include "Enums/BlendModeEnum.h"
 
+
+namespace magi {
 /// <summary>
 /// 3D頂点データ
 /// </summary>
@@ -115,3 +117,4 @@ struct MeshInfo {
 	uint32_t indexSize;
 	uint32_t meshletCount;
 };
+}

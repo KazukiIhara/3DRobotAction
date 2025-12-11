@@ -9,6 +9,8 @@
 #include "Math/Types/Vector3.h"
 #include "Math/Types/Quaternion.h"
 
+
+namespace magi {
 struct SceneCameraData {
 	std::string name;
 	Vector3 eye;
@@ -55,3 +57,4 @@ private:
 
 	const std::string kDirectoryPath_ = "Assets/SceneData/";
 };
+}

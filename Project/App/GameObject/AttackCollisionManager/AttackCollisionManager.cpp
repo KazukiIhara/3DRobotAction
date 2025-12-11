@@ -2,6 +2,8 @@
 
 #include "GameObject/Mech/MechCore/MechCore.h"
 
+using namespace magi;
+
 AttackCollisionManager::AttackCollisionManager() {
 	mechs_.clear();
 	attackColliders_.clear();

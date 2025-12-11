@@ -13,6 +13,8 @@
 #include "Enums/BlendModeEnum.h"
 #include "Const/Primitive3DConst.h"
 
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -71,3 +73,4 @@ private:
 	Camera3DManager* camera3DManager_ = nullptr;
 
 };
+}

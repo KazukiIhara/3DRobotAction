@@ -1,5 +1,7 @@
 #include "GBufferPositionRenderTexture.h"
 
+using namespace magi;
+
 GBufferPositionRenderTexture::GBufferPositionRenderTexture() {
 }
 

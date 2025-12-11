@@ -7,6 +7,8 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
+
+namespace magi {
 // 前方宣言
 class GameObject3D;
 class MechCore;
@@ -57,3 +59,4 @@ private:
 	std::weak_ptr<GameObject3D> leg_;
 
 };
+}

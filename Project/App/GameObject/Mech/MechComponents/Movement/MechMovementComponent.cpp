@@ -8,6 +8,8 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
+using namespace magi;
+
 using namespace MAGIMath;
 
 MechMovementComponent::MechMovementComponent() {

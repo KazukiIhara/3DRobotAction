@@ -5,6 +5,8 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
+using namespace magi;
+
 Enemy::Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerMech) {
 	// 機体の作成
 	const Vector3 kEnemyPopPosition = { 0.0f,0.0f,30.0f };

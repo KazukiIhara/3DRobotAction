@@ -7,6 +7,8 @@
 #include "Math/Utility/MathUtility.h"
 #include "Structs/ColorStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// UVトランスフォーム
 /// </summary>
@@ -58,3 +60,4 @@ struct LineData3D {
 	Vector3 end;
 	Vector4 color;
 };
+}

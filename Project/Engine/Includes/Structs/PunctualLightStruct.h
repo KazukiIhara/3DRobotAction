@@ -3,6 +3,8 @@
 #include <cstdint>
 #include "Math/Utility/MathUtility.h"
 
+
+namespace magi {
 /// <summary>
 /// ライトのデータ
 /// </summary>
@@ -55,3 +57,4 @@ struct PunctualLightDataForGPU {
 struct PunctualLightCount {
 	uint32_t num;
 };
+}

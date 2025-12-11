@@ -8,6 +8,8 @@
 #include "GameObject/AttackCollider/AttackCollider.h"
 #include "Common/Particle/ParticleEffectCommon.h"
 
+
+namespace magi {
 // 前方宣言
 class GameObject3D;
 
@@ -64,3 +66,4 @@ private:
 	// 積算レート
 	float emitAcc_ = 0.0f;
 };
+}

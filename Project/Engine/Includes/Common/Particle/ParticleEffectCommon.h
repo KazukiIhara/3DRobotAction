@@ -12,6 +12,8 @@
 
 #include "DirectX-Headers/include/directx/d3dx12_pipeline_state_stream.h"
 
+
+namespace magi {
 /// <summary>
 /// パーティクル用のパイプラインストリーム
 /// </summary>
@@ -75,3 +77,4 @@ struct GPUParticleInfo {
 	float deltaTime;
 	Vector2 pad0;
 };
+}

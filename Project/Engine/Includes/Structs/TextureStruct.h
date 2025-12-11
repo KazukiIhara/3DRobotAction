@@ -11,6 +11,8 @@
 #include "DirectX-Headers/include/directx/d3dx12.h"
 #include "DirectX/ComPtr/ComPtr.h"
 
+
+namespace magi {
 // テクスチャ構造体
 struct Texture {
 	// テクスチャリソース
@@ -20,3 +22,4 @@ struct Texture {
 	// srvIndex
 	uint32_t srvIndex;
 };
+}

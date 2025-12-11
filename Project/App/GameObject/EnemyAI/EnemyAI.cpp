@@ -18,6 +18,8 @@
 #include "EnemyAIState/Search/EnemyAIStateSearch.h"
 #include "EnemyAIState/Avoid/EnemyAIStateAvoid.h"
 
+using namespace magi;
+
 EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech, AttackObjectManager* bulletManager) {
 	// 自機のポインタを受け取る
 	if (auto m = mechCore.lock()) {

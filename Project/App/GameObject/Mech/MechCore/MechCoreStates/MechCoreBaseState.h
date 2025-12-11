@@ -2,6 +2,8 @@
 
 #include <memory>
 
+
+namespace magi {
 class MechCore;
 
 /// <summary>
@@ -14,3 +16,4 @@ public:
 	virtual void Update(MechCore* mechCore) = 0;
 	virtual void Exit(MechCore* mechCore) = 0;
 };
+}

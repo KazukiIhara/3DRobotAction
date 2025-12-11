@@ -7,6 +7,8 @@
 // MyHedder
 #include "Structs/ObjectStruct.h"
 
+
+namespace magi {
 // ジョイント
 struct Joint {
 	QuaternionTransform3D transform;
@@ -17,3 +19,4 @@ struct Joint {
 	int32_t index;
 	std::optional<int32_t> parent;
 };
+}

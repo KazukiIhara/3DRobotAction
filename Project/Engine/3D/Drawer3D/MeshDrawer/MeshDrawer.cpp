@@ -9,6 +9,8 @@
 #include "Framework/MAGI.h"
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
+using namespace magi;
+
 using namespace MAGIMath;
 using namespace MAGIUtility;
 

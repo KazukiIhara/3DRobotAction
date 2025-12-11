@@ -19,6 +19,8 @@ class ShaderCompiler;
 
 #include "DefferedRenderringPipeline/LightingDefferedRenderringPipeline/LightingDefferedRenderringPipeline.h"
 
+
+namespace magi {
 /// <summary>
 /// ディファードレンダリングのパイプラインマネージャ
 /// </summary>
@@ -50,3 +52,4 @@ private:
 	// LightingDefferedRenderringPipeline
 	std::unique_ptr<LightingDefferedRenderringPipeline> lightingDefferedRenderringPipeline_ = nullptr;
 };
+}

@@ -128,6 +128,8 @@
 #include "ImGuiController/ImGuiController.h"
 #include "GUI/GUI.h"
 
+
+namespace magi {
 /// <summary>
 /// フレームワーククラス
 /// </summary>
@@ -790,3 +792,4 @@ protected:
 	static std::unique_ptr<magi::GUI> gui_;
 
 };
+}

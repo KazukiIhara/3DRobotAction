@@ -6,6 +6,8 @@
 // Xaudio
 #include <xaudio2.h>
 
+
+namespace magi {
 // チャンクヘッダ
 struct ChunkHeader {
 	char id[4]; // チャンク毎のID
@@ -30,3 +32,4 @@ struct SoundData {
 	BYTE* pBuffer;
 	unsigned int bufferSize;
 };
+}

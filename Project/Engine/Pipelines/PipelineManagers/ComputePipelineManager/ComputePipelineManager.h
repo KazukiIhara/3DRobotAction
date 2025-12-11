@@ -17,6 +17,8 @@
 #include "ComputePipelines/ParticleComputePipelines/EmitParticleComputePipeline/EmitParticleComputePipeline.h"
 #include "ComputePipelines/ParticleComputePipelines/UpdateParticleComputePipeline/UpdateParticleComputePipeline.h"
 
+
+namespace magi {
 // 前方宣言
 class DXGI;
 class ShaderCompiler;
@@ -54,3 +56,4 @@ private:
 	// Particle更新用のComputePipeline
 	std::unique_ptr<UpdateParticleComputePipeline> updateParticlePipeline_ = nullptr;
 };
+}

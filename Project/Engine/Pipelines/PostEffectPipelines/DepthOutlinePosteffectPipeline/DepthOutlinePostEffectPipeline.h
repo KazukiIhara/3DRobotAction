@@ -2,6 +2,8 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
+
+namespace magi {
 /// <summary>
 /// 深度比較でアウトラインを出す
 /// </summary>
@@ -16,3 +18,4 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
+}

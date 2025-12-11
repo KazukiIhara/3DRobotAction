@@ -5,6 +5,8 @@
 #include "Math/Utility/MathUtility.h"
 #include "GameCommon/GameCommon.h"
 
+
+namespace magi {
 /// <summary>
 /// 機体のコライダー
 /// </summary>
@@ -58,3 +60,4 @@ private:
 	bool isAlive_ = true;
 
 };
+}

@@ -11,6 +11,8 @@
 // Windows環境限定
 #ifdef _WIN32
 #include <Windows.h>
+using namespace magi;
+
 #endif
 GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager) {
 	// 

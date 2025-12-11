@@ -5,6 +5,8 @@
 
 #include "GameObject/Mech/MechCore/MechCore.h"
 
+using namespace magi;
+
 BaseMechShoulderWeapon::BaseMechShoulderWeapon(const std::string& weaponName, const ShoulderWeaponType& type, const WitchShoulder& witch) {
 	// レンダラーとゲームオブジェクトを作成
 	std::shared_ptr<ModelRenderer> weaponModel = std::make_shared<ModelRenderer>(weaponName, weaponName);

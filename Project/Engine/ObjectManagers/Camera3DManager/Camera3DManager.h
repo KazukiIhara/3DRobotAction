@@ -8,6 +8,8 @@
 // MyHedder
 #include "3D/Cameras3D/DebugCamera3D/DebugCamera3D.h"
 
+
+namespace magi {
 /// <summary>
 /// 3D描画用カメラのマネージャ
 /// </summary>
@@ -54,3 +56,4 @@ private:
 	// 現在使用中のカメラ
 	Camera3D* currentCamera_;
 };
+}

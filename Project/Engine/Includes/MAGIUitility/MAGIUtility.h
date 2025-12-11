@@ -14,6 +14,8 @@
 #include "Structs/ColorStruct.h"
 #include "Structs/Primitive3DStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// 便利関数
 /// </summary>
@@ -38,4 +40,5 @@ namespace MAGIUtility {
 
 	Vector2 TransformWorldToScreen(const Vector3& worldPos);
 
+}
 }

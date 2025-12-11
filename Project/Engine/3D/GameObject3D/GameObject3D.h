@@ -8,6 +8,8 @@
 #include "Math/Types/Vector3.h"
 #include "Math/Types/Quaternion.h"
 
+
+namespace magi {
 // 前方宣言
 class Transform3D;
 class ModelRenderer;
@@ -69,3 +71,4 @@ private:
 	// カメラコンポーネント
 	std::unordered_map<std::string, Camera3D*> camera3DComponents_;
 };
+}

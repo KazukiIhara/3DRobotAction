@@ -6,6 +6,8 @@
 // MyHedder
 #include "GameData/GameData.h"
 
+
+namespace magi {
 // 前方宣言
 class SceneManager;
 
@@ -31,3 +33,4 @@ protected:
 	// シーンマネージャのポインタ
 	SceneManager* sceneManager_;
 };
+}

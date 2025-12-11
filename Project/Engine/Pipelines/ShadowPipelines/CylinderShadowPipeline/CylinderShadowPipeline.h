@@ -2,6 +2,8 @@
 
 #include "ShadowPipelines/BaseShadowPipeline/BaseShadowPipeline.h"
 
+
+namespace magi {
 /// <summary>
 /// シリンダーのシャドウマップ描画用パイプライン
 /// </summary>
@@ -16,3 +18,4 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
+}

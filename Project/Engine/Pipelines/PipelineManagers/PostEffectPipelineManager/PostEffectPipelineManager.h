@@ -26,6 +26,8 @@ class ShaderCompiler;
 #include "PostEffectPipelines/DepthNormalOutlinePostEffectPipeline/DepthNormalOutlinePostEffectPipeline.h"
 #include "PostEffectPipelines/RandomPostEffectPipeline/RandomPostEffectPipeline.h"
 
+
+namespace magi {
 /// <summary>
 /// ポストエフェクトパイプラインマネージャ
 /// </summary>
@@ -76,3 +78,4 @@ private:
 	std::unique_ptr<RandomPostEffectPipeline> randomPostEffectPipeline_ = nullptr;
 
 };
+}

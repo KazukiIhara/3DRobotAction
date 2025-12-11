@@ -7,6 +7,8 @@
 #include "Math/Utility/MathUtility.h"
 #include "GameObject/AttackCollider/AttackCollider.h"
 
+
+namespace magi {
 // 前方宣言
 class GameObject3D;
 class MechCore;
@@ -94,3 +96,4 @@ private:
 	// 攻撃コライダー
 	std::weak_ptr<AttackCollider> collider_;
 };
+}

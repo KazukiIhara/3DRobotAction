@@ -3,6 +3,8 @@
 #include "Logger/Logger.h"
 #include "SceneManager.h"
 
+using namespace magi;
+
 SceneManager::SceneManager()
 	: data_(std::make_unique<GameData>()) {
 	Logger::Log("SceneManager Initialize\n");

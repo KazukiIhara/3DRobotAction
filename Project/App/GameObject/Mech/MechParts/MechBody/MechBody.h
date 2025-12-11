@@ -8,6 +8,8 @@
 #include "Math/Utility/MathUtility.h"
 #include "GameCommon/GameCommon.h"
 
+
+namespace magi {
 // 前方宣言
 class GameObject3D;
 class MechCore;
@@ -63,3 +65,4 @@ private:
 	std::weak_ptr<GameObject3D> body_;
 
 };
+}

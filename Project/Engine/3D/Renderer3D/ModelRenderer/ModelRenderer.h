@@ -7,6 +7,8 @@
 // MyHedder
 #include "Structs/ModelStruct.h"
 
+
+namespace magi {
 // 前方宣言
 class Transform3D;
 
@@ -46,3 +48,4 @@ private:
 	// 生存フラグ
 	bool isAlive_ = true;
 };
+}

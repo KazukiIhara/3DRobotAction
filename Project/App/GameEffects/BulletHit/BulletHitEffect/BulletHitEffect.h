@@ -7,6 +7,8 @@
 // MyHeder
 #include "GameEffects/BulletHit/BulletHitParticle/BulletHitParticle.h"
 
+
+namespace magi {
 class MechCore;
 
 /// <summary>
@@ -44,3 +46,4 @@ private:
 	float diffusionRange_ = 20.0f;
 	float gravity_ = -80.0f;
 };
+}

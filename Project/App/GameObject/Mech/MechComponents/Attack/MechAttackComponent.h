@@ -1,5 +1,7 @@
 #pragma once
 
+
+namespace magi {
 class MechCore;
 class AttackObjectManager;
 
@@ -21,3 +23,4 @@ private:
 	// 攻撃オブジェクトマネージャ
 	AttackObjectManager* attackObjectManager_ = nullptr;
 };
+}

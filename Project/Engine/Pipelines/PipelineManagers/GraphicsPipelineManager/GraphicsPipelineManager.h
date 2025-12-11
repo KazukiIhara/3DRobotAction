@@ -28,6 +28,8 @@
 
 #include "GraphicsPipelines/ParticleEffect3DGraphicsPipeline/ParticleEffect3DGraphicsPipeline.h"
 
+
+namespace magi {
 // 前方宣言
 class DXGI;
 class ShaderCompiler;
@@ -89,3 +91,4 @@ private:
 	// ParticleEffect3DGraphicsPipeline
 	std::unique_ptr<ParticleEffectGraphicsPipeline> particleEffect3DGraphicsPipeline_ = nullptr;
 };
+}

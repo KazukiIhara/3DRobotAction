@@ -5,6 +5,8 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "MAGI.h"
 
+using namespace magi;
+
 MechStatusComponent::MechStatusComponent() {
 	// HPを初期化
 	hp_ = kMaxHP_;

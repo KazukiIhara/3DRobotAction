@@ -4,6 +4,8 @@
 
 #include "Structs/Primitive3DStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// 3D三角形描画用のパイプライン
 /// </summary>
@@ -27,3 +29,4 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
+}

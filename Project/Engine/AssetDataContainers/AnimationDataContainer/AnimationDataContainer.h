@@ -13,6 +13,8 @@
 // MyHedder
 #include "Structs/AnimationStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// アニメーションのデータコンテナ
 /// </summary>
@@ -31,3 +33,4 @@ private:
 	// アニメーションデータコンテナ
 	std::unordered_map<std::string, AnimationData> animationDatas_;
 };
+}

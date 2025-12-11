@@ -6,6 +6,8 @@
 
 #include "Structs/Primitive3DStruct.h"
 
+
+namespace magi {
 // 前方宣言
 class Transform3D;
 
@@ -36,3 +38,4 @@ private:
 	// 板ポリマテリアル
 	MaterialData3D mat_;
 };
+}

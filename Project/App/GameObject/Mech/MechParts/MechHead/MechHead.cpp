@@ -5,6 +5,8 @@
 
 #include "GameObject/Mech/MechCore/MechCore.h"
 
+using namespace magi;
+
 using namespace MAGIMath;
 
 MechHead::MechHead() {

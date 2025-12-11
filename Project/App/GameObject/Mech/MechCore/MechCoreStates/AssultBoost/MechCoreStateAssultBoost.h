@@ -3,6 +3,8 @@
 // MyHedder
 #include "GameObject/Mech/MechCore/MechCoreStates/MechCoreBaseState.h"
 
+
+namespace magi {
 /// <summary>
 /// 機体アサルトブーストステート
 /// </summary>
@@ -14,3 +16,4 @@ public:
 	void Exit(MechCore* mechCore)override;
 
 };
+}

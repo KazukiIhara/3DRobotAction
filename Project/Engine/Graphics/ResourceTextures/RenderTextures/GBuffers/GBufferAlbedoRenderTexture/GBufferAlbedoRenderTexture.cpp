@@ -1,5 +1,7 @@
 #include "GBufferAlbedoRenderTexture.h"
 
+using namespace magi;
+
 GBufferAlbedoRenderTexture::GBufferAlbedoRenderTexture() {
 }
 

@@ -3,6 +3,8 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
+
+namespace magi {
 // シェーダーに送る3Dカメラ情報
 struct Camera3DForGPU {
 	Matrix4x4 viewProjection;
@@ -39,3 +41,4 @@ struct CameraVector {
 struct Camera2DForGPU {
 	Matrix4x4 viewProjection;
 };
+}

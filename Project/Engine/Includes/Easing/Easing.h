@@ -1,5 +1,7 @@
 #pragma once
 
+
+namespace magi {
 /// <summary>
 /// イージングのタイプ
 /// </summary>
@@ -88,4 +90,5 @@ namespace Easing {
 	float EaseInBounce(float t);
 	float EaseOutBounce(float t);
 	float EaseInOutBounce(float t);
+}
 }

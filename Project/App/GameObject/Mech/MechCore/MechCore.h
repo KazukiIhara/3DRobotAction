@@ -40,6 +40,8 @@
 #include "GameEffects/QuickBoost/QuickBoostParticle/QuickBoostParticle.h"
 #include "GameEffects/BulletHit/BulletHitEffect/BulletHitEffect.h"
 
+
+namespace magi {
 // 前方宣言
 class GameObject3D;
 class MechCoreBaseState;
@@ -233,3 +235,4 @@ private:
 	const Vector3 kColliderMax_ = { 0.5f,0.8f, 0.5f };
 
 };
+}

@@ -5,6 +5,8 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
+using namespace magi;
+
 Player::Player(AttackObjectManager* bulletManager) {
 	// 機体の作成
 	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, "Default", bulletManager, false);

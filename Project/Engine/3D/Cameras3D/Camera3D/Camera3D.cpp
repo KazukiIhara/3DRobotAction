@@ -5,6 +5,8 @@
 #include "Framework/MAGI.h"
 #include <Random/Random.h>
 
+using namespace magi;
+
 using namespace MAGIUtility;
 using namespace MAGIMath;
 

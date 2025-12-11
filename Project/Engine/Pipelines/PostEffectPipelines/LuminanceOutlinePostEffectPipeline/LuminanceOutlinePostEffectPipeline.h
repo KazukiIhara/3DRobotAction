@@ -2,6 +2,8 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
+
+namespace magi {
 /// <summary>
 /// 輝度比較によるアウトライン
 /// </summary>
@@ -14,3 +16,4 @@ private:
 	// シェーダーをコンパイル
 	void CompileShaders()override;
 };
+}

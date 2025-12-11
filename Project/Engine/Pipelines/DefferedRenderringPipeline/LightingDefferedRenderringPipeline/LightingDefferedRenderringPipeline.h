@@ -2,6 +2,8 @@
 
 #include "DefferedRenderringPipeline/BaseDefferedRenderringPipeline/BaseDefferedRenderringPipeline.h"
 
+
+namespace magi {
 /// <summary>
 /// ディファードレンダリングでライティングをするパイプライン
 /// </summary>
@@ -27,3 +29,4 @@ private:
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 
 };
+}

@@ -2,6 +2,8 @@
 
 #include "Enums/PostEffectPipelineEnum.h"
 
+
+namespace magi {
 /// <summary>
 /// パラメータ
 /// </summary>
@@ -14,3 +16,4 @@ struct PostEffectCommand {
 	PostEffectParamater param;
 	uint32_t index;
 };
+}

@@ -2,6 +2,8 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+
+namespace magi {
 // 前方宣言
 class DXGI;
 class ShaderCompiler;
@@ -30,3 +32,4 @@ private:
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 };
+}

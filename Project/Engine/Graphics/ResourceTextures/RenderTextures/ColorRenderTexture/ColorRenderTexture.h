@@ -3,6 +3,8 @@
 #include "ResourceTextures/RenderTextures/BaseRenderTexture/BaseRenderTexture.h"
 
 
+
+namespace magi {
 class ColorRenderTexture : public BaseRenderTexture {
 public:
 	ColorRenderTexture();
@@ -13,3 +15,4 @@ public:
 private:
 
 };
+}

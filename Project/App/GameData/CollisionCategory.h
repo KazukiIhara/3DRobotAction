@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+
+namespace magi {
 /// <summary>
 /// 当たり判定のカテゴリ
 /// </summary>
@@ -41,4 +43,5 @@ inline CollisionCategory StringToCollisionCategory(const std::string& categoryNa
 	} else {
 		return CollisionCategory::None;
 	}
+}
 }

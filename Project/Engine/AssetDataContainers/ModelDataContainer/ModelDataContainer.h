@@ -12,6 +12,8 @@
 // MyHedder
 #include "Structs/ModelStruct.h"
 
+
+namespace magi {
 // 前方宣言
 class TextureDataContainer;
 
@@ -39,3 +41,4 @@ private:
 private:
 	TextureDataContainer* textureDataContainer_ = nullptr;
 };
+}

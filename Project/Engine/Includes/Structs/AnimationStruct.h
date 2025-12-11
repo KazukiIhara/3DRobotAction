@@ -10,6 +10,8 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
+
+namespace magi {
 // Vector3のアニメーションキーフレーム
 struct KeyframeVector3 {
 	Vector3 value;
@@ -35,3 +37,4 @@ struct AnimationData {
 	float duration;
 	std::unordered_map<std::string, NodeAnimation> nodeAnimations;
 };
+}

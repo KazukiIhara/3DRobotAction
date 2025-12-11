@@ -6,6 +6,8 @@
 
 #include "Logger/Logger.h"
 
+using namespace magi;
+
 // 通常再生中のVoiceを管理するコンテナ
 std::unordered_map<std::string, std::vector<IXAudio2SourceVoice*>> playingVoices_;
 // ループ再生中のVoiceを管理するコンテナ

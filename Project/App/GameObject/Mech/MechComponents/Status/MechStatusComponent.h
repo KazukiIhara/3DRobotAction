@@ -4,6 +4,8 @@
 #include "Math/Utility/MathUtility.h"
 #include "SimpleAnimation/SimpleAnimation.h"
 
+
+namespace magi {
 // 前方宣言
 class MechCore;
 
@@ -119,3 +121,4 @@ private:
 	// 相手が回避状態の際のFCS強度
 	const float minFcsFactor_ = 0.05f;
 };
+}

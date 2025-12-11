@@ -2,6 +2,8 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
+
+namespace magi {
 class DepthNormalOutlinePostEffectPipeline :public BaseWithParamaterPostEffectPipeline {
 public:
 	DepthNormalOutlinePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -13,3 +15,4 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
+}

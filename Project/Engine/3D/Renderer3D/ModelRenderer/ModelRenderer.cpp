@@ -3,6 +3,8 @@
 // MyHedder
 #include "MAGI.h"
 
+using namespace magi;
+
 ModelRenderer::ModelRenderer(const std::string& name, const std::string& modelName, const ModelMaterial& material) {
 	name_ = name;
 	modelName_ = modelName;

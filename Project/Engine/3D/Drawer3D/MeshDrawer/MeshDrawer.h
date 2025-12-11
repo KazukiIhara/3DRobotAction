@@ -10,6 +10,8 @@
 #include "Structs/ModelStruct.h"
 #include "Structs/Primitive3DStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// メッシュ描画クラス
 /// </summary>
@@ -54,3 +56,4 @@ private:
 	ComPtr<ID3D12Resource> materialBuffer_;
 	ModelMaterialDataForGPU* material_ = nullptr;
 };
+}

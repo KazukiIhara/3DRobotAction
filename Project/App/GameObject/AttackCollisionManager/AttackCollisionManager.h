@@ -7,6 +7,8 @@
 // 攻撃コライダー
 #include "GameObject/AttackCollider/AttackCollider.h"
 
+
+namespace magi {
 // 前方宣言
 class MechCore;
 
@@ -42,3 +44,4 @@ private:
 	std::vector<std::shared_ptr<AttackCollider>> attackColliders_;
 
 };
+}

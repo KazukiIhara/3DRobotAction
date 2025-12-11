@@ -2,6 +2,8 @@
 
 #include "PostEffectPipelines/BaseNoParamaterPostEffectPipeline/BaseNoParamaterPostEffectPipeline.h"
 
+
+namespace magi {
 /// <summary>
 /// ポストエフェクトなし
 /// </summary>
@@ -13,3 +15,4 @@ private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
 };
+}

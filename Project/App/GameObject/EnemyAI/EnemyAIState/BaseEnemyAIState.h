@@ -1,5 +1,7 @@
 #pragma once
 
+
+namespace magi {
 class EnemyAI;
 class MechCore;
 
@@ -13,3 +15,4 @@ public:
 	virtual void Update(EnemyAI* enemyAI, MechCore* mechCore) = 0;
 	virtual void Exit(EnemyAI* enemyAI, MechCore* mechCore) = 0;
 };
+}

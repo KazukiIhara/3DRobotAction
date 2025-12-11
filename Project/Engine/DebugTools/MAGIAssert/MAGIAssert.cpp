@@ -4,6 +4,8 @@
 #include <cassert>
 #include <combaseapi.h>
 
+using namespace magi;
+
 void MAGIAssert::Assert(bool test, const std::string& message) {
 	if (test) {
 		return;

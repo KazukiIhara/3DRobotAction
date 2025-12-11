@@ -6,6 +6,8 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "GameObject/EnemyAI/EnemyAI.h"
 
+
+namespace magi {
 // 前方宣言
 class AttackObjectManager;
 
@@ -38,3 +40,4 @@ private:
 	// AIのアクティブフラグ
 	bool isAIActive_ = true;
 };
+}

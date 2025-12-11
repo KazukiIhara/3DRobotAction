@@ -10,6 +10,8 @@
 // MyHedder
 #include "MAGIAssert/MAGIAssert.h"
 
+using namespace magi;
+
 SceneDataContainer::SceneDataContainer() {
 	sceneDatas_.clear();
 	Logger::Log("SceneDataContainer Initialize\n");

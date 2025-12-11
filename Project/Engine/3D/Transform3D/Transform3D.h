@@ -3,6 +3,8 @@
 // 数学ヘッダ
 #include "Math/Utility/MathUtility.h"
 
+
+namespace magi {
 /// <summary>
 /// 3D空間トランスフォーム
 /// </summary>
@@ -128,3 +130,4 @@ private:
 	Transform3D(const Transform3D&) = delete;
 	Transform3D& operator=(const Transform3D&) = delete;
 };
+}

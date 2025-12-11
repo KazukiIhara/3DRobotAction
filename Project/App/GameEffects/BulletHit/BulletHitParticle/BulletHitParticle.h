@@ -8,6 +8,8 @@
 
 #include "Structs/ModelStruct.h"
 
+
+namespace magi {
 /// <summary>
 /// 弾着弾時のパーティクル
 /// </summary>
@@ -41,3 +43,4 @@ private:
 	// パーティクルのトランスフォーム
 	std::unique_ptr<Transform3D> transform_;
 };
+}

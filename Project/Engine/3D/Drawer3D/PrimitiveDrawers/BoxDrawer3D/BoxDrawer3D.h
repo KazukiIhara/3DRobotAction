@@ -13,6 +13,8 @@
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
+
+namespace magi {
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
@@ -84,3 +86,4 @@ private:
 	Camera3DManager* camera3DManager_ = nullptr;
 	LightManager* lightManager_ = nullptr;
 };
+}

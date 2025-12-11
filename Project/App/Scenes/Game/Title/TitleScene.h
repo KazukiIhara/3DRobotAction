@@ -5,6 +5,8 @@
 
 #include "MAGI.h"
 
+
+namespace magi {
 /// <summary>
 /// タイトルシーン
 /// </summary>
@@ -27,3 +29,4 @@ private:
 	SpriteMaterialData exitMatData_;
 };
 
+}

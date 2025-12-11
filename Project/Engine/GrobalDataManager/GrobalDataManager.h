@@ -13,6 +13,8 @@
 #include "Math/Utility/MathUtility.h"
 
 
+
+namespace magi {
 /// <summary>
 /// using宣言
 /// </summary>
@@ -108,3 +110,4 @@ private:
 
 private:
 };
+}

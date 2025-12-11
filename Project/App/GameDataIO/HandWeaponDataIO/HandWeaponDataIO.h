@@ -7,6 +7,8 @@
 // MyHedder
 #include "GameObject/MechWeapon/Hand/MechHandWeapon.h"
 
+
+namespace magi {
 /// <summary>
 /// 手武器データ入出力クラス
 /// </summary>
@@ -45,3 +47,4 @@ private:
 	std::unordered_map<std::string, MechHandWeapon::Param> params_;
 
 };
+}
