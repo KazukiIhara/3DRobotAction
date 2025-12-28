@@ -1,6 +1,6 @@
 #include "MechEditScene.h"
 
-using namespace magi;
+using namespace Magi;
 
 void MechEditScene::Initialize() {
 	// 2Dカメラ作成

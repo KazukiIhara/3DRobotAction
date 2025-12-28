@@ -8,7 +8,7 @@
 // ImGui
 #include "imgui/imgui.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DeltaTimer;
 	class SRVUAVManager;

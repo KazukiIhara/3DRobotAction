@@ -2,7 +2,7 @@
 
 #include "PostEffectPipelines/BaseNoParamaterPostEffectPipeline/BaseNoParamaterPostEffectPipeline.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// ポストエフェクトなし
 	/// </summary>

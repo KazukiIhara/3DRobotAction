@@ -5,7 +5,7 @@
 // MyHedder
 #include "Logger/Logger.h" 
 
-using namespace magi;
+using namespace Magi;
 
 GameObject3DManager::GameObject3DManager() {
 	Clear();

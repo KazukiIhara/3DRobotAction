@@ -6,7 +6,7 @@
 // MyHedder
 #include "Structs/EffectStruct.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DeltaTimer;
 	class TransformManager;

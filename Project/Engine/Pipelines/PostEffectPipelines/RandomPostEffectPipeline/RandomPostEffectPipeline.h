@@ -2,7 +2,7 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
-namespace magi {
+namespace Magi {
 	class RandomPostEffectPipeline:public BaseWithParamaterPostEffectPipeline {
 	public:
 		RandomPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);

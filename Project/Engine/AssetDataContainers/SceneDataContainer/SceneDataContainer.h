@@ -9,7 +9,7 @@
 #include "Math/Types/Vector3.h"
 #include "Math/Types/Quaternion.h"
 
-namespace magi {
+namespace Magi {
 	struct SceneCameraData {
 		std::string name;
 		Vector3 eye;

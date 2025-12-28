@@ -3,7 +3,7 @@
 #include "Logger/Logger.h"
 #include <cassert>
 
-using namespace magi;
+using namespace Magi;
 
 Camera2DManager::Camera2DManager() {
 	Initialize();

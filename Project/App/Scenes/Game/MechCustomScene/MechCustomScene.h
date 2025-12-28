@@ -6,7 +6,7 @@
 /// <summary>
 /// 機体カスタマイズシーン
 /// </summary>
-class MechCustomScene :public magi::BaseScene {
+class MechCustomScene :public Magi::BaseScene {
 public:
 	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~MechCustomScene() = default;

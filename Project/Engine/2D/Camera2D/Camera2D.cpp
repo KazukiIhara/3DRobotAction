@@ -39,6 +39,6 @@ void Camera2D::MapCameraData() {
 	cameraData_ = nullptr;
 	cameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
 	Matrix4x4 viewMat = Inverse(MakeIdentityMatrix4x4());
-	Matrix4x4 projectionMat = MakeOrthographicMatrix(0.0f, 0.0f, magi::WindowApp::kClientWidth, magi::WindowApp::kClientHeight, nearClip_, farClip_);
+	Matrix4x4 projectionMat = MakeOrthographicMatrix(0.0f, 0.0f, Magi::WindowApp::kClientWidth, Magi::WindowApp::kClientHeight, nearClip_, farClip_);
 	cameraData_->viewProjection = viewMat * projectionMat;
 }

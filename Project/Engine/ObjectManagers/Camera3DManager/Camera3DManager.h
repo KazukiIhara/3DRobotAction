@@ -8,7 +8,7 @@
 // MyHedder
 #include "3D/Cameras3D/DebugCamera3D/DebugCamera3D.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// 3D描画用カメラのマネージャ
 	/// </summary>

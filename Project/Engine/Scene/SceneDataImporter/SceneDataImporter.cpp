@@ -9,7 +9,7 @@
 #include "Renderer3DManager/Renderer3DManager.h"
 #include "TransformManager/TransformManager.h"
 
-using namespace magi;
+using namespace Magi;
 
 SceneDataImporter::SceneDataImporter(SceneDataContainer* sceneDataContainer, GameObject3DManager* gameObject3DManager, Camera3DManager* camera3DManager, Renderer3DManager* renderer3DManager, TransformManager* transformManager) {
 	assert(sceneDataContainer);

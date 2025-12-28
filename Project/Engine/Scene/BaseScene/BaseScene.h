@@ -6,7 +6,7 @@
 // MyHedder
 #include "GameData/GameData.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class SceneManager;
 

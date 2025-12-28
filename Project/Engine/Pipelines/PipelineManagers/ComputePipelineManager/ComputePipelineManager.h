@@ -17,7 +17,7 @@
 #include "ComputePipelines/ParticleComputePipelines/EmitParticleComputePipeline/EmitParticleComputePipeline.h"
 #include "ComputePipelines/ParticleComputePipelines/UpdateParticleComputePipeline/UpdateParticleComputePipeline.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 	class ShaderCompiler;

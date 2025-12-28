@@ -10,7 +10,7 @@
 #include "BaseScene/BaseScene.h"
 #include "GameData/GameData.h"
 
-namespace magi {
+namespace Magi {
 	class SceneManager {
 	public:
 		SceneManager();

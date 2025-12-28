@@ -15,7 +15,7 @@
 
 #include "DefferedRenderringPipeline/LightingDefferedRenderringPipeline/LightingDefferedRenderringPipeline.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 	class ShaderCompiler;

@@ -5,7 +5,7 @@
 
 #include "Logger/Logger.h"
 
-using namespace magi;
+using namespace Magi;
 
 Fence::Fence(DXGI* dxgi, DirectXCommand* directXCommand) {
 	Initialize(dxgi, directXCommand);

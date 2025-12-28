@@ -10,7 +10,7 @@
 #include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 #include "Camera3DManager/Camera3DManager.h"
 
-using namespace magi;
+using namespace Magi;
 
 ModelDrawerManager::ModelDrawerManager(
 	DXGI* dxgi,

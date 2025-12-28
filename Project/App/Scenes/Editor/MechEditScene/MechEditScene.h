@@ -21,7 +21,7 @@
 /// <summary>
 /// 機体エディットシーン
 /// </summary>
-class MechEditScene:public magi::BaseScene {
+class MechEditScene:public Magi::BaseScene {
 public:
 	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~MechEditScene()override = default;

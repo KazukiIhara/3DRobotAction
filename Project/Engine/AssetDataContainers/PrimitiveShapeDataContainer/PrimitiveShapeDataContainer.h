@@ -7,7 +7,7 @@
 #include "Enums/Primitive3DEnum.h"
 #include "Structs/ModelStruct.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// シンプル形状のデータコンテナクラス
 	/// </summary>

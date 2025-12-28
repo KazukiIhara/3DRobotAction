@@ -3,7 +3,7 @@
 // C++
 #include <string>
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class SceneDataContainer;
 	class GameObject3DManager;

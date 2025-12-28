@@ -12,7 +12,7 @@
 
 #include "Math/Utility/MathUtility.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 /// グローバル変数
 /// </summary>

@@ -3,7 +3,7 @@
 #include <cassert>
 #include "Logger/Logger.h"
 
-using namespace magi;
+using namespace Magi;
 
 ShaderCompiler::ShaderCompiler() {
 	Initialize();

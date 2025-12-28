@@ -13,7 +13,7 @@
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DeltaTimer;
 	class DXGI;

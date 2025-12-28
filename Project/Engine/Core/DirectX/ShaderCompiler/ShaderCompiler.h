@@ -11,7 +11,7 @@
 // MAGI
 #include "DirectX/ComPtr/ComPtr.h"
 
-namespace magi {
+namespace Magi {
 	// シェーダーコンパイラ
 	class ShaderCompiler {
 	public:

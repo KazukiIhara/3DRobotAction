@@ -22,7 +22,7 @@ enum class ParadinState {
 };
 
 // サンプルシーン
-class SampleScene : public magi::BaseScene {
+class SampleScene : public Magi::BaseScene {
 public:
 	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;

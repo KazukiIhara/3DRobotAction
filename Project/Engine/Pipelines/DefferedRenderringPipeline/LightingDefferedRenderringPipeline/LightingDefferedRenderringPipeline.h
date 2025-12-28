@@ -2,7 +2,7 @@
 
 #include "DefferedRenderringPipeline/BaseDefferedRenderringPipeline/BaseDefferedRenderringPipeline.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// ディファードレンダリングでライティングをするパイプライン
 	/// </summary>

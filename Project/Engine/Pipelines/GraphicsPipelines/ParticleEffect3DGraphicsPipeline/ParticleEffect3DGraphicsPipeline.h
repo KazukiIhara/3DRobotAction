@@ -5,7 +5,7 @@
 
 #include "Common/Particle/ParticleEffectCommon.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// パーティクル描画用パイプライン
 	/// </summary>

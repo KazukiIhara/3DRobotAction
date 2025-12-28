@@ -4,7 +4,7 @@
 
 #include "Logger/Logger.h"
 
-using namespace magi;
+using namespace Magi;
 
 Renderer3DManager::Renderer3DManager() {
 	Clear();

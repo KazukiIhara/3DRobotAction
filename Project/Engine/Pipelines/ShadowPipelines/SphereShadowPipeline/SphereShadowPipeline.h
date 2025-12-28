@@ -2,7 +2,7 @@
 
 #include "ShadowPipelines/BaseShadowPipeline/BaseShadowPipeline.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// 球体のシャドウマップ描画用パイプライン
 	/// </summary>

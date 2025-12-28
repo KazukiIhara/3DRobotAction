@@ -20,7 +20,7 @@
 #include "ShadowPipelines/CylinderShadowPipeline/CylinderShadowPipeline.h"
 #include "ShadowPipelines/ModelShadowPipeline/ModelShadowPipeline.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 	class ShaderCompiler;

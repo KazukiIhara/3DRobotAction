@@ -5,7 +5,7 @@
 #include "Logger/Logger.h"
 #include "WindowApp/WindowApp.h"
 
-using namespace magi;
+using namespace Magi;
 
 MAGIDirectInput::MAGIDirectInput(WindowApp* windowApp) {
 	Initialize(windowApp);

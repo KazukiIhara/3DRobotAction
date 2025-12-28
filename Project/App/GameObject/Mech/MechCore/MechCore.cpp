@@ -414,7 +414,7 @@ void MechCore::QuickBoostRadialBlur() {
 	}
 
 	// ウィンドウサイズから0.0f~1.0fの値にクランプ
-	const Vector2 bodyScreenPosClamped = { std::clamp(blurScreenPos.x / magi::WindowApp::kClientWidth,0.0f,1.0f), std::clamp(blurScreenPos.y / magi::WindowApp::kClientHeight,0.0f,1.0f) };
+	const Vector2 bodyScreenPosClamped = { std::clamp(blurScreenPos.x / Magi::WindowApp::kClientWidth,0.0f,1.0f), std::clamp(blurScreenPos.y / Magi::WindowApp::kClientHeight,0.0f,1.0f) };
 
 	// 機体のスクリーン0.0f~1.0f座標に補完計算したブラーの値で
 	MAGISYSTEM::ApplyPostEffectRadialBlur(bodyScreenPosClamped, blurWitdh);

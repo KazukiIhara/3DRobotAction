@@ -8,7 +8,7 @@
 // MyHedder
 #include "2D/Camera2D/Camera2D.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// 2D描画用のカメラマネージャ
 	/// </summary>

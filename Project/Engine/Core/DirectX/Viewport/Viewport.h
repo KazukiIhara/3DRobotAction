@@ -4,7 +4,7 @@
 
 #include "WindowApp/WindowApp.h"
 
-namespace magi {
+namespace Magi {
 	class DirectXCommand;
 
 	class Viewport {
@@ -16,7 +16,7 @@ namespace magi {
 		void Initialize(DirectXCommand* directXCommand);
 
 		// ビューポートを設定
-		void SettingViewport(uint32_t width = magi::WindowApp::kClientWidth, uint32_t height = magi::WindowApp::kClientHeight);
+		void SettingViewport(uint32_t width = Magi::WindowApp::kClientWidth, uint32_t height = Magi::WindowApp::kClientHeight);
 
 	private:
 		// コマンドのインスタンスをセット

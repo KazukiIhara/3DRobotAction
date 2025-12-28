@@ -6,7 +6,7 @@
 
 #include "Logger/Logger.h"
 
-using namespace magi;
+using namespace Magi;
 using namespace MAGIMath;
 
 AnimationDataContainer::AnimationDataContainer() {

@@ -12,7 +12,7 @@
 // MyHedder
 #include "Structs/ModelStruct.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class TextureDataContainer;
 

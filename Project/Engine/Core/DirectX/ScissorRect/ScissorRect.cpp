@@ -7,7 +7,7 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "WindowApp/WindowApp.h"
 
-using namespace magi;
+using namespace Magi;
 
 ScissorRect::ScissorRect(DirectXCommand* directXCommand) {
 	Initialize(directXCommand);

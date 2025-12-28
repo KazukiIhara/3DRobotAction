@@ -19,7 +19,7 @@
 
 #include "Logger/Logger.h"
 
-using namespace magi;
+using namespace Magi;
 
 RenderController::RenderController(
 	DXGI* dxgi,

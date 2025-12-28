@@ -8,7 +8,7 @@
 // MyHedder
 #include "Structs/SoundStruct.h"
 
-namespace magi {
+namespace Magi {
 	class SoundDataContainer {
 	public:
 		SoundDataContainer();

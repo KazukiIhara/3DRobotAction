@@ -14,7 +14,7 @@
 #include "Math/Types/Vector4.h"
 
 // 前方宣言
-namespace magi {
+namespace Magi {
 	class WindowApp;
 	class DXGI;
 	class DirectXCommand;
@@ -81,7 +81,7 @@ namespace magi {
 		HRESULT hr_ = S_FALSE;
 	private:
 		// WindowAppのインスタンスを受け取る箱
-		magi::WindowApp* windowApp_ = nullptr;
+		Magi::WindowApp* windowApp_ = nullptr;
 		// dxgiのインスタンスを受け取る箱
 		DXGI* dxgi_ = nullptr;
 		// viewportのインスタンスを受け取る箱

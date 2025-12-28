@@ -5,7 +5,7 @@
 #include "Logger/Logger.h"
 #include "ImGuiController/ImGuiController.h"
 
-using namespace magi;
+using namespace Magi;
 
 WindowApp::WindowApp() {
 	Initialize();

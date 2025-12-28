@@ -7,7 +7,7 @@
 #include "Structs/XInputStruct.h"
 #include "Math/Types/Vector2.h"
 
-namespace magi {
+namespace Magi {
 
 	// 前方宣言
 	class DeltaTimer;

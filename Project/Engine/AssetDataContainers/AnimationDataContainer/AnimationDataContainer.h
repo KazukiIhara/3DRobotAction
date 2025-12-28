@@ -13,7 +13,7 @@
 // MyHedder
 #include "Structs/AnimationStruct.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// アニメーションのデータコンテナ
 	/// </summary>

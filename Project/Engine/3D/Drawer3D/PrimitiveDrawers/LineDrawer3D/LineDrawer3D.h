@@ -13,7 +13,7 @@
 #include "Enums/BlendModeEnum.h"
 #include "Const/Primitive3DConst.h"
 
-namespace magi {
+namespace Magi {
 	class DXGI;
 	class DirectXCommand;
 	class SRVUAVManager;
