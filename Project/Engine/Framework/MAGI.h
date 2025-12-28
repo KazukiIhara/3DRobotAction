@@ -119,7 +119,6 @@
 // 
 // Data入出力クラス
 // 
-#include "GrobalDataManager/GrobalDataManager.h"
 #include "SceneDataImporter/SceneDataImporter.h"
 
 // 
@@ -630,28 +629,6 @@ public: // エンジンの機能
 
 #pragma endregion 
 
-#pragma region GrobalDataManager
-	// グループの追加
-	static void AddGrobalDataGroup(const std::string& groupname);
-	// アイテムの追加
-	static void AddGrobalDataItem(const std::string& groupname, const std::string& itemname, int32_t value);
-	static void AddGrobalDataItem(const std::string& groupname, const std::string& itemname, float value);
-	static void AddGrobalDataItem(const std::string& groupname, const std::string& itemname, Vector3 value);
-	static void AddGrobalDataItem(const std::string& groupname, const std::string& itemname, bool value);
-
-	// グループとキーから値をセット
-	static void SetGrobalDataValue(const std::string& groupname, const std::string& itemname, int32_t value);
-	static void SetGrobalDataValue(const std::string& groupname, const std::string& itemname, float value);
-	static void SetGrobalDataValue(const std::string& groupname, const std::string& itemname, Vector3 value);
-	static void SetGrobalDataValue(const std::string& groupname, const std::string& itemname, bool value);
-
-	// グループとキーから値の取得
-	static int32_t GetGrobalDataValueInt(const std::string& groupName, const std::string& key);
-	static float GetGrobalDataValueFloat(const std::string& groupName, const std::string& key);
-	static Vector3 GetGrobalDataValueVector3(const std::string& groupName, const std::string& key);
-	static bool GetGrobalDataValueBool(const std::string& groupName, const std::string& key);
-#pragma endregion
-
 #pragma region SceneDataImporter
 	// シーンデータをインポート
 	static void ImportSceneData(const std::string& sceneDataName, bool isSceneClear = true);
@@ -780,7 +757,6 @@ protected:
 	//
 	// Data入出力クラス
 	//
-	static std::unique_ptr<Magi::GrobalDataManager> grobalDataManager_;
 	static std::unique_ptr<Magi::SceneDataImporter> sceneDataImporter_;
 
 	//

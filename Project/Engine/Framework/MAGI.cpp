@@ -118,7 +118,6 @@ std::unique_ptr<SceneManager> MAGISYSTEM::sceneManager_ = nullptr;
 //
 // Data入出力クラス
 //
-std::unique_ptr<GrobalDataManager> MAGISYSTEM::grobalDataManager_ = nullptr;
 std::unique_ptr<SceneDataImporter> MAGISYSTEM::sceneDataImporter_ = nullptr;
 
 //
@@ -259,8 +258,6 @@ void MAGISYSTEM::Initialize() {
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager>();
 
-	// GrobalDataManager
-	grobalDataManager_ = std::make_unique<GrobalDataManager>();
 	// SceneDataImporter
 	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get(), camera3DManager_.get(), renderer3DManager_.get(), transformManager_.get());
 
@@ -288,11 +285,6 @@ void MAGISYSTEM::Finalize() {
 	// SceneDataImporter
 	if (sceneDataImporter_) {
 		sceneDataImporter_.reset();
-	}
-
-	// GrobalDataManager
-	if (grobalDataManager_) {
-		grobalDataManager_.reset();
 	}
 
 	// SceneManager
@@ -595,10 +587,6 @@ void MAGISYSTEM::Update() {
 
 	// ライトマネージャ(新)の更新
 	lightManager_->Update();
-
-
-	// グローバルデータ
-	grobalDataManager_->Update();
 
 }
 
@@ -1533,58 +1521,6 @@ void MAGISYSTEM::EmitParticle(const GPUParticleEmitData& emitData) {
 
 void MAGISYSTEM::AddPlaneEffect(const PlaneEffectParam& param) {
 	planeEffectManager_->Add(param);
-}
-
-void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
-	grobalDataManager_->CreateGroup(groupname);
-}
-
-void MAGISYSTEM::AddGrobalDataItem(const std::string& groupname, const std::string& itemname, int32_t value) {
-	grobalDataManager_->AddItem(groupname, itemname, value);
-}
-
-void MAGISYSTEM::AddGrobalDataItem(const std::string& groupname, const std::string& itemname, float value) {
-	grobalDataManager_->AddItem(groupname, itemname, value);
-}
-
-void MAGISYSTEM::AddGrobalDataItem(const std::string& groupname, const std::string& itemname, Vector3 value) {
-	grobalDataManager_->AddItem(groupname, itemname, value);
-}
-
-void MAGISYSTEM::AddGrobalDataItem(const std::string& groupname, const std::string& itemname, bool value) {
-	grobalDataManager_->AddItem(groupname, itemname, value);
-}
-
-void MAGISYSTEM::SetGrobalDataValue(const std::string& groupname, const std::string& itemname, int32_t value) {
-	grobalDataManager_->SetValue(groupname, itemname, value);
-}
-
-void MAGISYSTEM::SetGrobalDataValue(const std::string& groupname, const std::string& itemname, float value) {
-	grobalDataManager_->SetValue(groupname, itemname, value);
-}
-
-void MAGISYSTEM::SetGrobalDataValue(const std::string& groupname, const std::string& itemname, Vector3 value) {
-	grobalDataManager_->SetValue(groupname, itemname, value);
-}
-
-void MAGISYSTEM::SetGrobalDataValue(const std::string& groupname, const std::string& itemname, bool value) {
-	grobalDataManager_->SetValue(groupname, itemname, value);
-}
-
-int32_t MAGISYSTEM::GetGrobalDataValueInt(const std::string& groupName, const std::string& key) {
-	return grobalDataManager_->GetValueInt(groupName, key);
-}
-
-float MAGISYSTEM::GetGrobalDataValueFloat(const std::string& groupName, const std::string& key) {
-	return grobalDataManager_->GetValueFloat(groupName, key);
-}
-
-Vector3 MAGISYSTEM::GetGrobalDataValueVector3(const std::string& groupName, const std::string& key) {
-	return grobalDataManager_->GetValueVector3(groupName, key);
-}
-
-bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std::string& key) {
-	return grobalDataManager_->GetValueBool(groupName, key);
 }
 
 void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneClear) {
