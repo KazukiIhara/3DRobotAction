@@ -38,9 +38,9 @@ namespace Magi {
 	>;
 
 	/// <summary>
-	/// パラメータエントリー
+	/// パラメータデータ
 	/// </summary>
-	struct ParamEntry {
+	struct ParamData {
 		// パラメータのタイプ
 		ParamType Type{};
 		// 値
@@ -48,14 +48,28 @@ namespace Magi {
 	};
 
 	/// <summary>
+	/// データ名と紐づけるマップ
+	/// </summary>
+	struct ParamEntry {
+		// <データ名、データ>
+		std::unordered_map<std::string, ParamData> datas_;
+	};
+
+	/// <summary>
+	/// タグ単位のデータ
+	/// </summary>
+	struct ParamTag {
+		std::unordered_map<std::string, ParamEntry> tags_;
+	};
+
+	/// <summary>
 	/// パラメータデータコンテナクラス
 	/// </summary>
-	class ParameterDataContainer {
+	class ParameterDataGroupContainer {
 	public:
-		ParameterDataContainer();
-		~ParameterDataContainer();
+		ParameterDataGroupContainer();
+		~ParameterDataGroupContainer();
 
-	private:
 		// すべてのファイルを読んでデータコンテナを作成
 		void LoadAllData();
 		// コンテナ内すべてのデータをファイルに保存
@@ -68,8 +82,8 @@ namespace Magi {
 		// データの取得
 
 	private:
-		// パラメータデータマップコンテナ
-		std::unordered_map<std::string, ParamEntry> entries_{};
+		// グループ単位のデータ
+		std::unordered_map<std::string, ParamData> datas_{};
 
 	};
 
