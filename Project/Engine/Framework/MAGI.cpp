@@ -5,7 +5,7 @@
 #include "Random/Random.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-using namespace magi;
+using namespace Magi;
 using namespace MAGIUtility;
 
 // Staticメンバ変数の初期化
@@ -1150,7 +1150,7 @@ void MAGISYSTEM::ApplyPostEffectGaussianX(float sigma, uint32_t karnelSize) {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::GaussianX,
 		.param = {
-			.param = {1.0f / magi::WindowApp::kClientWidth,1.0f / magi::WindowApp::kClientHeight,0.0f,0.0f,
+			.param = {1.0f / Magi::WindowApp::kClientWidth,1.0f / Magi::WindowApp::kClientHeight,0.0f,0.0f,
 				weight[0],weight[1],weight[2],weight[3],
 				weight[4],weight[5],weight[6],0.0f,
 				kernelRadius,
@@ -1169,7 +1169,7 @@ void MAGISYSTEM::ApplyPostEffectGaussianY(float sigma, uint32_t karnelSize) {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::GaussianY,
 		.param = {
-			.param = {1.0f / magi::WindowApp::kClientWidth,1.0f / magi::WindowApp::kClientHeight,0.0f,0.0f,
+			.param = {1.0f / Magi::WindowApp::kClientWidth,1.0f / Magi::WindowApp::kClientHeight,0.0f,0.0f,
 				weight[0],weight[1],weight[2],weight[3],
 				weight[4],weight[5],weight[6],0.0f,
 				kernelRadius,

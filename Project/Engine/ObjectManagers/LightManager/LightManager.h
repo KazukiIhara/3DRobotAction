@@ -11,7 +11,7 @@
 #include "Structs/LightStruct.h"
 #include "Math/Utility/MathUtility.h"
 
-namespace magi {
+namespace Magi {
 
 	class DXGI;
 	class DirectXCommand;

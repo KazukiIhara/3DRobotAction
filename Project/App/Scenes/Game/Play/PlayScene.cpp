@@ -1,6 +1,6 @@
 #include "PlayScene.h"
 
-using namespace magi;
+using namespace Magi;
 
 void PlayScene::Initialize() {
 	//-------------------------------------------------------

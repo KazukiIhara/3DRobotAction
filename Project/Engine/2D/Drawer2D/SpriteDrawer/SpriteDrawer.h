@@ -12,7 +12,7 @@
 #include "Structs/SpriteStruct.h"
 #include "Enums/BlendModeEnum.h"
 
-namespace magi {
+namespace Magi {
 	class DXGI;
 	class DirectXCommand;
 	class SRVUAVManager;

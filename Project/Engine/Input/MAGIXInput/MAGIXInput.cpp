@@ -5,7 +5,7 @@
 
 #include "DeltaTimer/DeltaTimer.h"
 
-using namespace magi;
+using namespace Magi;
 
 MAGIXInput::MAGIXInput(DeltaTimer* deltaTimer) {
 	assert(deltaTimer);

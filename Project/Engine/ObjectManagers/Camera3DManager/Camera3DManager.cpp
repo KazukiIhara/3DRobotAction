@@ -4,7 +4,7 @@
 
 #include "MAGIAssert/MAGIAssert.h"
 
-using namespace magi;
+using namespace Magi;
 
 Camera3DManager::Camera3DManager() {
 	Initialize();

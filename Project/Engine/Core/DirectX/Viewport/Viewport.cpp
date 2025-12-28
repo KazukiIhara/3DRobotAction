@@ -5,7 +5,7 @@
 #include "Logger/Logger.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 
-using namespace magi;
+using namespace Magi;
 
 Viewport::Viewport(DirectXCommand* directXCommand) {
 	Initialize(directXCommand);

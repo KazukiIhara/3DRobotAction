@@ -18,7 +18,7 @@
 #include "ResourceTextures/DepthTextures/ShadowDepthTexture/ShadowDepthTexture.h"
 
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 	class DirectXCommand;

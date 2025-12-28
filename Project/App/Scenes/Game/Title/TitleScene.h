@@ -8,7 +8,7 @@
 /// <summary>
 /// タイトルシーン
 /// </summary>
-class TitleScene :public magi::BaseScene {
+class TitleScene :public Magi::BaseScene {
 public:
 	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~TitleScene()override = default;

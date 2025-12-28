@@ -1,6 +1,6 @@
 #include "PrimitiveShapeDataContainer.h"
 
-using namespace magi;
+using namespace Magi;
 using namespace MAGIMath;
 
 PrimitiveShapeDataContainer::PrimitiveShapeDataContainer() {

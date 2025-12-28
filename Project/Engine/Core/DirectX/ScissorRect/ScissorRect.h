@@ -4,7 +4,7 @@
 
 #include "WindowApp/WindowApp.h"
 
-namespace magi {
+namespace Magi {
 	class DirectXCommand;
 
 	class ScissorRect {
@@ -16,7 +16,7 @@ namespace magi {
 		void Initialize(DirectXCommand* command);
 
 		// シザー矩形を設定
-		void SettingScissorRect(uint32_t width = magi::WindowApp::kClientWidth, uint32_t height = magi::WindowApp::kClientHeight);
+		void SettingScissorRect(uint32_t width = Magi::WindowApp::kClientWidth, uint32_t height = Magi::WindowApp::kClientHeight);
 
 	private:
 		// コマンドのインスタンスをセット

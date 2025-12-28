@@ -9,7 +9,7 @@
 #include "DirectX/Fence/Fence.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
-using namespace magi;
+using namespace Magi;
 
 TextureDataContainer::TextureDataContainer(DXGI* dxgi, DirectXCommand* directXCommand, Fence* fence, SRVUAVManager* srvUavManager) {
 	Initialize(dxgi, directXCommand, fence, srvUavManager);

@@ -2,7 +2,7 @@
 
 #include "SceneManager/SceneManager.h"
 
-using namespace magi;
+using namespace Magi;
 
 BaseScene::BaseScene(SceneManager* sceneManager) {
 	sceneManager_ = sceneManager;

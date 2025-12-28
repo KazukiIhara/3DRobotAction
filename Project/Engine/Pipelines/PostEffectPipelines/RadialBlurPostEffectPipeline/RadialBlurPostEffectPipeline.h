@@ -2,7 +2,7 @@
 
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// ラジアルブラー
 	/// </summary>

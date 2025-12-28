@@ -7,7 +7,7 @@
 // MyHedder
 #include "Renderer3D/ModelRenderer/ModelRenderer.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// 3D描画オブジェクト管理クラス
 	/// </summary>

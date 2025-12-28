@@ -7,7 +7,7 @@
 // MyHedder
 #include "Transform3D/Transform3D.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// トランスフォーム管理クラス
 	/// </summary>

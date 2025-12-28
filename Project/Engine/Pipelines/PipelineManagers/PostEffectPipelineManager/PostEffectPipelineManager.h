@@ -22,7 +22,7 @@
 #include "PostEffectPipelines/DepthNormalOutlinePostEffectPipeline/DepthNormalOutlinePostEffectPipeline.h"
 #include "PostEffectPipelines/RandomPostEffectPipeline/RandomPostEffectPipeline.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 	class ShaderCompiler;

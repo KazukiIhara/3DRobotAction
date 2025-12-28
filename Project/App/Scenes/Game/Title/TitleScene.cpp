@@ -1,6 +1,6 @@
 #include "TitleScene.h"
 
-using namespace magi;
+using namespace Magi;
 
 void TitleScene::Initialize() {
 	// 2Dカメラ作成

@@ -3,7 +3,7 @@
 #include "MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-using namespace magi;
+using namespace Magi;
 using namespace MAGIUtility;
 
 BaseRenderTexture::BaseRenderTexture() {

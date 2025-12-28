@@ -2,7 +2,7 @@
 
 #include "ViewManagers/BaseViewManager/BaseViewManager.h"
 
-namespace magi {
+namespace Magi {
 	class SRVUAVManager:public BaseViewManager {
 	public:
 		SRVUAVManager(DXGI* dxgi);

@@ -8,17 +8,17 @@
 #include "Enums/MouseInputEnum.h"
 
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class WindowApp;
 
 	// DirectInputクラス
 	class MAGIDirectInput {
 	public:
-		MAGIDirectInput(magi::WindowApp* windowApp);
+		MAGIDirectInput(Magi::WindowApp* windowApp);
 		~MAGIDirectInput();
 		// 初期化
-		void Initialize(magi::WindowApp* windowApp);
+		void Initialize(Magi::WindowApp* windowApp);
 		// 更新
 		void Update();
 
@@ -55,11 +55,11 @@ namespace magi {
 		void UpdateMouse();
 	private:
 		// WindowAppをセット
-		void SetWindowApp(magi::WindowApp* windowApp);
+		void SetWindowApp(Magi::WindowApp* windowApp);
 
 	private:
 		// WindowAppのインスタンスを受け取る箱
-		magi::WindowApp* windowApp_ = nullptr;
+		Magi::WindowApp* windowApp_ = nullptr;
 
 		// DirectInput
 		ComPtr <IDirectInput8> directInput_ = nullptr;

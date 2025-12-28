@@ -2,7 +2,7 @@
 
 #include "PostEffectPipelines/BasePostEffectPipeline/BasePostEffectPipeline.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// 追加情報をシェーダーに送るポストエフェクトのパイプライン基底クラス
 	/// </summary>

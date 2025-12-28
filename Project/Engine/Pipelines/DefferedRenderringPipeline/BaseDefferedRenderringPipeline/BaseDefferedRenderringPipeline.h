@@ -10,7 +10,7 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Includes/Enums/BlendModeEnum.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 	class ShaderCompiler;

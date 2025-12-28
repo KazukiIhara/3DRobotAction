@@ -2,7 +2,7 @@
 
 #include "ViewManagers/BaseViewManager/BaseViewManager.h"
 
-namespace magi {
+namespace Magi {
 	class DSVManager:public BaseViewManager {
 	public:
 		DSVManager(DXGI* dxgi);

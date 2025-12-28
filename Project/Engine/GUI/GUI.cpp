@@ -13,7 +13,7 @@
 #include <Windows.h>
 #endif
 
-using namespace magi;
+using namespace Magi;
 
 GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager) {
 	// 

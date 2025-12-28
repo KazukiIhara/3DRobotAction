@@ -5,7 +5,7 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
-using namespace magi;
+using namespace Magi;
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
@@ -140,8 +140,8 @@ void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 			lockOnWPos_ = body->GetTransform()->GetWorldPosition();
 		}
 		// 中心座標
-		lockonGrayData_.position = Vector2(magi::WindowApp::kClientWidth * 0.5f, magi::WindowApp::kClientHeight * 0.5f);
-		lockonRedData_.position = Vector2(magi::WindowApp::kClientWidth * 0.5f, magi::WindowApp::kClientHeight * 0.5f);
+		lockonGrayData_.position = Vector2(Magi::WindowApp::kClientWidth * 0.5f, Magi::WindowApp::kClientHeight * 0.5f);
+		lockonRedData_.position = Vector2(Magi::WindowApp::kClientWidth * 0.5f, Magi::WindowApp::kClientHeight * 0.5f);
 
 		// 非ロックオン時は常に赤色
 		lockonRedMat_.color = Color::Red;

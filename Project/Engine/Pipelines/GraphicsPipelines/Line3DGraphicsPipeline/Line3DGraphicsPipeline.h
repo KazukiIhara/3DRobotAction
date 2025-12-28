@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-namespace magi {
+namespace Magi {
 	class Line3DGraphicsPipeline:public BaseGraphicsPipeline {
 	public:
 		Line3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);

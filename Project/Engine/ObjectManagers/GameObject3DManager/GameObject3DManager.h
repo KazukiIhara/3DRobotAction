@@ -8,7 +8,7 @@
 // MyHedder
 #include "GameObject3D/GameObject3D.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// 3Dゲームオブジェクトマネージャー
 	/// </summary>

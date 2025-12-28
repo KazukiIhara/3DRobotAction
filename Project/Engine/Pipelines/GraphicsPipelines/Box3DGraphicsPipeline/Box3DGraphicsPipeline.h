@@ -4,7 +4,7 @@
 
 #include "Structs/Primitive3DStruct.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// 3Dボックス描画用のパイプライン
 	/// </summary>

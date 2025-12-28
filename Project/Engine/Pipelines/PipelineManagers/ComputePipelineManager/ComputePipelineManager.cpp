@@ -2,7 +2,7 @@
 
 #include "Logger/Logger.h"
 
-using namespace magi;
+using namespace Magi;
 
 ComputePipelineManager::ComputePipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);

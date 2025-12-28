@@ -11,7 +11,7 @@
 #include "Includes/Enums/BlendModeEnum.h"
 #include "Structs/Primitive3DStruct.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 	class ShaderCompiler;

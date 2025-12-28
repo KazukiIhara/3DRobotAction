@@ -7,7 +7,7 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-using namespace magi;
+using namespace Magi;
 
 Triangle3DGraphicsPipeline::Triangle3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {

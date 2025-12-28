@@ -4,7 +4,7 @@
 
 #include "Structs/SpriteStruct.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// スプライト描画用パイプライン
 	/// </summary>

@@ -3,7 +3,7 @@
 #include "Logger/Logger.h"
 #include "SceneManager.h"
 
-using namespace magi;
+using namespace Magi;
 
 SceneManager::SceneManager()
 	: data_(std::make_unique<GameData>()) {

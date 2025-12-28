@@ -2,7 +2,7 @@
 
 #include "ViewManagers/BaseViewManager/BaseViewManager.h"
 
-namespace magi {
+namespace Magi {
 	class RTVManager:public BaseViewManager {
 	public:
 		// コンストラクタ

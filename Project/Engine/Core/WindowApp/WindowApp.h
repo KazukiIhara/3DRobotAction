@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <Windows.h>
 
-namespace magi {
+namespace Magi {
 	// ウィンドウ管理クラス
 	class WindowApp {
 	public:

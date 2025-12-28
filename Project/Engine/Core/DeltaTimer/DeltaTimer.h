@@ -6,7 +6,7 @@
 // C++
 #include <cstdint>
 
-namespace magi {
+namespace Magi {
 	class DeltaTimer {
 	public:
 		DeltaTimer();

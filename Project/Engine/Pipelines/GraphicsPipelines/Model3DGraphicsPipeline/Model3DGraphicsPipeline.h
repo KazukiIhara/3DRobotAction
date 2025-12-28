@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-namespace magi {
+namespace Magi {
 	/// <summary>
 	/// モデル描画用のパイプライン
 	/// </summary>

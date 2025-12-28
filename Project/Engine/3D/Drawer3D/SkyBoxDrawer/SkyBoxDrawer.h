@@ -10,7 +10,7 @@
 #include "Math/Utility/MathUtility.h"
 #include "Structs/SkyBoxStruct.h"
 
-namespace magi {
+namespace Magi {
 	class DXGI;
 	class DirectXCommand;
 	class SRVUAVManager;

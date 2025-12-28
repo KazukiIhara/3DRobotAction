@@ -12,7 +12,7 @@
 // ComPtr
 #include "DirectX/ComPtr/ComPtr.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 

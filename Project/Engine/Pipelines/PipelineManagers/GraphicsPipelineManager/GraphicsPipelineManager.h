@@ -28,7 +28,7 @@
 
 #include "GraphicsPipelines/ParticleEffect3DGraphicsPipeline/ParticleEffect3DGraphicsPipeline.h"
 
-namespace magi {
+namespace Magi {
 	// 前方宣言
 	class DXGI;
 	class ShaderCompiler;

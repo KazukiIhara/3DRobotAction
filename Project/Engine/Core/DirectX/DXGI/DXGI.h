@@ -9,7 +9,7 @@
 
 #include "DirectX/ComPtr/ComPtr.h"
 
-namespace magi {
+namespace Magi {
 	class DXGI {
 	public:
 		// コンストラクタ
