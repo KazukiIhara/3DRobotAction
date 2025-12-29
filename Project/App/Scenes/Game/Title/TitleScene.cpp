@@ -162,7 +162,7 @@ void TitleScene::Initialize() {
 
 	Magi::ParamData startUIPos{};
 	startUIPos.Type = ParamType::Vec2;
-	startUIPos.Value = Vector2(12.0f, 0.0f);
+	startUIPos.Value = Vector2{};
 
 	MAGISYSTEM::AddParameterData({ "TitleScene","UIPositon","StartUIPos" }, startUIPos);
 
