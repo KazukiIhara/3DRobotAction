@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <variant>
 #include <filesystem>
+#include <vector>
 
 // Json
 #include <nlohmann/json.hpp>
@@ -74,7 +75,9 @@ namespace Magi {
 		void LoadAllData();
 		// コンテナ内すべてのデータをファイルに保存
 		void SaveAllData();
-
+		
+		// グループの追加
+		void AddGroup(const std::string &groupName);
 		// データの追加
 
 		// データの削除
@@ -82,6 +85,9 @@ namespace Magi {
 		// データの取得
 
 	private:
+		// グループのリスト
+		std::vector<std::string> groupList_{};
+
 		// グループ単位のデータ
 		std::unordered_map<std::string, ParamData> datas_{};
 

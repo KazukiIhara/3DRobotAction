@@ -7,3 +7,11 @@ ParameterDataGroupContainer::ParameterDataGroupContainer() {
 
 ParameterDataGroupContainer::~ParameterDataGroupContainer() {
 }
+
+void ParameterDataGroupContainer::LoadAllData() {
+
+}
+
+void ParameterDataGroupContainer::SaveAllData() {
+
+}
