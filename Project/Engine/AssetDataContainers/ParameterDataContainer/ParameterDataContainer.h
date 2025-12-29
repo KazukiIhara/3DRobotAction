@@ -7,6 +7,7 @@
 #include <variant>
 #include <filesystem>
 #include <vector>
+#include <optional>
 
 // Json
 #include <nlohmann/json.hpp>
@@ -49,47 +50,44 @@ namespace Magi {
 	};
 
 	/// <summary>
-	/// データ名と紐づけるマップ
+	/// パラメータのノード
 	/// </summary>
-	struct ParamEntry {
-		// <データ名、データ>
-		std::unordered_map<std::string, ParamData> datas_;
-	};
-
-	/// <summary>
-	/// タグ単位のデータ
-	/// </summary>
-	struct ParamTag {
-		std::unordered_map<std::string, ParamEntry> tags_;
+	struct ParamNode {
+		std::unordered_map<std::string, ParamNode> children;
+		std::optional<ParamData> value;
 	};
 
 	/// <summary>
 	/// パラメータデータコンテナクラス
 	/// </summary>
-	class ParameterDataGroupContainer {
+	class ParameterDataContainer {
 	public:
-		ParameterDataGroupContainer();
-		~ParameterDataGroupContainer();
+		ParameterDataContainer();
+		~ParameterDataContainer();
 
 		// すべてのファイルを読んでデータコンテナを作成
 		void LoadAllData();
 		// コンテナ内すべてのデータをファイルに保存
 		void SaveAllData();
-		
+
 		// グループの追加
-		void AddGroup(const std::string &groupName);
+		void AddGroup(const std::string& groupName);
+
+		// タグの追加
+		void AddTag(const std::vector<std::string>& path);
+
 		// データの追加
+		void AddData(const std::vector<std::string>& path, const ParamData& data);
 
-		// データの削除
-
-		// データの取得
+		// 値の取得
+		ParamValue GetValue(std::vector<std::string>& path);
 
 	private:
-		// グループのリスト
-		std::vector<std::string> groupList_{};
+		// グループコンテナ <グループ名、デバッグ描画フラグ>
+		std::vector<std::pair<std::string, bool>> groups_{};
 
-		// グループ単位のデータ
-		std::unordered_map<std::string, ParamData> datas_{};
+		// パラメータコンテナ <グループ名、
+		std::unordered_map<std::string, ParamNode> paramDatas_{};
 
 	};
 

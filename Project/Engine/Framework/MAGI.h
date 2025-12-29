@@ -42,6 +42,7 @@
 // 
 // AssetContainer
 // 
+#include "ParameterDataContainer/ParameterDataContainer.h"
 #include "TextureDataContainer/TextureDataContainer.h"
 #include "PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
 #include "SceneDataContainer/SceneDataContainer.h"
@@ -117,7 +118,7 @@
 #include "RenderPipelineController/RenderPipelineController.h"
 
 // 
-// Data入出力クラス
+// Dataクラス
 // 
 #include "SceneDataImporter/SceneDataImporter.h"
 
@@ -362,6 +363,15 @@ public: // エンジンの機能
 	// シーンにランダムノイズのポストエフェクトをかける
 	static void ApplyPostEffectRandom();
 
+#pragma endregion
+
+#pragma region ParameterDataContainer
+	// パラメータのグループを追加
+	static void AddParameterGroup(const std::string& groupName);
+	// パラメータのタグを追加
+	static void AddPrameterTag(const std::vector<std::string>& path);
+	// パラメータのデータを追加
+	static void AddParameterData(const std::vector<std::string>& dataPath, const Magi::ParamData& data);
 #pragma endregion
 
 #pragma region TextureDataContainer
@@ -695,6 +705,7 @@ protected:
 	// 
 	// AssetContainer
 	// 
+	static std::unique_ptr<Magi::ParameterDataContainer> parameterDataContainer_;
 	static std::unique_ptr<Magi::TextureDataContainer> textureDataCantainer_;
 	static std::unique_ptr<Magi::PrimitiveShapeDataContainer> primitiveDataContainer_;
 	static std::unique_ptr<Magi::ModelDataContainer> modelDataContainer_;

@@ -56,6 +56,7 @@ std::unique_ptr<ShadowPipelineManager> MAGISYSTEM::shadowPipelineManager_ = null
 // 
 // AssetContainer
 // 
+std::unique_ptr<ParameterDataContainer> MAGISYSTEM::parameterDataContainer_ = nullptr;
 std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
 std::unique_ptr<PrimitiveShapeDataContainer> MAGISYSTEM::primitiveDataContainer_ = nullptr;
 std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
@@ -173,6 +174,8 @@ void MAGISYSTEM::Initialize() {
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), viewport_.get(), scissorRect_.get(), directXCommand_.get(), rtvManager_.get());
 
+	// ParameterDataContainer
+	parameterDataContainer_ = std::make_unique<ParameterDataContainer>();
 	// TextureDataContainer
 	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
 	// PrimitiveDataContainer
@@ -445,6 +448,11 @@ void MAGISYSTEM::Finalize() {
 	// TextureDataContainer
 	if (textureDataCantainer_) {
 		textureDataCantainer_.reset();
+	}
+
+	// ParameterDataContainer
+	if (parameterDataContainer_) {
+		parameterDataContainer_.reset();
 	}
 
 	// SwapChain
@@ -1212,6 +1220,18 @@ void MAGISYSTEM::ApplyPostEffectRandom() {
 		}
 	};
 	renderController_->AddPostEffect(command);
+}
+
+void MAGISYSTEM::AddParameterGroup(const std::string& groupName) {
+	parameterDataContainer_->AddGroup(groupName);
+}
+
+void MAGISYSTEM::AddPrameterTag(const std::vector<std::string>& path) {
+	parameterDataContainer_->AddTag(path);
+}
+
+void MAGISYSTEM::AddParameterData(const std::vector<std::string>& dataPath, const Magi::ParamData& data) {
+	parameterDataContainer_->AddData(dataPath, data);
 }
 
 uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
