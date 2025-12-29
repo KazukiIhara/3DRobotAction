@@ -153,6 +153,19 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::CreateModelDrawer("Spark", MAGISYSTEM::FindModel("Spark"));
 
 
+	// 
+	// パラメータ作成
+	// 
+	MAGISYSTEM::AddParameterGroup("TitleScene");
+
+	MAGISYSTEM::AddPrameterTag({ "TitleScene","UIPositon" });
+
+	Magi::ParamData startUIPos{};
+	startUIPos.Type = ParamType::Vec2;
+	startUIPos.Value = Vector2(12.0f, 0.0f);
+
+	MAGISYSTEM::AddParameterData({ "TitleScene","UIPositon","StartUIPos" }, startUIPos);
+
 	startData_.position = { WindowApp::kClientWidth * 0.5f, 900.0f };
 	exitData_.position = { WindowApp::kClientWidth * 0.5f, 912.0f };
 
