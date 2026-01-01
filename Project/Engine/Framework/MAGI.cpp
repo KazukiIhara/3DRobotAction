@@ -1234,6 +1234,10 @@ void MAGISYSTEM::AddParameterData(const std::vector<std::string>& dataPath, cons
 	parameterDataContainer_->AddData(dataPath, data);
 }
 
+void MAGISYSTEM::AddParameterData(const std::vector<std::string>& dataPath, const Magi::ParamType& type) {
+	parameterDataContainer_->AddData(dataPath, type);
+}
+
 uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
 	return textureDataCantainer_->Load(fileName, isFullPath);
 }

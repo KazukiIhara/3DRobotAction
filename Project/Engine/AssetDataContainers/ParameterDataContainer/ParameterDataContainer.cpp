@@ -222,7 +222,7 @@ void ParameterDataContainer::LoadAllData() {
 void ParameterDataContainer::SaveAllData() {
 	std::filesystem::create_directories(kParamDir);
 
-	// 保存対象グループ一覧（高速に引けるように）
+	// 保存対象グループ一覧
 	std::unordered_set<std::string> groupSet;
 	groupSet.reserve(groups_.size());
 	for (const auto& [groupName, debugFlag] : groups_) {
@@ -290,6 +290,13 @@ void ParameterDataContainer::AddTag(const std::vector<std::string>& path) {
 	AddGroup(groupName);
 
 	ParamNode& groupRoot = paramDatas_.at(groupName);
+
+	// 既に同名タグがあるなら何もしない
+	if (const ParamNode* node = FindNode(groupRoot, path, 1)) {
+		(void)node;
+		return;
+	}
+
 	(void)GetOrCreateNode(groupRoot, path, 1);
 }
 
@@ -302,8 +309,51 @@ void ParameterDataContainer::AddData(const std::vector<std::string>& path, const
 	AddGroup(groupName);
 
 	ParamNode& groupRoot = paramDatas_.at(groupName);
+
+	// 既に同名データがあり、値が入っているならスキップ
+	if (const ParamNode* existing = FindNode(groupRoot, path, 1)) {
+		if (existing->value.has_value()) {
+			return;
+		}
+	}
+
 	ParamNode* node = GetOrCreateNode(groupRoot, path, 1);
+
+	// 子を持つノードに値を入れない
+	if (!node->children.empty()) {
+		throw std::runtime_error("ParameterDataContainer::AddData node already has children");
+	}
+
 	node->value = data;
+}
+
+void ParameterDataContainer::AddData(const std::vector<std::string>& path, const ParamType& type) {
+	ParamData data{};
+	data.Type = type;
+
+	// 型に合わせて初期化
+	switch (type) {
+	case ParamType::Int32:
+		data.Value = int32_t{ 0 };
+		break;
+	case ParamType::Float:
+		data.Value = 0.0f;
+		break;
+	case ParamType::Vec2:
+		data.Value = Vector2{ 0.0f, 0.0f };
+		break;
+	case ParamType::Vec3:
+		data.Value = Vector3{ 0.0f, 0.0f, 0.0f };
+		break;
+	case ParamType::Vec4:
+		data.Value = Vector4{ 0.0f, 0.0f, 0.0f, 0.0f };
+		break;
+	default:
+		throw std::runtime_error("ParameterDataContainer::AddData unknown ParamType");
+	}
+
+	// 既存のAddData
+	AddData(path, data);
 }
 
 ParamValue ParameterDataContainer::GetValue(std::vector<std::string>& path) {

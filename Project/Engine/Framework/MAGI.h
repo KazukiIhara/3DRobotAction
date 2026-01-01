@@ -372,6 +372,13 @@ public: // エンジンの機能
 	static void AddPrameterTag(const std::vector<std::string>& path);
 	// パラメータのデータを追加
 	static void AddParameterData(const std::vector<std::string>& dataPath, const Magi::ParamData& data);
+	// パラメータのデータを追加
+	static void AddParameterData(const std::vector<std::string>& dataPath, const Magi::ParamType& type);
+	// パラメータの取得
+	template <typename T>
+	static T GetParameterValue(std::vector<std::string>& path) {
+		return std::get<T>(parameterDataContainer_->GetValue(path));
+	}
 #pragma endregion
 
 #pragma region TextureDataContainer

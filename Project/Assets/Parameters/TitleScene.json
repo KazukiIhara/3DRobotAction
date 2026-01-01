@@ -3,7 +3,7 @@
     "StartUIPos": {
       "type": "Vec2",
       "value": {
-        "x": 0.0,
+        "x": 5.0,
         "y": 0.0
       }
     }

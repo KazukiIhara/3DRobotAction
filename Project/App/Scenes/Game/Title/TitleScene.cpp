@@ -160,11 +160,10 @@ void TitleScene::Initialize() {
 
 	MAGISYSTEM::AddPrameterTag({ "TitleScene","UIPositon" });
 
-	Magi::ParamData startUIPos{};
-	startUIPos.Type = ParamType::Vec2;
-	startUIPos.Value = Vector2{};
 
-	MAGISYSTEM::AddParameterData({ "TitleScene","UIPositon","StartUIPos" }, startUIPos);
+	MAGISYSTEM::AddParameterData({ "TitleScene","UIPositon","StartUIPos" }, ParamType::Vec2);
+
+	MAGISYSTEM::AddParameterData({ "TitleScene","UIPositon","ExitUIPos" }, ParamType::Vec2);
 
 	startData_.position = { WindowApp::kClientWidth * 0.5f, 900.0f };
 	exitData_.position = { WindowApp::kClientWidth * 0.5f, 912.0f };
