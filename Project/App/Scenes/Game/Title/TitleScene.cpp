@@ -145,6 +145,8 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadModel("Bullet");
 	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
 
+	MAGISYSTEM::LoadModel("Missile");
+	MAGISYSTEM::CreateModelDrawer("Missile", MAGISYSTEM::FindModel("Missile"));
 
 	// 
 	// エフェクト

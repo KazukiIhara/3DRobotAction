@@ -8,6 +8,7 @@
 #include "Math/Utility/MathUtility.h"
 
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
+#include "GameObject/AttackCollider/AttackCollider.h"
 
 using namespace MAGIMath;
 

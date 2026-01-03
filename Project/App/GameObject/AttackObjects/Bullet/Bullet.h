@@ -5,16 +5,18 @@
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
-#include "GameObject/AttackCollider/AttackCollider.h"
+#include "GameObject/AttackObjects/BaseAttackObject/BaseAttackObject.h"
 #include "Common/Particle/ParticleEffectCommon.h"
+#include "Structs/Primitive3DStruct.h"
+#include "Structs/ModelStruct.h"
 
 // 前方宣言
-class GameObject3D;
+class Transform3D;
 
 /// <summary>
 /// 弾
 /// </summary>
-class Bullet {
+class Bullet : public BaseAttackObject {
 public:
 	Bullet(const Vector3& dir,
 		float speed,
@@ -25,30 +27,27 @@ public:
 
 	void Update();
 	void Draw();
-
 	void Finalize();
-
-	bool GetIsAlive()const;
-
-	AttackCollider* GetAttackCollider();
 
 	Vector3 GetWorldPos();
 
 private:
-	// ゲームオブジェクト
-	std::weak_ptr<GameObject3D> bullet_;
+	void OnFinalize() override;
+
+private:
+	// トランスフォーム
+	Transform3D* transform_;
+
+	// マテリアル
+	ModelMaterial material_{};
+
 	// 弾の向き
 	Vector3 dir_ = { 0.0f,0.0f,0.0f };
 	// 弾の速度
 	float speed_ = 0.0f;
 
-	// 最大生存時間
-	float lifeTime_ = 5.0f;
-	// 生存フラグ
-	bool isAlive_ = false;
-
-	// 攻撃コライダー
-	std::weak_ptr<AttackCollider> collider_;
+	// 初期生存時間
+	float baseLifeTime_ = 5.0f;
 
 	// パーティクルのデータ
 	GPUParticleEmitData particleData_;
