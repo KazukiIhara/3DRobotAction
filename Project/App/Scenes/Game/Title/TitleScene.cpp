@@ -160,14 +160,14 @@ void TitleScene::Initialize() {
 	// 
 	MAGISYSTEM::AddParameterGroup("TitleScene");
 
-	MAGISYSTEM::AddPrameterTag({ "TitleScene","UIPositon" });
+	MAGISYSTEM::AddPrameterTag({ "TitleScene","UIPosition" });
 
-	MAGISYSTEM::AddParameterData({ "TitleScene","UIPositon","StartUIPos" }, ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "TitleScene","UIPosition","StartUIPos" }, ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "TitleScene","UIPosition","ExitUIPos" }, ParamType::Vec2);
 
-	MAGISYSTEM::AddParameterData({ "TitleScene","UIPositon","ExitUIPos" }, ParamType::Vec2);
-
-	startData_.position = { WindowApp::kClientWidth * 0.5f, 900.0f };
-	exitData_.position = { WindowApp::kClientWidth * 0.5f, 912.0f };
+	// シーンUI設定
+	startData_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "TitleScene", "UIPosition", "StartUIPos" });
+	exitData_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "TitleScene", "UIPosition", "ExitUIPos" });
 
 	bgMatData_.textureName = "TitleBG.png";
 

@@ -356,7 +356,7 @@ void ParameterDataContainer::AddData(const std::vector<std::string>& path, const
 	AddData(path, data);
 }
 
-ParamValue ParameterDataContainer::GetValue(std::vector<std::string>& path) {
+ParamValue ParameterDataContainer::GetValue(const std::vector<std::string>& path) {
 	if (path.size() < 2) {
 		throw std::runtime_error("ParameterDataContainer::GetValue path must be [group, ..., key]");
 	}

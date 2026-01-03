@@ -1,17 +1,17 @@
 {
-  "UIPositon": {
+  "UIPosition": {
     "ExitUIPos": {
       "type": "Vec2",
       "value": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 960.0,
+        "y": 912.0
       }
     },
     "StartUIPos": {
       "type": "Vec2",
       "value": {
-        "x": 5.0,
-        "y": 0.0
+        "x": 960.0,
+        "y": 900.0
       }
     }
   }

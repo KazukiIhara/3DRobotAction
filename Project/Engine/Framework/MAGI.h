@@ -376,7 +376,7 @@ public: // エンジンの機能
 	static void AddParameterData(const std::vector<std::string>& dataPath, const Magi::ParamType& type);
 	// パラメータの取得
 	template <typename T>
-	static T GetParameterValue(std::vector<std::string>& path) {
+	static T GetParameterValue(const std::vector<std::string>& path) {
 		return std::get<T>(parameterDataContainer_->GetValue(path));
 	}
 #pragma endregion
