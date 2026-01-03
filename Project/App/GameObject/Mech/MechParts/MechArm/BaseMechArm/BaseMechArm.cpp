@@ -107,7 +107,7 @@ std::weak_ptr<GameObject3D> BaseMechArm::GetGameObject() const {
 	return arm_;
 }
 
-Transform3D* BaseMechArm::GetElbowTransform() {
+Transform3D* BaseMechArm::GetShoulderTransform() {
 	return shoulderTransform_;
 }
 

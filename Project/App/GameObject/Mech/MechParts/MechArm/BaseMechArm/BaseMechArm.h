@@ -37,7 +37,7 @@ public:
 
 	std::weak_ptr<GameObject3D> GetGameObject() const;
 
-	Transform3D* GetElbowTransform();
+	Transform3D* GetShoulderTransform();
 	Transform3D* GetHandTransform();
 
 	const Vector3& GetForward() const;
