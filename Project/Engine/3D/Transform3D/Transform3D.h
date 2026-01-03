@@ -20,7 +20,7 @@ public:
 		const Vector3& translate
 	);
 
-	Transform3D(
+	explicit Transform3D(
 		const Vector3& translate = { 0.0f,0.0f,0.0f }
 	);
 

@@ -30,7 +30,7 @@ public:
 	};
 
 public:
-	BaseMechArm(const Param& param);
+	explicit BaseMechArm(const Param& param);
 	virtual ~BaseMechArm() = default;
 
 	void Update(MechCore* mechCore);

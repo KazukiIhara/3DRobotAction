@@ -7,7 +7,7 @@
 /// </summary>
 class MechArmRight final : public BaseMechArm {
 public:
-	MechArmRight(const Param& param);
+	explicit MechArmRight(const Param& param);
 	~MechArmRight() = default;
 
 private:
