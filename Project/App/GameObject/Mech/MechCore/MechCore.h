@@ -15,8 +15,8 @@
 // 部位ごとのクラス
 #include "GameObject/Mech/MechParts/MechHead/MechHead.h"
 #include "GameObject/Mech/MechParts/MechBody/MechBody.h"
-#include "GameObject/Mech/MechParts/MechArmRight/MechArmRight.h"
-#include "GameObject/Mech/MechParts/MechArmLeft/MechArmLeft.h"
+#include "GameObject/Mech/MechParts/MechArm/MechArmRight/MechArmRight.h"
+#include "GameObject/Mech/MechParts/MechArm/MechArmLeft/MechArmLeft.h"
 #include "GameObject/Mech/MechParts/MechLeg/MechLeg.h"
 
 // 武器クラス
