@@ -1,10 +1,10 @@
 #include "Rocket.h"
 
 #include "MAGI.h"
+#include "GameObject/AttackCollider/AttackCollider.h"
 
 Rocket::Rocket(const Vector3& dir, float speed, const Vector3& wPos, std::weak_ptr<AttackCollider> attackCollider) {
-	isAlive_ = true;
-	lifeTime_ = 5.0f;
+	BeginLife(baseLifeTime_, attackCollider);
 	dir_ = dir;
 	speed_ = speed;
 
@@ -21,26 +21,17 @@ Rocket::Rocket(const Vector3& dir, float speed, const Vector3& wPos, std::weak_p
 	material_.textureName = "white.png";
 
 
-	// 攻撃コライダーを設定
-	collider_ = attackCollider;
-
 }
 
 void Rocket::Update() {
 	// デルタタイム取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
+	if (!GetIsAlive()) {
+		return;
+	}
 
-	// ここで自分が持っているコライダーの衝突状況を取得できる
-	// 自身の削除フラグを立てて衝突エフェクトの発火などをここで行ってもよいかも
-	if (auto collider = collider_.lock()) {
-		if (collider->GetHitInfo().isHit_) {
-			// もし衝突してたらコライダーを消す
-			collider->SetIsAlive(false);
-			// 弾も消す
-			Finalize();
-
-			return;
-		}
+	if (CheckHitAndFinalize()) {
+		return;
 	}
 
 	// 進行方向に向ける
@@ -52,21 +43,12 @@ void Rocket::Update() {
 	transform_->AddTranslate(velocity);
 
 	// コライダーにポジションをセット	
-	if (auto collider = collider_.lock()) {
+	if (auto collider = LockCollider()) {
 		// ワールドポジションの場合まだ更新されていないためトランスレートをセット(親子付けしない前提)
 		collider->SetWorldPos(transform_->GetTranslate());
 	}
 
-	// 生存時間を減算
-	lifeTime_ -= dt;
-	if (lifeTime_ <= 0.0f) {
-		Finalize();
-
-		// コライダーを消す
-		if (auto collider = collider_.lock()) {
-			collider->SetIsAlive(false);
-		}
-	}
+	TickLifeAndFinalize(dt);
 
 }
 
@@ -76,20 +58,13 @@ void Rocket::Draw() {
 }
 
 void Rocket::Finalize() {
-	// 生存フラグをオフに
-	isAlive_ = false;
-	// オブジェクトを消す
-	transform_->SetIsAlive(false);
-}
-
-bool Rocket::GetIsAlive()const {
-	return isAlive_;
-}
-
-AttackCollider* Rocket::GetAttackCollider() {
-	return collider_.lock().get();
+	BaseAttackObject::Finalize();
 }
 
 Vector3 Rocket::GetWorldPos() {
 	return transform_->GetWorldPosition();
+}
+
+void Rocket::OnFinalize() {
+	transform_->SetIsAlive(false);
 }

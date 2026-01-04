@@ -4,11 +4,13 @@
 #include <memory>
 
 // MyHedder
+#include "GameObject/AttackObjects/BaseAttackObject/BaseAttackObject.h"
+
 #include "Math/Utility/MathUtility.h"
-#include "GameObject/AttackCollider/AttackCollider.h"
+#include "Structs/ModelStruct.h"
 
 // 前方宣言
-class GameObject3D;
+class Transform3D;
 class MechCore;
 
 // ミサイルの種類
@@ -25,7 +27,7 @@ enum class MissilePhase {
 /// <summary>
 /// ミサイル
 /// </summary>
-class Missile {
+class Missile : public BaseAttackObject {
 public:
 	Missile(
 		const MissileType& missileType,
@@ -37,26 +39,22 @@ public:
 	~Missile() = default;
 
 	void Update();
-
+	void Draw();
 	void Finalize();
-
-	bool GetIsAlive()const;
-
-	AttackCollider* GetAttackCollider();
 
 	Vector3 GetWorldPos();
 
 private:
+	void OnFinalize() override;
+
 	// ブーストから追従状態に遷移する時の処理
 	void EnterGuidedDualMissile();
 
 	// 双対ミサイルの更新処理
 	void UpdateDualMissile();
-	
 
 private:
-	// ゲームオブジェクト
-	std::weak_ptr<GameObject3D> missile_;
+	Transform3D* transform_ = nullptr;
 
 	// ロックオン対象の機体
 	std::weak_ptr<MechCore> target_;
@@ -85,12 +83,8 @@ private:
 	// 追尾時の最大速度
 	float maxGuidedSpeed_ = 0.0f;
 
-	// 生存フラグ
-	bool isAlive_ = false;
+	// 初期生存時間
+	float baseLifeTime_ = 5.0f;
 
-	// 最大生存時間
-	float lifeTime_ = 5.0f;
-
-	// 攻撃コライダー
-	std::weak_ptr<AttackCollider> collider_;
+	ModelMaterial material_{};
 };

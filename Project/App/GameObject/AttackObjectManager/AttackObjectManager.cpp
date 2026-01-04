@@ -28,6 +28,10 @@ void AttackObjectManager::Draw() {
 		rocket.Draw();
 	}
 
+	// ミサイル
+	for (auto& missile : missiles_) {
+		missile.Draw();
+	}
 }
 
 const std::vector<Bullet>& AttackObjectManager::GetBullets() {

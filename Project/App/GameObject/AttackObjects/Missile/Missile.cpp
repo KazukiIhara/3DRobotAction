@@ -1,13 +1,17 @@
 #include "Missile.h"
 
 #include "MAGI.h"
-
-#include "GameObject/AttackCollider/AttackCollider.h"
 #include "GameObject/Mech/MechCore/MechCore.h"
+#include "GameObject/AttackCollider/AttackCollider.h"
 
-Missile::Missile(const MissileType& missileType, const Vector3& wPos, const Vector3& dir, std::weak_ptr<MechCore> target, std::weak_ptr<AttackCollider> attackCollider) {
-	isAlive_ = true;
-	lifeTime_ = 5.0f;
+Missile::Missile(
+	const MissileType& missileType,
+	const Vector3& wPos,
+	const Vector3& dir,
+	std::weak_ptr<MechCore> target,
+	std::weak_ptr<AttackCollider> attackCollider
+) {
+	BeginLife(baseLifeTime_, attackCollider);
 	dir_ = dir;
 
 	type_ = missileType;
@@ -25,131 +29,95 @@ Missile::Missile(const MissileType& missileType, const Vector3& wPos, const Vect
 		break;
 	}
 
-	// レンダラーを作成
-	std::shared_ptr<ModelRenderer> renderer = std::make_shared<ModelRenderer>("Missile", "MechRightArm");
-
-	// ゲームオブジェクトを作成
-	std::shared_ptr<GameObject3D> missile = std::make_shared<GameObject3D>("Missile", wPos);
-	missile->AddModelRenderer(renderer);
-	missile_ = MAGISYSTEM::AddGameObject3D(std::move(missile));
+	// トランスフォーム作成
+	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(wPos);
+	// トランスフォームマネージャに追加
+	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
 	// ターゲットを設定
 	target_ = target;
-
-	// 攻撃コライダーを設定
-	collider_ = attackCollider;
 
 	// フェーズを初期化
 	phase_ = MissilePhase::Boost;
 }
 
 void Missile::Update() {
-	// 衝突判定
-	if (auto collider = collider_.lock()) {
-		if (collider->GetHitInfo().isHit_) {
-			// もし衝突してたらコライダーを消す
-			collider->SetIsAlive(false);
-			// 弾も消す
-			Finalize();
+	const float dt = MAGISYSTEM::GetDeltaTime();
 
-			return;
-		}
+	if (!GetIsAlive()) {
+		return;
 	}
 
-	// ここにミサイル固有の更新処理を実装する
+	if (CheckHitAndFinalize()) {
+		return;
+	}
+
 	switch (type_) {
 	case MissileType::Dual:
 		UpdateDualMissile();
+		break;
+	default:
 		break;
 	}
 
 	// 進行方向に向ける
 	const Quaternion targetQ = DirectionToQuaternion(dir_);
-	// 指定方向に移動
-	const Vector3 velocity = dir_ * speed_ * MAGISYSTEM::GetDeltaTime();
+	const Vector3 velocity = dir_ * speed_ * dt;
 
-	if (auto obj = missile_.lock()) {
-		obj->GetTransform()->SetQuaternion(targetQ);
-		obj->GetTransform()->AddTranslate(velocity);
+	transform_->SetQuaternion(targetQ);
+	transform_->AddTranslate(velocity);
 
-		// コライダーにポジションをセット	
-		if (auto collider = collider_.lock()) {
-			// ワールドポジションの場合まだ更新されていないためトランスレートをセット(親子付けしない前提)
-			collider->SetWorldPos(obj->GetTransform()->GetTranslate());
-		}
-
+	// コライダーにポジションをセット
+	if (auto collider = LockCollider()) {
+		collider->SetWorldPos(transform_->GetTranslate());
 	}
 
-	// 生存時間を減算
-	lifeTime_ -= MAGISYSTEM::GetDeltaTime();
-	if (lifeTime_ <= 0.0f) {
-		Finalize();
+	TickLifeAndFinalize(dt);
+}
 
-		// コライダーを消す
-		if (auto collider = collider_.lock()) {
-			collider->SetIsAlive(false);
-		}
-	}
-
+void Missile::Draw() {
+	MAGISYSTEM::DrawModel("Missile", transform_->GetWorldMatrix(), material_);
 }
 
 void Missile::Finalize() {
-	// 生存フラグをオフに
-	isAlive_ = false;
-	// オブジェクトを消す
-	if (auto obj = missile_.lock()) {
-		obj->SetIsAlive(false);
-	}
-}
-
-bool Missile::GetIsAlive()const {
-	return isAlive_;
-}
-
-AttackCollider* Missile::GetAttackCollider() {
-	return collider_.lock().get();
+	BaseAttackObject::Finalize();
 }
 
 Vector3 Missile::GetWorldPos() {
-	Vector3 pos{};
-	if (auto bullet = missile_.lock()) {
-		pos = bullet->GetTransform()->GetWorldPosition();
-	}
-	return pos;
+	return transform_->GetTranslate();
+}
+
+void Missile::OnFinalize() {
+	transform_->SetIsAlive(false);
 }
 
 void Missile::EnterGuidedDualMissile() {
-	// 目標角度を計算
-	if (auto obj = missile_.lock()) {
-		if (auto targetObj = target_.lock()) {
-			if (auto targetMechBodyObj = targetObj->GetMechBody()->GetGameObject().lock()) {
-				const Vector3 targetPos = targetMechBodyObj->GetTransform()->GetWorldPosition();
-				const Vector3 pos = obj->GetTransform()->GetWorldPosition();
-				dir_ = Normalize(targetPos - pos);
-			}
+	if (auto targetObj = target_.lock()) {
+		if (auto targetMechBodyObj = targetObj->GetMechBody()->GetGameObject().lock()) {
+			const Vector3 targetPos = targetMechBodyObj->GetTransform()->GetWorldPosition();
+			const Vector3 pos = transform_->GetWorldPosition();
+			dir_ = Normalize(targetPos - pos);
 		}
 	}
-
 }
 
 void Missile::UpdateDualMissile() {
+	const float dt = MAGISYSTEM::GetDeltaTime();
+
 	switch (phase_) {
 	case MissilePhase::Boost:
-		// 加速
-		speed_ += boostAcc_ * MAGISYSTEM::GetDeltaTime();
-		// タイマー更新
-		boostTime_ -= MAGISYSTEM::GetDeltaTime();
+		speed_ += boostAcc_ * dt;
+		boostTime_ -= dt;
 
-		// タイマー終了で追従開始
 		if (boostTime_ <= 0.0f) {
 			phase_ = MissilePhase::Guided;
 			EnterGuidedDualMissile();
 		}
 		speed_ = std::min(speed_, maxBoostSpeed_);
 		break;
+
 	case MissilePhase::Guided:
-		// 加速
-		speed_ += guidedAcc_ * MAGISYSTEM::GetDeltaTime();
+		speed_ += guidedAcc_ * dt;
 		speed_ = std::min(speed_, maxGuidedSpeed_);
 		break;
 	}

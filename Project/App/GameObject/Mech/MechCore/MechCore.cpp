@@ -27,6 +27,20 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 
 	// パーツと武器を保存しているコンテナから各パラメータを取得
 
+
+	// 右手
+	BaseMechArm::Param rightArmParam;
+	rightArmParam.name = "RightArm";
+	rightArmParam.modelName = "MechRightArm";
+	rightArmParam.offSetPos = Vector3(0.4f, 0.2f, 0.0f);
+
+	// 左手
+	BaseMechArm::Param leftArmParam;
+	leftArmParam.name = "LeftArm";
+	leftArmParam.modelName = "MechLeftArm";
+	leftArmParam.offSetPos = Vector3(-0.4f, 0.2f, 0.0f);
+
+
 	// 右手武器
 	MechHandWeapon::Param rightHandWeaponParam;
 	rightHandWeaponParam.name = "AssultRifle";
@@ -75,8 +89,8 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	body_ = std::make_unique<MechBody>();
 
 	// 腕
-	rightArm_ = std::make_unique<MechArmRight>();
-	leftArm_ = std::make_unique<MechArmLeft>();
+	rightArm_ = std::make_unique<MechArmRight>(rightArmParam);
+	leftArm_ = std::make_unique<MechArmLeft>(leftArmParam);
 
 	// 足
 	leg_ = std::make_unique<MechLeg>();

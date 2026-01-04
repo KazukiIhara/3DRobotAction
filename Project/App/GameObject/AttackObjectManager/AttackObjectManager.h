@@ -10,6 +10,8 @@
 // ロケット
 #include "GameObject/AttackObjects/Rocket/Rocket.h"
 
+#include "GameCommon/GameCommon.h"
+
 // 前方宣言
 class AttackCollisionManager;
 class MechCore;
