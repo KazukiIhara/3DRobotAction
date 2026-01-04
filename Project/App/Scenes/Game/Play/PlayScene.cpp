@@ -21,6 +21,13 @@ void PlayScene::Initialize() {
 	//-------------------------------------------------------
 	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
 
+	// 
+	// パラメータを設定
+	// 
+	MAGISYSTEM::AddParameterGroup("PlayScene");
+
+	MAGISYSTEM::AddParameterTag({ "PlayScene","UIPosition" });
+
 
 	//-------------------------------------------------------
 	// シーン固有の初期化処理

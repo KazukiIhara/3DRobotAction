@@ -1226,7 +1226,7 @@ void MAGISYSTEM::AddParameterGroup(const std::string& groupName) {
 	parameterDataContainer_->AddGroup(groupName);
 }
 
-void MAGISYSTEM::AddPrameterTag(const std::vector<std::string>& path) {
+void MAGISYSTEM::AddParameterTag(const std::vector<std::string>& path) {
 	parameterDataContainer_->AddTag(path);
 }
 

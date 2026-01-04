@@ -369,7 +369,7 @@ public: // エンジンの機能
 	// パラメータのグループを追加
 	static void AddParameterGroup(const std::string& groupName);
 	// パラメータのタグを追加
-	static void AddPrameterTag(const std::vector<std::string>& path);
+	static void AddParameterTag(const std::vector<std::string>& path);
 	// パラメータのデータを追加
 	static void AddParameterData(const std::vector<std::string>& dataPath, const Magi::ParamData& data);
 	// パラメータのデータを追加

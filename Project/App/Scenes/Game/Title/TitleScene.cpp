@@ -160,7 +160,7 @@ void TitleScene::Initialize() {
 	// 
 	MAGISYSTEM::AddParameterGroup("TitleScene");
 
-	MAGISYSTEM::AddPrameterTag({ "TitleScene","UIPosition" });
+	MAGISYSTEM::AddParameterTag({ "TitleScene","UIPosition" });
 
 	MAGISYSTEM::AddParameterData({ "TitleScene","UIPosition","StartUIPos" }, ParamType::Vec2);
 	MAGISYSTEM::AddParameterData({ "TitleScene","UIPosition","ExitUIPos" }, ParamType::Vec2);
