@@ -12,14 +12,12 @@ class MechCore;
 /// </summary>
 class PlayerUI {
 public:
-	PlayerUI();
+	PlayerUI(std::weak_ptr<MechCore> playerMechCore, std::weak_ptr<MechCore> bossMechCore);
 	~PlayerUI() = default;
 
-	void SetBoss(std::weak_ptr<MechCore> bossMechCore);
+	void Update();
 
-	void Update(MechCore* mechCore);
-
-	void Draw(MechCore* mechCore);
+	void Draw();
 
 private:
 	void UpdateLockonUI(MechCore* mechCore);
@@ -34,6 +32,9 @@ private:
 
 	void DrawDebugUI(MechCore* mechCore);
 private:
+	// プレイヤーのMechCoreのポインタ
+	std::weak_ptr<MechCore> playerMech_;
+
 	// ボスがいる際のMechCoreのポインタ
 	std::weak_ptr<MechCore> bossMech_;
 

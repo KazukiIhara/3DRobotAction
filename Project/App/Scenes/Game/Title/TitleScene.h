@@ -21,7 +21,6 @@ public:
 	void Finalize() override;
 
 private:
-	SceneUIManager sceneUIManager_;
 
 	SpriteData bgData_;
 	SpriteMaterialData bgMatData_;

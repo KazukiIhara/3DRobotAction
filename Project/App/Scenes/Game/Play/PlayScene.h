@@ -14,6 +14,7 @@ using namespace MAGIUtility;
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
 #include "GameObject/Enemy/Enemy.h"
+#include "GameObject/PlayerUI/PlayerUI.h"
 
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
@@ -55,10 +56,9 @@ enum class StartAnimPhase {
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
-/// <typeparam name="Data"></typeparam>
-class PlayScene:public Magi::BaseScene {
+class PlayScene :public Magi::BaseScene {
 public:
-	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
+	using BaseScene::BaseScene;
 	~PlayScene()override = default;
 
 	void Initialize() override;
@@ -82,6 +82,9 @@ private:
 
 	// 敵
 	std::unique_ptr<Enemy> enemy_;
+
+	// プレイヤーの情報を描画するUI
+	std::unique_ptr<PlayerUI> playerUI_;
 
 	// 終了時UI
 	SpriteData finishSpriteData_;

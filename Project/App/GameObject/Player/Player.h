@@ -3,9 +3,8 @@
 // C++
 #include <memory>
 
-// MyHedder
+// MyHeader
 #include "GameObject/Mech/MechCore/MechCore.h"
-#include "GameObject/PlayerUI/PlayerUI.h"
 #include "Structs/ColorStruct.h"
 
 // 前方宣言
@@ -23,8 +22,6 @@ public:
 
 	void Draw();
 
-	void SetBossMech(std::weak_ptr<MechCore> bossMechCore);
-
 	// 機体を取得
 	std::weak_ptr<MechCore> GetMechCore();
 
@@ -34,9 +31,6 @@ public:
 private:
 	// 機体クラス
 	std::shared_ptr<MechCore> mech_ = nullptr;
-
-	// プレイヤーUIクラス
-	std::unique_ptr<PlayerUI> playerUI_ = nullptr;
 
 	// プレイヤー操作可能フラグ
 	bool isOperation_ = false;

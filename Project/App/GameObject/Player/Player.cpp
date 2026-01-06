@@ -5,9 +5,9 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
-Player::Player(AttackObjectManager* bulletManager) {
+Player::Player(AttackObjectManager* attackObjectManager) {
 	// 機体の作成
-	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, "Default", bulletManager, false);
+	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, "Default", attackObjectManager, false);
 
 	// 三人称視点カメラの作成
 	std::unique_ptr<MechCamera> followCamera = std::make_unique<MechCamera>("MainCamera", 0.0f, mech_.get());
@@ -19,10 +19,6 @@ Player::Player(AttackObjectManager* bulletManager) {
 	if (auto mechObj = mech_->GetGameObject().lock()) {
 		mechObj->AddCamera3D(std::move(followCamera));
 	}
-
-	// プレイヤーUIクラス作成
-	playerUI_ = std::make_unique<PlayerUI>();
-
 }
 
 void Player::Update() {
@@ -129,23 +125,11 @@ void Player::Update() {
 	// 機体更新
 	mech_->Update();
 
-
-	// UI更新
-	playerUI_->Update(mech_.get());
-
 }
 
 void Player::Draw() {
 	// エフェクトなど描画
 	mech_->Draw();
-
-	// UI描画
-	playerUI_->Draw(mech_.get());
-
-}
-
-void Player::SetBossMech(std::weak_ptr<MechCore> bossMechCore) {
-	playerUI_->SetBoss(bossMechCore);
 }
 
 std::weak_ptr<MechCore> Player::GetMechCore() {

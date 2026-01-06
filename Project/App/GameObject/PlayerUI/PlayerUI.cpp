@@ -9,7 +9,11 @@ using namespace Magi;
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
-PlayerUI::PlayerUI() {
+PlayerUI::PlayerUI(std::weak_ptr<MechCore> playerMechCore, std::weak_ptr<MechCore> bossMechCore) {
+	// ポインタを受け取る
+	playerMech_ = playerMechCore;
+	bossMech_ = bossMechCore;
+	
 	// ロックオン用のスプライト設定
 	lockonGrayData_.position = Vector2(WindowApp::kClientWidth * 0.5f, WindowApp::kClientHeight * 0.5f);
 	lockonGrayData_.size = { 256.0f,256.0f };
@@ -62,30 +66,24 @@ PlayerUI::PlayerUI() {
 	// 右手武器情報スプライト
 	rightHandWeaponData_.position = rightHandWeaponPos_;
 
-
-
 	// 左手武器情報スプライト
 	leftHandWeaponData_.position = leftHandWeaponPos_;
 
-
 }
 
-void PlayerUI::SetBoss(std::weak_ptr<MechCore> bossMechCore) {
-	bossMech_ = bossMechCore;
-}
 
-void PlayerUI::Update(MechCore* mechCore) {
+void PlayerUI::Update() {
 	// ロックオンUIの更新
-	UpdateLockonUI(mechCore);
+	UpdateLockonUI(playerMech_.lock().get());
 
 	// APUIの更新
-	UpdateAPUI(mechCore);
+	UpdateAPUI(playerMech_.lock().get());
 
 	// ENUIの更新
-	UpdateENUI(mechCore);
+	UpdateENUI(playerMech_.lock().get());
 }
 
-void PlayerUI::Draw([[maybe_unused]] MechCore* mechCore) {
+void PlayerUI::Draw() {
 	// ロックオンUIの描画
 	DrawLockonUI();
 
@@ -96,7 +94,7 @@ void PlayerUI::Draw([[maybe_unused]] MechCore* mechCore) {
 	DrawENUI();
 
 #if defined(DEBUG) || defined(DEVELOP)
-	DrawDebugUI(mechCore);
+	DrawDebugUI(playerMech_.lock().get());
 #endif
 }
 

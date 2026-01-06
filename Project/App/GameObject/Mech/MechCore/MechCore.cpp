@@ -105,10 +105,10 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 
 
 	// 左肩武器
-	leftShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Left);
+	leftShoulderWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Left);
 
 	// 右肩武器
-	rightShoulerWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Right);
+	rightShoulderWeapon_ = std::make_unique<MechShoulderWeaponDualMissileLauncher>(WitchShoulder::Right);
 
 
 	// パーツを親子付け
@@ -144,12 +144,12 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 		}
 
 		// 右肩武器
-		if (auto rightShoulderWeapon = rightShoulerWeapon_->GetGameObject().lock()) {
+		if (auto rightShoulderWeapon = rightShoulderWeapon_->GetGameObject().lock()) {
 			rightShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
 		}
 
 		// 左肩武器
-		if (auto leftShoulderWeapon = leftShoulerWeapon_->GetGameObject().lock()) {
+		if (auto leftShoulderWeapon = leftShoulderWeapon_->GetGameObject().lock()) {
 			leftShoulderWeapon->GetTransform()->SetParent(body->GetTransform(), false);
 		}
 	}
@@ -180,7 +180,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	//===========================
 
 	// クイックブースト
-	quickBoostparticle_ = std::make_unique<QuickBoostParticle>(this);
+	quickBoostParticle_ = std::make_unique<QuickBoostParticle>(this);
 
 	// 弾衝突時エフェクト
 	bulletHitEffect_ = std::make_unique<BulletHitEffect>(this);
@@ -238,8 +238,8 @@ void MechCore::Update() {
 
 	rightHandWeapon_->Update();
 	leftHandWeapon_->Update();
-	leftShoulerWeapon_->Update(this);
-	rightShoulerWeapon_->Update(this);
+	leftShoulderWeapon_->Update(this);
+	rightShoulderWeapon_->Update(this);
 
 
 	//=================== 
@@ -329,11 +329,11 @@ MechHandWeapon* MechCore::GetRightHandWeapon() {
 }
 
 BaseMechShoulderWeapon* MechCore::GetLeftShoulderWeapon() {
-	return leftShoulerWeapon_.get();
+	return leftShoulderWeapon_.get();
 }
 
 BaseMechShoulderWeapon* MechCore::GetRightShoulderWeapon() {
-	return rightShoulerWeapon_.get();
+	return rightShoulderWeapon_.get();
 }
 
 MechMovementComponent* MechCore::GetMovementComponent() {
@@ -353,7 +353,7 @@ MechStatusComponent* MechCore::GetStatusComponent() {
 }
 
 QuickBoostParticle* MechCore::GetQuickBoostParticle() {
-	return quickBoostparticle_.get();
+	return quickBoostParticle_.get();
 }
 
 BulletHitEffect* MechCore::GetBulletHitEffect() {

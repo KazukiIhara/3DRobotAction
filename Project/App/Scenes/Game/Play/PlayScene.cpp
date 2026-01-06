@@ -19,7 +19,7 @@ void PlayScene::Initialize() {
 	//-------------------------------------------------------
 	// アセットのロード
 	//-------------------------------------------------------
-	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
+	uint32_t skyBoxTextureIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
 
 	// 
 	// パラメータを設定
@@ -34,8 +34,9 @@ void PlayScene::Initialize() {
 	//-------------------------------------------------------
 
 	// スカイボックスを設定
-	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
+	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTextureIndex);
 
+	
 	//===========================
 	// マネージャの初期化
 	//===========================
@@ -45,6 +46,11 @@ void PlayScene::Initialize() {
 
 	// 弾マネージャ
 	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
+
+
+	//===========================
+	// シーン上オブジェクトの初期化
+	//===========================
 
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(attackObjectManger_.get());
@@ -60,8 +66,8 @@ void PlayScene::Initialize() {
 	// エネミーのターゲット対象にプレイヤーを追加
 	enemy_->GetMechCore().lock()->GetLockOnComponent()->AddMech(player_->GetMechCore());
 
-	// プレイヤーのボス対象にエネミーを追加
-	player_->SetBossMech(enemy_->GetMechCore());
+	// UIの作成
+	playerUI_ = std::make_unique<PlayerUI>(player_->GetMechCore(), enemy_->GetMechCore());
 
 
 	// 攻撃コリジョンマネージャにワールドに存在するmechを追加
@@ -290,164 +296,166 @@ void PlayScene::Update() {
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
 
-	// シーンごとの更新処理
+	// UI更新
+	playerUI_->Update();
+
+	// ステートごとの更新処理
 	switch (playSceneState_) {
-		case PlaySceneState::Start:
-		{
+	case PlaySceneState::Start:
+	{
+		// 敵AI有効
+		enemy_->SetIsAIActive(false);
+		// プレイヤー操作無効
+		player_->SetIsOperation(false);
+
+		// 開始ステートタイマー更新
+		startSceneTimer_ += MAGISYSTEM::GetDeltaTime();
+
+		// プレイステートに移行
+		if (startSceneTimer_ >= kStartSceneTime_) {
 			// 敵AI有効
-			enemy_->SetIsAIActive(false);
-			// プレイヤー操作無効
-			player_->SetIsOperation(false);
-
-			// 開始ステートタイマー更新
-			startSceneTimer_ += MAGISYSTEM::GetDeltaTime();
-
+			enemy_->SetIsAIActive(true);
+			// プレイヤー操作有効
+			player_->SetIsOperation(true);
 			// プレイステートに移行
-			if (startSceneTimer_ >= kStartSceneTime_) {
-				// 敵AI有効
-				enemy_->SetIsAIActive(true);
-				// プレイヤー操作有効
-				player_->SetIsOperation(true);
-				// プレイステートに移行
-				playSceneState_ = PlaySceneState::Play;
-				break;
-			}
+			playSceneState_ = PlaySceneState::Play;
+			break;
+		}
 
-			switch (startAnimPhase_) {
-				case StartAnimPhase::In:
-				{
-					// UI更新
-					const float t = std::min(startSceneTimer_ / kStartSceneAnimTime_, 1.0f);
-					battleUiBPos_ = animBattleB_.GetValue(t);
-					battleUiAPos_ = animBattleA_.GetValue(t);
-					battleUiLPos_ = animBattleL_.GetValue(t);
-					battleUiEPos_ = animBattleE_.GetValue(t);
-
-					for (int i = 0; i < 2; i++) {
-						battleUiTPos_[i] = animBattleT_[i].GetValue(t);
-					}
-
-					startUiSPos_ = animStartS_.GetValue(t);
-					startUiAPos_ = animStartA_.GetValue(t);
-					startUiRPos_ = animStartR_.GetValue(t);
-
-					for (int i = 0; i < 2; i++) {
-						startUiTPos_[i] = animStartT_[i].GetValue(t);
-					}
-
-					if (t >= 1.0f) {
-						startAnimPhase_ = StartAnimPhase::Stay;
-					}
-				}
-				break;
-				case StartAnimPhase::Stay:
-				{
-					if (startSceneTimer_ >= 2.0f) {
-						startAnimPhase_ = StartAnimPhase::Out;
-					}
-				}
-				break;
-				case StartAnimPhase::Out:
-				{
-					const float t = std::min((startSceneTimer_ - 2.0f) / kStartSceneAnimFTime_, 1.0f);
-					battleUiBPos_ = animFBattleB_.GetValue(t);
-					battleUiAPos_ = animFBattleA_.GetValue(t);
-					battleUiLPos_ = animFBattleL_.GetValue(t);
-					battleUiEPos_ = animFBattleE_.GetValue(t);
-
-					for (int i = 0; i < 2; ++i) {
-						battleUiTPos_[i] = animFBattleT_[i].GetValue(t);
-					}
-
-					// Start UI
-					startUiSPos_ = animFStartS_.GetValue(t);
-					startUiAPos_ = animFStartA_.GetValue(t);
-					startUiRPos_ = animFStartR_.GetValue(t);
-
-					for (int i = 0; i < 2; ++i) {
-						startUiTPos_[i] = animFStartT_[i].GetValue(t);
-					}
-				}
-				break;
-				default:
-					break;
-			}
-
-			// Battle UI
-			battleUiB_.position = battleUiBPos_;
-			battleUiA_.position = battleUiAPos_;
-			battleUiL_.position = battleUiLPos_;
-			battleUiE_.position = battleUiEPos_;
+		switch (startAnimPhase_) {
+		case StartAnimPhase::In:
+		{
+			// UI更新
+			const float t = std::min(startSceneTimer_ / kStartSceneAnimTime_, 1.0f);
+			battleUiBPos_ = animBattleB_.GetValue(t);
+			battleUiAPos_ = animBattleA_.GetValue(t);
+			battleUiLPos_ = animBattleL_.GetValue(t);
+			battleUiEPos_ = animBattleE_.GetValue(t);
 
 			for (int i = 0; i < 2; i++) {
-				battleUiT_[i].position = battleUiTPos_[i];
+				battleUiTPos_[i] = animBattleT_[i].GetValue(t);
 			}
 
-			// Start UI
-			startUiS_.position = startUiSPos_;
-			startUiA_.position = startUiAPos_;
-			startUiR_.position = startUiRPos_;
+			startUiSPos_ = animStartS_.GetValue(t);
+			startUiAPos_ = animStartA_.GetValue(t);
+			startUiRPos_ = animStartR_.GetValue(t);
 
 			for (int i = 0; i < 2; i++) {
-				startUiT_[i].position = startUiTPos_[i];
+				startUiTPos_[i] = animStartT_[i].GetValue(t);
+			}
+
+			if (t >= 1.0f) {
+				startAnimPhase_ = StartAnimPhase::Stay;
 			}
 		}
 		break;
-		case PlaySceneState::Play:
+		case StartAnimPhase::Stay:
+		{
+			if (startSceneTimer_ >= 2.0f) {
+				startAnimPhase_ = StartAnimPhase::Out;
+			}
+		}
+		break;
+		case StartAnimPhase::Out:
+		{
+			const float t = std::min((startSceneTimer_ - 2.0f) / kStartSceneAnimFTime_, 1.0f);
+			battleUiBPos_ = animFBattleB_.GetValue(t);
+			battleUiAPos_ = animFBattleA_.GetValue(t);
+			battleUiLPos_ = animFBattleL_.GetValue(t);
+			battleUiEPos_ = animFBattleE_.GetValue(t);
 
-
-			// 勝敗判定
-			if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-				info.judge = FinishJudgment::Enemy;
-				playSceneState_ = PlaySceneState::Finish;
+			for (int i = 0; i < 2; ++i) {
+				battleUiTPos_[i] = animFBattleT_[i].GetValue(t);
 			}
 
-			if (enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+			// Start UI
+			startUiSPos_ = animFStartS_.GetValue(t);
+			startUiAPos_ = animFStartA_.GetValue(t);
+			startUiRPos_ = animFStartR_.GetValue(t);
+
+			for (int i = 0; i < 2; ++i) {
+				startUiTPos_[i] = animFStartT_[i].GetValue(t);
+			}
+		}
+		break;
+		default:
+			break;
+		}
+
+		// Battle UI
+		battleUiB_.position = battleUiBPos_;
+		battleUiA_.position = battleUiAPos_;
+		battleUiL_.position = battleUiLPos_;
+		battleUiE_.position = battleUiEPos_;
+
+		for (int i = 0; i < 2; i++) {
+			battleUiT_[i].position = battleUiTPos_[i];
+		}
+
+		// Start UI
+		startUiS_.position = startUiSPos_;
+		startUiA_.position = startUiAPos_;
+		startUiR_.position = startUiRPos_;
+
+		for (int i = 0; i < 2; i++) {
+			startUiT_[i].position = startUiTPos_[i];
+		}
+	}
+	break;
+	case PlaySceneState::Play:
+
+		// 勝敗判定
+		if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+			info.judge = FinishJudgment::Enemy;
+			playSceneState_ = PlaySceneState::Finish;
+		}
+
+		if (enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+			info.judge = FinishJudgment::Player;
+			playSceneState_ = PlaySceneState::Finish;
+		}
+
+		if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0 && enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+			info.judge = FinishJudgment::Draw;
+			playSceneState_ = PlaySceneState::Finish;
+		}
+
+		// 時間切れの場合
+		if (info.battleTime == 0) {
+			// 体力割合が多いほうが勝利
+			float playerHPRaito = player_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
+			float enemyHPRaito = enemy_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
+
+			if (playerHPRaito > enemyHPRaito) {
 				info.judge = FinishJudgment::Player;
-				playSceneState_ = PlaySceneState::Finish;
-			}
-
-			if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0 && enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
+			} else if (enemyHPRaito > playerHPRaito) {
+				info.judge = FinishJudgment::Enemy;
+			} else {
 				info.judge = FinishJudgment::Draw;
-				playSceneState_ = PlaySceneState::Finish;
 			}
 
-			// 時間切れの場合
-			if (info.battleTime == 0) {
-				// 体力割合が多いほうが勝利
-				float playerHPRaito = player_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
-				float enemyHPraito = enemy_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
+			playSceneState_ = PlaySceneState::Finish;
+		}
 
-				if (playerHPRaito > enemyHPraito) {
-					info.judge = FinishJudgment::Player;
-				} else if (enemyHPraito > playerHPRaito) {
-					info.judge = FinishJudgment::Enemy;
-				} else {
-					info.judge = FinishJudgment::Draw;
-				}
+		break;
+	case PlaySceneState::Finish:
+		// 敵AIを停止
+		enemy_->SetIsAIActive(false);
 
-				playSceneState_ = PlaySceneState::Finish;
-			}
+		// 敵勝利時は自機の操作を停止
+		if (info.judge == FinishJudgment::Enemy) {
+			player_->SetIsOperation(false);
+		}
 
-			break;
-		case PlaySceneState::Finish:
-			// 敵AIを停止
-			enemy_->SetIsAIActive(false);
+		// 終了シーンタイマー更新
+		finishSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
 
-			// 敵勝利時は自機の操作を停止
-			if (info.judge == FinishJudgment::Enemy) {
-				player_->SetIsOperation(false);
-			}
+		// シーン終了
+		if (finishSceneTimer_ <= 0.0f) {
+			ChangeScene("Title");
+		}
 
-			// 終了シーンタイマー更新
-			finishSceneTimer_ -= MAGISYSTEM::GetDeltaTime();
-
-			// シーン終了
-			if (finishSceneTimer_ <= 0.0f) {
-				ChangeScene("Title");
-			}
-
-			break;
+		break;
 	}
 
 }
@@ -465,49 +473,52 @@ void PlayScene::Draw() {
 	// 攻撃判定マネージャ描画
 	attackCollisionManager_->Draw();
 
+	// UI描画
+	playerUI_->Draw();
+
 	// ステートごとの描画処理
 	switch (playSceneState_) {
-		case PlaySceneState::Start:
+	case PlaySceneState::Start:
 
-			MAGISYSTEM::DrawSprite(battleUiB_, battleUiMatB_);
-			MAGISYSTEM::DrawSprite(battleUiA_, battleUiMatA_);
-			MAGISYSTEM::DrawSprite(battleUiL_, battleUiMatL_);
-			MAGISYSTEM::DrawSprite(battleUiE_, battleUiMatE_);
+		MAGISYSTEM::DrawSprite(battleUiB_, battleUiMatB_);
+		MAGISYSTEM::DrawSprite(battleUiA_, battleUiMatA_);
+		MAGISYSTEM::DrawSprite(battleUiL_, battleUiMatL_);
+		MAGISYSTEM::DrawSprite(battleUiE_, battleUiMatE_);
 
-			for (int i = 0; i < 2; ++i) {
-				MAGISYSTEM::DrawSprite(battleUiT_[i], battleUiMatT_[i]);
-			}
+		for (int i = 0; i < 2; ++i) {
+			MAGISYSTEM::DrawSprite(battleUiT_[i], battleUiMatT_[i]);
+		}
 
-			MAGISYSTEM::DrawSprite(startUiS_, startUiMatS_);
-			MAGISYSTEM::DrawSprite(startUiA_, startUiMatA_);
-			MAGISYSTEM::DrawSprite(startUiR_, startUiMatR_);
+		MAGISYSTEM::DrawSprite(startUiS_, startUiMatS_);
+		MAGISYSTEM::DrawSprite(startUiA_, startUiMatA_);
+		MAGISYSTEM::DrawSprite(startUiR_, startUiMatR_);
 
-			for (int i = 0; i < 2; ++i) {
-				MAGISYSTEM::DrawSprite(startUiT_[i], startUiMatT_[i]);
-			}
+		for (int i = 0; i < 2; ++i) {
+			MAGISYSTEM::DrawSprite(startUiT_[i], startUiMatT_[i]);
+		}
 
+		break;
+	case PlaySceneState::Play:
+
+		break;
+	case PlaySceneState::Finish:
+		switch (info.judge) {
+		case FinishJudgment::Player:
+			finishSpriteMatData_.textureName = "YouWin.png";
+			MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
 			break;
-		case PlaySceneState::Play:
-
+		case FinishJudgment::Enemy:
+			finishSpriteMatData_.textureName = "YouLose.png";
+			MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
 			break;
-		case PlaySceneState::Finish:
-			switch (info.judge) {
-				case FinishJudgment::Player:
-					finishSpriteMatData_.textureName = "YouWin.png";
-					MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
-					break;
-				case FinishJudgment::Enemy:
-					finishSpriteMatData_.textureName = "YouLose.png";
-					MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
-					break;
-				case FinishJudgment::Draw:
-					finishSpriteMatData_.textureName = "YouWin.png";
-					MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
-					break;
-				default:
-					break;
-			}
+		case FinishJudgment::Draw:
+			finishSpriteMatData_.textureName = "YouWin.png";
+			MAGISYSTEM::DrawSprite(finishSpriteData_, finishSpriteMatData_);
 			break;
+		default:
+			break;
+		}
+		break;
 	}
 }
 
