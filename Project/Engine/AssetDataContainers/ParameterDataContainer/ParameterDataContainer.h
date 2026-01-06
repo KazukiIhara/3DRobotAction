@@ -84,6 +84,9 @@ namespace Magi {
 		// 値なしのデータ追加
 		void AddData(const std::vector<std::string>& path, const ParamType& type);
 
+		// データの削除
+		void DeleteData(const std::vector<std::string>& path);
+
 		// 値の取得
 		ParamValue GetValue(const std::vector<std::string>& path);
 
