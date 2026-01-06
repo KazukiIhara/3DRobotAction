@@ -375,12 +375,12 @@ void MAGISYSTEM::Finalize() {
 		postEffectPipelineManager_.reset();
 	}
 
-	// DefferedRenderringPipelineManager
+	// DefferedRenderingPipelineManager
 	if (defferedRenderringPipelineManager_) {
 		defferedRenderringPipelineManager_.reset();
 	}
 
-	// CompuetPipelineManager
+	// ComputePipelineManager
 	if (computePipelineManager_) {
 		computePipelineManager_.reset();
 	}
@@ -575,6 +575,9 @@ void MAGISYSTEM::Update() {
 
 	// デバッグ表示(FPS、DELTATIME)
 	gui_->ShowDebugUI();
+
+	// パラメータデータコンテナ更新
+	parameterDataContainer_->Update();
 
 	// シーンの更新処理
 	sceneManager_->Update();
