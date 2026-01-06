@@ -6,7 +6,7 @@
 #include <numbers>
 #include <vector>
 
-// MyHedder
+// MyHeader
 #include "Math/Types/AllMathTypes.h"
 
 ///

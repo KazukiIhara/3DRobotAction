@@ -5,6 +5,8 @@
 
 #include "MAGI.h"
 
+#include "GameObject/SceneUIManager/SceneUIManager.h"
+
 /// <summary>
 /// タイトルシーン
 /// </summary>
@@ -19,6 +21,8 @@ public:
 	void Finalize() override;
 
 private:
+	SceneUIManager sceneUIManager_;
+
 	SpriteData bgData_;
 	SpriteMaterialData bgMatData_;
 	SpriteData startData_;
