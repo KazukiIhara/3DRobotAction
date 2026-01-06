@@ -58,7 +58,7 @@ public:
 		std::string leg;
 		std::string rightHandWeapon;
 		std::string leftHandWeapon;
-		std::string rightShoulerWeapoan;
+		std::string rightShoulderWeapon;
 		std::string leftShoulderWeapon;
 	};
 public:
@@ -207,17 +207,17 @@ private:
 	std::unique_ptr<MechHandWeapon> rightHandWeapon_ = nullptr;
 
 	// 左肩武器
-	std::unique_ptr<BaseMechShoulderWeapon> leftShoulerWeapon_ = nullptr;
+	std::unique_ptr<BaseMechShoulderWeapon> leftShoulderWeapon_ = nullptr;
 
 	// 右肩武器
-	std::unique_ptr<BaseMechShoulderWeapon> rightShoulerWeapon_ = nullptr;
+	std::unique_ptr<BaseMechShoulderWeapon> rightShoulderWeapon_ = nullptr;
 
 	//=======================
 	// エフェクト
 	//=======================
 
 	// クイックブーストのエフェクト
-	std::unique_ptr<QuickBoostParticle> quickBoostparticle_ = nullptr;
+	std::unique_ptr<QuickBoostParticle> quickBoostParticle_ = nullptr;
 	// 弾衝突時のエフェクト
 	std::unique_ptr<BulletHitEffect> bulletHitEffect_ = nullptr;
 
