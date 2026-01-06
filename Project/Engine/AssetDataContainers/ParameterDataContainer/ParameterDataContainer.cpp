@@ -3,13 +3,16 @@
 #include <fstream>
 #include <stdexcept>
 #include <unordered_set>
+#include <type_traits>
+#include <algorithm>
+
+#include "ImGuiController/ImGuiController.h"
 
 using namespace Magi;
 
 namespace {
 	const std::filesystem::path kParamDir = "Assets/Parameters/";
 
-	// ParamType <-> string
 	std::string ToString(ParamType t) {
 		switch (t) {
 		case ParamType::Int32: return "Int32";
@@ -30,7 +33,6 @@ namespace {
 		throw std::runtime_error("ParameterDataContainer: Unknown ParamType string: " + s);
 	}
 
-	// Vector <-> json
 	nlohmann::json VecToJson(const Vector2& v) {
 		return nlohmann::json{ {"x", v.x}, {"y", v.y} };
 	}
@@ -63,7 +65,6 @@ namespace {
 		return v;
 	}
 
-	// ParamData <-> json
 	nlohmann::json ParamDataToJson(const ParamData& d) {
 		nlohmann::json out;
 		out["type"] = ToString(d.Type);
@@ -115,7 +116,6 @@ namespace {
 		return d;
 	}
 
-	// ParamNode <-> json（再帰）
 	nlohmann::json NodeToJson(const ParamNode& node) {
 		if (node.value.has_value()) {
 			if (!node.children.empty()) {
@@ -138,9 +138,7 @@ namespace {
 			throw std::runtime_error("ParameterDataContainer: invalid json node (must be object)");
 		}
 
-		const bool looksLikeValue =
-			j.contains("type") && j.contains("value") && j.size() == 2;
-
+		const bool looksLikeValue = j.contains("type") && j.contains("value") && j.size() == 2;
 		if (looksLikeValue) {
 			node.value = JsonToParamData(j);
 			return node;
@@ -152,7 +150,6 @@ namespace {
 		return node;
 	}
 
-	// 指定パスのノードを作成しながら取得（startIndex から末尾まで）
 	ParamNode* GetOrCreateNode(ParamNode& root, const std::vector<std::string>& path, size_t startIndex) {
 		ParamNode* cur = &root;
 		for (size_t i = startIndex; i < path.size(); ++i) {
@@ -162,7 +159,6 @@ namespace {
 		return cur;
 	}
 
-	// 指定パスのノードを検索（存在しない場合 nullptr）
 	const ParamNode* FindNode(const ParamNode& root, const std::vector<std::string>& path, size_t startIndex) {
 		const ParamNode* cur = &root;
 		for (size_t i = startIndex; i < path.size(); ++i) {
@@ -173,21 +169,103 @@ namespace {
 		}
 		return cur;
 	}
+
+	ParamNode* FindNodeMutable(ParamNode& root, const std::vector<std::string>& path, size_t startIndex) {
+		ParamNode* cur = &root;
+		for (size_t i = startIndex; i < path.size(); ++i) {
+			const auto& key = path[i];
+			auto it = cur->children.find(key);
+			if (it == cur->children.end()) return nullptr;
+			cur = &it->second;
+		}
+		return cur;
+	}
+
+#if defined(DEBUG) || defined(DEVELOP)
+	const char* ToCString(ParamType t) {
+		switch (t) {
+		case ParamType::Int32: return "Int32";
+		case ParamType::Float: return "Float";
+		case ParamType::Vec2:  return "Vec2";
+		case ParamType::Vec3:  return "Vec3";
+		case ParamType::Vec4:  return "Vec4";
+		default: return "Unknown";
+		}
+	}
+
+	void DrawParamValue(const ParamData& data) {
+		ImGui::TextUnformatted(ToCString(data.Type));
+		ImGui::SameLine();
+
+		std::visit([&](auto&& v) {
+			using T = std::decay_t<decltype(v)>;
+			if constexpr (std::is_same_v<T, int32_t>) {
+				ImGui::Text(" %d", static_cast<int>(v));
+			} else if constexpr (std::is_same_v<T, float>) {
+				ImGui::Text(" %.6f", v);
+			} else if constexpr (std::is_same_v<T, Vector2>) {
+				ImGui::Text(" (%.3f, %.3f)", v.x, v.y);
+			} else if constexpr (std::is_same_v<T, Vector3>) {
+				ImGui::Text(" (%.3f, %.3f, %.3f)", v.x, v.y, v.z);
+			} else if constexpr (std::is_same_v<T, Vector4>) {
+				ImGui::Text(" (%.3f, %.3f, %.3f, %.3f)", v.x, v.y, v.z, v.w);
+			}
+			}, data.Value);
+	}
+
+	void DrawNodeRecursive(const std::string& name, ParamNode& node) {
+		const bool hasValue = node.value.has_value();
+
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_SpanAvailWidth;
+		if (hasValue || node.children.empty()) {
+			flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+		}
+
+		ImGui::PushID(name.c_str());
+		const bool opened = ImGui::TreeNodeEx("##node", flags, "%s", name.c_str());
+
+		if (hasValue) {
+			ImGui::SameLine();
+			ImGui::TextUnformatted(" :");
+			ImGui::SameLine();
+			DrawParamValue(*node.value);
+		}
+
+		if (!hasValue && opened && !node.children.empty()) {
+			std::vector<std::pair<std::string, ParamNode*>> children;
+			children.reserve(node.children.size());
+			for (auto& [k, v] : node.children) {
+				children.emplace_back(k, &v);
+			}
+			std::sort(children.begin(), children.end(),
+				[](const auto& a, const auto& b) { return a.first < b.first; });
+
+			for (auto& [childName, childPtr] : children) {
+				DrawNodeRecursive(childName, *childPtr);
+			}
+
+			ImGui::TreePop();
+		}
+
+		ImGui::PopID();
+	}
+#endif
 }
 
 ParameterDataContainer::ParameterDataContainer() {
-	// データをすべてロード
 	LoadAllData();
 }
 
 ParameterDataContainer::~ParameterDataContainer() {
-	// データをすべてセーブ
 	SaveAllData();
 }
 
+　
+
+
+
 void ParameterDataContainer::LoadAllData() {
 	paramDatas_.clear();
-	groups_.clear();
 
 	if (!std::filesystem::exists(kParamDir)) {
 		return;
@@ -209,7 +287,6 @@ void ParameterDataContainer::LoadAllData() {
 		}
 
 		const std::string groupName = entry.path().stem().string();
-		groups_.push_back({ groupName, false });
 
 		if (j.is_object()) {
 			paramDatas_[groupName] = JsonToNode(j);
@@ -222,15 +299,13 @@ void ParameterDataContainer::LoadAllData() {
 void ParameterDataContainer::SaveAllData() {
 	std::filesystem::create_directories(kParamDir);
 
-	// 保存対象グループ一覧
 	std::unordered_set<std::string> groupSet;
-	groupSet.reserve(groups_.size());
-	for (const auto& [groupName, debugFlag] : groups_) {
-		(void)debugFlag;
+	groupSet.reserve(paramDatas_.size());
+	for (const auto& [groupName, _] : paramDatas_) {
+		(void)_;
 		groupSet.insert(groupName);
 	}
 
-	// ディスク上にある json で、groupSet に無いものは削除
 	if (std::filesystem::exists(kParamDir)) {
 		for (const auto& entry : std::filesystem::directory_iterator(kParamDir)) {
 			if (!entry.is_regular_file()) continue;
@@ -244,16 +319,8 @@ void ParameterDataContainer::SaveAllData() {
 		}
 	}
 
-	// groups_ にあるものだけ保存（毎回全書き込み）
-	for (const auto& [groupName, debugFlag] : groups_) {
-		(void)debugFlag;
-
-		auto it = paramDatas_.find(groupName);
-		if (it == paramDatas_.end()) {
-			it = paramDatas_.emplace(groupName, ParamNode{}).first;
-		}
-
-		nlohmann::json j = NodeToJson(it->second);
+	for (const auto& [groupName, root] : paramDatas_) {
+		nlohmann::json j = NodeToJson(root);
 		const auto outPath = kParamDir / (groupName + ".json");
 
 		std::ofstream ofs(outPath, std::ios::out | std::ios::trunc);
@@ -265,25 +332,14 @@ void ParameterDataContainer::SaveAllData() {
 }
 
 void ParameterDataContainer::AddGroup(const std::string& groupName) {
-	bool exists = false;
-	for (const auto& g : groups_) {
-		if (g.first == groupName) {
-			exists = true;
-			break;
-		}
-	}
-	if (!exists) {
-		groups_.push_back({ groupName, false });
-	}
-
 	if (paramDatas_.find(groupName) == paramDatas_.end()) {
 		paramDatas_.emplace(groupName, ParamNode{});
 	}
 }
 
 void ParameterDataContainer::AddTag(const std::vector<std::string>& path) {
-	if (path.empty()) {
-		throw std::runtime_error("ParameterDataContainer::AddTag path is empty");
+	if (path.size() < 2) {
+		throw std::runtime_error("ParameterDataContainer::AddTag path must be [group, tag...]");
 	}
 
 	const std::string& groupName = path[0];
@@ -291,7 +347,6 @@ void ParameterDataContainer::AddTag(const std::vector<std::string>& path) {
 
 	ParamNode& groupRoot = paramDatas_.at(groupName);
 
-	// 既に同名タグがあるなら何もしない
 	if (const ParamNode* node = FindNode(groupRoot, path, 1)) {
 		(void)node;
 		return;
@@ -310,7 +365,6 @@ void ParameterDataContainer::AddData(const std::vector<std::string>& path, const
 
 	ParamNode& groupRoot = paramDatas_.at(groupName);
 
-	// 既に同名データがあり、値が入っているならスキップ
 	if (const ParamNode* existing = FindNode(groupRoot, path, 1)) {
 		if (existing->value.has_value()) {
 			return;
@@ -319,7 +373,6 @@ void ParameterDataContainer::AddData(const std::vector<std::string>& path, const
 
 	ParamNode* node = GetOrCreateNode(groupRoot, path, 1);
 
-	// 子を持つノードに値を入れない
 	if (!node->children.empty()) {
 		throw std::runtime_error("ParameterDataContainer::AddData node already has children");
 	}
@@ -331,7 +384,6 @@ void ParameterDataContainer::AddData(const std::vector<std::string>& path, const
 	ParamData data{};
 	data.Type = type;
 
-	// 型に合わせて初期化
 	switch (type) {
 	case ParamType::Int32:
 		data.Value = int32_t{ 0 };
@@ -352,7 +404,6 @@ void ParameterDataContainer::AddData(const std::vector<std::string>& path, const
 		throw std::runtime_error("ParameterDataContainer::AddData unknown ParamType");
 	}
 
-	// 既存のAddData
 	AddData(path, data);
 }
 

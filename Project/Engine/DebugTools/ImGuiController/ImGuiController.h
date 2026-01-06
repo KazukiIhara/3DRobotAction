@@ -21,7 +21,10 @@ namespace Magi {
 	class DXGI;
 	class DirectXCommand;
 	class SRVUAVManager;
-
+	
+	/// <summary>
+	/// ImGUi管理クラス
+	/// </summary>
 	class ImGuiController {
 	public:
 		ImGuiController(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager);

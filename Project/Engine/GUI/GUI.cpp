@@ -163,8 +163,10 @@ void GUI::ShowMainUI() {
 }
 
 void GUI::ShowDebugUI() {
+#if defined (DEBUG)||(DEVELOP)
 	ShowFPS();
 	ShowDeltaTime();
+#endif
 }
 
 bool GUI::InputTextStd(const char* label, std::string& str, ImGuiInputTextFlags flags) {

@@ -155,8 +155,6 @@ public:
 
 public: // エンジンの機能
 
-	// TODO: regionを使わない方法を検討する
-
 #pragma region WindowAppの機能
 	/// <summary>
 	/// ウィンドウハンドルの取得

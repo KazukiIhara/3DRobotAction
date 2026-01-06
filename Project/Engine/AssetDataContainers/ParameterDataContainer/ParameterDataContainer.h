@@ -65,6 +65,9 @@ namespace Magi {
 		ParameterDataContainer();
 		~ParameterDataContainer();
 
+		// 更新
+		void Update();
+
 		// すべてのファイルを読んでデータコンテナを作成
 		void LoadAllData();
 		// コンテナ内すべてのデータをファイルに保存
@@ -85,9 +88,6 @@ namespace Magi {
 		ParamValue GetValue(const std::vector<std::string>& path);
 
 	private:
-		// グループコンテナ <グループ名、デバッグ描画フラグ>
-		std::vector<std::pair<std::string, bool>> groups_{};
-
 		// パラメータコンテナ <グループ名、
 		std::unordered_map<std::string, ParamNode> paramDatas_{};
 
