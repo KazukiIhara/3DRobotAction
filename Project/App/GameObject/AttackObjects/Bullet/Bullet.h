@@ -16,7 +16,7 @@ class Transform3D;
 /// <summary>
 /// 弾
 /// </summary>
-class Bullet : public BaseAttackObject {
+class Bullet: public BaseAttackObject {
 public:
 	Bullet(const Vector3& dir,
 		float speed,

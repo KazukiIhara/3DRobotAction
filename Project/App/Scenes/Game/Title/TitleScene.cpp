@@ -183,11 +183,11 @@ void TitleScene::Update() {
 
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		if (MAGISYSTEM::TriggerButton(0, ButtonA)) {
-			this->ChangeScene("Play");
+			this->ChangeScene("Menu");
 		}
 	} else {
 		if (MAGISYSTEM::TriggerKey(DIK_SPACE)) {
-			this->ChangeScene("Play");
+			this->ChangeScene("Menu");
 		}
 	}
 
