@@ -1,13 +1,13 @@
 #include "MechCoreStateJustDodge.h"
 
-void MechCoreStateJustDodge::Enter(MechCore* mechCore) {
-	
+void MechCoreStateJustDodge::Enter([[maybe_unused]] MechCore* mechCore) {
+
 }
 
-void MechCoreStateJustDodge::Update(MechCore* mechCore) {
-	
+void MechCoreStateJustDodge::Update([[maybe_unused]]MechCore* mechCore) {
+
 }
 
-void MechCoreStateJustDodge::Exit(MechCore* mechCore) {
-	
+void MechCoreStateJustDodge::Exit([[maybe_unused]]MechCore* mechCore) {
+
 }
