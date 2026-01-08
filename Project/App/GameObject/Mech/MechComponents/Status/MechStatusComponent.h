@@ -41,15 +41,18 @@ public:
 
 	// 硬直時間を取得
 	float GetRecoveryTime()const;
-	
+
 	// 硬直時間をセット
 	void SetRecoveryTime(float t);
+
+	// 無敵状態をセット
+	void SetDemoMode(bool inv);
 
 private:
 	// エネルギー消費処理
 	void UseEnergy(const int32_t& enValue);
 	// 被ダメージ処理
-	void GetDamage(const int32_t& damage, MechCore* mechcore);
+	void GetDamage(const int32_t& damage, MechCore* mechCore);
 	// FCS解除
 	void UpdateFcsAvoidFactor(MechCore* mechCore);
 	// 硬直時間更新
@@ -86,6 +89,10 @@ private:
 
 	// 硬直時間
 	float recoveryTime_ = 0.0f;
+
+	// DEMOモード
+	bool demoMode_ = false;
+
 
 	// 
 	// パラメータ

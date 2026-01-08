@@ -108,6 +108,10 @@ void MechStatusComponent::SetRecoveryTime(float t) {
 	recoveryTime_ = t;
 }
 
+void MechStatusComponent::SetDemoMode(bool inv) {
+	demoMode_ = inv;
+}
+
 void MechStatusComponent::UseEnergy(const int32_t& enValue) {
 	// ENを消費
 	en_ -= enValue;
@@ -118,13 +122,22 @@ void MechStatusComponent::UseEnergy(const int32_t& enValue) {
 	enRecoveryCoolTimer_ = kEnRecoveryCoolTime_;
 }
 
-void MechStatusComponent::GetDamage(const int32_t& damage, MechCore* mechcore) {
+void MechStatusComponent::GetDamage(const int32_t& damage, MechCore* mechCore) {
+
 	// HPを減らす
 	hp_ -= damage;
 	// 0未満にならないようにする
 	hp_ = std::max(0, hp_);
 
-	if (mechcore->GetFriendlyTag() == FriendlyTag::PlayerSide) {
+	// DEMOモードなら0になった後ループ
+	if (demoMode_) {
+		if (hp_ == 0) {
+			hp_ = kMaxHP_;
+		}
+		return;
+	}
+
+	if (mechCore->GetFriendlyTag() == FriendlyTag::PlayerSide) {
 		//
 		// コントローラを振動させる(攻撃の種類が増えたらダメージに応じて振動を変える)
 		//
