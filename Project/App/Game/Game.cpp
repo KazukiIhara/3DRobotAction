@@ -31,6 +31,7 @@ void Game::Initialize() {
 	// ゲームシーン
 	sceneManager_->AddScene<TitleScene>("Title");
 	sceneManager_->AddScene<PlayScene>("Play");
+	sceneManager_->AddScene<MenuScene>("Menu");
 
 
 	// 最初のシーンを設定

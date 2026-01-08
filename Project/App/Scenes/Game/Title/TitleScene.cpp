@@ -26,6 +26,10 @@ void TitleScene::Initialize() {
 	// テクスチャのロード
 	//===================================
 
+	// スカイボックステクスチャ
+	uint32_t skyBoxTextureIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
+
+
 	// UIテクスチャ
 	MAGISYSTEM::LoadTexture("TitleBG.png");
 	MAGISYSTEM::LoadTexture("Start.png");
@@ -85,6 +89,9 @@ void TitleScene::Initialize() {
 	// 終了時テクスチャ
 	MAGISYSTEM::LoadTexture("YouWin.png");
 	MAGISYSTEM::LoadTexture("YouLose.png");
+
+	// 操作説明UI
+	MAGISYSTEM::LoadTexture("HowToPlay.png");
 
 	//===================================
 	// モデルのロード
@@ -165,6 +172,7 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::AddParameterData({ "TitleScene","UIPosition","StartUIPos" }, ParamType::Vec2);
 	MAGISYSTEM::AddParameterData({ "TitleScene","UIPosition","ExitUIPos" }, ParamType::Vec2);
 
+
 	// シーンUI設定
 	startData_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "TitleScene", "UIPosition", "StartUIPos" });
 	exitData_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "TitleScene", "UIPosition", "ExitUIPos" });
@@ -177,24 +185,105 @@ void TitleScene::Initialize() {
 	exitMatData_.textureName = "Exit.png";
 	exitMatData_.anchorPoint = { 0.5f,0.5f };
 
+	// ライトの設定
+	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
+
+
+	//-------------------------------------------------------
+	// シーンデータのロード
+	//-------------------------------------------------------
+
+	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
+
+	MAGISYSTEM::ImportSceneData("SceneData", true);
+
+	// スカイボックスを設定
+	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTextureIndex);
+
+
+	//===========================
+	// マネージャの初期化
+	//===========================
+
+	// 攻撃コリジョンマネージャ
+	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
+
+	// 弾マネージャ
+	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
+
+
+	// デモプレイ用のオブジェクト生成
+	aiPlayer_ = std::make_unique<AIPlayer>(attackObjectManger_.get());
+	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), aiPlayer_->GetMechCore());
+
+	aiPlayer_->Initialize(attackObjectManger_.get(), enemy_->GetMechCore());
+
+	// プレイヤーのターゲット対象に敵を追加
+	aiPlayer_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
+	// エネミーのターゲット対象にプレイヤーを追加
+	enemy_->GetMechCore().lock()->GetLockOnComponent()->AddMech(aiPlayer_->GetMechCore());
+
+	// デモなので無敵にする
+	aiPlayer_->GetMechCore().lock()->GetStatusComponent()->SetDemoMode(true);
+	enemy_->GetMechCore().lock()->GetStatusComponent()->SetDemoMode(true);
+
+	// 攻撃コリジョンマネージャにワールドに存在するmechを追加
+	attackCollisionManager_->AddMech(aiPlayer_->GetMechCore());
+	attackCollisionManager_->AddMech(enemy_->GetMechCore());
+
 }
 
 void TitleScene::Update() {
 
 	if (MAGISYSTEM::IsPadConnected(0)) {
 		if (MAGISYSTEM::TriggerButton(0, ButtonA)) {
-			this->ChangeScene("Play");
+			this->ChangeScene("Menu");
 		}
 	} else {
 		if (MAGISYSTEM::TriggerKey(DIK_SPACE)) {
-			this->ChangeScene("Play");
+			this->ChangeScene("Menu");
 		}
 	}
+
+	// ライト変数
+	MAGISYSTEM::SetDirectionalLight(directionalLight_);
+
+	// ポストエフェクト適用
+	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
+	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
+	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
+
+
+
+	// プレイヤー更新
+	aiPlayer_->Update();
+
+	// 敵更新
+	enemy_->Update();
+
+	// 弾マネージャ更新
+	attackObjectManger_->Update();
+
+	// 攻撃判定更新
+	attackCollisionManager_->Update();
 
 }
 
 void TitleScene::Draw() {
-	MAGISYSTEM::DrawSprite(bgData_, bgMatData_);
+
+	// プレイヤーにまつわるものを描画
+	aiPlayer_->Draw();
+
+	// エネミーにまつわるものを描画
+	enemy_->Draw();
+
+	// 弾マネージャ描画
+	attackObjectManger_->Draw();
+
+	// 攻撃判定マネージャ描画
+	attackCollisionManager_->Draw();
+
+	//MAGISYSTEM::DrawSprite(bgData_, bgMatData_);
 	MAGISYSTEM::DrawSprite(startData_, startMatData_);
 }
 

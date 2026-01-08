@@ -52,7 +52,7 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 
 	// 一旦攻撃の頻度を激減させる
 
-	if (Random::GenerateInt32_t(0, 50) == 0) {
+	if (Random::GenerateInt32_t(0, 80) == 0) {
 		// 通常の銃ならひとまず撃ちまくる
 		MechHandWeapon::Type lefthandWType = mechCore->GetLeftHandWeapon()->GetParam().type;
 		switch (lefthandWType) {
@@ -117,8 +117,8 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 			boostTimer_ -= MAGISYSTEM::GetDeltaTime();
 			enemyAI->Jump();
 		} else {
-			jumpTimer_ = Random::GenerateFloat(0.2f, 2.0f);
-			boostTimer_ = Random::GenerateFloat(0.5f, 1.0f);
+			jumpTimer_ = Random::GenerateFloat(0.5f, 2.0f);
+			boostTimer_ = Random::GenerateFloat(0.3f, 0.6f);
 		}
 	}
 
@@ -143,7 +143,7 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	// 体力差
 	if (hpRaito < playerHpRaito) {
 		// 体力不利
-		targetMoveDir_.y = -2.0f;
+		targetMoveDir_.y = -3.0f;
 	} else {
 		// 体力有利
 		targetMoveDir_.y = 3.0f;
@@ -155,8 +155,13 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	}
 
 	// 離れ過ぎたら巡航
-	if (distance > targetRange_) {
+	if (distance > targetFarRange_) {
 		targetMoveDir_.y = 1.0f;
+	}
+
+	// 近すぎても巡行
+	if (distance < targetNearRange_) {
+		targetMoveDir_.y = -1.0f;
 	}
 
 	// 移動方向を徐々に補間
@@ -230,7 +235,7 @@ void EnemyAIStateRoot::Avoid(EnemyAI* enemyAI) {
 				{
 					const Vector3 diff = bulletPos - avoidCollider.wPos;
 					if (LengthSquared(diff) <= radiusSq) {
-						avoidCoolTimer_ = Random::GenerateFloat(0.0f, 2.0f);
+						avoidCoolTimer_ = Random::GenerateFloat(2.0f, 4.0f);
 						enemyAI->ChangeState(EnemyAIState::Avoid);
 						return;
 					}
@@ -256,7 +261,7 @@ void EnemyAIStateRoot::Avoid(EnemyAI* enemyAI) {
 				}
 
 				// ここまで来たら視錐台内に入っているので遷移
-				avoidCoolTimer_ = Random::GenerateFloat(0.0f, 2.0f);
+				avoidCoolTimer_ = Random::GenerateFloat(2.0f, 4.0f);
 				enemyAI->ChangeState(EnemyAIState::Avoid);
 				return;
 
