@@ -1,14 +1,14 @@
 #pragma once
 
-// MyHeader
+
 #include "GameObject/Mech/MechCore/MechCoreStates/MechCoreBaseState.h"
 
 /// <summary>
-/// 硬直ステート
+/// ジャスト回避ステート
 /// </summary>
-class MechCoreStateRecovery:public MechCoreBaseState {
+class MechCoreStateJustDodge:public MechCoreBaseState {
 public:
-	~MechCoreStateRecovery() = default;
+	~MechCoreStateJustDodge() = default;
 	void Enter(MechCore* mechCore)override;
 	void Update(MechCore* mechCore)override;
 	void Exit(MechCore* mechCore)override;
