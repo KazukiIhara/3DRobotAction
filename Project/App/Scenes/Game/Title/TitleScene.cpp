@@ -86,6 +86,9 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadTexture("YouWin.png");
 	MAGISYSTEM::LoadTexture("YouLose.png");
 
+	// 操作説明UI
+	MAGISYSTEM::LoadTexture("HowToPlay.png");
+
 	//===================================
 	// モデルのロード
 	//===================================

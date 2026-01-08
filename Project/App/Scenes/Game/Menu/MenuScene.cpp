@@ -1,5 +1,7 @@
 #include "MenuScene.h"
 
+using namespace Magi;
+
 void MenuScene::Initialize() {
 	// 2Dカメラ作成
 	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");
@@ -15,6 +17,12 @@ void MenuScene::Initialize() {
 
 	// 黒背景
 	blackMat_.textureName = "TitleBG.png";
+
+	// 操作説明シート
+	h2pSheet_.position = { WindowApp::kClientWidth * 0.5f,WindowApp::kClientHeight * 0.5f };
+
+	h2pSheetMat_.anchorPoint = { 0.5f,0.5f };
+	h2pSheetMat_.textureName = "HowToPlay.png";
 
 	// 最低でも2秒間シーンにとどまるためのタイマー
 	timer_ = 2.0f;
@@ -42,7 +50,8 @@ void MenuScene::Update() {
 void MenuScene::Draw() {
 	// 黒背景
 	MAGISYSTEM::DrawSprite(black_, blackMat_);
-
+	// 操作説明シート
+	MAGISYSTEM::DrawSprite(h2pSheet_, h2pSheetMat_);
 }
 
 void MenuScene::Finalize() {
