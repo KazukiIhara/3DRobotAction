@@ -199,29 +199,6 @@ void PlayScene::Update() {
 	ImGui::Begin("SceneDebugUI");
 	ImGui::Text("BattleTime:%u", info.battleTime);
 
-	if (ImGui::Button("ImportScene")) {
-		MAGISYSTEM::LoadSceneDataFromJson("SceneData1");
-		MAGISYSTEM::ImportSceneData("SceneData1", true);
-	}
-
-	if (ImGui::Button("ApplyImportCamera")) {
-		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
-			if (auto camera = cameraObj->GetCamera3D("Camera")) {
-				camera->ApplyCurrent();
-			}
-		}
-	}
-
-	if (ImGui::Button("PlayCameraAnimation")) {
-		if (auto cameraObj = MAGISYSTEM::FindGameObject3D("Camera").lock()) {
-			if (auto camera = cameraObj->GetCamera3D("Camera")) {
-				camera->ApplyCurrent();
-				camera->StartEyeAnimation();
-				camera->StartTargetAnimation();
-			}
-		}
-	}
-
 	bool isActiveEnemyAI = enemy_->GetIsAIActive();
 	if (ImGui::Checkbox("EnableEnemyAI", &isActiveEnemyAI)) {
 		enemy_->SetIsAIActive(isActiveEnemyAI);
