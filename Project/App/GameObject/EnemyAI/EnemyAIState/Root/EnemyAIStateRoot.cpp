@@ -52,7 +52,7 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 
 	// 一旦攻撃の頻度を激減させる
 
-	if (Random::GenerateInt32_t(0, 50) == 0) {
+	if (Random::GenerateInt32_t(0, 80) == 0) {
 		// 通常の銃ならひとまず撃ちまくる
 		MechHandWeapon::Type lefthandWType = mechCore->GetLeftHandWeapon()->GetParam().type;
 		switch (lefthandWType) {
@@ -143,7 +143,7 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	// 体力差
 	if (hpRaito < playerHpRaito) {
 		// 体力不利
-		targetMoveDir_.y = -2.0f;
+		targetMoveDir_.y = -3.0f;
 	} else {
 		// 体力有利
 		targetMoveDir_.y = 3.0f;
@@ -155,7 +155,12 @@ void EnemyAIStateRoot::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused]
 	}
 
 	// 離れ過ぎたら巡航
-	if (distance > targetRange_) {
+	if (distance > targetFarRange_) {
+		targetMoveDir_.y = 1.0f;
+	}
+
+	// 近すぎても巡行
+	if (distance < targetNearRange_) {
 		targetMoveDir_.y = 1.0f;
 	}
 

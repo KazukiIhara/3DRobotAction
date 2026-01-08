@@ -22,8 +22,8 @@ private:
 
 	// 目標距離
 
-	float targetRange_ = 15.0f;
-
+	float targetFarRange_ = 15.0f;
+	float targetNearRange_ = 3.0f;
 
 	float jumpTimer_ = 0.0f;
 	float boostTimer_ = 2.0f;
