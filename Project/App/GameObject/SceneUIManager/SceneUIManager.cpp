@@ -11,7 +11,7 @@ SceneUIManager::SceneUIManager(const std::string& sceneName) {
 }
 
 void SceneUIManager::Add(std::unique_ptr<GameUI2D> ui) {
-
+	ui;
 }
 
 void SceneUIManager::Clear() {

@@ -48,6 +48,11 @@ void AIPlayer::Update() {
 
 	// 機体更新
 	mech_->Update();
+
+	// シャドウマップのターゲット座標を更新
+	const Vector3 mechPos = mech_->GetGameObject().lock()->GetTransform()->GetWorldPosition();
+	MAGISYSTEM::SetDirectionalLightCameraTarget(mechPos);
+
 }
 
 void AIPlayer::Draw() {

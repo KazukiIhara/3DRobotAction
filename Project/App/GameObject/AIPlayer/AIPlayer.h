@@ -9,6 +9,8 @@
 // 前方宣言
 class AttackObjectManager;
 
+// TODO: 今さらだが、Shared_ptrを使っている理由が殆どないし、逆に危険な気がする
+// 次のリファクタのタイミングでShared_ptrを使っている部分をunique_ptrにする
 // TODO: ほぼEnemyクラスとやってること同じなので処理をまとめる
 
 /// <summary>
