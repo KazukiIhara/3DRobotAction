@@ -42,11 +42,18 @@ public:
 	// 硬直時間を取得
 	float GetRecoveryTime()const;
 
+	// ジャスト回避可能状態かどうかを取得
+	bool GetCanJustDodge()const;
+
 	// 硬直時間をセット
 	void SetRecoveryTime(float t);
 
-	// 無敵状態をセット
+	// デモモードフラグをセット
 	void SetDemoMode(bool inv);
+
+	// ジャスト回避判定フラグをセット
+	void SetCanJustDodge(bool canJustDodge);
+
 
 private:
 	// エネルギー消費処理
@@ -90,12 +97,15 @@ private:
 	// 硬直時間
 	float recoveryTime_ = 0.0f;
 
+	// ジャスト回避受付状態
+	bool canJustDodge_ = false;
+
 	// DEMOモード
 	bool demoMode_ = false;
 
 
 	// 
-	// パラメータ
+	// 固定値パラメータ　TODO: 外部ファイルに出す
 	// 
 
 	// 最大HP

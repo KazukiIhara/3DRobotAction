@@ -37,11 +37,16 @@ void AttackCollisionManager::CheckCollision() {
 		// 機体のタグを取得
 		const FriendlyTag mechTag = mech.lock()->GetFriendlyTag();
 		if (auto m = mech.lock()) {
+
 			// 機体のAABBコライダーを取得
 			const Vector3 mMin = m->GetCollider()->GetMinW();
 			const Vector3 mMax = m->GetCollider()->GetMaxW();
 
+			// 機体のジャスト回避用の球体コライダー取得
+			const Vector3 mWpos = m->GetJustDodgeCollider()->GetWorldPos();
+			const float mRadius = m->GetJustDodgeCollider()->GetRadius();
 
+			// 場にある攻撃コライダーの数だけループ
 			for (auto& atkCollider : attackColliders_) {
 				// 攻撃のタグを取得
 				const FriendlyTag atkTag = atkCollider->GetFriendlyTag();
@@ -52,6 +57,25 @@ void AttackCollisionManager::CheckCollision() {
 				// 攻撃の球体コライダーを取得
 				const Vector3 aPos = atkCollider->GetWPos();
 				const float aRadius = atkCollider->GetRadius();
+
+				// ジャスト回避受付状態なら先にジャスト回避判定を取る
+				const bool canJustDodge = m->GetStatusComponent()->GetCanJustDodge();
+				if (canJustDodge) {
+					// 衝突判定
+					if (IsCollisionSphereToSphere(mWpos, mRadius, aPos, aRadius)) {
+						// 衝突している
+
+						// 機体をジャスト回避ステートに遷移
+						m->ChangeState(MechCoreState::JustDodge);
+
+						// 衝突情報をセット
+						AttackCollider::HitInfo aInfo = {
+							true
+						};
+						atkCollider->SetHitInfo(aInfo);
+						continue;
+					}
+				}
 
 				// 衝突判定
 				if (IsCollisionAABBToSphere(mMin, mMax, aPos, aRadius)) {
@@ -72,6 +96,7 @@ void AttackCollisionManager::CheckCollision() {
 					atkCollider->SetHitInfo(aInfo);
 
 				}
+
 			}
 
 		}

@@ -20,7 +20,6 @@ void MechJustDodgeCollider::Update(MechCore* core) {
 	// コライダーのサイズを更新
 	radius_ = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","JustDodge","ColliderRadius" });
 
-
 }
 
 Vector3 MechJustDodgeCollider::GetWorldPos() const {
@@ -32,8 +31,6 @@ float MechJustDodgeCollider::GetRadius() const {
 }
 
 void MechJustDodgeCollider::Draw() const {
-
-
 	// デバッグ描画
 #if defined (DEBUG)|(DEVELOP)
 	MAGISYSTEM::DrawLineSphere(worldPos_, radius_, Color::Blue);

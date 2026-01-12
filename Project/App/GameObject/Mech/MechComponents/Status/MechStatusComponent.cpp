@@ -31,17 +31,17 @@ void MechStatusComponent::Update(MechCore* mechCore) {
 			GetDamage(info.damage, mechCore);
 
 			switch (info.type) {
-			case AttackType::Bullet:
-				// 衝突時エフェクト発生
-				mechCore->GetBulletHitEffect()->Emit(info.attackPos);
+				case AttackType::Bullet:
+					// 衝突時エフェクト発生
+					mechCore->GetBulletHitEffect()->Emit(info.attackPos);
 
-				break;
-			case AttackType::Rocket:
+					break;
+				case AttackType::Rocket:
 
-				break;
-			case AttackType::Missile:
+					break;
+				case AttackType::Missile:
 
-				break;
+					break;
 			}
 		}
 	}
@@ -104,12 +104,20 @@ float MechStatusComponent::GetRecoveryTime() const {
 	return recoveryTime_;
 }
 
+bool MechStatusComponent::GetCanJustDodge() const {
+	return canJustDodge_;
+}
+
 void MechStatusComponent::SetRecoveryTime(float t) {
 	recoveryTime_ = t;
 }
 
 void MechStatusComponent::SetDemoMode(bool inv) {
 	demoMode_ = inv;
+}
+
+void MechStatusComponent::SetCanJustDodge(bool canJustDodge) {
+	canJustDodge_ = canJustDodge;
 }
 
 void MechStatusComponent::UseEnergy(const int32_t& enValue) {

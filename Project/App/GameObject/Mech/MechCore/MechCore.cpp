@@ -9,6 +9,7 @@
 #include "MechCoreStates/QuickBoost/MechCoreStateQuickBoost.h"
 #include "MechCoreStates/AssultBoost/MechCoreStateAssultBoost.h"
 #include "MechCoreStates/Recovery/MechCoreStateRecovery.h"
+#include "MechCoreStates/JustDodge/MechCoreStateJustDodge.h"
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
@@ -173,6 +174,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	states_[MechCoreState::Move] = std::make_shared<MechCoreStateMove>();
 	states_[MechCoreState::QuickBoost] = std::make_shared<MechCoreStateQuickBoost>();
 	states_[MechCoreState::AssultBoost] = std::make_shared<MechCoreStateAssultBoost>();
+	states_[MechCoreState::JustDodge] = std::make_shared<MechCoreStateJustDodge>();
 	states_[MechCoreState::Recovery] = std::make_shared<MechCoreStateRecovery>();
 
 	// 最初のステートを設定
