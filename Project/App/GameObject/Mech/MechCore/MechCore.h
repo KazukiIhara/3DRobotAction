@@ -32,6 +32,7 @@
 #include "GameObject/Mech/MechComponents/LockOn/MechLockOnComponent.h"
 #include "GameObject/Mech/MechComponents/Attack/MechAttackComponent.h"
 #include "GameObject/Mech/MechComponents/Status/MechStatusComponent.h"
+#include "GameObject/Mech/MechComponents/JustDodge/MechJustDodgeComponent.h"
 
 // コライダー
 #include "GameObject/Mech/MechCollider/MechCollider.h"
@@ -109,7 +110,8 @@ public:
 	MechLockOnComponent* GetLockOnComponent();
 	MechAttackComponent* GetAttackComponent();
 	MechStatusComponent* GetStatusComponent();
-
+	MechJustDodgeComponent* GetJustDodgeComponent();
+	
 	// 
 	// エフェクトクラスの取得
 	// 
@@ -182,6 +184,8 @@ private:
 	std::unique_ptr<MechAttackComponent> attackComponent_;
 	// ステータス値管理コンポーネント
 	std::unique_ptr<MechStatusComponent> statusComponent_;
+	// ジャスト回避コンポーネント
+	std::unique_ptr<MechJustDodgeComponent> justDodgeComponent_;
 
 	//======================= 
 	// 各パーツ

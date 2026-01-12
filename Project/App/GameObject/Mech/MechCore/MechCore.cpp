@@ -164,6 +164,8 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	attackComponent_ = std::make_unique<MechAttackComponent>(attackObjectManager);
 	// ステータス値管理
 	statusComponent_ = std::make_unique<MechStatusComponent>();
+	// ジャスト回避コンポーネント
+	justDodgeComponent_ = std::make_unique<MechJustDodgeComponent>(attackObjectManager);
 
 	// ステートを作成
 	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
@@ -350,6 +352,10 @@ MechAttackComponent* MechCore::GetAttackComponent() {
 
 MechStatusComponent* MechCore::GetStatusComponent() {
 	return statusComponent_.get();
+}
+
+MechJustDodgeComponent* MechCore::GetJustDodgeComponent() {
+	return justDodgeComponent_.get();
 }
 
 QuickBoostParticle* MechCore::GetQuickBoostParticle() {
