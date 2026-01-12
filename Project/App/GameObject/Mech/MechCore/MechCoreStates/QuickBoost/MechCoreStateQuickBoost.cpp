@@ -28,7 +28,8 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 	const InputCommand command = mechCore->GetInputCommand();
 
 	// ジャスト回避判定かどうかの更新
-	mechCore->GetStatusComponent()->SetCanJustDodge(CanJustDodge());
+	const bool canJustDodge = JustDodgeUpdate();
+	mechCore->GetStatusComponent()->SetCanJustDodge(canJustDodge);
 
 	// 終了通知があったら通常状態に移行
 	if (mechCore->GetMovementComponent()->QuickBoostEndRequest()) {
@@ -61,10 +62,11 @@ void MechCoreStateQuickBoost::Update(MechCore* mechCore) {
 }
 
 void MechCoreStateQuickBoost::Exit([[maybe_unused]] MechCore* mechCore) {
-
+	// ステートを抜ける際はジャスト回避受付状態を無効にする
+	mechCore->GetStatusComponent()->SetCanJustDodge(false);
 }
 
-bool MechCoreStateQuickBoost::CanJustDodge() {
+bool MechCoreStateQuickBoost::JustDodgeUpdate() {
 	bool justDodge{};
 	// ジャスト回避タイマー更新
 	justDodgeTimer_ -= MAGISYSTEM::GetDeltaTime();

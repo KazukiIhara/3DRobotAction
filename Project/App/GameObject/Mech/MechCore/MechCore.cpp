@@ -46,7 +46,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	MechHandWeapon::Param rightHandWeaponParam;
 	rightHandWeaponParam.name = "AssultRifle";
 	rightHandWeaponParam.modelName = "AssultRifle";
-	rightHandWeaponParam.speed = 70.0f;
+	rightHandWeaponParam.speed = 90.0f;
 	rightHandWeaponParam.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
 	rightHandWeaponParam.coolTime = 0.5f;
 	rightHandWeaponParam.reloadTime = 1.5f;
