@@ -40,6 +40,25 @@ void DeltaTimer::Update() {
 	deltaTime_ = std::clamp(deltaTime_, 0.0f, 0.1f);
 }
 
+void DeltaTimer::EndFrame() {
+	// このフレーム内で乗算係数が変更されていた場合
+	if (multiplierChanged_) {
+		multiplier_ = tempMultiplier_;
+		multiplierChanged_ = false;
+	} else {
+		multiplier_ = 1.0f;
+	}
+}
+
 float DeltaTimer::GetDeltaTime() const {
+	return deltaTime_ * multiplier_;
+}
+
+float DeltaTimer::GetRawDeltaTime() const {
 	return deltaTime_;
+}
+
+void DeltaTimer::SetMultiplier(float mul) {
+	tempMultiplier_ = mul;
+	multiplierChanged_ = true;
 }

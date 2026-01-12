@@ -598,7 +598,6 @@ void MAGISYSTEM::Update() {
 
 	// ライトマネージャ(新)の更新
 	lightManager_->Update();
-
 }
 
 void MAGISYSTEM::Draw() {
@@ -800,14 +799,6 @@ void MAGISYSTEM::Draw() {
 
 
 	//==============================================
-	// 次のフレームのための後処理
-	//==============================================
-
-	// レンダーコントローラのフレーム終了処理
-	renderController_->EndFrame();
-
-
-	//==============================================
 	// コマンド発行
 	//==============================================
 
@@ -819,9 +810,20 @@ void MAGISYSTEM::Draw() {
 	fence_->WaitGPU();
 	// 次のフレーム用にコマンドをリセット
 	directXCommand_->ResetCommand();
+
 }
 
-void MAGISYSTEM::DeleteGarbages() {
+void MAGISYSTEM::EndFrame() {
+	//==============================================
+	// 次のフレームのための後処理
+	//==============================================
+
+	// レンダーコントローラのフレーム終了処理
+	renderController_->EndFrame();
+
+	// デルタタイマーの乗算係数変更処理
+	deltaTimer_->EndFrame();
+
 
 	//
 	// 削除順に気を付けて実装する(基本外側から消していくイメージ) 
@@ -834,6 +836,7 @@ void MAGISYSTEM::DeleteGarbages() {
 	transformManager_->DeleteGarbage();
 
 	camera3DManager_->DeleteGarbage();
+
 }
 
 void MAGISYSTEM::Run() {
@@ -853,8 +856,8 @@ void MAGISYSTEM::Run() {
 		// 描画
 		Draw();
 
-		// 使用済みオブジェクトを削除
-		DeleteGarbages();
+		// フレーム終了時処理
+		EndFrame();
 
 	}
 
@@ -870,8 +873,16 @@ HWND MAGISYSTEM::GetWindowHandle() {
 	return windowApp_->GetHwnd();
 }
 
+float MAGISYSTEM::GetRawDeltaTime() {
+	return deltaTimer_->GetRawDeltaTime();
+}
+
 float MAGISYSTEM::GetDeltaTime() {
 	return deltaTimer_->GetDeltaTime();
+}
+
+void MAGISYSTEM::SetDeltaTimeMultiplier(float mul) {
+	deltaTimer_->SetMultiplier(mul);
 }
 
 bool MAGISYSTEM::PushKey(BYTE keyNumber) {

@@ -144,8 +144,8 @@ public:
 	// 描画
 	void Draw();
 
-	// 削除フラグの立っているオブジェクトを削除
-	void DeleteGarbages();
+	// フレーム終了時処理
+	void EndFrame();
 
 	// 実行
 	void Run();
@@ -164,11 +164,26 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region DeltaTimerの機能
+
 	/// <summary>
-	/// デルタタイムを取得
+	/// 計算前のデルタタイムを取得
+	/// (デルタタイムの乗算係数を弄る処理のタイマーなどで使う
+	/// アプリ内共通のデルタタイムではなく、実際のデルタタイムが欲しい場合に使う)
+	/// </summary>
+	/// <returns></returns>
+	static float GetRawDeltaTime();
+
+	/// <summary>
+	/// 計算済みのデルタタイムを取得(基本こっち)
 	/// </summary>
 	/// <returns>デルタタイムを返す</returns>
 	static float GetDeltaTime();
+
+	/// <summary>
+	/// デルタタイムの乗算係数をセット
+	/// </summary>
+	/// <param name="mul"></param>
+	static void SetDeltaTimeMultiplier(float mul);
 
 #pragma endregion
 

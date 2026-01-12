@@ -7,6 +7,13 @@
 // 前方宣言
 class MechCore;
 
+// 実装メモ
+/*
+	currentMoveDir_ と moveSpeed_ から、このフレームでのvelocity_を求めて、
+	オブジェクトに加算するクラス
+	摩擦や重力計算も行っている
+*/
+
 /// <summary>
 /// 移動コンポーネント
 /// </summary>
@@ -22,9 +29,10 @@ public:
 	void Idle();
 	// 移動
 	void Move(MechCore* mechCore);
-	// クイックブースト
+
+	// クイックブースト開始
 	void QuickBoostEnter(MechCore* mechCore);
-	// アサルトブースト
+	// アサルトブースト開始
 	void AssultBoostEnter(MechCore* mechCore);
 
 	// アサルトブースト更新
@@ -122,7 +130,7 @@ private:
 	const Vector3 kQuickBoostCameraShakeIntensityHL_ = { 0.0f,0.1f,0.0f };
 
 	// アサルトブーストの最大速度
-	const float kMaxAssultBoostSpeed_ = 30.0f;
+	const float kMaxAssultBoostSpeed_ = 20.0f;
 
 	// ジャンプの初速度
 	const float kJumpFirstSpeed_ = 10.0f;

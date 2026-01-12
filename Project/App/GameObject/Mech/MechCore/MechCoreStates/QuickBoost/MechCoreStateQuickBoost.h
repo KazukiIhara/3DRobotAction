@@ -8,8 +8,14 @@
 /// </summary>
 class MechCoreStateQuickBoost :public MechCoreBaseState {
 public:
+	MechCoreStateQuickBoost();
 	~MechCoreStateQuickBoost()override = default;
 	void Enter(MechCore* mechCore)override;
 	void Update(MechCore* mechCore)override;
 	void Exit(MechCore* mechCore)override;
+private:
+	bool CanJustDodge();
+private:
+	// ジャスト回避判定タイマー
+	float justDodgeTimer_{};
 };
