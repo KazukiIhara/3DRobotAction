@@ -116,8 +116,11 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	// 体
 	if (auto body = body_->GetGameObject().lock()) {
 		body->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
+
 		// コライダーを作成
 		collider_ = std::make_unique<MechCollider>(tag_, body->GetTransform()->GetWorldPosition(), kColliderMin_, kColliderMax_);
+		// ジャスト回避用のコライダー
+		justDodgeCollider_ = std::make_unique<MechJustDodgeCollider>();
 
 		// 頭
 		if (auto head = head_->GetGameObject().lock()) {
@@ -164,8 +167,6 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	attackComponent_ = std::make_unique<MechAttackComponent>(attackObjectManager);
 	// ステータス値管理
 	statusComponent_ = std::make_unique<MechStatusComponent>();
-	// ジャスト回避コンポーネント
-	justDodgeComponent_ = std::make_unique<MechJustDodgeComponent>(attackObjectManager);
 
 	// ステートを作成
 	states_[MechCoreState::Idle] = std::make_shared<MechCoreStateIdle>();
@@ -354,10 +355,6 @@ MechStatusComponent* MechCore::GetStatusComponent() {
 	return statusComponent_.get();
 }
 
-MechJustDodgeComponent* MechCore::GetJustDodgeComponent() {
-	return justDodgeComponent_.get();
-}
-
 QuickBoostParticle* MechCore::GetQuickBoostParticle() {
 	return quickBoostParticle_.get();
 }
@@ -368,6 +365,10 @@ BulletHitEffect* MechCore::GetBulletHitEffect() {
 
 MechCollider* MechCore::GetCollider() {
 	return collider_.get();
+}
+
+MechJustDodgeCollider* MechCore::GetJustDodgeCollider() {
+	return justDodgeCollider_.get();
 }
 
 void MechCore::SetInputCommand(const InputCommand& command) {
@@ -397,10 +398,14 @@ void MechCore::UpdateCollider() {
 	}
 	// コライダー更新
 	collider_->Update();
+
+	// ジャスト回避用のコライダー更新
+	justDodgeCollider_->Update(this);
 }
 
 void MechCore::DrawCollider() {
 	collider_->Draw();
+	justDodgeCollider_->Draw();
 }
 
 void MechCore::PlayerMechEffect() {

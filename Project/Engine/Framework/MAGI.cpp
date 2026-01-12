@@ -1454,41 +1454,56 @@ void MAGISYSTEM::DrawLineAABB(const Vector3& min, const Vector3& max, const Vect
 }
 
 void MAGISYSTEM::DrawLineSphere(const Vector3& wPos, float radius, const Vector4& color, uint32_t segment) {
-	// セグメント数が少なすぎると円にならないのでガード
+	// セグメントが少なすぎる場合は何もしない
 	if (segment < 3) {
 		return;
 	}
 
-	const float twoPi = 3.1415926535f * 2.0f;
-	const float delta = twoPi / static_cast<float>(segment);
+	const float pi = 3.1415926535f;
+	const float twoPi = pi * 2.0f;
 
-	for (uint32_t i = 0; i < segment; ++i) {
-		const float t0 = delta * static_cast<float>(i);
-		const float t1 = delta * static_cast<float>(i + 1);
+	const uint32_t slices = segment;
+	const uint32_t stacks = std::max<uint32_t>(2, segment / 2);
 
-		const float c0 = std::cos(t0);
-		const float s0 = std::sin(t0);
-		const float c1 = std::cos(t1);
-		const float s1 = std::sin(t1);
+	// 緯度リング（水平リング）
+	for (uint32_t i = 1; i < stacks; ++i) {
+		const float v = static_cast<float>(i) / static_cast<float>(stacks);
+		const float phi = (v - 0.5f) * pi;
 
-		// XY 平面の円
-		{
-			Vector3 p0{ wPos.x + radius * c0, wPos.y + radius * s0, wPos.z };
-			Vector3 p1{ wPos.x + radius * c1, wPos.y + radius * s1, wPos.z };
+		const float y = std::sin(phi) * radius;
+		const float r = std::cos(phi) * radius;
+
+		for (uint32_t j = 0; j < slices; ++j) {
+			const float t0 = twoPi * (static_cast<float>(j) / static_cast<float>(slices));
+			const float t1 = twoPi * (static_cast<float>(j + 1) / static_cast<float>(slices));
+
+			const Vector3 p0{ wPos.x + r * std::cos(t0), wPos.y + y, wPos.z + r * std::sin(t0) };
+			const Vector3 p1{ wPos.x + r * std::cos(t1), wPos.y + y, wPos.z + r * std::sin(t1) };
 			lineDrawer3D_->AddLine(p0, p1, color);
 		}
+	}
 
-		// XZ 平面の円
-		{
-			Vector3 p0{ wPos.x + radius * c0, wPos.y, wPos.z + radius * s0 };
-			Vector3 p1{ wPos.x + radius * c1, wPos.y, wPos.z + radius * s1 };
-			lineDrawer3D_->AddLine(p0, p1, color);
-		}
+	// 経度リング（縦リング）
+	for (uint32_t j = 0; j < slices; ++j) {
+		const float theta = twoPi * (static_cast<float>(j) / static_cast<float>(slices));
+		const float ct = std::cos(theta);
+		const float st = std::sin(theta);
 
-		// YZ 平面の円
-		{
-			Vector3 p0{ wPos.x, wPos.y + radius * c0, wPos.z + radius * s0 };
-			Vector3 p1{ wPos.x, wPos.y + radius * c1, wPos.z + radius * s1 };
+		for (uint32_t i = 0; i < stacks; ++i) {
+			const float v0 = static_cast<float>(i) / static_cast<float>(stacks);
+			const float v1 = static_cast<float>(i + 1) / static_cast<float>(stacks);
+
+			const float phi0 = (v0 - 0.5f) * pi;
+			const float phi1 = (v1 - 0.5f) * pi;
+
+			const float y0 = std::sin(phi0) * radius;
+			const float y1 = std::sin(phi1) * radius;
+
+			const float r0 = std::cos(phi0) * radius;
+			const float r1 = std::cos(phi1) * radius;
+
+			const Vector3 p0{ wPos.x + r0 * ct, wPos.y + y0, wPos.z + r0 * st };
+			const Vector3 p1{ wPos.x + r1 * ct, wPos.y + y1, wPos.z + r1 * st };
 			lineDrawer3D_->AddLine(p0, p1, color);
 		}
 	}

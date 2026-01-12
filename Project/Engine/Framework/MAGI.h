@@ -519,7 +519,7 @@ public: // エンジンの機能
 	// ラインでAABBを描画
 	static void DrawLineAABB(const Vector3& min, const Vector3& max, const Vector4& color);
 	// ラインで球体を描画
-	static void DrawLineSphere(const Vector3& wPos, float radius, const Vector4& color, uint32_t segment = 32);
+	static void DrawLineSphere(const Vector3& wPos, float radius, const Vector4& color, uint32_t segment = 16);
 #pragma endregion
 
 #pragma region TriangleDrawer3D

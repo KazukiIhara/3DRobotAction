@@ -32,10 +32,10 @@
 #include "GameObject/Mech/MechComponents/LockOn/MechLockOnComponent.h"
 #include "GameObject/Mech/MechComponents/Attack/MechAttackComponent.h"
 #include "GameObject/Mech/MechComponents/Status/MechStatusComponent.h"
-#include "GameObject/Mech/MechComponents/JustDodge/MechJustDodgeComponent.h"
 
 // コライダー
-#include "GameObject/Mech/MechCollider/MechCollider.h"
+#include "GameObject/Mech/MechColliders/MechCollider/MechCollider.h"
+#include "GameObject/Mech/MechColliders/MechJustDodgeCollider/MechJustDodgeCollider.h"
 
 // エフェクトクラス
 #include "GameEffects/QuickBoost/QuickBoostParticle/QuickBoostParticle.h"
@@ -110,8 +110,7 @@ public:
 	MechLockOnComponent* GetLockOnComponent();
 	MechAttackComponent* GetAttackComponent();
 	MechStatusComponent* GetStatusComponent();
-	MechJustDodgeComponent* GetJustDodgeComponent();
-	
+
 	// 
 	// エフェクトクラスの取得
 	// 
@@ -123,6 +122,7 @@ public:
 	// コライダーの取得(今後コンポーネント化する可能性あり)
 	// 
 	MechCollider* GetCollider();
+	MechJustDodgeCollider* GetJustDodgeCollider();
 
 	//======================= 
 	// セッター
@@ -184,8 +184,6 @@ private:
 	std::unique_ptr<MechAttackComponent> attackComponent_;
 	// ステータス値管理コンポーネント
 	std::unique_ptr<MechStatusComponent> statusComponent_;
-	// ジャスト回避コンポーネント
-	std::unique_ptr<MechJustDodgeComponent> justDodgeComponent_;
 
 	//======================= 
 	// 各パーツ
@@ -225,13 +223,14 @@ private:
 	// 弾衝突時のエフェクト
 	std::unique_ptr<BulletHitEffect> bulletHitEffect_ = nullptr;
 
-
 	//=======================
 	// コライダー
 	//=======================
 
 	// ひとまず体
 	std::unique_ptr<MechCollider> collider_;
+	// ジャスト回避用の判定
+	std::unique_ptr<MechJustDodgeCollider> justDodgeCollider_;
 
 	const Vector3 kColliderMin_ = { -0.5f,-1.0f,-0.5f };
 	const Vector3 kColliderMax_ = { 0.5f,0.8f, 0.5f };
