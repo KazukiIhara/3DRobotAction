@@ -22,6 +22,12 @@ MechStatusComponent::MechStatusComponent() {
 }
 
 void MechStatusComponent::Update(MechCore* mechCore) {
+	// ジャスト回避コライダーの衝突情報を取得
+	bool justDodgeInfo = mechCore->GetJustDodgeCollider()->GetIsHit();
+	if (justDodgeInfo) {
+		mechCore->ChangeState(MechCoreState::JustDodge);
+	}
+
 	// 衝突情報を取得
 	std::vector<MechCollider::HitInfo> infos = mechCore->GetCollider()->GetHitInfo();
 	// 衝突情報を順番に処理

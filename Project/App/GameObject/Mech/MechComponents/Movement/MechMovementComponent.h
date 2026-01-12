@@ -50,7 +50,7 @@ public:
 
 	// ジャンプ
 	void Jump(MechCore* mechCore);
-
+	// 
 	// 接地判定
 	void CheckOnGround(MechCore* mechCore);
 

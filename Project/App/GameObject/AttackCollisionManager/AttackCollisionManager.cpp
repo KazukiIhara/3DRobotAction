@@ -65,15 +65,12 @@ void AttackCollisionManager::CheckCollision() {
 					if (IsCollisionSphereToSphere(mWpos, mRadius, aPos, aRadius)) {
 						// 衝突している
 
-						// 機体をジャスト回避ステートに遷移
-						m->ChangeState(MechCoreState::JustDodge);
-
 						// 衝突情報をセット
+						m->GetJustDodgeCollider()->SetIsHit(true);
 						AttackCollider::HitInfo aInfo = {
 							true
 						};
 						atkCollider->SetHitInfo(aInfo);
-						continue;
 					}
 				}
 
