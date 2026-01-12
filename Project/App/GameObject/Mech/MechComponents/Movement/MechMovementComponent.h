@@ -88,6 +88,8 @@ public:
 
 	// 移動速度セット
 	void SetMoveSpeed(float s);
+	// 移動方向セット
+	void SetMoveDir(const Vector2& dir);
 
 private:
 	// 待機状態の摩擦減速
