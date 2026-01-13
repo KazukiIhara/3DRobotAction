@@ -15,6 +15,8 @@ JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos) :
 	MAGISYSTEM::LoadTexture("gradation.png");
 	MAGISYSTEM::LoadTexture("dodgeEffect.png");
 
+	MAGISYSTEM::LoadTexture("gradationToon.png");
+
 	// エフェクトのタイマーセット
 	time_ = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","EffectTime" });
 
@@ -23,21 +25,28 @@ JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos) :
 	planeTrans_ = emitPos;
 
 	// エフェクト初期設定
-	// リング
-	ringMat_.blendMode = BlendMode::Normal;
-	ringMat_.textureName = "gradation.png";
 
-	// リング開始時形状
+	// リング
+	// 形状
 	const Vector2 ringDataStart = MAGISYSTEM::GetParameterValue<Vector2>({ "EffectParam","JustDodge","RingDataStart(outer,inner)" });
 	ringData_.outerRadius = ringDataStart.x;
 	ringData_.innerRadius = ringDataStart.y;
-
+	// マテリアル
+	ringMat_.blendMode = BlendMode::Add;
+	ringMat_.textureName = "dodgeEffect.png";
+	ringMat_.baseColor = MAGISYSTEM::GetParameterValue<Vector4>({ "EffectParam","JustDodge","RingColorStart" });
 
 	// 板ポリ
-	planeMat_.blendMode = BlendMode::Normal;
+
+	// 形状
+	planeScale_ = MAGISYSTEM::GetParameterValue<Vector3>({ "EffectParam","JustDodge","PlaneScaleStart" });
+
+	// マテリアル
+	planeMat_.blendMode = BlendMode::Add;
 	planeMat_.textureName = "dodgeEffect.png";
 
 	// パーティクル発生
+
 
 }
 
@@ -61,16 +70,25 @@ void JustDodgeEffect::Update() {
 	// 形状データをあれこれする
 
 	// リング
+	// 形状
 	const Vector2 ringDataStart = MAGISYSTEM::GetParameterValue<Vector2>({ "EffectParam","JustDodge","RingDataStart(outer,inner)" });
 	const Vector2 ringDataEnd = MAGISYSTEM::GetParameterValue<Vector2>({ "EffectParam","JustDodge","RingDataEnd(outer,inner)" });
-	const Vector2 ringData = SimpleAnimation<Vector2>(ringDataStart, ringDataEnd).GetValue(t);
-
-	// リングの形状を更新
+	const Vector2 ringData = SimpleAnimation<Vector2>(ringDataStart, ringDataEnd, EasingType::EaseOutCubic).GetValue(t);
 	ringData_.outerRadius = ringData.x;
 	ringData_.innerRadius = ringData.y;
 
-	// リングのカラーを更新
+	// マテリアル
+	const Vector4 ringColorStart = MAGISYSTEM::GetParameterValue<Vector4>({ "EffectParam","JustDodge","RingColorStart" });
+	const Vector4 ringColorEnd = MAGISYSTEM::GetParameterValue<Vector4>({ "EffectParam","JustDodge","RingColorEnd" });
+	const Vector4 ringColor = SimpleAnimation<Vector4>(ringColorStart, ringColorEnd, EasingType::EaseInCubic).GetValue(t);
+	ringMat_.baseColor = ringColor;
 
+	// 板ポリ
+	// 形状
+	const Vector3 planeScaleStart = MAGISYSTEM::GetParameterValue<Vector3>({ "EffectParam","JustDodge","PlaneScaleStart" });
+	const Vector3 planeScaleEnd = MAGISYSTEM::GetParameterValue<Vector3>({ "EffectParam","JustDodge","PlaneScaleEnd" });
+	const Vector3 planeScale = SimpleAnimation<Vector3>(planeScaleStart, planeScaleEnd, EasingType::EaseInOutCubic, true, LoopType::PingPong).GetValue(t * 2.0f);
+	planeScale_ = planeScale;
 }
 
 void JustDodgeEffect::Draw() {
@@ -78,7 +96,7 @@ void JustDodgeEffect::Draw() {
 	// カメラからビルボード行列作成
 	const Camera3D* currentCamera = MAGISYSTEM::GetCurrentCamera3D();
 	const Matrix4x4 ringWMat = currentCamera->MakeBillBoardMat(ringTrans_);
-	const Matrix4x4 planeWMat = currentCamera->MakeBillBoardMat(planeTrans_);
+	const Matrix4x4 planeWMat = currentCamera->MakeBillBoardMat(planeTrans_, planeScale_);
 
 	// リング描画
 	MAGISYSTEM::DrawRing3D(ringWMat, ringData_, ringMat_);

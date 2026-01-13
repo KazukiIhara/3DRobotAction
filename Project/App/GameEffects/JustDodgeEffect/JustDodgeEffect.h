@@ -42,6 +42,7 @@ private:
 
 	// 板ポリエフェクト用変数
 	Vector3	planeTrans_;
+	Vector3 planeScale_;
 	PlaneData3D planeData_;
 	MaterialData3D planeMat_;
 };
