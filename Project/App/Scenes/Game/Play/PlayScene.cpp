@@ -266,6 +266,9 @@ void PlayScene::Update() {
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
 
+	// エフェクトマネージャ更新
+	gameEffectManager_->Update();
+
 	// UI更新
 	playerUI_->Update();
 
@@ -443,6 +446,9 @@ void PlayScene::Draw() {
 	// 攻撃判定マネージャ描画
 	attackCollisionManager_->Draw();
 
+	// エフェクトマネージャ描画
+	gameEffectManager_->Draw();
+	
 	// UI描画
 	playerUI_->Draw();
 
