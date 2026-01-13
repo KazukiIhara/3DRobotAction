@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "GameEffects/BaseGameEffect/BaseGameEffect.h"
+#include "GameEffects/System/BaseGameEffect/BaseGameEffect.h"
 
 class MechCore;
 

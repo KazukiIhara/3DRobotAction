@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "GameEffects/BaseGameEffect/BaseGameEffect.h"
+#include "../BaseGameEffect/BaseGameEffect.h"
 
 // 実装メモ
 /*

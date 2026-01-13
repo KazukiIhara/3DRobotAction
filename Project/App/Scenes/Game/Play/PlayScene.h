@@ -21,7 +21,7 @@ using namespace MAGIUtility;
 //-------------------------------------------
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
-#include "GameEffects/GameEffectManager/GameEffectManager.h"
+#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
 
 /// <summary>
 /// 終了判定
