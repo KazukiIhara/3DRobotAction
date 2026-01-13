@@ -14,6 +14,7 @@
 #include "GameObject/Enemy/Enemy.h"
 #include "GameObject/PlayerUI/PlayerUI.h"
 
+#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
@@ -50,9 +51,10 @@ private:
 	// プレイヤーの情報を描画するUI
 	std::unique_ptr<PlayerUI> playerUI_;
 
+	// ゲームエフェクトマネージャ
+	std::unique_ptr<GameEffectManager> effectManager_;
 	// 攻撃判定マネージャ
 	std::unique_ptr<AttackCollisionManager> attackCollisionManager_;
-
 	// 弾のマネージャ
 	std::unique_ptr<AttackObjectManager> attackObjectManger_;
 

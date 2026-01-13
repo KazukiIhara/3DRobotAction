@@ -46,10 +46,10 @@ void PlayScene::Initialize() {
 	//===========================
 
 	// プレイヤー作成
-	player_ = std::make_unique<Player>(attackObjectManger_.get());
+	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
 
 	// 敵作成
-	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), player_->GetMechCore());
+	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), gameEffectManager_.get(), player_->GetMechCore());
 
 	// 最初はAI無効
 	enemy_->SetIsAIActive(false);
@@ -448,7 +448,7 @@ void PlayScene::Draw() {
 
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();
-	
+
 	// UI描画
 	playerUI_->Draw();
 
