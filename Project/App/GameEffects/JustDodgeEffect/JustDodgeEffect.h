@@ -23,7 +23,7 @@
 /// <summary>
 /// ジャスト回避した際のエフェクト
 /// </summary>
-class JustDodgeEffect :public BaseGameEffect {
+class JustDodgeEffect:public BaseGameEffect {
 public:
 	JustDodgeEffect(const Vector3& emitPos);
 	~JustDodgeEffect()override = default;

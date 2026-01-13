@@ -4,11 +4,40 @@
       "type": "Float",
       "value": 0.6000000238418579
     },
+    "ParticleColor": {
+      "type": "Vec4",
+      "value": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.5
+      }
+    },
+    "ParticleLife": {
+      "type": "Float",
+      "value": 1.2000000476837158
+    },
+    "ParticleNum": {
+      "type": "Int32",
+      "value": 1000
+    },
+    "ParticlePosRadius": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "ParticleSize": {
+      "type": "Float",
+      "value": 0.10000000149011612
+    },
+    "ParticleSpeed": {
+      "type": "Float",
+      "value": 8.0
+    },
     "PlaneScaleEnd": {
       "type": "Vec3",
       "value": {
         "x": 30.0,
-        "y": 0.20000000298023224,
+        "y": 0.15000000596046448,
         "z": 1.0
       }
     },
@@ -23,7 +52,7 @@
     "RingColorEnd": {
       "type": "Vec4",
       "value": {
-        "w": 0.0,
+        "w": 1.0,
         "x": 0.0,
         "y": 0.800000011920929,
         "z": 1.0
@@ -41,8 +70,8 @@
     "RingDataEnd(outer,inner)": {
       "type": "Vec2",
       "value": {
-        "x": 10.0,
-        "y": 9.0
+        "x": 8.0,
+        "y": 7.999000072479248
       }
     },
     "RingDataStart(outer,inner)": {

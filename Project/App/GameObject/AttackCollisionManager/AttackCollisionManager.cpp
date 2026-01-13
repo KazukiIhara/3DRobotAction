@@ -60,7 +60,7 @@ void AttackCollisionManager::CheckCollision() {
 
 				// ジャスト回避受付状態なら先にジャスト回避判定を取る
 				const bool canJustDodge = m->GetStatusComponent()->GetCanJustDodge();
-				if (canJustDodge) {
+				if (canJustDodge && m->GetFriendlyTag() == FriendlyTag::PlayerSide) {
 					// 衝突判定
 					if (IsCollisionSphereToSphere(mWpos, mRadius, aPos, aRadius)) {
 						// 衝突している

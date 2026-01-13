@@ -6,6 +6,8 @@
 
 #include "MAGI.h"
 
+#include "Random/Random.h"
+
 using namespace Magi;
 
 JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos) :
@@ -14,6 +16,9 @@ JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos) :
 	// エディットシーン用に一応ロード処理を書く
 	MAGISYSTEM::LoadTexture("gradation.png");
 	MAGISYSTEM::LoadTexture("dodgeEffect.png");
+	MAGISYSTEM::LoadTexture("Circle2.png");
+	MAGISYSTEM::LoadTexture("electric_0.png");
+	MAGISYSTEM::LoadTexture("lensFlare.png");
 
 	MAGISYSTEM::LoadTexture("gradationToon.png");
 
@@ -45,8 +50,36 @@ JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos) :
 	planeMat_.blendMode = BlendMode::Add;
 	planeMat_.textureName = "dodgeEffect.png";
 
-	// パーティクル発生
+	// パーティクル
 
+	// 数
+	const int32_t justDodgeParticleNum = MAGISYSTEM::GetParameterValue<int32_t>({ "EffectParam","JustDodge","ParticleNum" });
+
+	// 設定
+	const int32_t particleTex = MAGISYSTEM::GetTextureIndex("lensFlare.png");
+
+	const Vector4 particleColor = MAGISYSTEM::GetParameterValue<Vector4>({ "EffectParam","JustDodge","ParticleColor" });
+	const float particlePosRadius = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","ParticlePosRadius" });
+	const float particleLife = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","ParticleLife" });
+	const float particleSize = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","ParticleSize" });
+	const float particleSpeed = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","ParticleSpeed" });
+
+	// 発生
+	for (int32_t i = 0; i < justDodgeParticleNum; i++) {
+
+		const Vector3 pos = Normalize(Random::GenerateVector3(-100.0f, 100.0f)) * particlePosRadius;
+		const Vector3 velo = Normalize(Random::GenerateVector3(-100.0f, 100.0f)) * particleSpeed;
+
+		GPUParticleEmitData particleData;
+		particleData.texIndex = particleTex;
+		particleData.pos = worldPos_ + pos;
+		particleData.velo = velo;
+		particleData.size = Vector2(particleSize, particleSize);
+		particleData.color = particleColor;
+		particleData.life = particleLife;
+
+		MAGISYSTEM::EmitParticle(particleData);
+	}
 
 }
 

@@ -739,7 +739,7 @@ void MAGISYSTEM::Draw() {
 
 	}
 
-	particleDrawer3D_->Draw(BlendMode::Normal);
+	particleDrawer3D_->Draw(BlendMode::Add);
 
 	// シーン用のレンダーテクスチャ描画後処理
 	renderController_->PostSceneRender();

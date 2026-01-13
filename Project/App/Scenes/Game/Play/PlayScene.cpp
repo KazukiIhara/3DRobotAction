@@ -240,15 +240,15 @@ void PlayScene::Update() {
 
 
 	// タイマー更新
-	tempBattleTime_ += MAGISYSTEM::GetDeltaTime();
+	//tempBattleTime_ += MAGISYSTEM::GetDeltaTime();
 
-	// 一秒経ったらタイマーをマイナス
-	if (tempBattleTime_ >= 1.0f) {
-		tempBattleTime_ = 0.0f;
-		if (info.battleTime > 0) {
-			info.battleTime--;
-		}
-	}
+	//// 一秒経ったらタイマーをマイナス
+	//if (tempBattleTime_ >= 1.0f) {
+	//	tempBattleTime_ = 0.0f;
+	//	if (info.battleTime > 0) {
+	//		info.battleTime--;
+	//	}
+	//}
 
 	//
 	// オブジェクト更新
