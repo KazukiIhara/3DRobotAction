@@ -19,7 +19,6 @@ void MechEditScene::Initialize() {
 	//-------------------------------------------------------
 	// アセットのロード
 	//-------------------------------------------------------
-	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
 
 	MAGISYSTEM::LoadModel("AssultRifle");
 	MAGISYSTEM::CreateModelDrawer("AssultRifle", MAGISYSTEM::FindModel("AssultRifle"));
@@ -29,9 +28,6 @@ void MechEditScene::Initialize() {
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
 	//-------------------------------------------------------
-
-	// スカイボックスを設定
-	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
 
 	// 手武器作成
