@@ -69,6 +69,13 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadTexture("smoke.png");
 	// リング用
 	MAGISYSTEM::LoadTexture("gradation.png");
+	// リング用
+	MAGISYSTEM::LoadTexture("gradationLine.png");
+	// レーザー
+	MAGISYSTEM::LoadTexture("laser.png");
+	// 回避時のエフェクト
+	MAGISYSTEM::LoadTexture("dodgeEffect.png");
+
 	// 粒子用
 	MAGISYSTEM::LoadTexture("star.png");
 	// マズルフラッシュ
