@@ -36,17 +36,19 @@ void PlayScene::Initialize() {
 	// スカイボックスを設定
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTextureIndex);
 
-	
+
 	//===========================
 	// マネージャの初期化
 	//===========================
+
+	// ゲームエフェクトマネージャ
+	gameEffectManager_ = std::make_unique<GameEffectManager>();
 
 	// 攻撃コリジョンマネージャ
 	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
 
 	// 弾マネージャ
 	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
-
 
 	//===========================
 	// シーン上オブジェクトの初期化
