@@ -104,8 +104,8 @@ private:
 	PlaySceneState playSceneState_;
 
 	// ポストエフェクトの用の変数
-	float vignetteScale_ = 18.0f;
-	float vignetteFalloff_ = 0.8f;
+	float vignetteScale_ = 8.0f;
+	float vignetteFalloff_ = 0.4f;
 	Vector2 radialBlurCenter_ = { 0.5f,0.5f };
 	float radialBlurWidth_ = 0.01f;
 	float gaussianSigma_ = 0.5f;
