@@ -35,8 +35,6 @@ void JustDodgeEffect::Update() {
 	const float kEffectTime = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","EffectTime" });
 	const float kDt = MAGISYSTEM::GetDeltaTime();
 
-
-
 }
 
 void JustDodgeEffect::Draw() {
