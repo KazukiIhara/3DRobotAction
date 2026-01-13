@@ -23,6 +23,8 @@ public:
 	void Add(std::unique_ptr<BaseGameEffect> effect);
 	void Update();
 	void Draw();
+
+private:
 	void DeleteGarbage();
 
 private:

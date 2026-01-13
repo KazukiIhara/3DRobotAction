@@ -6,8 +6,6 @@
 #include "Structs/Primitive3DStruct.h"
 #include "Math/Types/AllMathTypes.h"
 
-class MechCore;
-
 // 実装メモ
 /*
 	回避した場所に水色の細いリングが発生、	EaseOutで広がる
@@ -27,7 +25,7 @@ class MechCore;
 /// </summary>
 class JustDodgeEffect :public BaseGameEffect {
 public:
-	JustDodgeEffect(const Vector3& emitPos, MechCore* mechCore);
+	JustDodgeEffect(const Vector3& emitPos);
 	~JustDodgeEffect()override = default;
 
 	void Update()override;
@@ -46,7 +44,4 @@ private:
 	Vector3	planeTrans_;
 	PlaneData3D planeData_;
 	MaterialData3D planeMat_;
-
-	// 機体の参照ポインタ
-	MechCore* mech_;
 };

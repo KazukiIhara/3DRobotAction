@@ -6,9 +6,9 @@
 
 using namespace Magi;
 
-JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos, MechCore* mech) :
+JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos) :
 	BaseGameEffect(emitPos) {
-	mech_ = mech;
+
 	// エフェクトのタイマーセット
 	time_ = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","EffectTime" });
 

@@ -23,7 +23,7 @@ void MechCoreStateJustDodge::Enter([[maybe_unused]] MechCore* mechCore) {
 	// エフェクト生成
 	const Vector3 emitPos = 
 		mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
-	std::unique_ptr<JustDodgeEffect> dodgeEffect = std::make_unique<JustDodgeEffect>(emitPos, mechCore);
+	std::unique_ptr<JustDodgeEffect> dodgeEffect = std::make_unique<JustDodgeEffect>(emitPos);
 	mechCore->GetGameEffectManager()->Add(std::move(dodgeEffect));
 
 }
