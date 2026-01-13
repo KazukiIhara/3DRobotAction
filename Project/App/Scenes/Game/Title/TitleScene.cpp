@@ -200,13 +200,10 @@ void TitleScene::Initialize() {
 
 	// エフェクトマネージャ
 	effectManager_ = std::make_unique<GameEffectManager>();
-
 	// 攻撃コリジョンマネージャ
 	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
-
 	// 弾マネージャ
 	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
-
 
 	// デモプレイ用のオブジェクト生成
 	aiPlayer_ = std::make_unique<AIPlayer>(attackObjectManger_.get(), effectManager_.get());
@@ -257,6 +254,9 @@ void TitleScene::Update() {
 	// 敵更新
 	enemy_->Update();
 
+	// エフェクトマネージャ更新
+	effectManager_->Update();
+
 	// 弾マネージャ更新
 	attackObjectManger_->Update();
 
@@ -272,6 +272,9 @@ void TitleScene::Draw() {
 
 	// エネミーにまつわるものを描画
 	enemy_->Draw();
+
+	// エフェクトマネージャ描画
+	effectManager_->Draw();
 
 	// 弾マネージャ描画
 	attackObjectManger_->Draw();

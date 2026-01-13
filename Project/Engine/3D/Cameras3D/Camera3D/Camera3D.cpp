@@ -348,8 +348,55 @@ bool Camera3D::GetIsAlive()const {
 	return isAlive_;
 }
 
-const CameraVector& Camera3D::GetCameraVector() const {
+const CameraVector Camera3D::GetCameraVector() const {
 	return cameraVector_;
+}
+
+const Matrix4x4 Camera3D::MakeBillBoardMat(const Vector3& translate, const Vector3& scale) const {
+
+	Matrix4x4 billboard = MakeIdentityMatrix4x4();
+
+	// カメラ行列
+	const CameraVector camVec = GetCameraVector();
+	// ワールド行列を作成
+	// カメラの軸
+	Vector3 right = Normalize(camVec.right);
+	Vector3 up = Normalize(camVec.up);
+	Vector3 forward = Normalize(camVec.forward);
+
+	// Zを反転
+	forward = -forward;
+
+	// スケール設定
+	const float sx = scale.x;  // 横幅スケール
+	const float sy = scale.y;  // 縦幅スケール
+	const float sz = 1.0f;      // 奥行き
+
+	// X軸
+	billboard.m[0][0] = right.x * sx;
+	billboard.m[0][1] = right.y * sx;
+	billboard.m[0][2] = right.z * sx;
+	billboard.m[0][3] = 0.0f;
+
+	// Y軸
+	billboard.m[1][0] = up.x * sy;
+	billboard.m[1][1] = up.y * sy;
+	billboard.m[1][2] = up.z * sy;
+	billboard.m[1][3] = 0.0f;
+
+	// Z軸
+	billboard.m[2][0] = forward.x * sz;
+	billboard.m[2][1] = forward.y * sz;
+	billboard.m[2][2] = forward.z * sz;
+	billboard.m[2][3] = 0.0f;
+
+	// 平行移動
+	billboard.m[3][0] = translate.x;
+	billboard.m[3][1] = translate.y;
+	billboard.m[3][2] = translate.z;
+	billboard.m[3][3] = 1.0f;
+
+	return billboard;
 }
 
 float Camera3D::GetFovY() const {

@@ -3,6 +3,10 @@
 #include "MechCoreStateJustDodge.h"
 
 #include "GameObject/Mech/MechCore/MechCore.h"
+#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+
+
+#include "GameEffects/JustDodgeEffect/JustDodgeEffect.h"
 
 #include "MAGI.h"
 
@@ -15,6 +19,12 @@ MechCoreStateJustDodge::MechCoreStateJustDodge() {
 void MechCoreStateJustDodge::Enter([[maybe_unused]] MechCore* mechCore) {
 	// タイマーをセット
 	timer_ = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","JustDodge","StateTime" });
+
+	// エフェクト生成
+	const Vector3 emitPos = 
+		mechCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
+	std::unique_ptr<JustDodgeEffect> dodgeEffect = std::make_unique<JustDodgeEffect>(emitPos, mechCore);
+	mechCore->GetGameEffectManager()->Add(std::move(dodgeEffect));
 
 }
 

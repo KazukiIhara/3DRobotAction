@@ -11,6 +11,8 @@
 #include "MechCoreStates/Recovery/MechCoreStateRecovery.h"
 #include "MechCoreStates/JustDodge/MechCoreStateJustDodge.h"
 
+#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+
 using namespace MAGIMath;
 using namespace MAGIUtility;
 using namespace Magi;
