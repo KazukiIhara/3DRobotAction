@@ -12,21 +12,19 @@ JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos, MechCore* mech) :
 	// エフェクトのタイマーセット
 	time_ = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","EffectTime" });
 
-	// 各トランスフォーム作成、マネージャに突っ込む
-	std::unique_ptr<Transform3D> ringTrans = std::make_unique<Transform3D>(worldPos_);
-	ringTrans_ = MAGISYSTEM::AddTransform3D(std::move(ringTrans));
+	// 座標をセット
+	ringTrans_ = emitPos;
+	planeTrans_ = emitPos;
 
-	std::unique_ptr<Transform3D> planeTrans = std::make_unique<Transform3D>(worldPos_);
-	planeTrans_ = MAGISYSTEM::AddTransform3D(std::move(planeTrans));
+	// エフェクト初期設定
+	
+	// リング
+	ringMat_.blendMode = BlendMode::Normal;
+
+	// 板ポリ
+	planeMat_.blendMode = BlendMode::Normal;
 
 	// パーティクル発生
-
-}
-
-JustDodgeEffect::~JustDodgeEffect() {
-	// トランスフォームの後処理
-	ringTrans_->SetIsAlive(false);
-	planeTrans_->SetIsAlive(false);
 
 }
 
@@ -38,8 +36,14 @@ void JustDodgeEffect::Update() {
 }
 
 void JustDodgeEffect::Draw() {
+	const Camera3D* currentCamera = MAGISYSTEM::GetCurrentCamera3D();
+
+	const Matrix4x4 ringWMat = currentCamera->MakeBillBoardMat(ringTrans_);
+	const Matrix4x4 planeWMat = currentCamera->MakeBillBoardMat(planeTrans_);
+
 	// リング描画
-	MAGISYSTEM::DrawRing3D(ringTrans_->GetWorldMatrix(), ringData_, ringMat_);
+	MAGISYSTEM::DrawRing3D(ringWMat, ringData_, ringMat_);
 	// 板ポリ描画
-	MAGISYSTEM::DrawPlane3D(planeTrans_->GetWorldMatrix(), planeData_, planeMat_);
+	MAGISYSTEM::DrawPlane3D(planeWMat, planeData_, planeMat_);
+
 }

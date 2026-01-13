@@ -4,7 +4,7 @@
 
 #include "GameEffects/System/BaseGameEffect/BaseGameEffect.h"
 #include "Structs/Primitive3DStruct.h"
-#include "3D/Transform3D/Transform3D.h"
+#include "Math/Types/AllMathTypes.h"
 
 class MechCore;
 
@@ -28,7 +28,7 @@ class MechCore;
 class JustDodgeEffect :public BaseGameEffect {
 public:
 	JustDodgeEffect(const Vector3& emitPos, MechCore* mechCore);
-	~JustDodgeEffect()override;
+	~JustDodgeEffect()override = default;
 
 	void Update()override;
 	void Draw()override;
@@ -38,12 +38,12 @@ private:
 	float time_ = 0.0f;
 
 	// リングのエフェクト用変数
-	Transform3D* ringTrans_;
+	Vector3	ringTrans_;
 	RingData3D ringData_;
 	MaterialData3D ringMat_;
 
 	// 板ポリエフェクト用変数
-	Transform3D* planeTrans_;
+	Vector3	planeTrans_;
 	PlaneData3D planeData_;
 	MaterialData3D planeMat_;
 
