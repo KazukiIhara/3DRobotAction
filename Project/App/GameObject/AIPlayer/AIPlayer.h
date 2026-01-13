@@ -8,6 +8,7 @@
 
 // 前方宣言
 class AttackObjectManager;
+class GameEffectManager;
 
 // TODO: 今さらだが、Shared_ptrを使っている理由が殆どないし、逆に危険な気がする
 // 次のリファクタのタイミングでShared_ptrを使っている部分をunique_ptrにする
@@ -18,7 +19,7 @@ class AttackObjectManager;
 /// </summary>
 class AIPlayer {
 public:
-	AIPlayer(AttackObjectManager* bulletManager);
+	AIPlayer(AttackObjectManager* bulletManager, GameEffectManager* effectManager);
 	~AIPlayer() = default;
 
 	void Initialize(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> targetMech);

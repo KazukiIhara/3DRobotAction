@@ -6,10 +6,10 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
-AIPlayer::AIPlayer(AttackObjectManager* bulletManager) {
+AIPlayer::AIPlayer(AttackObjectManager* bulletManager, GameEffectManager* effectManager) {
 	// 機体の作成
 	const Vector3 kPopPosition = { 0.0f,0.0f,-30.0f };
-	mech_ = std::make_unique<MechCore>(kPopPosition, FriendlyTag::PlayerSide, "Default", bulletManager, true);
+	mech_ = std::make_unique<MechCore>(kPopPosition, FriendlyTag::PlayerSide, "Default", bulletManager, effectManager, true);
 
 	// 三人称視点カメラの作成
 	std::unique_ptr<MechCamera> followCamera = std::make_unique<MechCamera>("MainCamera", std::numbers::pi_v<float>, mech_.get());

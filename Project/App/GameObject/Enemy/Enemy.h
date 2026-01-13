@@ -8,13 +8,14 @@
 
 // 前方宣言
 class AttackObjectManager;
+class GameEffectManager;
 
 /// <summary>
 /// 敵クラス
 /// </summary>
 class Enemy {
 public:
-	Enemy(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> playerMech);
+	Enemy(AttackObjectManager* bulletManager, GameEffectManager* effectManager, std::weak_ptr<MechCore> playerMech);
 	~Enemy() = default;
 
 	void Update();
