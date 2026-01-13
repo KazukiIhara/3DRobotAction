@@ -28,7 +28,7 @@
     },
     "TargetFovArriveTime": {
       "type": "Float",
-      "value": 0.8
+      "value": 0.800000011920929
     },
     "TargetFovY": {
       "type": "Float",

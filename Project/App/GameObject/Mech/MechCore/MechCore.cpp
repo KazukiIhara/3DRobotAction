@@ -417,8 +417,9 @@ void MechCore::PlayerMechEffect() {
 }
 
 void MechCore::QuickBoostRadialBlur() {
-	// クイックブースト中でなければ早期リターン
-	if (currentState_.first != MechCoreState::QuickBoost) return;
+	// クイックブースト中、ジャスト回避中でなければ早期リターン
+	if (currentState_.first != MechCoreState::QuickBoost ||
+		currentState_.first != MechCoreState::JustDodge) return;
 
 	// クイックブーストタイマー取得
 	const float time = movementComponent_->GetQuickBoostTimer();
@@ -454,13 +455,14 @@ void MechCore::QuickBoostFovEffect() {
 	const float kBaseFovY = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","BaseFovY" });
 	const float kTargetFovY = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","TargetFovY" });
 	const float targetFovArriveTime = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","TargetFovArriveTime" });
-	
+
 	const float currentFovY = core_.lock()->GetCamera3D("MainCamera")->GetFovY();
 	const float t = CalExpAlpha(MAGISYSTEM::GetDeltaTime(), targetFovArriveTime, 0.99f);
 
 	float targetFovY = 0.0f;
 	// クイックブースト中
-	if (currentState_.first == MechCoreState::QuickBoost) {
+	if (currentState_.first == MechCoreState::QuickBoost ||
+		currentState_.first == MechCoreState::JustDodge) {
 		targetFovY = kTargetFovY;
 	} else {
 		targetFovY = kBaseFovY;
