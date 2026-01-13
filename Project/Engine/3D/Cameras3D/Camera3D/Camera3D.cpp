@@ -92,6 +92,7 @@ void Camera3D::UpdateData() {
 
 	// ビュー行列作成
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_);
+	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
 	const Vector3 culEye = eye_ - forward_;
@@ -351,6 +352,10 @@ const CameraVector& Camera3D::GetCameraVector() const {
 	return cameraVector_;
 }
 
+float Camera3D::GetFovY() const {
+	return fovY_ / (std::numbers::pi_v<float> / 180.0f);
+}
+
 void Camera3D::SetEye(const Vector3& eye) {
 	eye_ = eye;
 }
@@ -373,6 +378,10 @@ void Camera3D::SetIsAlive(bool isAlive) {
 
 void Camera3D::SetIsUnique(bool isUnique) {
 	isUnique_ = isUnique;
+}
+
+void Camera3D::SetFovY(float fovY) {
+	fovY_ = fovY * (std::numbers::pi_v<float> / 180.0f);
 }
 
 void Camera3D::CreateCameraResource() {

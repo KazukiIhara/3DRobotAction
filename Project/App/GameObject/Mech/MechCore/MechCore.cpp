@@ -9,9 +9,11 @@
 #include "MechCoreStates/QuickBoost/MechCoreStateQuickBoost.h"
 #include "MechCoreStates/AssultBoost/MechCoreStateAssultBoost.h"
 #include "MechCoreStates/Recovery/MechCoreStateRecovery.h"
+#include "MechCoreStates/JustDodge/MechCoreStateJustDodge.h"
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
+using namespace Magi;
 
 MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* attackObjectManager, bool enableHardlockOn) {
 
@@ -45,7 +47,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	MechHandWeapon::Param rightHandWeaponParam;
 	rightHandWeaponParam.name = "AssultRifle";
 	rightHandWeaponParam.modelName = "AssultRifle";
-	rightHandWeaponParam.speed = 70.0f;
+	rightHandWeaponParam.speed = 90.0f;
 	rightHandWeaponParam.fireOffsetLocalPos = { 0.0f,0.24f,1.3f };
 	rightHandWeaponParam.coolTime = 0.5f;
 	rightHandWeaponParam.reloadTime = 1.5f;
@@ -116,8 +118,11 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	// 体
 	if (auto body = body_->GetGameObject().lock()) {
 		body->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
+
 		// コライダーを作成
 		collider_ = std::make_unique<MechCollider>(tag_, body->GetTransform()->GetWorldPosition(), kColliderMin_, kColliderMax_);
+		// ジャスト回避用のコライダー
+		justDodgeCollider_ = std::make_unique<MechJustDodgeCollider>();
 
 		// 頭
 		if (auto head = head_->GetGameObject().lock()) {
@@ -170,6 +175,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	states_[MechCoreState::Move] = std::make_shared<MechCoreStateMove>();
 	states_[MechCoreState::QuickBoost] = std::make_shared<MechCoreStateQuickBoost>();
 	states_[MechCoreState::AssultBoost] = std::make_shared<MechCoreStateAssultBoost>();
+	states_[MechCoreState::JustDodge] = std::make_shared<MechCoreStateJustDodge>();
 	states_[MechCoreState::Recovery] = std::make_shared<MechCoreStateRecovery>();
 
 	// 最初のステートを設定
@@ -364,6 +370,10 @@ MechCollider* MechCore::GetCollider() {
 	return collider_.get();
 }
 
+MechJustDodgeCollider* MechCore::GetJustDodgeCollider() {
+	return justDodgeCollider_.get();
+}
+
 void MechCore::SetInputCommand(const InputCommand& command) {
 	inputCommand_ = command;
 }
@@ -391,14 +401,19 @@ void MechCore::UpdateCollider() {
 	}
 	// コライダー更新
 	collider_->Update();
+
+	// ジャスト回避用のコライダー更新
+	justDodgeCollider_->Update(this);
 }
 
 void MechCore::DrawCollider() {
 	collider_->Draw();
+	justDodgeCollider_->Draw();
 }
 
 void MechCore::PlayerMechEffect() {
 	QuickBoostRadialBlur();
+	QuickBoostFovEffect();
 }
 
 void MechCore::QuickBoostRadialBlur() {
@@ -432,4 +447,26 @@ void MechCore::QuickBoostRadialBlur() {
 
 	// 機体のスクリーン0.0f~1.0f座標に補完計算したブラーの値で
 	MAGISYSTEM::ApplyPostEffectRadialBlur(bodyScreenPosClamped, blurWitdh);
+}
+
+void MechCore::QuickBoostFovEffect() {
+	// 視野角初期値を取得
+	const float kBaseFovY = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","BaseFovY" });
+	const float kTargetFovY = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","TargetFovY" });
+	const float targetFovArriveTime = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","TargetFovArriveTime" });
+	
+	const float currentFovY = core_.lock()->GetCamera3D("MainCamera")->GetFovY();
+	const float t = CalExpAlpha(MAGISYSTEM::GetDeltaTime(), targetFovArriveTime, 0.99f);
+
+	float targetFovY = 0.0f;
+	// クイックブースト中
+	if (currentState_.first == MechCoreState::QuickBoost) {
+		targetFovY = kTargetFovY;
+	} else {
+		targetFovY = kBaseFovY;
+	}
+
+	// 補完
+	const float newFov = Lerp(currentFovY, targetFovY, t);
+	core_.lock()->GetCamera3D("MainCamera")->SetFovY(newFov);
 }

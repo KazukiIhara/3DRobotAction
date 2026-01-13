@@ -68,6 +68,7 @@ public:
 	const Vector3& GetTarget()const;
 	bool GetIsAlive()const;
 	const CameraVector& GetCameraVector()const;
+	float GetFovY()const;
 
 	void SetIsUseYawPitch(bool isUseYawPitch);
 	void SetEye(const Vector3& eye);
@@ -76,6 +77,7 @@ public:
 	void SetPitch(float pitch);
 	void SetIsAlive(bool isAlive);
 	void SetIsUnique(bool isUnique);
+	void SetFovY(float fovY);
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
@@ -142,10 +144,8 @@ protected:
 	// パラメータ
 	//
 
-	// 垂直視野角(度数法)
-	float fovYDegrees_ = 65.0f;
 	// 垂直方向視野角
-	float fovY_ = fovYDegrees_ * (std::numbers::pi_v<float> / 180.0f);
+	float fovY_ = 70.0f * (std::numbers::pi_v<float> / 180.0f);
 	// カリング用の垂直方向視野角
 	float culFovY_ = 90.0f * (std::numbers::pi_v<float> / 180.0f);
 

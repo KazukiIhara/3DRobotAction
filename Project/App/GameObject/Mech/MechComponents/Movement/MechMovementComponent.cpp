@@ -240,6 +240,10 @@ void MechMovementComponent::SetMoveSpeed(float s) {
 	moveSpeed_ = s;
 }
 
+void MechMovementComponent::SetMoveDir(const Vector2& dir) {
+	currentMoveDir_ = dir;
+}
+
 void MechMovementComponent::ApplyIdleFriction(float& v, float decelPerSec, float dt) {
 	if (v > 0.0f) {
 		// 正方向：v から減らす

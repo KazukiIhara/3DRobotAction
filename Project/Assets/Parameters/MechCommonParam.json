@@ -1,0 +1,38 @@
+{
+  "JustDodge": {
+    "CanJustDodgeTime": {
+      "type": "Float",
+      "value": 0.20000000298023224
+    },
+    "ColliderRadius": {
+      "type": "Float",
+      "value": 2.5
+    },
+    "DeltaMultiplierEnd": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "DeltaMultiplierStart": {
+      "type": "Float",
+      "value": 0.20000000298023224
+    },
+    "StateTime": {
+      "type": "Float",
+      "value": 0.6000000238418579
+    }
+  },
+  "QuickBoost": {
+    "BaseFovY": {
+      "type": "Float",
+      "value": 70.0
+    },
+    "TargetFovArriveTime": {
+      "type": "Float",
+      "value": 0.8
+    },
+    "TargetFovY": {
+      "type": "Float",
+      "value": 90.0
+    }
+  }
+}

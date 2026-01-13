@@ -29,6 +29,7 @@ enum class MechCoreState {
 	Move,
 	QuickBoost,
 	AssultBoost,
+	JustDodge,
 	Recovery,
 	Melee,
 };

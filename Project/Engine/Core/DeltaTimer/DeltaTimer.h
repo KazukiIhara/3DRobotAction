@@ -13,12 +13,22 @@ namespace Magi {
 		~DeltaTimer();
 
 		void Reset();
+
 		void Update();
-		float GetDeltaTime() const;
+		void EndFrame();
+
+		float GetDeltaTime()const;
+		float GetRawDeltaTime() const;
+
+		void SetMultiplier(float mul);
 	private:
 		// デルタタイム
 		float deltaTime_;
 		int64_t lastTime_;
 		double frequency_;
+
+		float multiplier_ = 1.0f;
+		float tempMultiplier_ = 1.0f;
+		bool multiplierChanged_ = false;
 	};
 }

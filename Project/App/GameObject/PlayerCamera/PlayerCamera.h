@@ -13,7 +13,7 @@ enum PlayerCameraState {
 /// <summary>
 /// 機体カメラクラス
 /// </summary>
-class MechCamera :public Camera3D {
+class MechCamera:public Camera3D {
 public:
 	MechCamera(const std::string& name, float yaw, MechCore* core);
 	~MechCamera() = default;
@@ -57,7 +57,7 @@ private:
 	// パラメータ
 
 	// オフセットの半径
-	float radius_ = 3.0f;
+	float radius_ = 5.0f;
 
 	// カメラの感度
 	float sensYaw_ = 8.0f;
@@ -74,7 +74,7 @@ private:
 	const float kPitchLim_ = 75.0f * std::numbers::pi_v<float> / 180.0f;
 
 	// ピボットのオフセット
-	Vector3 pivotOffset_ = { 0.0f, 2.2f, 0.0f };
+	Vector3 pivotOffset_ = { 0.0f, 2.5f, 0.0f };
 
 	// 機体を受け取る
 	MechCore* core_;

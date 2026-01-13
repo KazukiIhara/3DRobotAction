@@ -34,7 +34,8 @@
 #include "GameObject/Mech/MechComponents/Status/MechStatusComponent.h"
 
 // コライダー
-#include "GameObject/Mech/MechCollider/MechCollider.h"
+#include "GameObject/Mech/MechColliders/MechCollider/MechCollider.h"
+#include "GameObject/Mech/MechColliders/MechJustDodgeCollider/MechJustDodgeCollider.h"
 
 // エフェクトクラス
 #include "GameEffects/QuickBoost/QuickBoostParticle/QuickBoostParticle.h"
@@ -121,6 +122,7 @@ public:
 	// コライダーの取得(今後コンポーネント化する可能性あり)
 	// 
 	MechCollider* GetCollider();
+	MechJustDodgeCollider* GetJustDodgeCollider();
 
 	//======================= 
 	// セッター
@@ -148,6 +150,8 @@ private:
 	void PlayerMechEffect();
 	// クイックブースト時のラジアルブラーポストエフェクト
 	void QuickBoostRadialBlur();
+	// クイックブースト時に視野角が変わる演出
+	void QuickBoostFovEffect();
 
 private:
 	// 機体名
@@ -221,13 +225,14 @@ private:
 	// 弾衝突時のエフェクト
 	std::unique_ptr<BulletHitEffect> bulletHitEffect_ = nullptr;
 
-
 	//=======================
 	// コライダー
 	//=======================
 
 	// ひとまず体
 	std::unique_ptr<MechCollider> collider_;
+	// ジャスト回避用の判定
+	std::unique_ptr<MechJustDodgeCollider> justDodgeCollider_;
 
 	const Vector3 kColliderMin_ = { -0.5f,-1.0f,-0.5f };
 	const Vector3 kColliderMax_ = { 0.5f,0.8f, 0.5f };
