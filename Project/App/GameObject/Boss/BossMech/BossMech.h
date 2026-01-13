@@ -1,16 +1,13 @@
 #pragma once
 
+/// <summary>
+/// ボス機体クラス
+/// </summary>
 class BossMech {
 public:
 	BossMech();
-	~BossMech();
+	~BossMech() = default;
 
 private:
 
 };
-
-BossMech::BossMech() {
-}
-
-BossMech::~BossMech() {
-}
