@@ -24,14 +24,18 @@ JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos, MechCore* mech) :
 }
 
 JustDodgeEffect::~JustDodgeEffect() {
-	// トランスフォームの削除など
-
-
+	// トランスフォームの後処理
+	ringTrans_->SetIsAlive(false);
+	planeTrans_->SetIsAlive(false);
 
 }
 
 void JustDodgeEffect::Update() {
+	// 必要な定数を取得
 	const float kEffectTime = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","JustDodge","EffectTime" });
+	const float kDt = MAGISYSTEM::GetDeltaTime();
+
+
 
 }
 
