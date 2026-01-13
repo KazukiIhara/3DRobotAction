@@ -6,6 +6,11 @@
 
 using namespace Magi;
 
+JustDodgeEffect::JustDodgeEffect(const Vector3& pos, const Vector3& moveDir) :
+	BaseGameEffect(pos) {
+
+}
+
 void JustDodgeEffect::Update() {
 
 }

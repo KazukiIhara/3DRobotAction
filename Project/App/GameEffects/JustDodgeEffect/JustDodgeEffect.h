@@ -5,12 +5,18 @@
 
 class MechCore;
 
+// 実装メモ
+/*
+	回避した場所に水色のリングが発生
+	EaseOutで広がる
+*/
+
 /// <summary>
 /// ジャスト回避した際のエフェクト
 /// </summary>
 class JustDodgeEffect :BaseGameEffect {
 public:
-	using BaseGameEffect::BaseGameEffect;
+	JustDodgeEffect(const Vector3& pos, const Vector3& moveDir);
 	~JustDodgeEffect()override = default;
 
 	void Update()override;

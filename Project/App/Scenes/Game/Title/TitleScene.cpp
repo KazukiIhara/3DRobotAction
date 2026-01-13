@@ -26,9 +26,6 @@ void TitleScene::Initialize() {
 	// テクスチャのロード
 	//===================================
 
-	// スカイボックステクスチャ
-	uint32_t skyBoxTextureIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
-
 
 	// UIテクスチャ
 	MAGISYSTEM::LoadTexture("TitleBG.png");
@@ -196,10 +193,6 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
 
 	MAGISYSTEM::ImportSceneData("SceneData", true);
-
-	// スカイボックスを設定
-	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTextureIndex);
-
 
 	//===========================
 	// マネージャの初期化

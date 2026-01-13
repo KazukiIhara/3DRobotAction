@@ -16,11 +16,6 @@ void PlayScene::Initialize() {
 
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
 
-	//-------------------------------------------------------
-	// アセットのロード
-	//-------------------------------------------------------
-	uint32_t skyBoxTextureIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
-
 	// 
 	// パラメータを設定
 	// 
@@ -32,10 +27,6 @@ void PlayScene::Initialize() {
 	//-------------------------------------------------------
 	// シーン固有の初期化処理
 	//-------------------------------------------------------
-
-	// スカイボックスを設定
-	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTextureIndex);
-
 
 	//===========================
 	// マネージャの初期化
