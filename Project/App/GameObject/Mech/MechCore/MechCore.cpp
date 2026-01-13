@@ -15,7 +15,15 @@ using namespace MAGIMath;
 using namespace MAGIUtility;
 using namespace Magi;
 
-MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* attackObjectManager, bool enableHardlockOn) {
+MechCore::MechCore(const Vector3& position,
+	FriendlyTag tag,
+	const std::string& mechDataName,
+	AttackObjectManager* attackObjectManager,
+	GameEffectManager* effectManager,
+	bool enableHardLockOn) {
+
+	// 参照ポインタを受け取る
+	effectManager_ = effectManager;
 
 	// 
 	// 今後の実装ココから
@@ -164,7 +172,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	// 移動
 	movementComponent_ = std::make_unique<MechMovementComponent>();
 	// ロックオン
-	lockOnComponent_ = std::make_unique<MechLockOnComponent>(enableHardlockOn);
+	lockOnComponent_ = std::make_unique<MechLockOnComponent>(enableHardLockOn);
 	// 攻撃
 	attackComponent_ = std::make_unique<MechAttackComponent>(attackObjectManager);
 	// ステータス値管理
@@ -184,6 +192,7 @@ MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& 
 	//===========================
 	// エフェクト初期化
 	//===========================
+
 
 	// クイックブースト
 	quickBoostParticle_ = std::make_unique<QuickBoostParticle>(this);
@@ -356,6 +365,10 @@ MechAttackComponent* MechCore::GetAttackComponent() {
 
 MechStatusComponent* MechCore::GetStatusComponent() {
 	return statusComponent_.get();
+}
+
+GameEffectManager* MechCore::GetGameEffectManager() {
+	return effectManager_;
 }
 
 QuickBoostParticle* MechCore::GetQuickBoostParticle() {

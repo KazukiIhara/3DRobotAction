@@ -9,13 +9,14 @@
 
 // 前方宣言
 class AttackObjectManager;
+class GameEffectManger;
 
 /// <summary>
 /// プレイヤークラス
 /// </summary>
 class Player {
 public:
-	Player(AttackObjectManager* bulletManager);
+	Player(AttackObjectManager* bulletManager, GameEffectManager* effectManager);
 	~Player() = default;
 
 	void Update();

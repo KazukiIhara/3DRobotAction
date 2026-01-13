@@ -53,7 +53,7 @@ SkyBoxDrawer::SkyBoxDrawer(
 	// スカイボックス用のデータをマップ
 	MapSkyBoxData();
 
-	textureIndex_ = MAGISYSTEM::LoadTexture("rostock_laage_airport_4k.dds");
+	textureIndex_ = MAGISYSTEM::LoadTexture("autumn_field_puresky_4k.dds");
 
 	// 開始ログを出力
 	Logger::Log("SkyBoxDrawer Initialize\n");

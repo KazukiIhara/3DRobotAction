@@ -1,0 +1,8 @@
+{
+  "JustDodge": {
+    "EffectTime": {
+      "type": "Float",
+      "value": 1.0
+    }
+  }
+}

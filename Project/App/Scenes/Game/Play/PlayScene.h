@@ -16,8 +16,12 @@ using namespace MAGIUtility;
 #include "GameObject/Enemy/Enemy.h"
 #include "GameObject/PlayerUI/PlayerUI.h"
 
+//-------------------------------------------
+// シーンに配置するマネージャ
+//-------------------------------------------
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
+#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
 
 /// <summary>
 /// 終了判定
@@ -99,6 +103,9 @@ private:
 
 	// 弾のマネージャ
 	std::unique_ptr<AttackObjectManager> attackObjectManger_;
+
+	// エフェクトマネージャ
+	std::unique_ptr<GameEffectManager> gameEffectManager_;
 
 	// シーンのステート
 	PlaySceneState playSceneState_;

@@ -5,9 +5,9 @@
 
 #include "GameObject/PlayerCamera/PlayerCamera.h"
 
-Player::Player(AttackObjectManager* attackObjectManager) {
+Player::Player(AttackObjectManager* attackObjectManager, GameEffectManager* effectManager) {
 	// 機体の作成
-	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, "Default", attackObjectManager, false);
+	mech_ = std::make_shared<MechCore>(Vector3(0.0f, 0.0f, -30.0f), FriendlyTag::PlayerSide, "Default", attackObjectManager, effectManager, true);
 
 	// 三人称視点カメラの作成
 	std::unique_ptr<MechCamera> followCamera = std::make_unique<MechCamera>("MainCamera", 0.0f, mech_.get());

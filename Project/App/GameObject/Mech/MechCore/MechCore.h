@@ -45,6 +45,7 @@
 class GameObject3D;
 class MechCoreBaseState;
 class AttackObjectManager;
+class GameEffectManager;
 
 /// <summary>
 /// 機体制御クラス
@@ -63,7 +64,13 @@ public:
 		std::string leftShoulderWeapon;
 	};
 public:
-	MechCore(const Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* bulletManager, bool enableHardlockOn = false);
+	MechCore(const Vector3& position,
+		FriendlyTag tag,
+		const std::string& mechDataName,
+		AttackObjectManager* bulletManager,
+		GameEffectManager* effectManager,
+		bool enableHardLockOn = false);
+
 	~MechCore() = default;
 
 	void Update();
@@ -114,6 +121,8 @@ public:
 	// 
 	// エフェクトクラスの取得
 	// 
+	GameEffectManager* GetGameEffectManager();
+
 	QuickBoostParticle* GetQuickBoostParticle();
 	BulletHitEffect* GetBulletHitEffect();
 
@@ -219,6 +228,8 @@ private:
 	//=======================
 	// エフェクト
 	//=======================
+
+	GameEffectManager* effectManager_ = nullptr;
 
 	// クイックブーストのエフェクト
 	std::unique_ptr<QuickBoostParticle> quickBoostParticle_ = nullptr;

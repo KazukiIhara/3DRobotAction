@@ -26,9 +26,6 @@ void TitleScene::Initialize() {
 	// テクスチャのロード
 	//===================================
 
-	// スカイボックステクスチャ
-	uint32_t skyBoxTextureIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
-
 
 	// UIテクスチャ
 	MAGISYSTEM::LoadTexture("TitleBG.png");
@@ -197,13 +194,12 @@ void TitleScene::Initialize() {
 
 	MAGISYSTEM::ImportSceneData("SceneData", true);
 
-	// スカイボックスを設定
-	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTextureIndex);
-
-
 	//===========================
 	// マネージャの初期化
 	//===========================
+
+	// エフェクトマネージャ
+	effectManager_ = std::make_unique<GameEffectManager>();
 
 	// 攻撃コリジョンマネージャ
 	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
@@ -213,8 +209,8 @@ void TitleScene::Initialize() {
 
 
 	// デモプレイ用のオブジェクト生成
-	aiPlayer_ = std::make_unique<AIPlayer>(attackObjectManger_.get());
-	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), aiPlayer_->GetMechCore());
+	aiPlayer_ = std::make_unique<AIPlayer>(attackObjectManger_.get(), effectManager_.get());
+	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), effectManager_.get(), aiPlayer_->GetMechCore());
 
 	aiPlayer_->Initialize(attackObjectManger_.get(), enemy_->GetMechCore());
 

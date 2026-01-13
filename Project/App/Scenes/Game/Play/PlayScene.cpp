@@ -16,11 +16,6 @@ void PlayScene::Initialize() {
 
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
 
-	//-------------------------------------------------------
-	// アセットのロード
-	//-------------------------------------------------------
-	uint32_t skyBoxTextureIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
-
 	// 
 	// パラメータを設定
 	// 
@@ -33,13 +28,12 @@ void PlayScene::Initialize() {
 	// シーン固有の初期化処理
 	//-------------------------------------------------------
 
-	// スカイボックスを設定
-	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTextureIndex);
-
-	
 	//===========================
 	// マネージャの初期化
 	//===========================
+
+	// ゲームエフェクトマネージャ
+	gameEffectManager_ = std::make_unique<GameEffectManager>();
 
 	// 攻撃コリジョンマネージャ
 	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
@@ -47,16 +41,15 @@ void PlayScene::Initialize() {
 	// 弾マネージャ
 	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
 
-
 	//===========================
 	// シーン上オブジェクトの初期化
 	//===========================
 
 	// プレイヤー作成
-	player_ = std::make_unique<Player>(attackObjectManger_.get());
+	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
 
 	// 敵作成
-	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), player_->GetMechCore());
+	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), gameEffectManager_.get(), player_->GetMechCore());
 
 	// 最初はAI無効
 	enemy_->SetIsAIActive(false);
@@ -273,6 +266,9 @@ void PlayScene::Update() {
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
 
+	// エフェクトマネージャ更新
+	gameEffectManager_->Update();
+
 	// UI更新
 	playerUI_->Update();
 
@@ -449,6 +445,9 @@ void PlayScene::Draw() {
 
 	// 攻撃判定マネージャ描画
 	attackCollisionManager_->Draw();
+
+	// エフェクトマネージャ描画
+	gameEffectManager_->Draw();
 
 	// UI描画
 	playerUI_->Draw();
