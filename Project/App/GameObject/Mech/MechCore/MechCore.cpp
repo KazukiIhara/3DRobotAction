@@ -13,6 +13,7 @@
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
+using namespace Magi;
 
 MechCore::MechCore(const Vector3& position, FriendlyTag tag, const std::string& mechDataName, AttackObjectManager* attackObjectManager, bool enableHardlockOn) {
 
@@ -412,6 +413,7 @@ void MechCore::DrawCollider() {
 
 void MechCore::PlayerMechEffect() {
 	QuickBoostRadialBlur();
+	QuickBoostFovEffect();
 }
 
 void MechCore::QuickBoostRadialBlur() {
@@ -445,4 +447,26 @@ void MechCore::QuickBoostRadialBlur() {
 
 	// 機体のスクリーン0.0f~1.0f座標に補完計算したブラーの値で
 	MAGISYSTEM::ApplyPostEffectRadialBlur(bodyScreenPosClamped, blurWitdh);
+}
+
+void MechCore::QuickBoostFovEffect() {
+	// 視野角初期値を取得
+	const float kBaseFovY = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","BaseFovY" });
+	const float kTargetFovY = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","TargetFovY" });
+	const float targetFovArriveTime = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","TargetFovArriveTime" });
+	
+	const float currentFovY = core_.lock()->GetCamera3D("MainCamera")->GetFovY();
+	const float t = CalExpAlpha(MAGISYSTEM::GetDeltaTime(), targetFovArriveTime, 0.99f);
+
+	float targetFovY = 0.0f;
+	// クイックブースト中
+	if (currentState_.first == MechCoreState::QuickBoost) {
+		targetFovY = kTargetFovY;
+	} else {
+		targetFovY = kBaseFovY;
+	}
+
+	// 補完
+	const float newFov = Lerp(currentFovY, targetFovY, t);
+	core_.lock()->GetCamera3D("MainCamera")->SetFovY(newFov);
 }

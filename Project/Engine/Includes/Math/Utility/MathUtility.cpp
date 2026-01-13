@@ -278,6 +278,14 @@ Vector4 MAGIMath::Lerp(const Vector4& v1, const Vector4& v2, float t) {
 	return v1 + (v2 - v1) * t;
 }
 
+float MAGIMath::CalExpAlpha(float dt, float secondsToArrive, float reachRate) {
+	reachRate = std::clamp(reachRate, 0.0f, 0.999999f);
+	secondsToArrive = std::max(secondsToArrive, 0.0001f);
+
+	const float rate = -std::log(1.0f - reachRate) / secondsToArrive;
+	return 1.0f - std::exp(-rate * dt);
+}
+
 Vector2 MAGIMath::Normalize(const Vector2& v) {
 	float length = Length(v);
 	Vector2 normalizedVector{};

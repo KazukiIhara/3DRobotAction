@@ -150,6 +150,8 @@ private:
 	void PlayerMechEffect();
 	// クイックブースト時のラジアルブラーポストエフェクト
 	void QuickBoostRadialBlur();
+	// クイックブースト時に視野角が変わる演出
+	void QuickBoostFovEffect();
 
 private:
 	// 機体名
