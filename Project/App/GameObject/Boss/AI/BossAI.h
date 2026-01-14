@@ -7,25 +7,25 @@
 // 前方宣言
 class BossMech;
 class MechCore;
-class BaseBossAIState;
 class AttackCollisionManager;
+
+// 実装メモ
+
+/*
+	ボス機体のステートを状況に応じて変更させるクラス
+	最初は一定時間ごとにステートを乱数で変える実装
+	余裕があればUtilityAIなどを検討する
+*/
 
 /// <summary>
 /// ボスAIクラス
 /// </summary>
 class BossAI {
 public:
-	enum class State {
-		Idle
-	};
-
 	BossAI(BossMech* mech, MechCore* playerMech, AttackCollisionManager* collisionManager);
 	~BossAI() = default;
 
 	void Update();
-
-	void ChangeState(BossAI::State nextState);
-
 
 private:
 	// 機体の参照ポインタ

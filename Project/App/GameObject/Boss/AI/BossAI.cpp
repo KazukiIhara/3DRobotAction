@@ -7,7 +7,3 @@ BossAI::BossAI(
 ) {
 
 }
-
-void BossAI::ChangeState(BossAI::State nextState) {
-	
-}
