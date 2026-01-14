@@ -75,6 +75,10 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::LoadTexture("laser.png");
 	// 回避時のエフェクト
 	MAGISYSTEM::LoadTexture("dodgeEffect.png");
+	MAGISYSTEM::LoadTexture("electric_0.png");
+	MAGISYSTEM::LoadTexture("lensFlare.png");
+
+	MAGISYSTEM::LoadTexture("gradationToon.png");
 
 	// 粒子用
 	MAGISYSTEM::LoadTexture("star.png");
