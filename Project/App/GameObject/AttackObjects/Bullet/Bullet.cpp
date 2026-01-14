@@ -74,15 +74,3 @@ void Bullet::Update() {
 void Bullet::Draw() {
 	MAGISYSTEM::DrawModel("Bullet", transform_->GetWorldMatrix(), material_);
 }
-
-void Bullet::Finalize() {
-	BaseAttackObject::Finalize();
-}
-
-Vector3 Bullet::GetWorldPos() {
-	return transform_->GetWorldPosition();
-}
-
-void Bullet::OnFinalize() {
-	transform_->SetIsAlive(false);
-}

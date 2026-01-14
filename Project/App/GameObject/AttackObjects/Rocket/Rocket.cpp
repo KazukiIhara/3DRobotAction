@@ -56,15 +56,3 @@ void Rocket::Draw() {
 	// 描画
 	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), sphereData_, material_);
 }
-
-void Rocket::Finalize() {
-	BaseAttackObject::Finalize();
-}
-
-Vector3 Rocket::GetWorldPos() {
-	return transform_->GetWorldPosition();
-}
-
-void Rocket::OnFinalize() {
-	transform_->SetIsAlive(false);
-}

@@ -40,13 +40,8 @@ public:
 
 	void Update();
 	void Draw();
-	void Finalize();
-
-	Vector3 GetWorldPos();
 
 private:
-	void OnFinalize() override;
-
 	// ブーストから追従状態に遷移する時の処理
 	void EnterGuidedDualMissile();
 
@@ -54,8 +49,6 @@ private:
 	void UpdateDualMissile();
 
 private:
-	Transform3D* transform_ = nullptr;
-
 	// ロックオン対象の機体
 	std::weak_ptr<MechCore> target_;
 

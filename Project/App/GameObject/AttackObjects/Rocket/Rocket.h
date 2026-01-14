@@ -25,16 +25,8 @@ public:
 
 	void Update();
 	void Draw();
-	void Finalize();
-
-	Vector3 GetWorldPos();
 
 private:
-	void OnFinalize() override;
-
-private:
-	// トランスフォーム
-	Transform3D* transform_;
 	// 球体データ
 	SphereData3D sphereData_;
 	// マテリアル

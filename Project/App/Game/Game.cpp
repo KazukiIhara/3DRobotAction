@@ -37,5 +37,5 @@ void Game::Initialize() {
 	sceneManager_->AddScene<MenuScene>("Menu");
 
 	// 最初のシーンを設定
-	sceneManager_->ChangeScene("Title");
+	sceneManager_->ChangeScene("EffectEdit");
 }

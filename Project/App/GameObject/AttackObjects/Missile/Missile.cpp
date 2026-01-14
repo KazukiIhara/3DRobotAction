@@ -79,18 +79,6 @@ void Missile::Draw() {
 	MAGISYSTEM::DrawModel("Missile", transform_->GetWorldMatrix(), material_);
 }
 
-void Missile::Finalize() {
-	BaseAttackObject::Finalize();
-}
-
-Vector3 Missile::GetWorldPos() {
-	return transform_->GetTranslate();
-}
-
-void Missile::OnFinalize() {
-	transform_->SetIsAlive(false);
-}
-
 void Missile::EnterGuidedDualMissile() {
 	if (auto targetObj = target_.lock()) {
 		if (auto targetMechBodyObj = targetObj->GetMechBody()->GetGameObject().lock()) {

@@ -77,9 +77,43 @@
     "RingDataStart(outer,inner)": {
       "type": "Vec2",
       "value": {
-        "x": 0.5,
+        "x": 2.0,
         "y": 0.0
       }
+    }
+  },
+  "Laser": {
+    "PlaneRotate0": {
+      "type": "Vec3",
+      "value": {
+        "x": -0.800000011920929,
+        "y": 1.5700000524520874,
+        "z": 0.0
+      }
+    },
+    "PlaneRotate1": {
+      "type": "Vec3",
+      "value": {
+        "x": 0.800000011920929,
+        "y": 1.5700000524520874,
+        "z": 0.0
+      }
+    },
+    "PlaneTranslate": {
+      "type": "Vec3",
+      "value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      }
+    },
+    "PlaneUVRotate": {
+      "type": "Float",
+      "value": 1.5700000524520874
+    },
+    "ScaleZ": {
+      "type": "Float",
+      "value": 10.0
     }
   }
 }

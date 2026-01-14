@@ -8,6 +8,7 @@
 // フレームワーク
 #include "MAGI.h"
 
+// エフェクトマネージャ
 #include "GameEffects/System/GameEffectManager/GameEffectManager.h"
 
 /// <summary>
@@ -26,5 +27,4 @@ public:
 private:
 	// ゲームエフェクトマネージャ
 	std::unique_ptr<GameEffectManager> gameEffectManager_;
-
 };

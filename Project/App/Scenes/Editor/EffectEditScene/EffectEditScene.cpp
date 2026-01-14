@@ -1,6 +1,8 @@
 #include "EffectEditScene.h"
 
+// Effects
 #include "GameEffects/JustDodgeEffect/JustDodgeEffect.h"
+#include "GameEffects/LaserEffect/LaserEffect.h"
 
 void EffectEditScene::Initialize() {
 	// 2Dカメラ作成
@@ -24,7 +26,14 @@ void EffectEditScene::Update() {
 	ImGui::Begin("EffectEditScene");
 	if (ImGui::Button("Emit")) {
 		// 今実装するエフェクト
-		std::unique_ptr<JustDodgeEffect> effect = std::make_unique<JustDodgeEffect>(Vector3(0.0f, 0.0f, 0.0f));
+
+		LaserEffect::InitParam param{};
+		param.emitPos = { 0.0f,0.0f,0.0f };
+		param.dir = { 0.0f,0.0f,1.0f };
+		param.speed = 100.0f;
+		param.time = 0.5f;
+
+		std::unique_ptr<LaserEffect> effect = std::make_unique<LaserEffect>(param);
 		gameEffectManager_->Add(std::move(effect));
 	}
 	ImGui::End();

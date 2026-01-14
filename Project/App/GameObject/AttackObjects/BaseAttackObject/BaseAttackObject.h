@@ -3,7 +3,11 @@
 // C++
 #include <memory>
 
+// MyHeader
+#include "Math/Types/AllMathTypes.h"
+
 // 前方宣言
+class Transform3D;
 class AttackCollider;
 
 // 実装メモ
@@ -23,6 +27,8 @@ public:
 	bool GetIsAlive() const;
 	AttackCollider* GetAttackCollider();
 
+	Vector3 GetWorldPos();
+
 protected:
 	void BeginLife(float lifeTime, std::weak_ptr<AttackCollider> collider);
 
@@ -33,10 +39,8 @@ protected:
 
 	void Finalize();
 
-private:
-	virtual void OnFinalize() = 0;
-
 protected:
+	Transform3D* transform_ = nullptr;
 	bool isAlive_ = false;
 
 private:
