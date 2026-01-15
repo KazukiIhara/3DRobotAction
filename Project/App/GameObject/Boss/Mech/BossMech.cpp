@@ -60,17 +60,16 @@ void BossMech::Update() {
 
 }
 
-void BossMech::Draw() {
+void BossMech::Draw(bool isDebugDraw) {
 	// 全パーツを更新
 	for (auto part : parts_) {
 		part->Draw();
-		if (isDebugDraw_) {
+		if (isDebugDraw) {
 			part->DebugDraw();
 		}
 	}
 
 	// 全武器を描画
-
 
 }
 
@@ -85,10 +84,6 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	if (auto cs = currentState_.second) {
 		cs->Enter(this);
 	}
-}
-
-void BossMech::SetIsDebugDraw(bool isDebugDraw) {
-	isDebugDraw_ = isDebugDraw;
 }
 
 BossMechHead* BossMech::GetHead() {

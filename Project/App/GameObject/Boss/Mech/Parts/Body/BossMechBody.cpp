@@ -8,7 +8,11 @@
 using namespace Magi;
 
 BossMechBody::BossMechBody(const BossMechBody::InitParam& param, BossMech* mech) {
+	// 機体の参照ポインタを受け取る
+	mech_ = mech;
 
+	// トランスフォーム作成
+	bodyTrans_ = MAGISYSTEM::AddTransform3D();
 }
 
 void BossMechBody::Update() {
@@ -20,7 +24,7 @@ void BossMechBody::Draw() {
 }
 
 void BossMechBody::DebugDraw() {
-
+	MAGISYSTEM::DrawLineSphere(bodyTrans_->GetWorldPosition(), 0.2f, Color::Red);
 }
 
 Transform3D* BossMechBody::GetTransform() {

@@ -49,11 +49,10 @@ public:
 	~BossMech() = default;
 
 	void Update();
-	void Draw();
+	void Draw(bool isDebugDraw);
 
 	void ChangeState(BossMech::BossMechState nextState);
 
-	void SetIsDebugDraw(bool isDebugDraw);
 
 	// 各パーツへのアクセッサ
 	BossMechHead* GetHead();
@@ -75,8 +74,6 @@ private:
 	// トランスフォーム
 	Transform3D* transform_;
 
-	// デバッグ描画フラグ
-	bool isDebugDraw_ = false;
 
 	// 各パーツ
 	std::unique_ptr<BossMechHead> head_;

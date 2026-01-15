@@ -44,7 +44,7 @@ void DevelopScene::Initialize() {
 
 	MAGISYSTEM::LoadModel("DualMissileLauncher");
 	MAGISYSTEM::CreateModelDrawer("DualMissileLauncher", MAGISYSTEM::FindModel("DualMissileLauncher"));
-	
+
 	MAGISYSTEM::LoadModel("Ground");
 	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
 
@@ -98,9 +98,17 @@ void DevelopScene::Initialize() {
 void DevelopScene::Update() {
 #if defined(DEBUG) || defined(DEVELOP)
 	ImGui::Begin("DevelopUI");
+
+	ImGui::SeparatorText("Scene");
 	if (ImGui::Button("ResetScene")) {
 		ChangeScene("Develop");
 	}
+
+	ImGui::SeparatorText("Boss");
+	if (ImGui::Button("SwitchDebugDraw")) {
+		boss_->SwitchDebugDraw();
+	}
+
 	ImGui::End();
 #endif
 	// 平行光源をセット

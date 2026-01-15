@@ -19,6 +19,11 @@ class MechCore;
 /// </summary>
 class Boss {
 public:
+	struct Flag {
+		bool isAIActive = false;
+		bool isDebugDraw = false;
+	};
+public:
 	Boss(AttackObjectManager* attackObjectManager,
 		GameEffectManager* gameEffectManager,
 		MechCore* playerMech);
@@ -30,8 +35,11 @@ public:
 
 	BossMech* GetMech();
 
-	bool GetIsAIActive()const;
+	void SwitchDebugDraw();
+	void SwitchAIActive();
 
+
+	bool GetIsAIActive()const;
 	void SetIsAIActive(bool isActive);
 
 private:
@@ -40,6 +48,7 @@ private:
 	// AI
 	std::unique_ptr<BossAI> ai_;
 
-	// AI更新フラグ
-	bool isAIActive_ = false;
+	// フラグ構造体
+	Flag flag_;
+
 };
