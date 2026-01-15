@@ -13,6 +13,7 @@ using namespace MAGIMath;
 
 MechLockOnComponent::MechLockOnComponent(bool enableHardLockOn) {
 	enableHardLockOn_ = enableHardLockOn;
+	lockOnTarget_ = nullptr;
 }
 
 void MechLockOnComponent::Update(MechCore* mechCore) {
@@ -22,7 +23,9 @@ void MechLockOnComponent::Update(MechCore* mechCore) {
 	if (command.switchHardLock) {
 		enableHardLockOn_ = !enableHardLockOn_;
 	}
-
+	if (targetList_.empty()) {
+		return;
+	}
 	// ロックオン対象の捜索してロックオン
 	LockOnTarget(mechCore);
 }
@@ -56,7 +59,7 @@ void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 	// 最も中央に近いターゲット探
 	float bestScore = std::numeric_limits<float>::max();
 
-	MechCore* target;
+	MechCore* target = nullptr;
 	Vector3 targetPos{};
 	Vector3 playerPos = mechCore->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 

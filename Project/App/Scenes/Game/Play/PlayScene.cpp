@@ -58,7 +58,6 @@ void PlayScene::Initialize() {
 	//-------------------------------------------------------
 
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-
 	MAGISYSTEM::ImportSceneData("SceneData", true);
 
 	//

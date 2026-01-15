@@ -13,6 +13,8 @@
 #include "Scenes/Game/MechCustomScene/MechCustomScene.h"
 #include "Scenes/Editor/EffectEditScene/EffectEditScene.h"
 
+#include "Scenes/Game/Develop/DevelopScene.h"
+
 Game::~Game() {}
 
 /// <summary>
@@ -31,11 +33,14 @@ void Game::Initialize() {
 	// エフェクト作成シーン
 	sceneManager_->AddScene<EffectEditScene>("EffectEdit");
 
+	// 開発シーン
+	sceneManager_->AddScene<DevelopScene>("Develop");
+
 	// ゲームシーン
 	sceneManager_->AddScene<TitleScene>("Title");
 	sceneManager_->AddScene<PlayScene>("Play");
 	sceneManager_->AddScene<MenuScene>("Menu");
 
 	// 最初のシーンを設定
-	sceneManager_->ChangeScene("EffectEdit");
+	sceneManager_->ChangeScene("Develop");
 }
