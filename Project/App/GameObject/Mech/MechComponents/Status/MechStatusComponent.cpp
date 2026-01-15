@@ -167,7 +167,7 @@ void MechStatusComponent::GetDamage(const int32_t& damage, MechCore* mechCore) {
 
 void MechStatusComponent::UpdateFcsAvoidFactor(MechCore* mechCore) {
 	// 対象を取得
-	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget()) {
 		// 相手が回避状態
 		if (target->GetCurrentState() == MechCoreState::QuickBoost) {
 			fcsAvoidFactor_ = minFcsFactor_;

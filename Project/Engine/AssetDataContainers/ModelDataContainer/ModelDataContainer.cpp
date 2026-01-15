@@ -127,12 +127,11 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 				// アセットにNormal Mapが設定されているので、こちらを使う
 				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + normalMapPath.C_Str();
 				textureDataContainer_->LoadNormalMap(materialData.normalMapTextureFilePath);
-			} else {
-
-			}
+				materialData.hasNormalMap = true;
+			} 
 
 		} else {
-			// テクスチャがない倍はデフォルトテクスチャのパスを設定
+			// テクスチャがない場合は念のためデフォルトテクスチャのパスを設定
 			materialData.textureFilePath = "EngineAssets/Images/uvChecker.png";
 			materialData.hasDiffuse = false;
 		}

@@ -33,7 +33,7 @@ void EnemyAIStateSearch::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unuse
 	enemyAI->MoveDir(Vector2(0.0f, 1.0f));
 
 	// 自機がロックオン対象になったら通常行動に入る
-	if (mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+	if (mechCore->GetLockOnComponent()->GetLockOnTarget()) {
 		enemyAI->ChangeState(EnemyAIState::Root);
 		return;
 	}

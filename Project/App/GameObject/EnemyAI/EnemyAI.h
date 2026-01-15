@@ -74,7 +74,7 @@ class AttackCollisionManager;
 /// </summary>
 class EnemyAI {
 public:
-	EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore>playerMech, AttackObjectManager* bulletManager);
+	EnemyAI(std::weak_ptr<MechCore> mechCore, MechCore* playerMech, AttackObjectManager* bulletManager);
 	~EnemyAI() = default;
 
 	InputCommand Update();
@@ -126,7 +126,7 @@ private:
 	MechCore* mechCore_;
 
 	// プレイヤーの機体のポインタ
-	std::weak_ptr<MechCore> playerMech_;
+	MechCore* playerMech_;
 
 	// 出力するコマンド
 	InputCommand command_;

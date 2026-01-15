@@ -3,7 +3,7 @@
 // C++
 #include <memory>
 
-// MyHedder
+// MyHeader
 #include "Math/Utility/MathUtility.h"
 #include "GameObject/AttackObjects/BaseAttackObject/BaseAttackObject.h"
 #include "Common/Particle/ParticleEffectCommon.h"
@@ -27,16 +27,8 @@ public:
 
 	void Update();
 	void Draw();
-	void Finalize();
-
-	Vector3 GetWorldPos();
 
 private:
-	void OnFinalize() override;
-
-private:
-	// トランスフォーム
-	Transform3D* transform_;
 
 	// マテリアル
 	ModelMaterial material_{};

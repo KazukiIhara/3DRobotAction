@@ -1,5 +1,6 @@
 #include "BaseAttackObject.h"
 
+#include "3D/Transform3D/Transform3D.h"
 #include "GameObject/AttackCollider/AttackCollider.h"
 
 BaseAttackObject::BaseAttackObject() {
@@ -14,6 +15,10 @@ bool BaseAttackObject::GetIsAlive() const {
 
 AttackCollider* BaseAttackObject::GetAttackCollider() {
 	return collider_.lock().get();
+}
+
+Vector3 BaseAttackObject::GetWorldPos() {
+	return transform_->GetWorldPosition();
 }
 
 void BaseAttackObject::BeginLife(float lifeTime, std::weak_ptr<AttackCollider> collider) {
@@ -66,5 +71,5 @@ void BaseAttackObject::Finalize() {
 		collider->SetIsAlive(false);
 	}
 
-	OnFinalize();
+	transform_->SetIsAlive(false);
 }

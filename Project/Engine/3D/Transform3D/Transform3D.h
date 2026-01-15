@@ -69,9 +69,10 @@ public:
 	void SetQuaternion(const Quaternion& rotate);
 
 	void AddScale(const Vector3& scale);
+	void AddScaleZ(float z);
 	void AddRotate(const Vector3& rotate);
 	void AddTranslate(const Vector3& translate);
-	void AddQuaterion(const Quaternion& deltaQ);
+	void AddQuaternion(const Quaternion& deltaQ);
 
 	//
 	// ゲッター

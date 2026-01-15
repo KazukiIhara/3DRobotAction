@@ -325,6 +325,11 @@ void Transform3D::AddScale(const Vector3& scale) {
 	isChanged_ = true;
 }
 
+void Transform3D::AddScaleZ(float z) {
+	scale_.z += z;
+	isChanged_ = true;
+}
+
 void Transform3D::AddRotate(const Vector3& rotate) {
 	inputRadians_ += rotate;
 	isChanged_ = true;
@@ -335,7 +340,7 @@ void Transform3D::AddTranslate(const Vector3& translate) {
 	isChanged_ = true;
 }
 
-void Transform3D::AddQuaterion(const Quaternion& deltaQ) {
+void Transform3D::AddQuaternion(const Quaternion& deltaQ) {
 	rotate_ = MAGIMath::Normalize(deltaQ * rotate_);
 	isChanged_ = true;
 }

@@ -23,10 +23,10 @@ public:
 	void Update(MechCore* mechCore);
 
 	// ロックオン対象を追加する
-	void AddMech(std::weak_ptr<MechCore> mech);
+	void AddMech(MechCore* mech);
 
 	// ロックオン対象の機体を取得
-	std::weak_ptr<MechCore> GetLockOnTarget();
+	MechCore* GetLockOnTarget();
 
 	// ロックオンモードの取得
 	bool GetEnableHardLockOn()const;
@@ -40,9 +40,9 @@ private:
 	bool enableHardLockOn_ = false;
 
 	// ロックオン対象のリスト
-	std::vector<std::weak_ptr<MechCore>> targetList_;
+	std::vector<MechCore*> targetList_;
 	// ロックオン対象の機体
-	std::weak_ptr<MechCore> lockOnTarget_;
+	MechCore* lockOnTarget_;
 
 
 	// ロックオン距離

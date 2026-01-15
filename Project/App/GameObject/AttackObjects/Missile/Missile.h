@@ -33,20 +33,15 @@ public:
 		const MissileType& missileType,
 		const Vector3& wPos,
 		const Vector3& dir,
-		std::weak_ptr<MechCore> target,
+		MechCore* target,
 		std::weak_ptr<AttackCollider> attackCollider
 	);
 	~Missile() = default;
 
 	void Update();
 	void Draw();
-	void Finalize();
-
-	Vector3 GetWorldPos();
 
 private:
-	void OnFinalize() override;
-
 	// ブーストから追従状態に遷移する時の処理
 	void EnterGuidedDualMissile();
 
@@ -54,10 +49,8 @@ private:
 	void UpdateDualMissile();
 
 private:
-	Transform3D* transform_ = nullptr;
-
 	// ロックオン対象の機体
-	std::weak_ptr<MechCore> target_;
+	MechCore* target_;
 
 	// ミサイルの種類
 	MissileType type_;

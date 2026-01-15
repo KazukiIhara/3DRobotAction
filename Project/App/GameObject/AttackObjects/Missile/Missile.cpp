@@ -8,7 +8,7 @@ Missile::Missile(
 	const MissileType& missileType,
 	const Vector3& wPos,
 	const Vector3& dir,
-	std::weak_ptr<MechCore> target,
+	MechCore* target,
 	std::weak_ptr<AttackCollider> attackCollider
 ) {
 	BeginLife(baseLifeTime_, attackCollider);
@@ -79,20 +79,8 @@ void Missile::Draw() {
 	MAGISYSTEM::DrawModel("Missile", transform_->GetWorldMatrix(), material_);
 }
 
-void Missile::Finalize() {
-	BaseAttackObject::Finalize();
-}
-
-Vector3 Missile::GetWorldPos() {
-	return transform_->GetTranslate();
-}
-
-void Missile::OnFinalize() {
-	transform_->SetIsAlive(false);
-}
-
 void Missile::EnterGuidedDualMissile() {
-	if (auto targetObj = target_.lock()) {
+	if (auto targetObj = target_) {
 		if (auto targetMechBodyObj = targetObj->GetMechBody()->GetGameObject().lock()) {
 			const Vector3 targetPos = targetMechBodyObj->GetTransform()->GetWorldPosition();
 			const Vector3 pos = transform_->GetWorldPosition();

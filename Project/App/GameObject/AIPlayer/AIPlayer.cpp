@@ -23,7 +23,7 @@ AIPlayer::AIPlayer(AttackObjectManager* bulletManager, GameEffectManager* effect
 	}
 }
 
-void AIPlayer::Initialize(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> targetMech) {
+void AIPlayer::Initialize(AttackObjectManager* bulletManager, MechCore* targetMech) {
 	// AIを作成
 	ai_ = std::make_unique<EnemyAI>(mech_, targetMech, bulletManager);
 }
@@ -65,8 +65,8 @@ void AIPlayer::SetIsAIActive(bool isActive) {
 	isAIActive_ = isActive;
 }
 
-std::weak_ptr<MechCore> AIPlayer::GetMechCore() {
-	return mech_;
+MechCore* AIPlayer::GetMechCore() {
+	return mech_.get();
 }
 
 bool AIPlayer::GetIsAIActive() const {

@@ -13,6 +13,7 @@ using namespace MAGIMath;
 
 MechLockOnComponent::MechLockOnComponent(bool enableHardLockOn) {
 	enableHardLockOn_ = enableHardLockOn;
+	lockOnTarget_ = nullptr;
 }
 
 void MechLockOnComponent::Update(MechCore* mechCore) {
@@ -22,16 +23,18 @@ void MechLockOnComponent::Update(MechCore* mechCore) {
 	if (command.switchHardLock) {
 		enableHardLockOn_ = !enableHardLockOn_;
 	}
-
+	if (targetList_.empty()) {
+		return;
+	}
 	// ロックオン対象の捜索してロックオン
 	LockOnTarget(mechCore);
 }
 
-void MechLockOnComponent::AddMech(std::weak_ptr<MechCore> mech) {
+void MechLockOnComponent::AddMech(MechCore* mech) {
 	targetList_.push_back(mech);
 }
 
-std::weak_ptr<MechCore> MechLockOnComponent::GetLockOnTarget() {
+MechCore* MechLockOnComponent::GetLockOnTarget() {
 	return lockOnTarget_;
 }
 
@@ -41,7 +44,7 @@ bool MechLockOnComponent::GetEnableHardLockOn() const {
 
 void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 	// 前フレームのターゲットをリセット
-	lockOnTarget_.reset();
+	lockOnTarget_ = nullptr;
 
 	// lockOnView
 	LockOnView view = mechCore->GetLockOnView();
@@ -56,12 +59,12 @@ void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 	// 最も中央に近いターゲット探
 	float bestScore = std::numeric_limits<float>::max();
 
-	std::weak_ptr<MechCore> target;
+	MechCore* target = nullptr;
 	Vector3 targetPos{};
 	Vector3 playerPos = mechCore->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 
 	for (auto& wpTarget : targetList_) {
-		if (auto tgtCore = wpTarget.lock()) {
+		if (auto tgtCore = wpTarget) {
 			Vector3 posW = tgtCore->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 
 			// ワールド→クリップ
@@ -93,7 +96,7 @@ void MechLockOnComponent::LockOnTarget(MechCore* mechCore) {
 	}
 
 	// ターゲットのポインタが有効なら
-	if (target.lock()) {
+	if (target) {
 		lockOnTarget_ = target;
 		view.target = targetPos;
 		mechCore->SetLockOnView(view);

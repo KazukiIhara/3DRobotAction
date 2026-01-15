@@ -84,12 +84,6 @@ private:
 	// プレイヤー
 	std::unique_ptr<Player> player_;
 
-	// 敵
-	std::unique_ptr<Enemy> enemy_;
-
-	// プレイヤーの情報を描画するUI
-	std::unique_ptr<PlayerUI> playerUI_;
-
 	// 終了時UI
 	SpriteData finishSpriteData_;
 	SpriteMaterialData finishSpriteMatData_;

@@ -15,7 +15,7 @@ class GameEffectManager;
 /// </summary>
 class Enemy {
 public:
-	Enemy(AttackObjectManager* bulletManager, GameEffectManager* effectManager, std::weak_ptr<MechCore> playerMech);
+	Enemy(AttackObjectManager* bulletManager, GameEffectManager* effectManager, MechCore* playerMech);
 	~Enemy() = default;
 
 	void Update();
@@ -23,7 +23,7 @@ public:
 	void Draw();
 
 	// 機体を取得
-	std::weak_ptr<MechCore> GetMechCore();
+	MechCore* GetMechCore();
 
 	bool GetIsAIActive() const;
 

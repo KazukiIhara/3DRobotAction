@@ -102,7 +102,7 @@ void MechBody::RotateToMoveDirection(MechCore* mechCore) {
 	Quaternion dq = MakeRotateAxisAngleQuaternion(right, kMaxRollRad * mul);
 
 	if (auto body = body_.lock()) {
-		body->GetTransform()->AddQuaterion(dq);
+		body->GetTransform()->AddQuaternion(dq);
 	}
 }
 
@@ -123,7 +123,7 @@ void MechBody::RotateToQuickBoost(MechCore* mechCore) {
 	Quaternion dq = MakeRotateAxisAngleQuaternion(right, kMaxRollRad * mul);
 
 	if (auto body = body_.lock()) {
-		body->GetTransform()->AddQuaterion(dq);
+		body->GetTransform()->AddQuaternion(dq);
 	}
 
 }

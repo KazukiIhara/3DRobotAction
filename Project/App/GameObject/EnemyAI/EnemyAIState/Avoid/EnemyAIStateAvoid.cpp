@@ -29,7 +29,7 @@ void EnemyAIStateAvoid::Update([[maybe_unused]] EnemyAI* enemyAI, [[maybe_unused
 		return;
 	}
 	// ロックオン対象がいない場合は索敵ステートに遷移
-	if (!mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+	if (!mechCore->GetLockOnComponent()->GetLockOnTarget()) {
 		enemyAI->ChangeState(EnemyAIState::Search);
 		return;
 	}

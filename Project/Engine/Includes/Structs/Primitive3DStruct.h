@@ -145,7 +145,7 @@ struct CylinderData3D {
 	uint32_t divide = 32;
 	float topRadius = 1.0f;
 	float bottomRadius = 1.0f;
-	float height = 3.0f;
+	float height = 1.0f;
 	bool hasCap = true;
 };
 

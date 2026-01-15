@@ -23,7 +23,7 @@ public:
 
 	void CheckCollision();
 
-	void AddMech(std::weak_ptr<MechCore> mechCore);
+	void AddMech(MechCore* mechCore);
 	std::weak_ptr<AttackCollider> AddAttackCollider(std::shared_ptr<AttackCollider> collider);
 
 
@@ -37,7 +37,7 @@ private:
 
 private:
 	// 機体のリスト
-	std::vector<std::weak_ptr<MechCore>> mechs_;
+	std::vector<MechCore*> mechs_;
 	// 攻撃コライダーのリスト
 	std::vector<std::shared_ptr<AttackCollider>> attackColliders_;
 

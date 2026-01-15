@@ -48,24 +48,9 @@ void PlayScene::Initialize() {
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
 
-	// 敵作成
-	enemy_ = std::make_unique<Enemy>(attackObjectManger_.get(), gameEffectManager_.get(), player_->GetMechCore());
-
-	// 最初はAI無効
-	enemy_->SetIsAIActive(false);
-
-	// プレイヤーのターゲット対象に敵を追加
-	player_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
-	// エネミーのターゲット対象にプレイヤーを追加
-	enemy_->GetMechCore().lock()->GetLockOnComponent()->AddMech(player_->GetMechCore());
-
-	// UIの作成
-	playerUI_ = std::make_unique<PlayerUI>(player_->GetMechCore(), enemy_->GetMechCore());
-
 
 	// 攻撃コリジョンマネージャにワールドに存在するmechを追加
 	attackCollisionManager_->AddMech(player_->GetMechCore());
-	attackCollisionManager_->AddMech(enemy_->GetMechCore());
 
 
 	//-------------------------------------------------------
@@ -73,7 +58,6 @@ void PlayScene::Initialize() {
 	//-------------------------------------------------------
 
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-
 	MAGISYSTEM::ImportSceneData("SceneData", true);
 
 	//
@@ -191,12 +175,6 @@ void PlayScene::Update() {
 #if defined(DEBUG) || defined(DEVELOP)
 	ImGui::Begin("SceneDebugUI");
 	ImGui::Text("BattleTime:%u", info.battleTime);
-
-	bool isActiveEnemyAI = enemy_->GetIsAIActive();
-	if (ImGui::Checkbox("EnableEnemyAI", &isActiveEnemyAI)) {
-		enemy_->SetIsAIActive(isActiveEnemyAI);
-	}
-
 	ImGui::End();
 
 	ImGui::Begin("UIPos");
@@ -238,27 +216,12 @@ void PlayScene::Update() {
 	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
 
-
-	// タイマー更新
-	//tempBattleTime_ += MAGISYSTEM::GetDeltaTime();
-
-	//// 一秒経ったらタイマーをマイナス
-	//if (tempBattleTime_ >= 1.0f) {
-	//	tempBattleTime_ = 0.0f;
-	//	if (info.battleTime > 0) {
-	//		info.battleTime--;
-	//	}
-	//}
-
 	//
 	// オブジェクト更新
 	//
 
 	// プレイヤー更新
 	player_->Update();
-
-	// 敵更新
-	enemy_->Update();
 
 	// 弾マネージャ更新
 	attackObjectManger_->Update();
@@ -269,15 +232,10 @@ void PlayScene::Update() {
 	// エフェクトマネージャ更新
 	gameEffectManager_->Update();
 
-	// UI更新
-	playerUI_->Update();
-
 	// ステートごとの更新処理
 	switch (playSceneState_) {
 	case PlaySceneState::Start:
 	{
-		// 敵AI有効
-		enemy_->SetIsAIActive(false);
 		// プレイヤー操作無効
 		player_->SetIsOperation(false);
 
@@ -286,8 +244,6 @@ void PlayScene::Update() {
 
 		// プレイステートに移行
 		if (startSceneTimer_ >= kStartSceneTime_) {
-			// 敵AI有効
-			enemy_->SetIsAIActive(true);
 			// プレイヤー操作有効
 			player_->SetIsOperation(true);
 			// プレイステートに移行
@@ -377,43 +333,8 @@ void PlayScene::Update() {
 	break;
 	case PlaySceneState::Play:
 
-		// 勝敗判定
-		if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-			info.judge = FinishJudgment::Enemy;
-			playSceneState_ = PlaySceneState::Finish;
-		}
-
-		if (enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-			info.judge = FinishJudgment::Player;
-			playSceneState_ = PlaySceneState::Finish;
-		}
-
-		if (player_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0 && enemy_->GetMechCore().lock()->GetStatusComponent()->GetHp() == 0) {
-			info.judge = FinishJudgment::Draw;
-			playSceneState_ = PlaySceneState::Finish;
-		}
-
-		// 時間切れの場合
-		if (info.battleTime == 0) {
-			// 体力割合が多いほうが勝利
-			float playerHPRaito = player_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
-			float enemyHPRaito = enemy_->GetMechCore().lock()->GetStatusComponent()->GetHPRaito();
-
-			if (playerHPRaito > enemyHPRaito) {
-				info.judge = FinishJudgment::Player;
-			} else if (enemyHPRaito > playerHPRaito) {
-				info.judge = FinishJudgment::Enemy;
-			} else {
-				info.judge = FinishJudgment::Draw;
-			}
-
-			playSceneState_ = PlaySceneState::Finish;
-		}
-
 		break;
 	case PlaySceneState::Finish:
-		// 敵AIを停止
-		enemy_->SetIsAIActive(false);
 
 		// 敵勝利時は自機の操作を停止
 		if (info.judge == FinishJudgment::Enemy) {
@@ -437,9 +358,6 @@ void PlayScene::Draw() {
 	// プレイヤーにまつわるものを描画
 	player_->Draw();
 
-	// エネミーにまつわるものを描画
-	enemy_->Draw();
-
 	// 弾マネージャ描画
 	attackObjectManger_->Draw();
 
@@ -448,9 +366,6 @@ void PlayScene::Draw() {
 
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();
-
-	// UI描画
-	playerUI_->Draw();
 
 	// ステートごとの描画処理
 	switch (playSceneState_) {

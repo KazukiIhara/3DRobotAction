@@ -60,7 +60,7 @@ void AttackObjectManager::AddRocket(const FriendlyTag& tag, const Vector3& dir, 
 	rockets_.push_back(newRocket);
 }
 
-void AttackObjectManager::AddMissile(const FriendlyTag& tag, const MissileType& missileType, const Vector3& wPos, const Vector3& dir, int32_t damage, std::weak_ptr<MechCore> target) {
+void AttackObjectManager::AddMissile(const FriendlyTag& tag, const MissileType& missileType, const Vector3& wPos, const Vector3& dir, int32_t damage, MechCore* target) {
 	// コライダーを作成
 	std::shared_ptr<AttackCollider> missileCollider = std::make_unique<AttackCollider>(tag, AttackType::Missile, wPos, 0.4f, damage);
 	// コリジョンマネージャに追加
