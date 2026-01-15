@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "GameObject/Boss/AI/BossAI.h"
-#include "GameObject/Boss/BossMech/BossMech.h"
+#include "GameObject/Boss/Mech/BossMech.h"
 
 class AttackObjectManager;
 class GameEffectManager;
