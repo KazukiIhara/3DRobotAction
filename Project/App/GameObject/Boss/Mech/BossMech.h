@@ -20,23 +20,24 @@ public:
 	struct InitParam {
 		// 各パーツのデータ
 		BossMechHead::InitParam head;
-		std::string head;
-		std::string body;
-		std::string upperArm;
-		std::string lowerArm;
-		std::string hand;
-		std::string upperLeg;
-		std::string lowerLeg;
-		std::string foot;
+		BossMechBody::InitParam body;
+		BossMechBaseArm::InitParam arm;
+		BossMechBaseLeg::InitParam leg;
 	};
 public:
 	BossMech(const BossMech::InitParam& initParam);
 	~BossMech() = default;
 
 	void Update();
-
 	void Draw();
 
 private:
+	// 各パーツ
+	std::unique_ptr<BossMechHead> head_;
+	std::unique_ptr<BossMechBody> body_;
+	std::unique_ptr<BossMechRightArm> rightArm_;
+	std::unique_ptr<BossMechLeftArm> leftArm_;
+	std::unique_ptr<BossMechRightLeg> rightLeg_;
+	std::unique_ptr<BossMechLeftLeg> leftLeg_;
 
 };

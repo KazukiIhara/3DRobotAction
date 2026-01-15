@@ -21,6 +21,11 @@ public:
 		std::string lowerModelName;
 		std::string footModelName;
 	};
+	// 右左
+	enum class Side {
+		Left,
+		Right
+	};
 public:
 	BossMechBaseLeg(const BossMechBaseLeg::InitParam& param, BossMech* mech);
 	~BossMechBaseLeg() = default;
@@ -31,6 +36,10 @@ public:
 	Transform3D* GetUpperTransform();
 	Transform3D* GetLowerTransform();
 	Transform3D* GetFootTransform();
+
+protected:
+	// 左右どっちなのか
+	Side side_;
 
 private:
 	// 上足の情報

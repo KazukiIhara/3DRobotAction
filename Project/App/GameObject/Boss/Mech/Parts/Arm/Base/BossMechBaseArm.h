@@ -15,11 +15,17 @@ class BossMech;
 /// </summary>
 class BossMechBaseArm {
 public:
+	// 初期化パラメータ構造体
 	struct InitParam {
 		// モデル名
 		std::string upperModelName;
 		std::string lowerModelName;
 		std::string handModelName;
+	};
+	// 右左
+	enum class Side {
+		Left,
+		Right
 	};
 public:
 	BossMechBaseArm(const BossMechBaseArm::InitParam& param, BossMech* mech);
@@ -32,6 +38,9 @@ public:
 	Transform3D* GetLowerTransform();
 	Transform3D* GetHandTransform();
 
+protected:
+	// 左右どっちなのか
+	Side side_;
 private:
 	// 上腕の情報
 	std::string upperModelName_;
