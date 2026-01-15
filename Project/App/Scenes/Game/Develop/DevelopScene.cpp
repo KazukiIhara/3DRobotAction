@@ -98,10 +98,11 @@ void DevelopScene::Initialize() {
 void DevelopScene::Update() {
 #if defined(DEBUG) || defined(DEVELOP)
 	ImGui::Begin("DevelopUI");
-	ImGui::Button("ResetScene");
+	if (ImGui::Button("ResetScene")) {
+		ChangeScene("Develop");
+	}
 	ImGui::End();
 #endif
-
 	// 平行光源をセット
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
@@ -112,10 +113,8 @@ void DevelopScene::Update() {
 
 	// 攻撃オブジェクトマネージャ更新
 	attackObjectManger_->Update();
-
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
-
 	// エフェクトマネージャ更新
 	gameEffectManager_->Update();
 
