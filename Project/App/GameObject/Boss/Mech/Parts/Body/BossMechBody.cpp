@@ -23,6 +23,6 @@ void BossMechBody::DebugDraw() {
 
 }
 
-Transform3D* BossMechBody::GetBodyTransform() {
+Transform3D* BossMechBody::GetTransform() {
 	return bodyTrans_;
 }

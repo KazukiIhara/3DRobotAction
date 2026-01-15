@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Math/Types/AllMathTypes.h"
 
 // 前方宣言
@@ -16,17 +15,15 @@ public:
 	BossMechBaseWeapon();
 	~BossMechBaseWeapon() = default;
 
-	void Update();
-	void Draw();
-
+	virtual void Update() = 0;
+	virtual void Draw() = 0;
+	
 	virtual void Attack() = 0;
 
-	Transform3D* GetTransfom();
+	Transform3D* GetTransform();
+	const Vector3 GetFireWorldPos()const;
 
-private:
-	Transform3D* transform_;
-	Vector3 attackWorldPos_;
-
-	AttackObjectManager* attackObjectManager_;
-	GameEffectManager* gameEffectManager_;
+protected:
+	Transform3D* transform_ = nullptr;
+	Transform3D* fireTransform_ = nullptr;
 };

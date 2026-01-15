@@ -5,6 +5,7 @@
 
 // MyHeader
 #include "Structs/ModelStruct.h"
+#include "GameObject/Boss/Mech/Parts/IBossMechParts.h"
 
 // 前方宣言
 class Transform3D;
@@ -13,7 +14,7 @@ class BossMech;
 /// <summary>
 /// ボス頭
 /// </summary>
-class BossMechBaseArm {
+class BossMechBaseArm :public IBossMechParts {
 public:
 	// 初期化パラメータ構造体
 	struct InitParam {
@@ -29,12 +30,12 @@ public:
 	};
 public:
 	BossMechBaseArm(const BossMechBaseArm::InitParam& param, BossMech* mech);
-	~BossMechBaseArm() = default;
+	~BossMechBaseArm()override = default;
 
-	virtual void Update();
-	void Draw();
+	virtual void Update()override;
+	void Draw()override;
 
-	void DebugDraw();
+	void DebugDraw()override;
 
 	Transform3D* GetUpperTransform();
 	Transform3D* GetLowerTransform();

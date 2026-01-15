@@ -3,6 +3,7 @@
 // C++
 #include <string>
 #include <memory>
+#include <vector>
 #include <unordered_map>
 
 // 機体パーツ
@@ -13,8 +14,13 @@
 #include "../Mech/Parts/Leg/Right/BossMechRightLeg.h"
 #include "../Mech/Parts/Leg/Left/BossMechLeftLeg.h"
 
+// 武器クラス
+#include "GameObject/Boss/Mech/Weapon/Base/BossMechBaseWeapon.h"
+
+// ステート基底クラス
+#include "GameObject/Boss/Mech/State/BossMechBaseState.h"
+
 // 前方宣言
-class BossMechBaseState;
 class AttackObjectManager;
 class GameEffectManager;
 
@@ -35,7 +41,8 @@ public:
 	};
 	// ステート
 	enum class BossMechState {
-		Idle
+		Idle,
+		LaserShot
 	};
 public:
 	BossMech(const BossMech::InitParam& initParam);
@@ -46,10 +53,31 @@ public:
 
 	void ChangeState(BossMech::BossMechState nextState);
 
-private:
-	BossMechBaseState* GetState(BossMechState state);
+	void SetIsDebugDraw(bool isDebugDraw);
+
+	// 各パーツへのアクセッサ
+	BossMechHead* GetHead();
+	BossMechBody* GetBody();
+	BossMechRightArm* GetRightArm();
+	BossMechLeftArm* GetLeftArm();
+	BossMechRightLeg* GetRightLeg();
+	BossMechLeftLeg* GetLeftLeg();
+
+	// 参照ポインタへのアクセッサ
+	AttackObjectManager* GetAttackObjectManager();
+	GameEffectManager* GetGameEffectManager();
 
 private:
+	// 対応するステートを取得
+	BossMechBaseState* GetState(BossMech::BossMechState state);
+
+private:
+	// トランスフォーム
+	Transform3D* transform_;
+
+	// デバッグ描画フラグ
+	bool isDebugDraw_ = false;
+
 	// 各パーツ
 	std::unique_ptr<BossMechHead> head_;
 	std::unique_ptr<BossMechBody> body_;
@@ -58,12 +86,13 @@ private:
 	std::unique_ptr<BossMechRightLeg> rightLeg_;
 	std::unique_ptr<BossMechLeftLeg> leftLeg_;
 
+	// 更新用のパーツリスト
+	std::vector<IBossMechParts*> parts_;
 
 	// ステートテーブル
-	std::unordered_map<BossMechState, std::unique_ptr<BossMechBaseState>> states_;
+	std::unordered_map<BossMech::BossMechState, std::unique_ptr<BossMechBaseState>> states_;
 	// 現在のステート
-	std::pair<BossMechState, BossMechBaseState*> currentState_;
-
+	std::pair<BossMech::BossMechState, BossMechBaseState*> currentState_;
 
 	// 参照ポインタ
 	AttackObjectManager* attackObjectManager_ = nullptr;

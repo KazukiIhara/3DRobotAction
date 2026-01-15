@@ -5,9 +5,8 @@ Boss::Boss(
 	GameEffectManager* gameEffectManager,
 	MechCore* playerMech
 ) {
-
 	// 機体の作成
-
+	mech_ = std::make_unique<BossMech>(BossMech::InitParam{});
 
 	// AIの作成
 

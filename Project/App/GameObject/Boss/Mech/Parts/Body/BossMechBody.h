@@ -5,6 +5,7 @@
 
 // MyHeader
 #include "Structs/ModelStruct.h"
+#include "GameObject/Boss/Mech/Parts/IBossMechParts.h"
 
 // 前方宣言
 class Transform3D;
@@ -13,23 +14,23 @@ class BossMech;
 /// <summary>
 /// ボス胴体
 /// </summary>
-class BossMechBody {
+class BossMechBody :public IBossMechParts {
 public:
 	struct InitParam {
 		// モデル名
-		std::string bodyModelName;
+		std::string modelName;
 	};
 
 public:
 	BossMechBody(const BossMechBody::InitParam& param, BossMech* mech);
-	~BossMechBody() = default;
+	~BossMechBody()override = default;
 
-	void Update();
-	void Draw();
+	void Update()override;
+	void Draw()override;
 
-	void DebugDraw();
+	void DebugDraw()override;
 
-	Transform3D* GetBodyTransform();
+	Transform3D* GetTransform();
 
 private:
 	// 胴体の情報
