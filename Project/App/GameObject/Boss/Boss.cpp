@@ -29,6 +29,14 @@ BossMech* Boss::GetMech() {
 	return mech_.get();
 }
 
+bool Boss::GetIsAIActive()const {
+	return flag_.isAIActive;
+}
+
+void Boss::SetIsAIActive(bool isActive) {
+	flag_.isAIActive = isActive;
+}
+
 void Boss::SwitchDebugDraw() {
 	flag_.isDebugDraw = !flag_.isDebugDraw;
 }
@@ -37,10 +45,6 @@ void Boss::SwitchAIActive() {
 	flag_.isAIActive = !flag_.isAIActive;
 }
 
-bool Boss::GetIsAIActive()const {
-	return flag_.isAIActive;
-}
-
-void Boss::SetIsAIActive(bool isActive) {
-	flag_.isAIActive = isActive;
+void Boss::SwitchIsPause() {
+	flag_.isPause = !flag_.isPause;
 }

@@ -20,6 +20,7 @@ class MechCore;
 class Boss {
 public:
 	struct Flag {
+		bool isPause = false;
 		bool isAIActive = false;
 		bool isDebugDraw = false;
 	};
@@ -35,12 +36,14 @@ public:
 
 	BossMech* GetMech();
 
+	bool GetIsAIActive()const;
+
+
+	void SetIsAIActive(bool isActive);
+
 	void SwitchDebugDraw();
 	void SwitchAIActive();
-
-
-	bool GetIsAIActive()const;
-	void SetIsAIActive(bool isActive);
+	void SwitchIsPause();
 
 private:
 	// 機体
