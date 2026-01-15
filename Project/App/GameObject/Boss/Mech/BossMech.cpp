@@ -1,5 +1,5 @@
 #include "BossMech.h"
 
-BossMech::BossMech() {
+BossMech::BossMech(const BossMech::InitParam& initParam) {
 
 }

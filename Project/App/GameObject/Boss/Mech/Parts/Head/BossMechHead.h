@@ -16,6 +16,7 @@ class BossMech;
 class BossMechHead {
 public:
 	struct InitParam {
+		// モデル名
 		std::string modelName;
 	};
 public:
@@ -28,6 +29,10 @@ public:
 	Transform3D* GetHeadTransform();
 
 private:
+	// 頭の情報
+	std::string headModelName_;
 	Transform3D* headTrans_;
+	ModelMaterial headMat_;
+
 	BossMech* mech_;
 };
