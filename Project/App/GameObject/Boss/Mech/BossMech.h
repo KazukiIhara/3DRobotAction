@@ -13,31 +13,41 @@
 #include "../Mech/Parts/Leg/Right/BossMechRightLeg.h"
 #include "../Mech/Parts/Leg/Left/BossMechLeftLeg.h"
 
-// エフェクトクラス
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
-
 // 前方宣言
 class BossMechBaseState;
+class AttackObjectManager;
+class GameEffectManager;
 
 /// <summary>
 /// ボス機体クラス
 /// </summary>
 class BossMech {
 public:
+	// 初期化パラメータ
 	struct InitParam {
+		// 初期座標
+		Vector3 position{};
 		// 各パーツのデータ
 		BossMechHead::InitParam head;
 		BossMechBody::InitParam body;
 		BossMechBaseArm::InitParam arm;
 		BossMechBaseLeg::InitParam leg;
 	};
+	// ステート
+	enum class BossMechState {
+		Idle
+	};
 public:
 	BossMech(const BossMech::InitParam& initParam);
-
 	~BossMech() = default;
 
 	void Update();
 	void Draw();
+
+	void ChangeState(BossMech::BossMechState nextState);
+
+private:
+	BossMechBaseState* GetState(BossMechState state);
 
 private:
 	// 各パーツ
@@ -47,5 +57,16 @@ private:
 	std::unique_ptr<BossMechLeftArm> leftArm_;
 	std::unique_ptr<BossMechRightLeg> rightLeg_;
 	std::unique_ptr<BossMechLeftLeg> leftLeg_;
+
+
+	// ステートテーブル
+	std::unordered_map<BossMechState, std::unique_ptr<BossMechBaseState>> states_;
+	// 現在のステート
+	std::pair<BossMechState, BossMechBaseState*> currentState_;
+
+
+	// 参照ポインタ
+	AttackObjectManager* attackObjectManager_ = nullptr;
+	GameEffectManager* gameEffectManager_ = nullptr;
 
 };

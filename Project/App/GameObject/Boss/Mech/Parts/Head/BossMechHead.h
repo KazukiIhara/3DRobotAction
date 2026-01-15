@@ -26,6 +26,8 @@ public:
 	void Update();
 	void Draw();
 
+	void DebugDraw();
+
 	Transform3D* GetHeadTransform();
 
 private:

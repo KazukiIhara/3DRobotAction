@@ -12,6 +12,10 @@ void BossMechBaseLeg::Draw() {
 
 }
 
+void BossMechBaseLeg::DebugDraw() {
+
+}
+
 Transform3D* BossMechBaseLeg::GetUpperTransform() {
 	return nullptr;
 }

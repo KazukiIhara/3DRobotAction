@@ -34,6 +34,8 @@ public:
 	virtual void Update();
 	void Draw();
 
+	void DebugDraw();
+
 	Transform3D* GetUpperTransform();
 	Transform3D* GetLowerTransform();
 	Transform3D* GetHandTransform();

@@ -19,6 +19,10 @@ void BossMechBaseArm::Draw() {
 
 }
 
+void BossMechBaseArm::DebugDraw() {
+
+}
+
 Transform3D* BossMechBaseArm::GetUpperTransform() {
 	return nullptr;
 }

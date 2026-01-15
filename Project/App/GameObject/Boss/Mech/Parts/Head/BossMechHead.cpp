@@ -19,6 +19,10 @@ void BossMechHead::Draw() {
 
 }
 
+void BossMechHead::DebugDraw() {
+
+}
+
 Transform3D* BossMechHead::GetHeadTransform() {
 	return headTrans_;
 }

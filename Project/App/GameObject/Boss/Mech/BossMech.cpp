@@ -1,9 +1,11 @@
 #include "BossMech.h"
 
+#include "GameObject/Boss/Mech/State/BossMechBaseState.h"
+#include "GameObject/Boss/Mech/State/Idle/BossMechStateIdle.h"
+
 BossMech::BossMech(const BossMech::InitParam& initParam) {
 
 }
-
 
 void BossMech::Update() {
 	// 全パーツを更新
@@ -22,4 +24,12 @@ void BossMech::Draw() {
 	leftArm_->Draw();
 	leftLeg_->Draw();
 	rightLeg_->Draw();
+}
+
+void BossMech::ChangeState(BossMech::BossMechState nextState) {
+
+}
+
+BossMechBaseState* BossMech::GetState(BossMechState state) {
+	return nullptr;
 }
