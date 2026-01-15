@@ -3,6 +3,7 @@
 // C++
 #include <string>
 #include <memory>
+#include <unordered_map>
 
 // 機体パーツ
 #include "../Mech/Parts/Head/BossMechHead.h"
@@ -11,6 +12,12 @@
 #include "../Mech/Parts/Arm/Left/BossMechLeftArm.h"
 #include "../Mech/Parts/Leg/Right/BossMechRightLeg.h"
 #include "../Mech/Parts/Leg/Left/BossMechLeftLeg.h"
+
+// エフェクトクラス
+#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+
+// 前方宣言
+class BossMechBaseState;
 
 /// <summary>
 /// ボス機体クラス
@@ -26,6 +33,7 @@ public:
 	};
 public:
 	BossMech(const BossMech::InitParam& initParam);
+
 	~BossMech() = default;
 
 	void Update();

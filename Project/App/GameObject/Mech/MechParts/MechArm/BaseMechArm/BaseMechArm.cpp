@@ -38,7 +38,7 @@ BaseMechArm::BaseMechArm(const Param& param) {
 }
 
 void BaseMechArm::Update(MechCore* mechCore) {
-	if (mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+	if (mechCore->GetLockOnComponent()->GetLockOnTarget()) {
 		UpdateAimToTarget(mechCore);
 	} else {
 		UpdateAimToCamera(mechCore);
@@ -51,7 +51,7 @@ void BaseMechArm::UpdateAimToTarget(MechCore* mechCore) {
 	if (!armObj) { return; }
 
 	// ロックオン中のターゲットを取得
-	auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock();
+	auto target = mechCore->GetLockOnComponent()->GetLockOnTarget();
 	if (!target) { return; }
 
 	// ターゲットのボディオブジェクトを取得

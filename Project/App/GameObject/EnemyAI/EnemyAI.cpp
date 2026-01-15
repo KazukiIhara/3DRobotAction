@@ -18,7 +18,7 @@
 #include "EnemyAIState/Search/EnemyAIStateSearch.h"
 #include "EnemyAIState/Avoid/EnemyAIStateAvoid.h"
 
-EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, std::weak_ptr<MechCore> playerMech, AttackObjectManager* bulletManager) {
+EnemyAI::EnemyAI(std::weak_ptr<MechCore> mechCore, MechCore* playerMech, AttackObjectManager* bulletManager) {
 	// 自機のポインタを受け取る
 	if (auto m = mechCore.lock()) {
 		mechCore_ = m.get();
@@ -82,8 +82,7 @@ void EnemyAI::ChangeState(EnemyAIState nextState) {
 }
 
 MechCore* EnemyAI::GetPlayerMech() {
-	auto ptr = playerMech_.lock();
-	return ptr.get();
+	return playerMech_;
 }
 
 RootDir EnemyAI::GetRootDir() const {

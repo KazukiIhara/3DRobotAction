@@ -359,7 +359,6 @@ void PlayScene::Draw() {
 	// プレイヤーにまつわるものを描画
 	player_->Draw();
 
-
 	// 弾マネージャ描画
 	attackObjectManger_->Draw();
 

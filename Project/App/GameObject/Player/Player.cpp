@@ -136,8 +136,8 @@ void Player::Draw() {
 	mech_->Draw();
 }
 
-std::weak_ptr<MechCore> Player::GetMechCore() {
-	return mech_;
+MechCore* Player::GetMechCore() {
+	return mech_.get();
 }
 
 void Player::SetIsOperation(bool isOperation) {

@@ -101,7 +101,7 @@ void PlayerUI::Draw() {
 void PlayerUI::UpdateLockonUI(MechCore* mechCore) {
 
 	// ロックオン状態などに応じてUIの座標を更新
-	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget()) {
 		if (auto targetBody = target->GetMechBody()->GetGameObject().lock()) {
 			// ロックオン係数
 			const float lockonFactor = mechCore->GetStatusComponent()->GetFcsAvoidFactor();
@@ -253,7 +253,7 @@ void PlayerUI::DrawDebugUI(MechCore* mechCore) {
 	rightHandAmmo = mechCore->GetRightHandWeapon()->GetData().ammo_;
 	leftHandAmmo = mechCore->GetLeftHandWeapon()->GetData().ammo_;
 
-	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget().lock()) {
+	if (auto target = mechCore->GetLockOnComponent()->GetLockOnTarget()) {
 		targetHP = target->GetStatusComponent()->GetHp();
 		// ターゲット対象の座標を取得
 		targetPos = target->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();

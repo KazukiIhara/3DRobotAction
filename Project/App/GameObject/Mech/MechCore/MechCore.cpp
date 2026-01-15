@@ -449,7 +449,7 @@ void MechCore::QuickBoostRadialBlur() {
 	// ブラーの座標計算
 	Vector3 blurWorldPos;
 	Vector2 blurScreenPos;
-	if (auto enemy = lockOnComponent_->GetLockOnTarget().lock()) {
+	if (auto enemy = lockOnComponent_->GetLockOnTarget()) {
 		// 敵の胴体のワールド座標
 		blurWorldPos = enemy->GetMechBody()->GetGameObject().lock()->GetTransform()->GetWorldPosition();
 		// 機体胴体のスクリーン座標を取得

@@ -51,7 +51,7 @@ public:
 		const Vector3& wPos,
 		const Vector3& dir,
 		int32_t damage,
-		std::weak_ptr<MechCore> target
+		MechCore* target
 	);
 
 private:

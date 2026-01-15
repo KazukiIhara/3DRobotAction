@@ -223,13 +223,13 @@ void TitleScene::Initialize() {
 	aiPlayer_->Initialize(attackObjectManger_.get(), enemy_->GetMechCore());
 
 	// プレイヤーのターゲット対象に敵を追加
-	aiPlayer_->GetMechCore().lock()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
+	aiPlayer_->GetMechCore()->GetLockOnComponent()->AddMech(enemy_->GetMechCore());
 	// エネミーのターゲット対象にプレイヤーを追加
-	enemy_->GetMechCore().lock()->GetLockOnComponent()->AddMech(aiPlayer_->GetMechCore());
+	enemy_->GetMechCore()->GetLockOnComponent()->AddMech(aiPlayer_->GetMechCore());
 
 	// デモなので無敵にする
-	aiPlayer_->GetMechCore().lock()->GetStatusComponent()->SetDemoMode(true);
-	enemy_->GetMechCore().lock()->GetStatusComponent()->SetDemoMode(true);
+	aiPlayer_->GetMechCore()->GetStatusComponent()->SetDemoMode(true);
+	enemy_->GetMechCore()->GetStatusComponent()->SetDemoMode(true);
 
 	// 攻撃コリジョンマネージャにワールドに存在するmechを追加
 	attackCollisionManager_->AddMech(aiPlayer_->GetMechCore());

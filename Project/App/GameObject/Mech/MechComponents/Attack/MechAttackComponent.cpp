@@ -65,9 +65,9 @@ void MechAttackComponent::AttackLeftShoulder(MechCore* mechCore) {
 		const int32_t damage = mechCore->GetLeftShoulderWeapon()->GetDamage();
 
 		// ターゲットを設定 TODO:(ひとまず機体のロックオン機能から直接持ってくるが、ミサイルランチャーから受け取るようにする)
-		std::weak_ptr<MechCore> target = mechCore->GetLockOnComponent()->GetLockOnTarget();
+		MechCore* target = mechCore->GetLockOnComponent()->GetLockOnTarget();
 
-		if (auto tgt = target.lock()) {
+		if (auto tgt = target) {
 			if (auto tgtBody = tgt->GetMechBody()->GetGameObject().lock()) {
 				// ターゲットのワールド座標を取得
 				const Vector3 targetWPos = tgtBody->GetTransform()->GetWorldPosition();

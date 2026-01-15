@@ -24,7 +24,7 @@ public:
 	void Draw();
 
 	// 機体を取得
-	std::weak_ptr<MechCore> GetMechCore();
+	MechCore* GetMechCore();
 
 	// 操作可能フラグをセット
 	void SetIsOperation(bool isOperation);

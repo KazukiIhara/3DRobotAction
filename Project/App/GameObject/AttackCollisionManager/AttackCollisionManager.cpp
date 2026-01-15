@@ -35,8 +35,8 @@ void AttackCollisionManager::Draw() {
 void AttackCollisionManager::CheckCollision() {
 	for (auto& mech : mechs_) {
 		// 機体のタグを取得
-		const FriendlyTag mechTag = mech.lock()->GetFriendlyTag();
-		if (auto m = mech.lock()) {
+		const FriendlyTag mechTag = mech->GetFriendlyTag();
+		if (auto m = mech) {
 
 			// 機体のAABBコライダーを取得
 			const Vector3 mMin = m->GetCollider()->GetMinW();
@@ -101,7 +101,7 @@ void AttackCollisionManager::CheckCollision() {
 }
 
 
-void AttackCollisionManager::AddMech(std::weak_ptr<MechCore> mech) {
+void AttackCollisionManager::AddMech(MechCore* mech) {
 	mechs_.push_back(mech);
 }
 

@@ -22,14 +22,14 @@ public:
 	AIPlayer(AttackObjectManager* bulletManager, GameEffectManager* effectManager);
 	~AIPlayer() = default;
 
-	void Initialize(AttackObjectManager* bulletManager, std::weak_ptr<MechCore> targetMech);
+	void Initialize(AttackObjectManager* bulletManager, MechCore* targetMech);
 
 	void Update();
 
 	void Draw();
 
 	// 機体を取得
-	std::weak_ptr<MechCore> GetMechCore();
+	MechCore* GetMechCore();
 
 	bool GetIsAIActive() const;
 

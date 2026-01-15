@@ -39,7 +39,7 @@ void MechCamera::Update() {
 	if (core_) {
 		// ハードロックオンオフフラグ取得
 		if (core_->GetLockOnComponent()->GetEnableHardLockOn()) {
-			if (core_->GetLockOnComponent()->GetLockOnTarget().lock()) { // ターゲットあり
+			if (core_->GetLockOnComponent()->GetLockOnTarget()) { // ターゲットあり
 				HardLockCamera(dt);
 			} else { // ターゲットなし
 				FollowCamera();
@@ -108,7 +108,7 @@ void MechCamera::HardLockCamera(float dt) {
 	// ターゲット座標取得
 	Vector3 targetWorldPos{};
 	if (core_) {
-		if (auto tgt = core_->GetLockOnComponent()->GetLockOnTarget().lock()) {
+		if (auto tgt = core_->GetLockOnComponent()->GetLockOnTarget()) {
 			if (auto obj = tgt->GetMechBody()->GetGameObject().lock()) {
 				targetWorldPos = obj->GetTransform()->GetWorldPosition();
 			}

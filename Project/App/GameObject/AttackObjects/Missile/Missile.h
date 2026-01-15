@@ -33,7 +33,7 @@ public:
 		const MissileType& missileType,
 		const Vector3& wPos,
 		const Vector3& dir,
-		std::weak_ptr<MechCore> target,
+		MechCore* target,
 		std::weak_ptr<AttackCollider> attackCollider
 	);
 	~Missile() = default;
@@ -50,7 +50,7 @@ private:
 
 private:
 	// ロックオン対象の機体
-	std::weak_ptr<MechCore> target_;
+	MechCore* target_;
 
 	// ミサイルの種類
 	MissileType type_;
