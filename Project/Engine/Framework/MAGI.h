@@ -462,6 +462,10 @@ public: // エンジンの機能
 #pragma region TransformComponent
 	// トランスフォーム追加
 	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
+	// トランスフォーム追加(簡単版)
+	static Transform3D* AddTransform3D(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+	static Transform3D* AddTransform3D(const Vector3& translate);
+	static Transform3D* AddTransform3D();
 	// トランスフォーム全削除
 	static void ClearTransform3D();
 #pragma endregion

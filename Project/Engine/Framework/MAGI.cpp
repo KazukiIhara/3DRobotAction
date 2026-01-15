@@ -1339,6 +1339,21 @@ Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) 
 	return transformManager_->Add(std::move(transform));
 }
 
+Transform3D* MAGISYSTEM::AddTransform3D(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
+	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(scale, rotate, translate);
+	return AddTransform3D(std::move(trans));
+}
+
+Transform3D* MAGISYSTEM::AddTransform3D(const Vector3& translate) {
+	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(translate);
+	return AddTransform3D(std::move(trans));
+}
+
+Transform3D* MAGISYSTEM::AddTransform3D() {
+	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>();
+	return AddTransform3D(std::move(trans));
+}
+
 void MAGISYSTEM::ClearTransform3D() {
 	transformManager_->Clear();
 }

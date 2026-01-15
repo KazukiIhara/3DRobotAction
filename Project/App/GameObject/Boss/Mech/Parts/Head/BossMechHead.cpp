@@ -8,6 +8,7 @@
 using namespace Magi;
 
 BossMechHead::BossMechHead(const BossMechHead::InitParam& param, BossMech* mech) {
+	// トランスフォーム柵瀬
 
 }
 
