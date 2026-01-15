@@ -38,7 +38,6 @@ public:
 
 	bool GetIsAIActive()const;
 
-
 	void SetIsAIActive(bool isActive);
 
 	void SwitchDebugDraw();

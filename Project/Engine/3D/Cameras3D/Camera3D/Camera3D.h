@@ -81,6 +81,9 @@ public:
 	void SetIsUnique(bool isUnique);
 	void SetFovY(float fovY);
 private:
+	// フラスタム平面を作成
+	void MakeFrustumPlane();
+
 	// カメラのリソースを作成
 	void CreateCameraResource();
 	// カメラのデータをマップ
@@ -127,7 +130,7 @@ protected:
 	Matrix4x4 billboardMatrix_{};
 	// frustumPlane
 	Vector4 frustumPlanes_[6];
-	// yawPicthを使うかどうか
+	// yawPitchを使うかどうか
 	bool isUseYawPitch_ = true;
 	// 生存フラグ
 	bool isAlive_ = true;

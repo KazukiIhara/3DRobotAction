@@ -95,47 +95,7 @@ void Camera3D::UpdateData() {
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
-	const Vector3 culEye = eye_ - forward_;
-	const Matrix4x4 CullingFrustumVM = MakeLookAtMatrix(culEye, target_);
-	const Matrix4x4& m = viewProjectionMatrix_;
-
-	// 各平面の抽出（行ベクトル形式）
-	frustumPlanes_[0] = NormalizePlane(Vector4(
-		m.m[0][3] + m.m[0][0],
-		m.m[1][3] + m.m[1][0],
-		m.m[2][3] + m.m[2][0],
-		m.m[3][3] + m.m[3][0])); // Left
-
-	frustumPlanes_[1] = NormalizePlane(Vector4(
-		m.m[0][3] - m.m[0][0],
-		m.m[1][3] - m.m[1][0],
-		m.m[2][3] - m.m[2][0],
-		m.m[3][3] - m.m[3][0])); // Right
-
-	frustumPlanes_[2] = NormalizePlane(Vector4(
-		m.m[0][3] + m.m[0][1],
-		m.m[1][3] + m.m[1][1],
-		m.m[2][3] + m.m[2][1],
-		m.m[3][3] + m.m[3][1])); // Bottom
-
-	frustumPlanes_[3] = NormalizePlane(Vector4(
-		m.m[0][3] - m.m[0][1],
-		m.m[1][3] - m.m[1][1],
-		m.m[2][3] - m.m[2][1],
-		m.m[3][3] - m.m[3][1])); // Top
-
-	frustumPlanes_[4] = NormalizePlane(Vector4(
-		m.m[0][2],
-		m.m[1][2],
-		m.m[2][2],
-		m.m[3][2])); // Near
-
-	frustumPlanes_[5] = NormalizePlane(Vector4(
-		m.m[0][3] - m.m[0][2],
-		m.m[1][3] - m.m[1][2],
-		m.m[2][3] - m.m[2][2],
-		m.m[3][3] - m.m[3][2])); // Far
-
+	MakeFrustumPlane();
 
 	cameraVector_.forward = forward_;
 	cameraVector_.up = up_;
@@ -429,6 +389,48 @@ void Camera3D::SetIsUnique(bool isUnique) {
 
 void Camera3D::SetFovY(float fovY) {
 	fovY_ = fovY * (std::numbers::pi_v<float> / 180.0f);
+}
+
+void Camera3D::MakeFrustumPlane() {
+	const Matrix4x4& m = viewProjectionMatrix_;
+
+	// 各平面の抽出（行ベクトル形式）
+	frustumPlanes_[0] = NormalizePlane(Vector4(
+		m.m[0][3] + m.m[0][0],
+		m.m[1][3] + m.m[1][0],
+		m.m[2][3] + m.m[2][0],
+		m.m[3][3] + m.m[3][0])); // Left
+
+	frustumPlanes_[1] = NormalizePlane(Vector4(
+		m.m[0][3] - m.m[0][0],
+		m.m[1][3] - m.m[1][0],
+		m.m[2][3] - m.m[2][0],
+		m.m[3][3] - m.m[3][0])); // Right
+
+	frustumPlanes_[2] = NormalizePlane(Vector4(
+		m.m[0][3] + m.m[0][1],
+		m.m[1][3] + m.m[1][1],
+		m.m[2][3] + m.m[2][1],
+		m.m[3][3] + m.m[3][1])); // Bottom
+
+	frustumPlanes_[3] = NormalizePlane(Vector4(
+		m.m[0][3] - m.m[0][1],
+		m.m[1][3] - m.m[1][1],
+		m.m[2][3] - m.m[2][1],
+		m.m[3][3] - m.m[3][1])); // Top
+
+	frustumPlanes_[4] = NormalizePlane(Vector4(
+		m.m[0][2],
+		m.m[1][2],
+		m.m[2][2],
+		m.m[3][2])); // Near
+
+	frustumPlanes_[5] = NormalizePlane(Vector4(
+		m.m[0][3] - m.m[0][2],
+		m.m[1][3] - m.m[1][2],
+		m.m[2][3] - m.m[2][2],
+		m.m[3][3] - m.m[3][2])); // Far
+
 }
 
 void Camera3D::CreateCameraResource() {
