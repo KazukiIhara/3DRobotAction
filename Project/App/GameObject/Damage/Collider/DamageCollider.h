@@ -4,6 +4,7 @@
 #include <variant>
 
 #include "Math/Types/AllMathTypes.h"
+#include "MAGIAssert/MAGIAssert.h"
 
 /// <summary>
 /// ダメージコライダー
@@ -32,15 +33,19 @@ public:
 	void Update();
 	void DebugDraw();
 
+	// パラメータ取得
 	const Param& GetParam() const;
 
-protected:
+	// パラメータの参照を取得
 	template<class T>
 	T& GetParamMutableRef() {
-		return std::get_if<T>(&param_);
+		T* p = std::get_if<T>(&param_);
+		MAGIAssert::Assert(p); // 違ったらバグとして止める
+		return *p;
 	}
 
 private:
+	// パラメータ
 	Param param_;
 
 };
