@@ -4,16 +4,19 @@
 
 // 実装メモ
 /*
-	待機アニメーションを再生する
+	レーザー攻撃　アニメーション再生　→　射撃　まで
 */
 
 /// <summary>
-/// 待機状態　
+/// レーザー攻撃
 /// </summary>
-class BossMechStateIdle :public BossMechBaseState {
+class BossMechStateLaserAttack:public BossMechBaseState {
 public:
-	~BossMechStateIdle()override = default;
+	~BossMechStateLaserAttack()override = default;
 	void Enter(BossMech* mechCore)override;
 	void Update(BossMech* mechCore)override;
 	void Exit(BossMech* mechCore)override;
+
+private:
+
 };

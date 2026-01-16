@@ -51,6 +51,11 @@ BossMech::BossMech(const BossMech::InitParam& initParam) {
 }
 
 void BossMech::Update() {
+	// ステート更新
+	if (auto state = currentState_.second) {
+		state->Update(this);
+	}
+
 	// 全パーツを更新
 	for (auto part : parts_) {
 		part->Update();
@@ -61,15 +66,22 @@ void BossMech::Update() {
 }
 
 void BossMech::Draw(bool isDebugDraw) {
-	// 全パーツを更新
+
+	// デバッグUIフラグ
+	const bool debug = isDebugDraw;
+	// デバッグUIを表示
+	if (debug) {
+		DebugDraw();
+	}
+
+
+	// 全パーツを描画
 	for (auto part : parts_) {
 		part->Draw();
-		if (isDebugDraw) {
-			part->DebugDraw();
-		}
 	}
 
 	// 全武器を描画
+
 
 }
 
@@ -118,6 +130,33 @@ GameEffectManager* BossMech::GetGameEffectManager() {
 	return gameEffectManager_;
 }
 
+void BossMech::DebugDraw() {
+	// デバッグ操作ウィンドウ
+	ImGui::Begin("BossMech");
+
+	ImGui::SeparatorText("Parameter");
+
+	ImGui::Text("CurrentState :");
+	ImGui::SameLine();
+	const std::string state = StateToString(currentState_.first);
+	ImGui::Text(state.c_str());
+
+	ImGui::SeparatorText("DebugFlag");
+	if (ImGui::Button("SwitchPartsDebug")) {
+		SwitchShowPartsTransform();
+	}
+
+	ImGui::End();
+
+	// 各パーツのデバッグ描画
+	for (auto part : parts_) {
+		// パーツデバッグ描画
+		if (debugFlag_.showPartsTransform) {
+			part->DebugDraw();
+		}
+	}
+}
+
 BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
 	auto it = states_.find(state);
 	if (it != states_.end()) {
@@ -126,4 +165,26 @@ BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
 
 	MAGIAssert::Assert(false, "Not find BossMechState!");
 	return {};
+}
+
+const std::string BossMech::StateToString(BossMech::BossMechState state) {
+	std::string str = "";
+
+	switch (state) {
+		case BossMech::BossMechState::Idle:
+			str = "Idle";
+			break;
+		case BossMech::BossMechState::LaserShot:
+			str = "LaserShot";
+			break;
+
+		default:
+			break;
+	}
+
+	return str;
+}
+
+void BossMech::SwitchShowPartsTransform() {
+	debugFlag_.showPartsTransform = !debugFlag_.showPartsTransform;
 }

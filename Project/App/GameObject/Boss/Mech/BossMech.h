@@ -29,6 +29,11 @@ class GameEffectManager;
 /// </summary>
 class BossMech {
 public:
+	// デバッグUIフラグ
+	struct DebugFlag {
+		bool showPartsTransform = false;
+	};
+
 	// 初期化パラメータ
 	struct InitParam {
 		// 初期座標
@@ -52,8 +57,7 @@ public:
 	void Draw(bool isDebugDraw);
 
 	void ChangeState(BossMech::BossMechState nextState);
-
-
+	
 	// 各パーツへのアクセッサ
 	BossMechHead* GetHead();
 	BossMechBody* GetBody();
@@ -66,14 +70,21 @@ public:
 	AttackObjectManager* GetAttackObjectManager();
 	GameEffectManager* GetGameEffectManager();
 
+	// デバッグ用描画
+	void DebugDraw();
+
 private:
 	// 対応するステートを取得
 	BossMechBaseState* GetState(BossMech::BossMechState state);
+	// ステートを文字列に変換
+	const std::string StateToString(BossMech::BossMechState state);
+
+	// デバッグフラグ切り替え
+	void SwitchShowPartsTransform();
 
 private:
 	// トランスフォーム
 	Transform3D* transform_;
-
 
 	// 各パーツ
 	std::unique_ptr<BossMechHead> head_;
@@ -90,6 +101,10 @@ private:
 	std::unordered_map<BossMech::BossMechState, std::unique_ptr<BossMechBaseState>> states_;
 	// 現在のステート
 	std::pair<BossMech::BossMechState, BossMechBaseState*> currentState_;
+
+	// デバッグフラグ構造体
+	DebugFlag debugFlag_{};
+
 
 	// 参照ポインタ
 	AttackObjectManager* attackObjectManager_ = nullptr;
