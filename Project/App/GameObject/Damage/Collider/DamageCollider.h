@@ -40,7 +40,7 @@ public:
 	template<class T>
 	T& GetParamMutableRef() {
 		T* p = std::get_if<T>(&param_);
-		MAGIAssert::Assert(p); // 違ったらバグとして止める
+		MAGIAssert::Assert(p);
 		return *p;
 	}
 
