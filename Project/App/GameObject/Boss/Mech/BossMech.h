@@ -15,7 +15,7 @@
 #include "../Mech/Parts/Leg/Left/BossMechLeftLeg.h"
 
 // 武器クラス
-#include "GameObject/Boss/Mech/Weapon/Base/BossMechBaseWeapon.h"
+#include "GameObject/Boss/Mech/Weapon/LaserGun/BossMechWeaponLaserGun.h"
 
 // ステート基底クラス
 #include "GameObject/Boss/Mech/State/BossMechBaseState.h"
@@ -23,17 +23,13 @@
 // 前方宣言
 class AttackObjectManager;
 class GameEffectManager;
+class MechCore;
 
 /// <summary>
 /// ボス機体クラス
 /// </summary>
 class BossMech {
 public:
-	// デバッグUIフラグ
-	struct DebugFlag {
-		bool showPartsTransform = false;
-	};
-
 	// 初期化パラメータ
 	struct InitParam {
 		// 初期座標
@@ -44,13 +40,31 @@ public:
 		BossMechBaseArm::InitParam arm;
 		BossMechBaseLeg::InitParam leg;
 	};
+	// デバッグUIフラグ
+	struct DebugFlag {
+		bool showPartsTransform = false;
+	};
+	// パーツ列挙型
+	enum class PartsType {
+		Head,
+		Body,
+		ArmR,
+		ArmL,
+		LegR,
+		LegL
+	};
 	// ステート
 	enum class BossMechState {
 		Idle,
 		LaserShot
 	};
 public:
-	BossMech(const BossMech::InitParam& initParam);
+	BossMech(
+		const BossMech::InitParam& initParam,
+		MechCore* playerMech,
+		AttackObjectManager* attackObjectManager,
+		GameEffectManager* gameEffectManager
+	);
 	~BossMech() = default;
 
 	void Update();
@@ -58,13 +72,8 @@ public:
 
 	void ChangeState(BossMech::BossMechState nextState);
 
-	// 各パーツへのアクセッサ
-	BossMechHead* GetHead();
-	BossMechBody* GetBody();
-	BossMechRightArm* GetRightArm();
-	BossMechLeftArm* GetLeftArm();
-	BossMechRightLeg* GetRightLeg();
-	BossMechLeftLeg* GetLeftLeg();
+	// パーツへのアクセッサ
+
 
 	// 参照ポインタへのアクセッサ
 	AttackObjectManager* GetAttackObjectManager();
@@ -79,6 +88,9 @@ private:
 	// ステートを文字列に変換
 	const std::string StateToString(BossMech::BossMechState state);
 
+	// パーツタイプを文字列に変換
+	const std::string PartsTypeToString(BossMech::PartsType partsType);
+
 	// デバッグウィンドウ描画
 	void ShowDebugWidow();
 
@@ -89,24 +101,17 @@ private:
 	// トランスフォーム
 	Transform3D* transform_;
 
-	// 各パーツ
-	std::unique_ptr<BossMechHead> head_;
-	std::unique_ptr<BossMechBody> body_;
-	std::unique_ptr<BossMechRightArm> rightArm_;
-	std::unique_ptr<BossMechLeftArm> leftArm_;
-	std::unique_ptr<BossMechRightLeg> rightLeg_;
-	std::unique_ptr<BossMechLeftLeg> leftLeg_;
+	// パーツマップ
+	std::unordered_map<BossMech::PartsType, std::unique_ptr<IBossMechParts>> parts_;
 
-	// 更新用のパーツリスト
-	std::vector<IBossMechParts*> parts_;
-
-	// 更新用の武器リスト
-	std::vector<BossMechBaseWeapon*> weapons_;
+	// 武器リスト
+	std::vector<std::unique_ptr<BossMechBaseWeapon>> weapons_;
 
 	// ステートテーブル
 	std::unordered_map<BossMech::BossMechState, std::unique_ptr<BossMechBaseState>> states_;
 	// 現在のステート
 	std::pair<BossMech::BossMechState, BossMechBaseState*> currentState_;
+
 
 	// デバッグフラグ構造体
 	DebugFlag debugFlag_{};
@@ -115,5 +120,6 @@ private:
 	// 参照ポインタ
 	AttackObjectManager* attackObjectManager_ = nullptr;
 	GameEffectManager* gameEffectManager_ = nullptr;
+	MechCore* playerMech_ = nullptr;
 
 };

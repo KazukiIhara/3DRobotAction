@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Math/Types/AllMathTypes.h"
 
 // 前方宣言

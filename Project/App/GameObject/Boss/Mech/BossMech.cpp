@@ -3,34 +3,39 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h" 
 
+#include "GameObject/Mech/MechCore/MechCore.h"
+#include "GameObject/AttackObjectManager/AttackObjectManager.h"
+#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+
 // ステートクラス
 #include "GameObject/Boss/Mech/State/Idle/BossMechStateIdle.h"
 #include "GameObject/Boss/Mech/State/LaserShot/BossMechStateLaserShot.h"
 
 using namespace Magi;
 
-BossMech::BossMech(const BossMech::InitParam& initParam) {
+BossMech::BossMech(const BossMech::InitParam& initParam, MechCore* playerMech, AttackObjectManager* attackObjectManager, GameEffectManager* gameEffectManager) {
+	// 参照ポインタを受け取る
+	playerMech_ = playerMech;
+	attackObjectManager_ = attackObjectManager;
+	gameEffectManager_ = gameEffectManager;
+
 	// トランスフォーム作成
 	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(initParam.position);
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
+	{
+		// パーツを更新用コンテナに
+		using BP = BossMech::PartsType;
+		parts_[BP::Head] = std::make_unique<BossMechHead>(initParam.head, this);
+		parts_[BP::Body] = std::make_unique<BossMechBody>(initParam.body, this);
+		parts_[BP::ArmR] = std::make_unique<BossMechRightArm>(initParam.arm, this);
+		parts_[BP::ArmL] = std::make_unique<BossMechLeftArm>(initParam.arm, this);
+		parts_[BP::LegR] = std::make_unique<BossMechRightLeg>(initParam.leg, this);
+		parts_[BP::LegL] = std::make_unique<BossMechLeftLeg>(initParam.leg, this);
 
-	// 各パーツ作成
-	head_ = std::make_unique<BossMechHead>(initParam.head, this);
-	body_ = std::make_unique<BossMechBody>(initParam.body, this);
-	rightArm_ = std::make_unique<BossMechRightArm>(initParam.arm, this);
-	leftArm_ = std::make_unique<BossMechLeftArm>(initParam.arm, this);
-	rightLeg_ = std::make_unique<BossMechRightLeg>(initParam.leg, this);
-	leftLeg_ = std::make_unique<BossMechLeftLeg>(initParam.leg, this);
+	}
 
-	// 更新用コンテナに挿入
-	parts_.push_back(head_.get());
-	parts_.push_back(body_.get());      // Body 登録
-	parts_.push_back(rightArm_.get());  // RightArm 登録
-	parts_.push_back(leftArm_.get());   // LeftArm 登録
-	parts_.push_back(rightLeg_.get());  // RightLeg 登録
-	parts_.push_back(leftLeg_.get());
-
-	// 武器を追加
+	// 武器をコンテナに挿入
+	weapons_.push_back(std::make_unique<BossMechWeaponLaserGun>(this));
 
 
 	// 実装メモ
@@ -40,21 +45,12 @@ BossMech::BossMech(const BossMech::InitParam& initParam) {
 		各パーツ内のさらに細かいパーツはパーツ作成時に親子付けする
 	*/
 
-	// 各パーツ結合
-	body_->GetTransform()->SetParent(transform_);
-
-
-
-
 	// ステートテーブル作成
 	states_[BossMech::BossMechState::Idle] = std::make_unique<BossMechStateIdle>();
 	states_[BossMech::BossMechState::LaserShot] = std::make_unique<BossMechStateLaserShot>();
 
 	// 最初のステートを設定
 	ChangeState(BossMechState::Idle);
-
-	// パラメータの作成
-	MAGISYSTEM::AddParameterGroup("BossMechState");
 
 }
 
@@ -66,7 +62,7 @@ void BossMech::Update() {
 
 	// 全パーツを更新
 	for (auto& part : parts_) {
-		part->Update();
+		part.second->Update();
 	}
 
 	// 全武器を更新
@@ -87,8 +83,8 @@ void BossMech::Draw([[maybe_unused]] bool isDebugDraw) {
 #endif
 
 	// 全パーツを描画
-	for (auto part : parts_) {
-		part->Draw();
+	for (auto& part : parts_) {
+		part.second->Update();
 	}
 
 	// 全武器を描画
@@ -111,30 +107,6 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	}
 }
 
-BossMechHead* BossMech::GetHead() {
-	return head_.get();
-}
-
-BossMechBody* BossMech::GetBody() {
-	return body_.get();
-}
-
-BossMechRightArm* BossMech::GetRightArm() {
-	return rightArm_.get();
-}
-
-BossMechLeftArm* BossMech::GetLeftArm() {
-	return leftArm_.get();
-}
-
-BossMechRightLeg* BossMech::GetRightLeg() {
-	return rightLeg_.get();
-}
-
-BossMechLeftLeg* BossMech::GetLeftLeg() {
-	return leftLeg_.get();
-}
-
 AttackObjectManager* BossMech::GetAttackObjectManager() {
 	return attackObjectManager_;
 }
@@ -148,10 +120,10 @@ void BossMech::DebugDraw() {
 	ShowDebugWidow();
 
 	// 各パーツのデバッグ描画
-	for (auto part : parts_) {
+	for (auto& part : parts_) {
 		// パーツデバッグ描画
 		if (debugFlag_.showPartsTransform) {
-			part->DebugDraw();
+			part.second->Update();
 		}
 	}
 }
@@ -181,6 +153,10 @@ const std::string BossMech::StateToString(BossMech::BossMechState state) {
 			break;
 	}
 	return str;
+}
+
+const std::string BossMech::PartsTypeToString(BossMech::PartsType partsType) {
+	return std::string();
 }
 
 void BossMech::ShowDebugWidow() {
