@@ -2,13 +2,16 @@
 
 #include "MAGI.h"
 
-#include "GameObject/Damage/Collider/IDamageCollider.h"
+#include "GameObject/Damage/Collider/DamageCollider.h"
 
 using namespace Magi;
 
-BaseDamageObject::BaseDamageObject(const Vector3& worldPos, BaseDamageCollider* damageCollider) {
+BaseDamageObject::BaseDamageObject(const Vector3& worldPos) {
 	transform_ = MAGISYSTEM::AddTransform3D(worldPos);
-	damageCollider_ = damageCollider;
+}
+
+void BaseDamageObject::SetCollisonManager(DamageCollisonManager* collisionManager) {
+	collisionManager_ = collisionManager;
 }
 
 BaseDamageCollider* BaseDamageObject::GetDamageCollider() {
