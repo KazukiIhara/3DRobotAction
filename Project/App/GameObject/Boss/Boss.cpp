@@ -1,12 +1,17 @@
 #include "Boss.h"
 
 Boss::Boss(
-	AttackObjectManager* attackObjectManager,
+	DamageObjectManager* damageObjectManager,
 	GameEffectManager* gameEffectManager,
 	MechCore* playerMech
 ) {
 	// 機体の作成
-	mech_ = std::make_unique<BossMech>(BossMech::InitParam{});
+	mech_ = std::make_unique<BossMech>(
+		BossMech::InitParam{},
+		damageObjectManager,
+		gameEffectManager,
+		playerMech
+	);
 	// AIの作成
 
 

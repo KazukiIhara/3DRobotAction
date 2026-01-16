@@ -82,12 +82,19 @@ void DevelopScene::Initialize() {
 	// 弾マネージャ
 	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
 
+	// コリジョンマネージャ
+	damageCollisionSystem_ = std::make_unique<DamageCollisionSystem>();
+
+	// 攻撃オブジェクトマネージャ
+	damageObjectManager_ = std::make_unique<DamageObjectManager>(damageCollisionSystem_.get());
+
+
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
 	player_->SetIsOperation(true);
 
 	// ボス作成
-	boss_ = std::make_unique<Boss>(attackObjectManger_.get(), gameEffectManager_.get(), player_->GetMechCore());
+	boss_ = std::make_unique<Boss>(damageObjectManager_.get(), gameEffectManager_.get(), player_->GetMechCore());
 
 	// 床追加
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");

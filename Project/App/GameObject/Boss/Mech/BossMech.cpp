@@ -4,8 +4,9 @@
 #include "MAGIAssert/MAGIAssert.h" 
 
 #include "GameObject/Mech/MechCore/MechCore.h"
-#include "GameObject/AttackObjectManager/AttackObjectManager.h"
+#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
 #include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+
 
 // ステートクラス
 #include "GameObject/Boss/Mech/State/Idle/BossMechStateIdle.h"
@@ -13,11 +14,11 @@
 
 using namespace Magi;
 
-BossMech::BossMech(const BossMech::InitParam& initParam, MechCore* playerMech, AttackObjectManager* attackObjectManager, GameEffectManager* gameEffectManager) {
+BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* damageObjectManager, GameEffectManager* gameEffectManager, MechCore* playerMech) {
 	// 参照ポインタを受け取る
-	playerMech_ = playerMech;
-	attackObjectManager_ = attackObjectManager;
+	damageObjectManager_ = damageObjectManager;
 	gameEffectManager_ = gameEffectManager;
+	playerMech_ = playerMech;
 
 	// トランスフォーム作成
 	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(initParam.position);
@@ -107,8 +108,8 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	}
 }
 
-AttackObjectManager* BossMech::GetAttackObjectManager() {
-	return attackObjectManager_;
+DamageObjectManager* BossMech::GetDamageObjectManager() {
+	return damageObjectManager_;
 }
 
 GameEffectManager* BossMech::GetGameEffectManager() {

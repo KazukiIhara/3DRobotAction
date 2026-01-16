@@ -21,7 +21,7 @@
 #include "GameObject/Boss/Mech/State/BossMechBaseState.h"
 
 // 前方宣言
-class AttackObjectManager;
+class DamageObjectManager;
 class GameEffectManager;
 class MechCore;
 
@@ -61,9 +61,9 @@ public:
 public:
 	BossMech(
 		const BossMech::InitParam& initParam,
-		MechCore* playerMech,
-		AttackObjectManager* attackObjectManager,
-		GameEffectManager* gameEffectManager
+		DamageObjectManager* damageObjectManager,
+		GameEffectManager* gameEffectManager,
+		MechCore* playerMech
 	);
 	~BossMech() = default;
 
@@ -76,7 +76,7 @@ public:
 
 
 	// 参照ポインタへのアクセッサ
-	AttackObjectManager* GetAttackObjectManager();
+	DamageObjectManager* GetDamageObjectManager();
 	GameEffectManager* GetGameEffectManager();
 
 	// デバッグ用描画
@@ -118,7 +118,7 @@ private:
 
 
 	// 参照ポインタ
-	AttackObjectManager* attackObjectManager_ = nullptr;
+	DamageObjectManager* damageObjectManager_ = nullptr;
 	GameEffectManager* gameEffectManager_ = nullptr;
 	MechCore* playerMech_ = nullptr;
 

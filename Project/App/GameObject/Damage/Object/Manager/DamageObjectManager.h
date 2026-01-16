@@ -8,23 +8,28 @@
 #include "GameObject/Damage/Object/Base/BaseDamageObject.h"
 
 // 攻撃判定マネージャ
-class DamageCollisionManager;
+class DamageCollisionSystem;
 
 /// <summary>
 /// 攻撃オブジェクトマネージャ
 /// </summary>
-class DamageObjectManger {
+class DamageObjectManager {
 public:
-	DamageObjectManger(DamageCollisionManager* damageCollisionManager);
-	~DamageObjectManger() = default;
+	DamageObjectManager(DamageCollisionSystem* collisionSystem);
+	~DamageObjectManager() = default;
 
 	void Update();
 	void Draw();
 
-	void AddObject(std::unique_ptr<BaseDamageObject> object);
+	void DeleteGarbage();
 
-	const std::vector<BaseDamageObject>& GetObjects();
+	// オブジェクト追加
+	void Add(std::unique_ptr<BaseDamageObject> object);
 
 private:
+	// オブジェクトリスト
+	std::vector<std::unique_ptr<BaseDamageObject>> objects_;
 
+	// コリジョンマネージャの参照ポインタ
+	DamageCollisionSystem* collisionSystem_ = nullptr;
 };

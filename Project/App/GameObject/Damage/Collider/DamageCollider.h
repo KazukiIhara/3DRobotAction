@@ -11,6 +11,7 @@
 /// </summary>
 class DamageCollider {
 public:
+	// 形状
 	struct Sphere {
 		Vector3 center;
 		float radius;
@@ -21,6 +22,10 @@ public:
 		Vector3 halfSize;
 	};
 
+	// 衝突情報
+	struct HitInfo {
+		bool isHit_ = false;
+	};
 public:
 	using Param = std::variant<
 		Sphere,
@@ -44,8 +49,20 @@ public:
 		return *p;
 	}
 
+	// 生存フラグをセット
+	void SetIsAlive(bool isAlive);
+
+	// 生存フラグを取得
+	bool GetIsAlive()const;
+
 private:
 	// パラメータ
-	Param param_;
+	Param param_{};
+
+	// 衝突情報
+	HitInfo hitInfo_{};
+
+	// 生存フラグ
+	bool isAlive_ = true;
 
 };
