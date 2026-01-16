@@ -13,7 +13,7 @@
 class BossMechStateIdle :public BossMechBaseState {
 public:
 	~BossMechStateIdle()override = default;
-	void Enter(BossMech* mechCore)override;
-	void Update(BossMech* mechCore)override;
-	void Exit(BossMech* mechCore)override;
+	void Enter(BossMech* mech)override;
+	void Update(BossMech* mech)override;
+	void Exit(BossMech* mech)override;
 };

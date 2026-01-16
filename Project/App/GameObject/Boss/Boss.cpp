@@ -22,7 +22,6 @@ void Boss::Update() {
 void Boss::Draw() {
 	// 機体の描画
 	mech_->Draw(flag_.isDebugDraw);
-
 }
 
 BossMech* Boss::GetMech() {

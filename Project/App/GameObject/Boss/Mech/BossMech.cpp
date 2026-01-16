@@ -1,10 +1,11 @@
 #include "BossMech.h"
 
 #include "MAGI.h"
-
 #include "MAGIAssert/MAGIAssert.h" 
 
+// ステートクラス
 #include "GameObject/Boss/Mech/State/Idle/BossMechStateIdle.h"
+#include "GameObject/Boss/Mech/State/LaserShot/BossMechStateLaserShot.h"
 
 using namespace Magi;
 
@@ -42,11 +43,18 @@ BossMech::BossMech(const BossMech::InitParam& initParam) {
 	// 各パーツ結合
 	body_->GetTransform()->SetParent(transform_);
 
+
+
+
 	// ステートテーブル作成
 	states_[BossMech::BossMechState::Idle] = std::make_unique<BossMechStateIdle>();
+	states_[BossMech::BossMechState::LaserShot] = std::make_unique<BossMechStateLaserShot>();
 
 	// 最初のステートを設定
 	ChangeState(BossMechState::Idle);
+
+	// パラメータの作成
+	MAGISYSTEM::AddParameterGroup("BossMechState");
 
 }
 

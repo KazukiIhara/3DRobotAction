@@ -10,7 +10,7 @@ class BossMech;
 class BossMechBaseState {
 public:
 	virtual ~BossMechBaseState() = default;
-	virtual void Enter(BossMech* mechCore) = 0;
-	virtual void Update(BossMech* mechCore) = 0;
-	virtual void Exit(BossMech* mechCore) = 0;
+	virtual void Enter(BossMech* mech) = 0;
+	virtual void Update(BossMech* mech) = 0;
+	virtual void Exit(BossMech* mech) = 0;
 };
