@@ -52,28 +52,31 @@ BossMech::BossMech(const BossMech::InitParam& initParam) {
 
 void BossMech::Update() {
 	// ステート更新
-	if (auto state = currentState_.second) {
+	if (auto& state = currentState_.second) {
 		state->Update(this);
 	}
 
 	// 全パーツを更新
-	for (auto part : parts_) {
+	for (auto& part : parts_) {
 		part->Update();
 	}
 
 	// 全武器を更新
+	for (auto& weapon : weapons_) {
+		weapon->Update();
+	}
 
 }
 
-void BossMech::Draw(bool isDebugDraw) {
-
+void BossMech::Draw([[maybe_unused]] bool isDebugDraw) {
+#if defined (DEBUG) | (DEVELOP)
 	// デバッグUIフラグ
 	const bool debug = isDebugDraw;
 	// デバッグUIを表示
 	if (debug) {
 		DebugDraw();
 	}
-
+#endif
 
 	// 全パーツを描画
 	for (auto part : parts_) {
@@ -81,7 +84,9 @@ void BossMech::Draw(bool isDebugDraw) {
 	}
 
 	// 全武器を描画
-
+	for (auto& weapon : weapons_) {
+		weapon->Draw();
+	}
 
 }
 
@@ -131,22 +136,8 @@ GameEffectManager* BossMech::GetGameEffectManager() {
 }
 
 void BossMech::DebugDraw() {
-	// デバッグ操作ウィンドウ
-	ImGui::Begin("BossMech");
-
-	ImGui::SeparatorText("Parameter");
-
-	ImGui::Text("CurrentState :");
-	ImGui::SameLine();
-	const std::string state = StateToString(currentState_.first);
-	ImGui::Text(state.c_str());
-
-	ImGui::SeparatorText("DebugFlag");
-	if (ImGui::Button("SwitchPartsDebug")) {
-		SwitchShowPartsTransform();
-	}
-
-	ImGui::End();
+	// デバッグウィンドウ描画処理
+	ShowDebugWidow();
 
 	// 各パーツのデバッグ描画
 	for (auto part : parts_) {
@@ -168,8 +159,8 @@ BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
 }
 
 const std::string BossMech::StateToString(BossMech::BossMechState state) {
+	// ステートを文字列に変換
 	std::string str = "";
-
 	switch (state) {
 		case BossMech::BossMechState::Idle:
 			str = "Idle";
@@ -181,8 +172,56 @@ const std::string BossMech::StateToString(BossMech::BossMechState state) {
 		default:
 			break;
 	}
-
 	return str;
+}
+
+void BossMech::ShowDebugWidow() {
+	// デバッグ操作ウィンドウ
+	ImGui::Begin("BossMech");
+
+	ImGui::SeparatorText("Parameter");
+	{
+		ImGui::Text("CurrentState :");
+		ImGui::SameLine();
+		const std::string state = StateToString(currentState_.first);
+		ImGui::Text(state.c_str());
+	}
+
+	ImGui::SeparatorText("SwitchState");
+	{
+		// 箱の高さ
+		const float boxHeight = 100.0f;
+
+		// スクロールできる箱（Child）
+		ImGui::BeginChild("SwitchStateBox", ImVec2(0.0f, boxHeight), true);
+
+		int index = 0;
+		for (const auto& [stateEnum, statePtr] : states_) {
+			(void)statePtr;
+
+			ImGui::PushID(index++); // ID衝突対策
+
+			// ボタンラベル
+			const std::string stateName = StateToString(stateEnum);
+
+			// ステート切り替えボタン
+			if (ImGui::Button(stateName.c_str(), ImVec2(-1.0f, 0.0f))) {
+				ChangeState(stateEnum);
+			}
+
+			ImGui::PopID();
+		}
+
+		ImGui::EndChild();
+	}
+
+	ImGui::SeparatorText("DebugFlag");
+	if (ImGui::Button("SwitchPartsDebug")) {
+		SwitchShowPartsTransform();
+	}
+
+
+	ImGui::End();
 }
 
 void BossMech::SwitchShowPartsTransform() {

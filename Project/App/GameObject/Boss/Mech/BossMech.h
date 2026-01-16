@@ -57,7 +57,7 @@ public:
 	void Draw(bool isDebugDraw);
 
 	void ChangeState(BossMech::BossMechState nextState);
-	
+
 	// 各パーツへのアクセッサ
 	BossMechHead* GetHead();
 	BossMechBody* GetBody();
@@ -79,6 +79,9 @@ private:
 	// ステートを文字列に変換
 	const std::string StateToString(BossMech::BossMechState state);
 
+	// デバッグウィンドウ描画
+	void ShowDebugWidow();
+
 	// デバッグフラグ切り替え
 	void SwitchShowPartsTransform();
 
@@ -96,6 +99,9 @@ private:
 
 	// 更新用のパーツリスト
 	std::vector<IBossMechParts*> parts_;
+
+	// 更新用の武器リスト
+	std::vector<BossMechBaseWeapon*> weapons_;
 
 	// ステートテーブル
 	std::unordered_map<BossMech::BossMechState, std::unique_ptr<BossMechBaseState>> states_;
