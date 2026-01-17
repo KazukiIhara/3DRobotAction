@@ -1,6 +1,6 @@
 #pragma once
 
-
+// MyHeader
 #include "Math/Types/AllMathTypes.h"
 
 // 前方宣言

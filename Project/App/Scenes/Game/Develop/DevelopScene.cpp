@@ -130,6 +130,12 @@ void DevelopScene::Update() {
 	attackObjectManger_->Update();
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
+
+	// 攻撃オブジェクトマネージャ更新
+	damageObjectManager_->Update();
+	// 攻撃判定システム更新
+	damageCollisionSystem_;
+
 	// エフェクトマネージャ更新
 	gameEffectManager_->Update();
 
@@ -145,6 +151,12 @@ void DevelopScene::Draw() {
 	attackObjectManger_->Draw();
 	// 攻撃判定マネージャ描画
 	attackCollisionManager_->Draw();
+
+	// 攻撃オブジェクトマネージャ描画
+	damageObjectManager_->Draw();
+	// 攻撃判定システム描画
+	damageCollisionSystem_;
+
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();
 }

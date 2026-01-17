@@ -25,6 +25,15 @@ void DamageObjectManager::Draw() {
 	}
 }
 
+void DamageObjectManager::Add(std::unique_ptr<BaseDamageObject> object) {
+	if (!object) {
+		return;
+	}
+
+	object->SetCollisionSystem(collisionSystem_);
+	objects_.push_back(std::move(object));
+}
+
 void DamageObjectManager::DeleteGarbage() {
 	// 削除フラグの立っているオブジェクトをFinalizeを呼んでから削除
 	objects_.erase(
@@ -40,13 +49,4 @@ void DamageObjectManager::DeleteGarbage() {
 				return true;
 			}),
 		objects_.end());
-}
-
-void DamageObjectManager::Add(std::unique_ptr<BaseDamageObject> object) {
-	if (!object) {
-		return;
-	}
-
-	object->SetCollisionSystem(collisionSystem_);
-	objects_.push_back(std::move(object));
 }

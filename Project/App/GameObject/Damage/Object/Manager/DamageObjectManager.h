@@ -20,12 +20,10 @@ public:
 
 	void Update();
 	void Draw();
-
-	void DeleteGarbage();
-
-	// オブジェクト追加
 	void Add(std::unique_ptr<BaseDamageObject> object);
 
+private:
+	void DeleteGarbage();
 private:
 	// オブジェクトリスト
 	std::vector<std::unique_ptr<BaseDamageObject>> objects_;
