@@ -14,7 +14,7 @@ class BossMech;
 /// <summary>
 /// ボス頭
 /// </summary>
-class BossMechBaseArm :public IBossMechParts {
+class BossMechBaseArm:public IBossMechParts {
 public:
 	// 初期化パラメータ構造体
 	struct InitParam {
@@ -29,7 +29,7 @@ public:
 		Right
 	};
 public:
-	BossMechBaseArm(const BossMechBaseArm::InitParam& param, BossMech* mech);
+	BossMechBaseArm(BossMech* mech);
 	~BossMechBaseArm()override = default;
 
 	virtual void Update()override;
@@ -44,7 +44,7 @@ public:
 protected:
 	// 左右どっちなのか
 	Side side_;
-private:
+
 	// 上腕の情報
 	std::string upperModelName_;
 	Transform3D* upperTrans_;

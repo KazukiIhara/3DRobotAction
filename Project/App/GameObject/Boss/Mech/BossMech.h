@@ -74,6 +74,7 @@ public:
 
 	// パーツへのアクセッサ
 
+
 	// 武器へのアクセッサ
 	BossMechBaseWeapon* GetWeapon(const std::string& name);
 
@@ -106,8 +107,16 @@ private:
 	// トランスフォーム
 	Transform3D* transform_;
 
-	// パーツマップ
-	std::unordered_map<BossMech::PartsType, std::unique_ptr<IBossMechParts>> parts_;
+	// パーツ
+	std::unique_ptr<BossMechHead> head_;
+	std::unique_ptr<BossMechBody> body_;
+	std::unique_ptr<BossMechRightArm> armR_;
+	std::unique_ptr<BossMechLeftArm> armL_;
+	std::unique_ptr<BossMechRightLeg> legR_;
+	std::unique_ptr<BossMechLeftLeg> legL_;
+
+	// パーツリスト
+	std::vector<IBossMechParts*> parts_;
 
 	// 武器マップ
 	std::unordered_map<std::string, std::unique_ptr<BossMechBaseWeapon>> weapons_;
