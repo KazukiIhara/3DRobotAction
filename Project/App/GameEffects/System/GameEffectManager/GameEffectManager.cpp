@@ -29,7 +29,16 @@ void GameEffectManager::Draw() {
 void GameEffectManager::DeleteGarbage() {
 	effects_.erase(
 		std::remove_if(effects_.begin(), effects_.end(),
-			[](const std::unique_ptr<BaseGameEffect>& e) {return !e->IsAlive(); }),
+			[](const std::unique_ptr<BaseGameEffect>& e) {
+				if (!e) {
+					return true;
+				}
+				if (e->IsAlive()) {
+					return false;
+				}
+				e->Finalize();
+				return true; 
+			}),
 		effects_.end()
 	);
 }

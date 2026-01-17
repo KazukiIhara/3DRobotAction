@@ -16,10 +16,13 @@
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
 #include "GameEffects/System/GameEffectManager/GameEffectManager.h"
 
+#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
+#include "GameObject/Damage/CollisionSystem/DamageCollisionSystem.h"
+
 /// <summary>
 /// 開発用シーン
 /// </summary>
-class DevelopScene :public Magi::BaseScene {
+class DevelopScene:public Magi::BaseScene {
 public:
 	using BaseScene::BaseScene;
 	~DevelopScene()override = default;
@@ -39,8 +42,15 @@ private:
 	std::unique_ptr<AttackCollisionManager> attackCollisionManager_;
 	// 弾のマネージャ
 	std::unique_ptr<AttackObjectManager> attackObjectManger_;
+
+
 	// エフェクトマネージャ
 	std::unique_ptr<GameEffectManager> gameEffectManager_;
+
+	// コリジョンマネージャ
+	std::unique_ptr<DamageCollisionSystem> damageCollisionSystem_;
+	// 攻撃オブジェクトマネージャ
+	std::unique_ptr<DamageObjectManager> damageObjectManager_;
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};

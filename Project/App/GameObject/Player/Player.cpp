@@ -65,32 +65,33 @@ void Player::Update() {
 		command.rightShoulderWeapon = MAGISYSTEM::TriggerButton(0, ButtonR);
 
 
-	} else { // パッドなしならキーボード入力解禁
-		// 移動入力
-		if (MAGISYSTEM::PushKey(DIK_W)) lStick.y += 1.0f;
-		if (MAGISYSTEM::PushKey(DIK_A)) lStick.x -= 1.0f;
-		if (MAGISYSTEM::PushKey(DIK_S)) lStick.y -= 1.0f;
-		if (MAGISYSTEM::PushKey(DIK_D)) lStick.x += 1.0f;
+	} 
+	//else { // パッドなしならキーボード入力解禁
+	//	// 移動入力
+	//	if (MAGISYSTEM::PushKey(DIK_W)) lStick.y += 1.0f;
+	//	if (MAGISYSTEM::PushKey(DIK_A)) lStick.x -= 1.0f;
+	//	if (MAGISYSTEM::PushKey(DIK_S)) lStick.y -= 1.0f;
+	//	if (MAGISYSTEM::PushKey(DIK_D)) lStick.x += 1.0f;
 
-		// ジャンプ入力
-		command.jump = MAGISYSTEM::PushKey(DIK_SPACE);
+	//	// ジャンプ入力
+	//	command.jump = MAGISYSTEM::PushKey(DIK_SPACE);
 
-		// クイックブースト入力
-		command.quickBoost = MAGISYSTEM::TriggerKey(DIK_LSHIFT);
+	//	// クイックブースト入力
+	//	command.quickBoost = MAGISYSTEM::TriggerKey(DIK_LSHIFT);
 
-		// ロックオンモード切り替え
-		command.switchHardLock = MAGISYSTEM::TriggerMouseButton(MouseButton::Middle);
+	//	// ロックオンモード切り替え
+	//	command.switchHardLock = MAGISYSTEM::TriggerMouseButton(MouseButton::Middle);
 
 
-		// 左手武器
-		command.leftHandWeapon = MAGISYSTEM::PushMouseButton(MouseButton::Left);
+	//	// 左手武器
+	//	command.leftHandWeapon = MAGISYSTEM::PushMouseButton(MouseButton::Left);
 
-		// 右手武器
-		command.rightHandWeapon = MAGISYSTEM::PushMouseButton(MouseButton::Right);
+	//	// 右手武器
+	//	command.rightHandWeapon = MAGISYSTEM::PushMouseButton(MouseButton::Right);
 
-		// 左肩武器攻撃
+	//	// 左肩武器攻撃
 
-	}
+	//}
 
 	// 移動入力があった場合
 	if (Length(lStick)) {

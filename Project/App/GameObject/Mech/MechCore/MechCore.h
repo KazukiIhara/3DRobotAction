@@ -102,6 +102,8 @@ public:
 	MechArmLeft* GetMechArmLeft();
 	MechArmRight* GetMechArmRight();
 
+	const Vector3 GetBodyWPos()const;
+
 	// 
 	// 武器の取得
 	// 

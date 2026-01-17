@@ -319,7 +319,7 @@ public: // エンジンの機能
 	static uint32_t SrvUavAllocate();
 	// StructuredBuffer用のsrv作成
 	static void CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
-	// Texure2D用のSrv作成
+	// Texture2D用のSrv作成
 	static void CreateSrvTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT format, UINT mipLevels);
 	// RawBuffer用のsrv作成
 	static void CreateSrvByteAddressBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t byteSize);

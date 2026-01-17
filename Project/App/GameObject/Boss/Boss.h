@@ -5,7 +5,8 @@
 #include "GameObject/Boss/AI/BossAI.h"
 #include "GameObject/Boss/Mech/BossMech.h"
 
-class AttackObjectManager;
+// 前方宣言
+class DamageObjectManager;
 class GameEffectManager;
 class MechCore;
 
@@ -25,7 +26,7 @@ public:
 		bool isDebugDraw = false;
 	};
 public:
-	Boss(AttackObjectManager* attackObjectManager,
+	Boss(DamageObjectManager* damageObjectManager,
 		GameEffectManager* gameEffectManager,
 		MechCore* playerMech);
 

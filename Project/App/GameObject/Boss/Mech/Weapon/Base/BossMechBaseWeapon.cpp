@@ -2,9 +2,6 @@
 
 #include "MAGI.h"
 
-#include "GameObject/AttackObjectManager/AttackObjectManager.h"
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
-
 using namespace Magi;
 
 BossMechBaseWeapon::BossMechBaseWeapon(BossMech* mech) {
@@ -20,7 +17,7 @@ BossMechBaseWeapon::BossMechBaseWeapon(BossMech* mech) {
 	fireTransform_ = MAGISYSTEM::AddTransform3D(std::move(fireTrans));
 
 	// 親子付け
-	fireTransform_->SetParent(transform_);
+	fireTransform_->SetParent(transform_, false);
 }
 
 Transform3D* BossMechBaseWeapon::GetTransform() {

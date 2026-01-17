@@ -797,6 +797,9 @@ void MAGISYSTEM::Draw() {
 	// スワップチェーンをプレゼント状態に遷移	
 	swapChain_->TransitionToPresent();
 
+	
+	// レンダーコントローラのフレーム終了処理
+	renderController_->EndFrame();
 
 	//==============================================
 	// コマンド発行
@@ -818,8 +821,6 @@ void MAGISYSTEM::EndFrame() {
 	// 次のフレームのための後処理
 	//==============================================
 
-	// レンダーコントローラのフレーム終了処理
-	renderController_->EndFrame();
 
 	// デルタタイマーの乗算係数変更処理
 	deltaTimer_->EndFrame();

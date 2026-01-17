@@ -1,12 +1,17 @@
 #include "Boss.h"
 
 Boss::Boss(
-	AttackObjectManager* attackObjectManager,
+	DamageObjectManager* damageObjectManager,
 	GameEffectManager* gameEffectManager,
 	MechCore* playerMech
 ) {
 	// 機体の作成
-	mech_ = std::make_unique<BossMech>(BossMech::InitParam{});
+	mech_ = std::make_unique<BossMech>(
+		BossMech::InitParam{},
+		damageObjectManager,
+		gameEffectManager,
+		playerMech
+	);
 	// AIの作成
 
 
@@ -15,14 +20,13 @@ Boss::Boss(
 
 void Boss::Update() {
 	// 機体の更新
-	mech_->Update();
+	mech_->Update(flag_.isDebugDraw);
 
 }
 
 void Boss::Draw() {
 	// 機体の描画
-	mech_->Draw(flag_.isDebugDraw);
-
+	mech_->Draw();
 }
 
 BossMech* Boss::GetMech() {

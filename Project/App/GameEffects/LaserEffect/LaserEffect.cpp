@@ -13,13 +13,16 @@ LaserEffect::LaserEffect(const InitParam& initParam) :
 	MAGISYSTEM::LoadTexture("laser.png");
 
 	// パラメータ初期化
-	time_ = initParam.time;
+	life_ = initParam.life;
 	dir_ = Normalize(initParam.dir);
 	speed_ = initParam.speed;
 
 	// 親トランスフォーム初期化
 	std::unique_ptr<Transform3D> parentTrans = std::make_unique<Transform3D>(worldPos_);
 	parent_ = MAGISYSTEM::AddTransform3D(std::move(parentTrans));
+
+	// 進行方向に向ける
+	parent_->SetQuaternion(DirectionToQuaternion(dir_));
 
 	// 板ポリ初期データ取得
 	const std::array<Vector3, 2> planeInitRotate = {
@@ -33,27 +36,23 @@ LaserEffect::LaserEffect(const InitParam& initParam) :
 		std::unique_ptr<Transform3D> planeTrans = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), planeInitRotate[i], planeInitTranslate);
 		planeTrans_[i] = MAGISYSTEM::AddTransform3D(std::move(planeTrans));
 		planeTrans_[i]->SetParent(parent_, false);
+
 		planeMat_.uvRotate = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","Laser","PlaneUVRotate" });
 	}
 	planeMat_.blendMode = BlendMode::Add;
 	planeMat_.textureName = "laser.png";
-}
 
-LaserEffect::~LaserEffect() {
-	// トランスフォームのフラグを切る処理など
-
-
+	
 }
 
 void LaserEffect::Update() {
 	// デルタタイムを取得
 	const float kDt = MAGISYSTEM::GetDeltaTime();
 	// タイマーを更新
-	time_ -= kDt;
-	time_ = std::max(0.0f, time_);
-
+	life_ -= kDt;
+	life_ = std::max(0.0f, life_);
 	// タイマーが0になったら生存フラグを切る
-	if (time_ == 0.0f) {
+	if (life_ == 0.0f) {
 		isAlive_ = false;
 		return;
 	}
@@ -68,6 +67,14 @@ void LaserEffect::Draw() {
 	// 板ポリ描画
 	for (size_t i = 0; i < 2; i++) {
 		MAGISYSTEM::DrawPlane3D(planeTrans_[i]->GetWorldMatrix(), planeData_[i], planeMat_);
+	}
+}
+
+void LaserEffect::Finalize() {
+	// トランスフォームを消す
+	parent_->SetIsAlive(false);
+	for (size_t i = 0; i < 2; i++) {
+		planeTrans_[i]->SetIsAlive(false);
 	}
 }
 

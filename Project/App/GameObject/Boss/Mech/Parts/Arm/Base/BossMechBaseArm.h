@@ -54,7 +54,7 @@ private:
 	Transform3D* lowerTrans_;
 
 	// 手の情報
-	std::string headModelName_;
+	std::string handModelName_;
 	Transform3D* handTrans_;
 
 	// ひとまず共通のマテリアル

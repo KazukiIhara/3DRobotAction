@@ -65,7 +65,7 @@ private:
 	// ミサイルのリスト
 	std::vector<Missile> missiles_;
 	// ロケットのリスト
-	std::vector	<Rocket> rockets_;
+	std::vector<Rocket> rockets_;
 
 private:
 	// 攻撃コライダーマネージャのポインタ

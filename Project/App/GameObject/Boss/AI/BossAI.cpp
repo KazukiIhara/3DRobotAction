@@ -5,5 +5,7 @@ BossAI::BossAI(
 	MechCore* playerMech,
 	AttackCollisionManager* collisionManager
 ) {
-
+	mech;
+	playerMech;
+	collisionManager;
 }

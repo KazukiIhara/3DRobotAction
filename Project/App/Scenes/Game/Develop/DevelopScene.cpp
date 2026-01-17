@@ -1,5 +1,7 @@
 #include "DevelopScene.h"
 
+#include "GameEffects/LaserEffect/LaserEffect.h"
+
 using namespace Magi;
 
 void DevelopScene::Initialize() {
@@ -73,21 +75,26 @@ void DevelopScene::Initialize() {
 	// マネージャの初期化
 	//===========================
 
-	// ゲームエフェクトマネージャ
-	gameEffectManager_ = std::make_unique<GameEffectManager>();
-
 	// 攻撃コリジョンマネージャ
 	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
 
 	// 弾マネージャ
 	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
 
+
+	// ゲームエフェクトマネージャ
+	gameEffectManager_ = std::make_unique<GameEffectManager>();
+	// コリジョンマネージャ
+	damageCollisionSystem_ = std::make_unique<DamageCollisionSystem>();
+	// 攻撃オブジェクトマネージャ
+	damageObjectManager_ = std::make_unique<DamageObjectManager>(damageCollisionSystem_.get());
+
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
 	player_->SetIsOperation(true);
 
 	// ボス作成
-	boss_ = std::make_unique<Boss>(attackObjectManger_.get(), gameEffectManager_.get(), player_->GetMechCore());
+	boss_ = std::make_unique<Boss>(damageObjectManager_.get(), gameEffectManager_.get(), player_->GetMechCore());
 
 	// 床追加
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
@@ -123,6 +130,10 @@ void DevelopScene::Update() {
 	attackObjectManger_->Update();
 	// 攻撃判定更新
 	attackCollisionManager_->Update();
+
+	// 攻撃オブジェクトマネージャ更新
+	damageObjectManager_->Update();
+
 	// エフェクトマネージャ更新
 	gameEffectManager_->Update();
 
@@ -131,6 +142,7 @@ void DevelopScene::Update() {
 void DevelopScene::Draw() {
 	// プレイヤーを描画
 	player_->Draw();
+
 	// ボスを描画
 	boss_->Draw();
 
@@ -138,6 +150,10 @@ void DevelopScene::Draw() {
 	attackObjectManger_->Draw();
 	// 攻撃判定マネージャ描画
 	attackCollisionManager_->Draw();
+
+	// 攻撃オブジェクトマネージャ描画
+	damageObjectManager_->Draw();
+
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();
 }

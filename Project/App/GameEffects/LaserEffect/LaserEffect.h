@@ -24,24 +24,25 @@ class Transform3D;
 class LaserEffect:public BaseGameEffect {
 public:
 	struct InitParam {
-		Vector3 emitPos;
-		Vector3	dir;
-		float speed;
-		float time;
+		Vector3 emitPos{};
+		Vector3	dir{};
+		float speed = 0.0f;
+		float life = 0.0f;
 	};
 public:
 	LaserEffect(const InitParam& initParam);
-	~LaserEffect()override;
+	~LaserEffect()override = default;
 
 	void Update()override;
 	void Draw()override;
+	void Finalize()override;
 
 private:
 	void DebugUpdate();
 
 private:
 	// タイマー
-	float time_ = 0.0f;
+	float life_ = 0.0f;
 	// 方向
 	Vector3 dir_{};
 	// 速度

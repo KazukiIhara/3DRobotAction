@@ -20,6 +20,15 @@ void EffectEditScene::Initialize() {
 	// エフェクトマネージャ初期化
 	gameEffectManager_ = std::make_unique<GameEffectManager>();
 
+
+	MAGISYSTEM::LoadModel("Ground");
+	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
+
+
+	// 床追加
+	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
+	MAGISYSTEM::ImportSceneData("SceneData", true);
+
 }
 
 void EffectEditScene::Update() {
@@ -31,7 +40,7 @@ void EffectEditScene::Update() {
 		param.emitPos = { 0.0f,0.0f,0.0f };
 		param.dir = { 0.0f,0.0f,1.0f };
 		param.speed = 100.0f;
-		param.time = 0.5f;
+		param.life = 0.5f;
 
 		std::unique_ptr<LaserEffect> effect = std::make_unique<LaserEffect>(param);
 		gameEffectManager_->Add(std::move(effect));
