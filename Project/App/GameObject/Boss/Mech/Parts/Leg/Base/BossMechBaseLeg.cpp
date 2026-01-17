@@ -21,10 +21,10 @@ BossMechBaseLeg::BossMechBaseLeg(const BossMechBaseLeg::InitParam& param, BossMe
 	upperTrans_ = MAGISYSTEM::AddTransform3D();
 	// 下足
 	lowerTrans_ = MAGISYSTEM::AddTransform3D();
-	lowerTrans_->SetParent(upperTrans_);
+	lowerTrans_->SetParent(upperTrans_, false);
 	// 足
 	footTrans_ = MAGISYSTEM::AddTransform3D();
-	footTrans_->SetParent(lowerTrans_);
+	footTrans_->SetParent(lowerTrans_, false);
 
 }
 

@@ -8,7 +8,11 @@ Boss::Boss(
 
 	// パラメータ作成
 	BossMech::InitParam initParam{};
+	initParam.head.modelName = "BossMechHead";
 	initParam.body.modelName = "BossMechBody";
+	initParam.arm.upperModelName = "BossMechUpperArm";
+	initParam.arm.lowerModelName = "BossMechLowerArm";
+	initParam.arm.handModelName = "BossMechHand";
 
 	// 機体の作成
 	mech_ = std::make_unique<BossMech>(

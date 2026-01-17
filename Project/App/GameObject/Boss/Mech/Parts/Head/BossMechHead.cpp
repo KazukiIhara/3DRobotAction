@@ -8,11 +8,14 @@
 using namespace Magi;
 
 BossMechHead::BossMechHead(const BossMechHead::InitParam& param, BossMech* mech) {
-	// 初期化パラメータを受け取る
-	headModelName_ = param.modelName;
-
 	// 機体のポインタを受け取る
 	mech_ = mech;
+
+	// 初期化パラメータを受け取る
+	headModelName_ = param.modelName;
+	// モデル読み込み、生成
+	MAGISYSTEM::LoadCreateModel(headModelName_);
+
 	// トランスフォーム作成
 	headTrans_ = MAGISYSTEM::AddTransform3D();
 
@@ -23,7 +26,7 @@ void BossMechHead::Update() {
 }
 
 void BossMechHead::Draw() {
-
+	MAGISYSTEM::DrawModel(headModelName_, headTrans_->GetWorldMatrix(), headMat_);
 }
 
 void BossMechHead::DebugDraw() {

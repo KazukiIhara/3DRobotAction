@@ -23,17 +23,22 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 	// トランスフォーム作成
 	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(initParam.position);
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
-	{
-		// パーツをマップ追加
-		using BP = BossMech::PartsType;
-		parts_[BP::Head] = std::make_unique<BossMechHead>(initParam.head, this);
-		parts_[BP::Body] = std::make_unique<BossMechBody>(initParam.body, this);
-		parts_[BP::ArmR] = std::make_unique<BossMechRightArm>(initParam.arm, this);
-		parts_[BP::ArmL] = std::make_unique<BossMechLeftArm>(initParam.arm, this);
-		parts_[BP::LegR] = std::make_unique<BossMechRightLeg>(initParam.leg, this);
-		parts_[BP::LegL] = std::make_unique<BossMechLeftLeg>(initParam.leg, this);
 
-	}
+	// パーツを作成
+	head_ = std::make_unique<BossMechHead>(initParam.head, this);
+	body_ = std::make_unique<BossMechBody>(initParam.body, this);
+	armR_ = std::make_unique<BossMechRightArm>(initParam.arm, this);
+	armL_ = std::make_unique<BossMechLeftArm>(initParam.arm, this);
+	legR_ = std::make_unique<BossMechRightLeg>(initParam.leg, this);
+	legL_ = std::make_unique<BossMechLeftLeg>(initParam.leg, this);
+
+	// パーツをリストに追加
+	parts_.push_back(head_.get());
+	parts_.push_back(body_.get());
+	parts_.push_back(armR_.get());
+	parts_.push_back(armL_.get());
+	parts_.push_back(legR_.get());
+	parts_.push_back(legL_.get());
 
 	// 武器をマップに追加
 	weapons_["LaserGun"] = std::make_unique<BossMechWeaponLaserGun>(this);
@@ -69,7 +74,7 @@ void BossMech::Update(bool isShowDebugUI) {
 
 	// 全パーツを更新
 	for (auto& part : parts_) {
-		part.second->Update();
+		part->Update();
 	}
 
 	// 全武器を更新
@@ -82,7 +87,7 @@ void BossMech::Update(bool isShowDebugUI) {
 void BossMech::Draw() {
 	// 全パーツを描画
 	for (auto& part : parts_) {
-		part.second->Draw();
+		part->Draw();
 	}
 
 	// 全武器を描画
@@ -134,7 +139,7 @@ void BossMech::DebugDraw() {
 	for (auto& part : parts_) {
 		// パーツデバッグ描画
 		if (debugFlag_.showPartsTransform) {
-			part.second->DebugDraw();
+			part->DebugDraw();
 		}
 	}
 }

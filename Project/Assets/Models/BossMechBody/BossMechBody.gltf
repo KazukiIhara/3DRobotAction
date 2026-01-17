@@ -20,33 +20,63 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Cube"
+			"name":"Cube",
+			"translation":[
+				0,
+				-0.21777600049972534,
+				0
+			]
 		},
 		{
 			"mesh":1,
-			"name":"\u7acb\u65b9\u4f53"
+			"name":"\u7acb\u65b9\u4f53",
+			"translation":[
+				0,
+				-0.21777600049972534,
+				0
+			]
 		},
 		{
 			"mesh":2,
-			"name":"\u7acb\u65b9\u4f53.002"
+			"name":"\u7acb\u65b9\u4f53.002",
+			"translation":[
+				0,
+				-0.21777600049972534,
+				0
+			]
 		},
 		{
 			"mesh":3,
-			"name":"\u7acb\u65b9\u4f53.005"
+			"name":"\u7acb\u65b9\u4f53.005",
+			"translation":[
+				0,
+				-0.21777600049972534,
+				0
+			]
 		},
 		{
 			"mesh":4,
-			"name":"\u7acb\u65b9\u4f53.001"
+			"name":"\u7acb\u65b9\u4f53.001",
+			"translation":[
+				0,
+				-0.21777600049972534,
+				0
+			]
 		},
 		{
 			"mesh":5,
-			"name":"\u7acb\u65b9\u4f53.003"
+			"name":"\u7acb\u65b9\u4f53.003",
+			"translation":[
+				0,
+				-0.21777600049972534,
+				0
+			]
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"Material",
+			"name":"Material.001",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
 					0.03928855434060097,
@@ -131,7 +161,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Cube",
+			"name":"Cube.001",
 			"primitives":[
 				{
 					"attributes":{

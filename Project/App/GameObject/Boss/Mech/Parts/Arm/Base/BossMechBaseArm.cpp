@@ -7,12 +7,7 @@
 
 using namespace Magi;
 
-BossMechBaseArm::BossMechBaseArm(const BossMechBaseArm::InitParam& param, BossMech* mech) {
-	// 初期化パラメータを受け取る
-	upperModelName_ = param.upperModelName;
-	lowerModelName_ = param.lowerModelName;
-	handModelName_ = param.handModelName;
-
+BossMechBaseArm::BossMechBaseArm(BossMech* mech) {
 	// 機体の参照ポインタを受け取る
 	mech_ = mech;
 
@@ -21,11 +16,13 @@ BossMechBaseArm::BossMechBaseArm(const BossMechBaseArm::InitParam& param, BossMe
 	upperTrans_ = MAGISYSTEM::AddTransform3D();
 	// 下腕
 	lowerTrans_ = MAGISYSTEM::AddTransform3D();
-	lowerTrans_->SetParent(upperTrans_);
+	lowerTrans_->SetParent(upperTrans_,false);
 	// 手
 	handTrans_ = MAGISYSTEM::AddTransform3D();
-	handTrans_->SetParent(lowerTrans_);
+	handTrans_->SetParent(lowerTrans_, false);
 
+	// 胴体に親子付け
+	
 }
 
 void BossMechBaseArm::Update() {
@@ -33,7 +30,9 @@ void BossMechBaseArm::Update() {
 }
 
 void BossMechBaseArm::Draw() {
-
+	MAGISYSTEM::DrawModel(upperModelName_, upperTrans_->GetWorldMatrix(), armMat_);
+	MAGISYSTEM::DrawModel(lowerModelName_, lowerTrans_->GetWorldMatrix(), armMat_);
+	MAGISYSTEM::DrawModel(handModelName_, handTrans_->GetWorldMatrix(), armMat_);
 }
 
 void BossMechBaseArm::DebugDraw() {
