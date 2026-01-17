@@ -29,7 +29,7 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 	body_ = std::make_unique<BossMechBody>(initParam.body, this);
 	armR_ = std::make_unique<BossMechRightArm>(initParam.arm, this);
 	armL_ = std::make_unique<BossMechLeftArm>(initParam.arm, this);
-	legR_ = std::make_unique<BossMechRightLeg>(initParam.leg, this);
+	legR_ = std::make_unique<BossMechLeg>(initParam.leg, this);
 	legL_ = std::make_unique<BossMechLeftLeg>(initParam.leg, this);
 
 	// パーツをリストに追加
@@ -108,6 +108,10 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	if (auto cs = currentState_.second) {
 		cs->Enter(this);
 	}
+}
+
+Transform3D* BossMech::GetTransform() {
+	return transform_;
 }
 
 BossMechBaseWeapon* BossMech::GetWeapon(const std::string& name) {

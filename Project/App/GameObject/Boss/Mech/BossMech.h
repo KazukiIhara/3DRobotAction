@@ -11,8 +11,7 @@
 #include "../Mech/Parts/Body/BossMechBody.h"
 #include "../Mech/Parts/Arm/Right/BossMechRightArm.h"
 #include "../Mech/Parts/Arm/Left/BossMechLeftArm.h"
-#include "../Mech/Parts/Leg/Right/BossMechRightLeg.h"
-#include "../Mech/Parts/Leg/Left/BossMechLeftLeg.h"
+#include "../Mech/Parts/Leg/BossMechLeg.h"
 
 // 武器クラス
 #include "GameObject/Boss/Mech/Weapon/LaserGun/BossMechWeaponLaserGun.h"
@@ -38,7 +37,7 @@ public:
 		BossMechHead::InitParam head;
 		BossMechBody::InitParam body;
 		BossMechBaseArm::InitParam arm;
-		BossMechBaseLeg::InitParam leg;
+		BossMechLeg::InitParam leg;
 	};
 	// デバッグUIフラグ
 	struct DebugFlag {
@@ -71,6 +70,8 @@ public:
 	void Draw();
 
 	void ChangeState(BossMech::BossMechState nextState);
+
+	Transform3D* GetTransform();
 
 	// パーツへのアクセッサ
 
@@ -112,8 +113,7 @@ private:
 	std::unique_ptr<BossMechBody> body_;
 	std::unique_ptr<BossMechRightArm> armR_;
 	std::unique_ptr<BossMechLeftArm> armL_;
-	std::unique_ptr<BossMechRightLeg> legR_;
-	std::unique_ptr<BossMechLeftLeg> legL_;
+	std::unique_ptr<BossMechLeg> leg_;
 
 	// パーツリスト
 	std::vector<IBossMechParts*> parts_;

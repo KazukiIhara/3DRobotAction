@@ -18,6 +18,11 @@ BossMechBody::BossMechBody(const BossMechBody::InitParam& param, BossMech* mech)
 
 	// トランスフォーム作成
 	bodyTrans_ = MAGISYSTEM::AddTransform3D();
+
+	// 親子付け
+	bodyTrans_->SetParent(mech_->GetTransform());
+
+
 }
 
 void BossMechBody::Update() {
