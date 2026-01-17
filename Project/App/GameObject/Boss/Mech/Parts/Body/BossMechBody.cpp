@@ -8,14 +8,13 @@
 using namespace Magi;
 
 BossMechBody::BossMechBody(const BossMechBody::InitParam& param, BossMech* mech) {
-	// 初期化パラメータを受け取る
-	bodyModelName_ = param.modelName;
-
-	// モデル読み込み、Drawer作成
-	MAGISYSTEM::LoadCreateModel(bodyModelName_);
-
 	// 機体の参照ポインタを受け取る
 	mech_ = mech;
+
+	// 初期化パラメータを受け取る
+	bodyModelName_ = param.modelName;
+	// モデル読み込み、Drawer作成
+	MAGISYSTEM::LoadCreateModel(bodyModelName_);
 
 	// トランスフォーム作成
 	bodyTrans_ = MAGISYSTEM::AddTransform3D();

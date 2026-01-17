@@ -8,6 +8,7 @@ Boss::Boss(
 
 	// パラメータ作成
 	BossMech::InitParam initParam{};
+	initParam.head.modelName = "BossMechHead";
 	initParam.body.modelName = "BossMechBody";
 
 	// 機体の作成
