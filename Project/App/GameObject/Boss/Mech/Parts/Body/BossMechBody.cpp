@@ -11,6 +11,9 @@ BossMechBody::BossMechBody(const BossMechBody::InitParam& param, BossMech* mech)
 	// 初期化パラメータを受け取る
 	bodyModelName_ = param.modelName;
 
+	// モデル読み込み、Drawer作成
+	MAGISYSTEM::LoadCreateModel(bodyModelName_);
+
 	// 機体の参照ポインタを受け取る
 	mech_ = mech;
 
@@ -23,7 +26,8 @@ void BossMechBody::Update() {
 }
 
 void BossMechBody::Draw() {
-
+	// モデル描画
+	MAGISYSTEM::DrawModel(bodyModelName_, bodyTrans_->GetWorldMatrix(), bodyMat_);
 }
 
 void BossMechBody::DebugDraw() {

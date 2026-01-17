@@ -26,6 +26,7 @@ namespace Magi {
 		Vec2,
 		Vec3,
 		Vec4,
+		String,
 	};
 
 	/// <summary>
@@ -36,7 +37,8 @@ namespace Magi {
 		float,
 		Vector2,
 		Vector3,
-		Vector4
+		Vector4,
+		std::string
 	>;
 
 	/// <summary>

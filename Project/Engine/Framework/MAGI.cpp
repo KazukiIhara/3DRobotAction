@@ -797,7 +797,7 @@ void MAGISYSTEM::Draw() {
 	// スワップチェーンをプレゼント状態に遷移	
 	swapChain_->TransitionToPresent();
 
-	
+
 	// レンダーコントローラのフレーム終了処理
 	renderController_->EndFrame();
 
@@ -1290,6 +1290,11 @@ PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dTy
 
 void MAGISYSTEM::LoadModel(const std::string& modelName) {
 	modelDataContainer_->Load(modelName);
+}
+
+void MAGISYSTEM::LoadCreateModel(const std::string& modelName) {
+	modelDataContainer_->Load(modelName);
+	modelDrawerManager_->CreateModelDrawer(modelName, modelDataContainer_->FindModelData(modelName));
 }
 
 ModelData MAGISYSTEM::FindModel(const std::string& modelName) {

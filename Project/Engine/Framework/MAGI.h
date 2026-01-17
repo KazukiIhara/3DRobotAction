@@ -425,6 +425,8 @@ public: // エンジンの機能
 #pragma region ModelDataContainer
 	// モデルの読み込み
 	static void LoadModel(const std::string& modelName);
+	// モデルを読み込んでモデルDrawerを作成
+	static void LoadCreateModel(const std::string& modelName);
 	// 読み込み済みモデル検索
 	static ModelData FindModel(const std::string& modelName);
 #pragma endregion

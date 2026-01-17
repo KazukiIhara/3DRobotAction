@@ -5,9 +5,14 @@ Boss::Boss(
 	GameEffectManager* gameEffectManager,
 	MechCore* playerMech
 ) {
+
+	// パラメータ作成
+	BossMech::InitParam initParam{};
+	initParam.body.modelName = "BossMechBody";
+
 	// 機体の作成
 	mech_ = std::make_unique<BossMech>(
-		BossMech::InitParam{},
+		initParam,
 		damageObjectManager,
 		gameEffectManager,
 		playerMech

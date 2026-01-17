@@ -15,21 +15,23 @@ namespace {
 
 	std::string ToString(ParamType t) {
 		switch (t) {
-		case ParamType::Int32: return "Int32";
-		case ParamType::Float: return "Float";
-		case ParamType::Vec2:  return "Vec2";
-		case ParamType::Vec3:  return "Vec3";
-		case ParamType::Vec4:  return "Vec4";
-		default: return "Unknown";
+			case ParamType::Int32:  return "Int32";
+			case ParamType::Float:  return "Float";
+			case ParamType::Vec2:   return "Vec2";
+			case ParamType::Vec3:   return "Vec3";
+			case ParamType::Vec4:   return "Vec4";
+			case ParamType::String: return "String";
+			default: return "Unknown";
 		}
 	}
 
 	ParamType ToParamType(const std::string& s) {
-		if (s == "Int32") return ParamType::Int32;
-		if (s == "Float") return ParamType::Float;
-		if (s == "Vec2")  return ParamType::Vec2;
-		if (s == "Vec3")  return ParamType::Vec3;
-		if (s == "Vec4")  return ParamType::Vec4;
+		if (s == "Int32")  return ParamType::Int32;
+		if (s == "Float")  return ParamType::Float;
+		if (s == "Vec2")   return ParamType::Vec2;
+		if (s == "Vec3")   return ParamType::Vec3;
+		if (s == "Vec4")   return ParamType::Vec4;
+		if (s == "String") return ParamType::String;
 		throw std::runtime_error("ParameterDataContainer: Unknown ParamType string: " + s);
 	}
 
@@ -81,6 +83,8 @@ namespace {
 				out["value"] = VecToJson(v);
 			} else if constexpr (std::is_same_v<T, Vector4>) {
 				out["value"] = VecToJson(v);
+			} else if constexpr (std::is_same_v<T, std::string>) {
+				out["value"] = v;
 			} else {
 				static_assert(sizeof(T) == 0, "Unsupported ParamValue type");
 			}
@@ -95,23 +99,26 @@ namespace {
 
 		const auto& v = j.at("value");
 		switch (d.Type) {
-		case ParamType::Int32:
-			d.Value = v.get<int32_t>();
-			break;
-		case ParamType::Float:
-			d.Value = v.get<float>();
-			break;
-		case ParamType::Vec2:
-			d.Value = JsonToVec2(v);
-			break;
-		case ParamType::Vec3:
-			d.Value = JsonToVec3(v);
-			break;
-		case ParamType::Vec4:
-			d.Value = JsonToVec4(v);
-			break;
-		default:
-			throw std::runtime_error("ParameterDataContainer: JsonToParamData unknown type");
+			case ParamType::Int32:
+				d.Value = v.get<int32_t>();
+				break;
+			case ParamType::Float:
+				d.Value = v.get<float>();
+				break;
+			case ParamType::Vec2:
+				d.Value = JsonToVec2(v);
+				break;
+			case ParamType::Vec3:
+				d.Value = JsonToVec3(v);
+				break;
+			case ParamType::Vec4:
+				d.Value = JsonToVec4(v);
+				break;
+			case ParamType::String:
+				d.Value = v.get<std::string>();
+				break;
+			default:
+				throw std::runtime_error("ParameterDataContainer: JsonToParamData unknown type");
 		}
 		return d;
 	}
@@ -184,12 +191,13 @@ namespace {
 #if defined(DEBUG) || defined(DEVELOP)
 	const char* ToCString(ParamType t) {
 		switch (t) {
-		case ParamType::Int32: return "Int32";
-		case ParamType::Float: return "Float";
-		case ParamType::Vec2:  return "Vec2";
-		case ParamType::Vec3:  return "Vec3";
-		case ParamType::Vec4:  return "Vec4";
-		default: return "Unknown";
+			case ParamType::Int32:  return "Int32";
+			case ParamType::Float:  return "Float";
+			case ParamType::Vec2:   return "Vec2";
+			case ParamType::Vec3:   return "Vec3";
+			case ParamType::Vec4:   return "Vec4";
+			case ParamType::String: return "String"; // 追加
+			default: return "Unknown";
 		}
 	}
 
@@ -209,6 +217,8 @@ namespace {
 				ImGui::Text(" (%.3f, %.3f, %.3f)", v.x, v.y, v.z);
 			} else if constexpr (std::is_same_v<T, Vector4>) {
 				ImGui::Text(" (%.3f, %.3f, %.3f, %.3f)", v.x, v.y, v.z, v.w);
+			} else if constexpr (std::is_same_v<T, std::string>) {
+				ImGui::Text(" \"%s\"", v.c_str()); // 追加
 			}
 			}, data.Value);
 	}
@@ -322,23 +332,25 @@ void ParameterDataContainer::Update() {
 
 		// 型選択
 		static int typeIndex = 0;
-		const char* typeItems[] = { "Int32", "Float", "Vec2", "Vec3", "Vec4" };
+		const char* typeItems[] = { "Int32", "Float", "Vec2", "Vec3", "Vec4", "String" };
 		ImGui::Combo("Type", &typeIndex, typeItems, IM_ARRAYSIZE(typeItems));
 
-		// 初期値（Drag系）
+		// 初期値
 		static int   initI = 0;
 		static float initF = 0.0f;
 		static float init2[2] = { 0.0f, 0.0f };
 		static float init3[3] = { 0.0f, 0.0f, 0.0f };
 		static float init4[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		static char  initS[256] = {}; // 追加
 
 		switch (typeIndex) {
-		case 0: ImGui::DragInt("Initial", &initI, 1.0f); break;
-		case 1: ImGui::DragFloat("Initial", &initF, 0.01f); break;
-		case 2: ImGui::DragFloat2("Initial", init2, 0.01f); break;
-		case 3: ImGui::DragFloat3("Initial", init3, 0.01f); break;
-		case 4: ImGui::DragFloat4("Initial", init4, 0.01f); break;
-		default: break;
+			case 0: ImGui::DragInt("Initial", &initI, 1.0f); break;
+			case 1: ImGui::DragFloat("Initial", &initF, 0.01f); break;
+			case 2: ImGui::DragFloat2("Initial", init2, 0.01f); break;
+			case 3: ImGui::DragFloat3("Initial", init3, 0.01f); break;
+			case 4: ImGui::DragFloat4("Initial", init4, 0.01f); break;
+			case 5: ImGui::InputText("Initial", initS, IM_ARRAYSIZE(initS)); break;
+			default: break;
 		}
 
 		// 追加実行
@@ -359,28 +371,32 @@ void ParameterDataContainer::Update() {
 				// ParamData構築
 				ParamData d{};
 				switch (typeIndex) {
-				case 0:
-					d.Type = ParamType::Int32;
-					d.Value = static_cast<int32_t>(initI);
-					break;
-				case 1:
-					d.Type = ParamType::Float;
-					d.Value = initF;
-					break;
-				case 2:
-					d.Type = ParamType::Vec2;
-					d.Value = Vector2{ init2[0], init2[1] };
-					break;
-				case 3:
-					d.Type = ParamType::Vec3;
-					d.Value = Vector3{ init3[0], init3[1], init3[2] };
-					break;
-				case 4:
-					d.Type = ParamType::Vec4;
-					d.Value = Vector4{ init4[0], init4[1], init4[2], init4[3] };
-					break;
-				default:
-					break;
+					case 0:
+						d.Type = ParamType::Int32;
+						d.Value = static_cast<int32_t>(initI);
+						break;
+					case 1:
+						d.Type = ParamType::Float;
+						d.Value = initF;
+						break;
+					case 2:
+						d.Type = ParamType::Vec2;
+						d.Value = Vector2{ init2[0], init2[1] };
+						break;
+					case 3:
+						d.Type = ParamType::Vec3;
+						d.Value = Vector3{ init3[0], init3[1], init3[2] };
+						break;
+					case 4:
+						d.Type = ParamType::Vec4;
+						d.Value = Vector4{ init4[0], init4[1], init4[2], init4[3] };
+						break;
+					case 5:
+						d.Type = ParamType::String;
+						d.Value = std::string(initS); // 追加
+						break;
+					default:
+						break;
 				}
 
 				AddData(path, d);
@@ -565,56 +581,66 @@ void ParameterDataContainer::Update() {
 
 				// 型ごとに Drag 操作で値編集
 				switch (data.Type) {
-				case ParamType::Int32: {
-					int v = std::get<int32_t>(data.Value);
-					if (ImGui::DragInt("Value", &v, 1.0f)) {
-						data.Value = static_cast<int32_t>(v);
-					}
-				} break;
+					case ParamType::Int32: {
+						int v = std::get<int32_t>(data.Value);
+						if (ImGui::DragInt("Value", &v, 1.0f)) {
+							data.Value = static_cast<int32_t>(v);
+						}
+					} break;
 
-				case ParamType::Float: {
-					float v = std::get<float>(data.Value);
-					if (ImGui::DragFloat("Value", &v, 0.01f)) {
-						data.Value = v;
-					}
-				} break;
+					case ParamType::Float: {
+						float v = std::get<float>(data.Value);
+						if (ImGui::DragFloat("Value", &v, 0.01f)) {
+							data.Value = v;
+						}
+					} break;
 
-				case ParamType::Vec2: {
-					Vector2 v = std::get<Vector2>(data.Value);
-					float arr[2] = { v.x, v.y };
-					if (ImGui::DragFloat2("Value", arr, 0.01f)) {
-						v.x = arr[0];
-						v.y = arr[1];
-						data.Value = v;
-					}
-				} break;
+					case ParamType::Vec2: {
+						Vector2 v = std::get<Vector2>(data.Value);
+						float arr[2] = { v.x, v.y };
+						if (ImGui::DragFloat2("Value", arr, 0.01f)) {
+							v.x = arr[0];
+							v.y = arr[1];
+							data.Value = v;
+						}
+					} break;
 
-				case ParamType::Vec3: {
-					Vector3 v = std::get<Vector3>(data.Value);
-					float arr[3] = { v.x, v.y, v.z };
-					if (ImGui::DragFloat3("Value", arr, 0.01f)) {
-						v.x = arr[0];
-						v.y = arr[1];
-						v.z = arr[2];
-						data.Value = v;
-					}
-				} break;
+					case ParamType::Vec3: {
+						Vector3 v = std::get<Vector3>(data.Value);
+						float arr[3] = { v.x, v.y, v.z };
+						if (ImGui::DragFloat3("Value", arr, 0.01f)) {
+							v.x = arr[0];
+							v.y = arr[1];
+							v.z = arr[2];
+							data.Value = v;
+						}
+					} break;
 
-				case ParamType::Vec4: {
-					Vector4 v = std::get<Vector4>(data.Value);
-					float arr[4] = { v.x, v.y, v.z, v.w };
-					if (ImGui::DragFloat4("Value", arr, 0.01f)) {
-						v.x = arr[0];
-						v.y = arr[1];
-						v.z = arr[2];
-						v.w = arr[3];
-						data.Value = v;
-					}
-				} break;
+					case ParamType::Vec4: {
+						Vector4 v = std::get<Vector4>(data.Value);
+						float arr[4] = { v.x, v.y, v.z, v.w };
+						if (ImGui::DragFloat4("Value", arr, 0.01f)) {
+							v.x = arr[0];
+							v.y = arr[1];
+							v.z = arr[2];
+							v.w = arr[3];
+							data.Value = v;
+						}
+					} break;
 
-				default:
-					ImGui::TextUnformatted("Unsupported type.");
-					break;
+					case ParamType::String: { // 追加
+						std::string v = std::get<std::string>(data.Value);
+						static char buf[512]{};
+
+						std::snprintf(buf, sizeof(buf), "%s", v.c_str());
+						if (ImGui::InputText("Value", buf, IM_ARRAYSIZE(buf))) {
+							data.Value = std::string(buf);
+						}
+					} break;
+
+					default:
+						ImGui::TextUnformatted("Unsupported type.");
+						break;
 				}
 
 				ImGui::Separator();
@@ -686,8 +712,7 @@ void ParameterDataContainer::LoadAllData() {
 		nlohmann::json j;
 		try {
 			ifs >> j;
-		}
-		catch (...) {
+		} catch (...) {
 			continue;
 		}
 
@@ -790,23 +815,27 @@ void ParameterDataContainer::AddData(const std::vector<std::string>& path, const
 	data.Type = type;
 
 	switch (type) {
-	case ParamType::Int32:
-		data.Value = int32_t{ 0 };
-		break;
-	case ParamType::Float:
-		data.Value = 0.0f;
-		break;
-	case ParamType::Vec2:
-		data.Value = Vector2{ 0.0f, 0.0f };
-		break;
-	case ParamType::Vec3:
-		data.Value = Vector3{ 0.0f, 0.0f, 0.0f };
-		break;
-	case ParamType::Vec4:
-		data.Value = Vector4{ 0.0f, 0.0f, 0.0f, 0.0f };
-		break;
-	default:
-		throw std::runtime_error("ParameterDataContainer::AddData unknown ParamType");
+		case ParamType::Int32:
+			data.Value = int32_t{ 0 };
+			break;
+		case ParamType::Float:
+			data.Value = 0.0f;
+			break;
+		case ParamType::Vec2:
+			data.Value = Vector2{ 0.0f, 0.0f };
+			break;
+		case ParamType::Vec3:
+			data.Value = Vector3{ 0.0f, 0.0f, 0.0f };
+			break;
+		case ParamType::Vec4:
+			data.Value = Vector4{ 0.0f, 0.0f, 0.0f, 0.0f };
+			break;
+		case ParamType::String:
+			data.Value = std::string{};
+			break;
+		default:
+			throw std::runtime_error("ParameterDataContainer::AddData unknown ParamType");
+			break;
 	}
 
 	AddData(path, data);
