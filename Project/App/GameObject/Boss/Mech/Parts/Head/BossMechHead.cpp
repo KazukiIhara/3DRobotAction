@@ -8,6 +8,9 @@
 using namespace Magi;
 
 BossMechHead::BossMechHead(const BossMechHead::InitParam& param, BossMech* mech) {
+	// 初期化パラメータを受け取る
+	headModelName_ = param.modelName;
+
 	// 機体のポインタを受け取る
 	mech_ = mech;
 	// トランスフォーム作成

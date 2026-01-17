@@ -8,6 +8,8 @@ using namespace Magi;
 
 void BossMechStateLaserShot::Enter([[maybe_unused]] BossMech* mech) {
 	time_ = MAGISYSTEM::GetParameterValue<float>({ "BossMechState","LaserShot","Time" });
+	// 攻撃
+	mech->GetWeapon("LaserGun")->Attack();
 }
 
 void BossMechStateLaserShot::Update([[maybe_unused]] BossMech* mech) {

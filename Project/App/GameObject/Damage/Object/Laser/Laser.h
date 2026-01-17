@@ -16,10 +16,12 @@ public:
 	};
 public:
 	Laser(const Laser::InitParam& initParam);
-	~Laser() = default;
+	~Laser()override = default;
 
 	void Update()override;
 	void Draw()override;
+	void Finalize()override;
+
 private:
 	Vector3 dir_;
 	float speed_;

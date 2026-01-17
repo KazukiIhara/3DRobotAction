@@ -20,13 +20,13 @@ Boss::Boss(
 
 void Boss::Update() {
 	// 機体の更新
-	mech_->Update();
+	mech_->Update(flag_.isDebugDraw);
 
 }
 
 void Boss::Draw() {
 	// 機体の描画
-	mech_->Draw(flag_.isDebugDraw);
+	mech_->Draw();
 }
 
 BossMech* Boss::GetMech() {

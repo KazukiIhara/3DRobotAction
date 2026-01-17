@@ -337,6 +337,10 @@ MechArmRight* MechCore::GetMechArmRight() {
 	return rightArm_.get();
 }
 
+const Vector3 MechCore::GetBodyWPos() const {
+	return body_->GetGameObject().lock()->GetTransform()->GetWorldPosition();
+}
+
 MechHandWeapon* MechCore::GetLeftHandWeapon() {
 	return leftHandWeapon_.get();
 }

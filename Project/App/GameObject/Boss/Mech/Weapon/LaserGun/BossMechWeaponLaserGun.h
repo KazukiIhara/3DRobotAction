@@ -13,7 +13,7 @@
 /// </summary>
 class BossMechWeaponLaserGun:public BossMechBaseWeapon {
 public:
-	using BossMechBaseWeapon::BossMechBaseWeapon;
+	BossMechWeaponLaserGun(BossMech* mech);
 	~BossMechWeaponLaserGun() = default;
 
 	void Update()override;

@@ -22,8 +22,8 @@ class BossMech;
 class BossMechBaseWeapon {
 public:
 	BossMechBaseWeapon(BossMech* mech);
-	~BossMechBaseWeapon() = default;
-
+	virtual ~BossMechBaseWeapon() = default;
+	
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 

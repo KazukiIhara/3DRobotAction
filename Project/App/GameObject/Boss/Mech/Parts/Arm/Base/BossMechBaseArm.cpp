@@ -8,6 +8,11 @@
 using namespace Magi;
 
 BossMechBaseArm::BossMechBaseArm(const BossMechBaseArm::InitParam& param, BossMech* mech) {
+	// 初期化パラメータを受け取る
+	upperModelName_ = param.upperModelName;
+	lowerModelName_ = param.lowerModelName;
+	handModelName_ = param.handModelName;
+
 	// 機体の参照ポインタを受け取る
 	mech_ = mech;
 

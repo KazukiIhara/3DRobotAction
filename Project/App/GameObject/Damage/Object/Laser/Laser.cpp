@@ -13,21 +13,27 @@ Laser::Laser(const Laser::InitParam& initParam) :
 	speed_ = initParam.speed;
 	life_ = initParam.life;
 	// コライダーを生成
-	
+
 }
 
 void Laser::Update() {
 	// ライフ更新
 	life_ -= MAGISYSTEM::GetDeltaTime();
-	if (std::max(0.0f, life_) == 0.0f) {
+	life_ = std::max(0.0f, life_);
+	if (life_ == 0.0f) {
 		isAlive_ = false;
 	}
 	const Vector3 velocity = dir_ * speed_;
 	transform_->AddTranslate(velocity);
+
 }
 
 
 void Laser::Draw() {
 	// ひとまずエフェクトのみで描画処理なし
 
+}
+
+void Laser::Finalize() {
+	transform_->SetIsAlive(false);
 }

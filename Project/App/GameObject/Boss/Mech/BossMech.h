@@ -67,13 +67,18 @@ public:
 	);
 	~BossMech() = default;
 
-	void Update();
-	void Draw(bool isDebugDraw);
+	void Update([[maybe_unused]] bool isShowDebugUI);
+	void Draw();
 
 	void ChangeState(BossMech::BossMechState nextState);
 
 	// パーツへのアクセッサ
 
+	// 武器へのアクセッサ
+	BossMechBaseWeapon* GetWeapon(const std::string& name);
+
+	// プレイヤー機体へのアクセッサ
+	MechCore* GetPlayerMech();
 
 	// 参照ポインタへのアクセッサ
 	DamageObjectManager* GetDamageObjectManager();
@@ -104,8 +109,8 @@ private:
 	// パーツマップ
 	std::unordered_map<BossMech::PartsType, std::unique_ptr<IBossMechParts>> parts_;
 
-	// 武器リスト
-	std::vector<std::unique_ptr<BossMechBaseWeapon>> weapons_;
+	// 武器マップ
+	std::unordered_map<std::string, std::unique_ptr<BossMechBaseWeapon>> weapons_;
 
 	// ステートテーブル
 	std::unordered_map<BossMech::BossMechState, std::unique_ptr<BossMechBaseState>> states_;

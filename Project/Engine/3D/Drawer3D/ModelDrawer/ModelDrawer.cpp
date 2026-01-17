@@ -108,7 +108,7 @@ void ModelDrawer::DrawShadow(BlendMode mode) {
 	// ライトカメラのフラスタムを送信
 	MAGISYSTEM::TransferDirectionalLightFrustum(8);
 
-	// inctancing描画用のデータを送信
+	// instancing描画用のデータを送信
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));
 
 	// 各メッシュの描画

@@ -1,0 +1,12 @@
+{
+  "LaserGun": {
+    "Life": {
+      "type": "Float",
+      "value": 0.5
+    },
+    "Speed": {
+      "type": "Float",
+      "value": 100.0
+    }
+  }
+}

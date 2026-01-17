@@ -1,5 +1,7 @@
 #include "DevelopScene.h"
 
+#include "GameEffects/LaserEffect/LaserEffect.h"
+
 using namespace Magi;
 
 void DevelopScene::Initialize() {
@@ -73,21 +75,19 @@ void DevelopScene::Initialize() {
 	// マネージャの初期化
 	//===========================
 
-	// ゲームエフェクトマネージャ
-	gameEffectManager_ = std::make_unique<GameEffectManager>();
-
 	// 攻撃コリジョンマネージャ
 	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
 
 	// 弾マネージャ
 	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
 
+
+	// ゲームエフェクトマネージャ
+	gameEffectManager_ = std::make_unique<GameEffectManager>();
 	// コリジョンマネージャ
 	damageCollisionSystem_ = std::make_unique<DamageCollisionSystem>();
-
 	// 攻撃オブジェクトマネージャ
 	damageObjectManager_ = std::make_unique<DamageObjectManager>(damageCollisionSystem_.get());
-
 
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
@@ -133,8 +133,6 @@ void DevelopScene::Update() {
 
 	// 攻撃オブジェクトマネージャ更新
 	damageObjectManager_->Update();
-	// 攻撃判定システム更新
-	damageCollisionSystem_;
 
 	// エフェクトマネージャ更新
 	gameEffectManager_->Update();
@@ -144,6 +142,7 @@ void DevelopScene::Update() {
 void DevelopScene::Draw() {
 	// プレイヤーを描画
 	player_->Draw();
+
 	// ボスを描画
 	boss_->Draw();
 
@@ -154,8 +153,6 @@ void DevelopScene::Draw() {
 
 	// 攻撃オブジェクトマネージャ描画
 	damageObjectManager_->Draw();
-	// 攻撃判定システム描画
-	damageCollisionSystem_;
 
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();

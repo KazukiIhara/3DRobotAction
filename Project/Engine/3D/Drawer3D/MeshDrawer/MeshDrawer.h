@@ -24,6 +24,9 @@ public:
 	void DrawBoundingSphere();
 
 private:
+	// メッシュデータ
+	MeshData meshData_{};
+
 	// 頂点
 	ComPtr<ID3D12Resource> vertexBuffer_;
 	VertexData3D* vertexData_ = nullptr;

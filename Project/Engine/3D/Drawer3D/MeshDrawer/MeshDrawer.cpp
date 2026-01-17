@@ -14,6 +14,9 @@ using namespace MAGIUtility;
 
 // ─────────────────────────────────────────────
 MeshDrawer::MeshDrawer(const MeshData& meshData) {
+
+	meshData_ = meshData;
+
 	/*=== 頂点 / インデックス ===================================================*/
 	vertexCount_ = static_cast<uint32_t>(meshData.vertices.size());
 	const std::string vertexCount = std::to_string(vertexCount_);

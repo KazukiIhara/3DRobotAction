@@ -24,7 +24,7 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(initParam.position);
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 	{
-		// パーツを更新用コンテナに
+		// パーツをマップ追加
 		using BP = BossMech::PartsType;
 		parts_[BP::Head] = std::make_unique<BossMechHead>(initParam.head, this);
 		parts_[BP::Body] = std::make_unique<BossMechBody>(initParam.body, this);
@@ -35,9 +35,8 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 
 	}
 
-	// 武器をコンテナに挿入
-	weapons_.push_back(std::make_unique<BossMechWeaponLaserGun>(this));
-
+	// 武器をマップに追加
+	weapons_["LaserGun"] = std::make_unique<BossMechWeaponLaserGun>(this);
 
 	// 実装メモ
 	/*
@@ -55,7 +54,14 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 
 }
 
-void BossMech::Update() {
+void BossMech::Update(bool isShowDebugUI) {
+#if defined (DEBUG) | (DEVELOP)
+	// デバッグUIを表示
+	if (isShowDebugUI) {
+		DebugDraw();
+	}
+#endif
+
 	// ステート更新
 	if (auto& state = currentState_.second) {
 		state->Update(this);
@@ -68,29 +74,20 @@ void BossMech::Update() {
 
 	// 全武器を更新
 	for (auto& weapon : weapons_) {
-		weapon->Update();
+		weapon.second->Update();
 	}
 
 }
 
-void BossMech::Draw([[maybe_unused]] bool isDebugDraw) {
-#if defined (DEBUG) | (DEVELOP)
-	// デバッグUIフラグ
-	const bool debug = isDebugDraw;
-	// デバッグUIを表示
-	if (debug) {
-		DebugDraw();
-	}
-#endif
-
+void BossMech::Draw() {
 	// 全パーツを描画
 	for (auto& part : parts_) {
-		part.second->Update();
+		part.second->Draw();
 	}
 
 	// 全武器を描画
 	for (auto& weapon : weapons_) {
-		weapon->Draw();
+		weapon.second->Draw();
 	}
 
 }
@@ -106,6 +103,19 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	if (auto cs = currentState_.second) {
 		cs->Enter(this);
 	}
+}
+
+BossMechBaseWeapon* BossMech::GetWeapon(const std::string& name) {
+	// 名前で武器を検索
+	auto it = weapons_.find(name);
+	if (it == weapons_.end()) {
+		return nullptr;
+	}
+	return it->second.get();
+}
+
+MechCore* BossMech::GetPlayerMech() {
+	return playerMech_;
 }
 
 DamageObjectManager* BossMech::GetDamageObjectManager() {
@@ -124,7 +134,7 @@ void BossMech::DebugDraw() {
 	for (auto& part : parts_) {
 		// パーツデバッグ描画
 		if (debugFlag_.showPartsTransform) {
-			part.second->Update();
+			part.second->DebugDraw();
 		}
 	}
 }
@@ -140,26 +150,36 @@ BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
 }
 
 const std::string BossMech::StateToString(BossMech::BossMechState state) {
-	// ステートを文字列に変換
-	std::string str = "";
 	switch (state) {
 		case BossMech::BossMechState::Idle:
-			str = "Idle";
+			return "Idle";
 			break;
 		case BossMech::BossMechState::LaserShot:
-			str = "LaserShot";
-			break;
-
+			return "LaserShot";
 		default:
-			break;
+			return "Unknown";
 	}
-	return str;
 }
 
 const std::string BossMech::PartsTypeToString(BossMech::PartsType partsType) {
-	return std::string();
+	// パーツタイプを文字列に変換
+	switch (partsType) {
+		case BossMech::PartsType::Head:
+			return "Head";
+		case BossMech::PartsType::Body:
+			return "Body";
+		case BossMech::PartsType::ArmR:
+			return "RightArm";
+		case BossMech::PartsType::ArmL:
+			return "LeftArm";
+		case BossMech::PartsType::LegR:
+			return "RightLeg";
+		case BossMech::PartsType::LegL:
+			return "LeftLeg";
+		default:
+			return "Unknown";
+	}
 }
-
 void BossMech::ShowDebugWidow() {
 	// デバッグ操作ウィンドウ
 	ImGui::Begin("BossMech");

@@ -8,6 +8,9 @@
 using namespace Magi;
 
 BossMechBody::BossMechBody(const BossMechBody::InitParam& param, BossMech* mech) {
+	// 初期化パラメータを受け取る
+	bodyModelName_ = param.modelName;
+
 	// 機体の参照ポインタを受け取る
 	mech_ = mech;
 
