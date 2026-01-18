@@ -43,6 +43,12 @@ private:
 	// 右にPose一覧表示
 	void ShowPoseList();
 
+	// 再生更新
+	void UpdatePlayback();
+
+	// t適用
+	void ApplyAtNormalizedTime(float t);
+
 private:
 	BossMech* mech_ = nullptr;
 	MechAnimationContainer* container_ = nullptr;
@@ -57,4 +63,14 @@ private:
 
 	// Pose選択
 	int selectedPoseIndex_ = -1;
+
+	// 再生状態
+	bool isPlaying_ = false;
+
+	// 再生時間
+	float playDurationSec_ = 1.0f;
+	float playTimeSec_ = 0.0f;
+
+	// ブレンド時間
+	float lerpTimeSec_ = 0.0f;
 };
