@@ -39,6 +39,9 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 	parts_.push_back(armL_.get());
 	parts_.push_back(leg_.get());
 
+	// 関節トランスフォーム配列作成
+	CreatePartsTransformArray();
+
 	// 武器をマップに追加
 	weapons_["LaserGun"] = std::make_unique<BossMechWeaponLaserGun>(this);
 
@@ -136,6 +139,14 @@ BossMechLeg* BossMech::GetLeg() {
 	return leg_.get();
 }
 
+Transform3D* BossMech::GetPartsTransform(BossMech::TransType type) {
+	const size_t index = static_cast<size_t>(type);
+	if (index >= partsTrans_.size()) {
+		return nullptr;
+	}
+	return partsTrans_[index];
+}
+
 BossMechBaseWeapon* BossMech::GetWeapon(const std::string& name) {
 	// 名前で武器を検索
 	auto it = weapons_.find(name);
@@ -191,6 +202,46 @@ void BossMech::SetInitParam(const BossMech::InitParam& initParam) {
 	// 足
 	if (leg_) {
 		leg_->SetInitTranslate(initParam.leg);
+	}
+}
+
+
+void BossMech::CreatePartsTransformArray() {
+	partsTrans_.fill(nullptr);
+
+	// Head / Body
+	if (head_) {
+		partsTrans_[static_cast<size_t>(TransType::Head)] = head_->GetHeadTransform();
+	}
+	if (body_) {
+		partsTrans_[static_cast<size_t>(TransType::Body)] = body_->GetTransform();
+	}
+
+	// Arm Left
+	if (armL_) {
+		partsTrans_[static_cast<size_t>(TransType::UpperArmLeft)] = armL_->GetUpperTransform();
+		partsTrans_[static_cast<size_t>(TransType::LowerArmLeft)] = armL_->GetLowerTransform();
+		partsTrans_[static_cast<size_t>(TransType::HandLeft)] = armL_->GetHandTransform();
+	}
+
+	// Arm Right
+	if (armR_) {
+		partsTrans_[static_cast<size_t>(TransType::UpperArmRight)] = armR_->GetUpperTransform();
+		partsTrans_[static_cast<size_t>(TransType::LowerArmRight)] = armR_->GetLowerTransform();
+		partsTrans_[static_cast<size_t>(TransType::HandRight)] = armR_->GetHandTransform();
+	}
+
+	// Leg
+	if (leg_) {
+		partsTrans_[static_cast<size_t>(TransType::Waist)] = leg_->GetWaistTransform();
+
+		partsTrans_[static_cast<size_t>(TransType::UpperLegLeft)] = leg_->GetUpperTransformLeft();
+		partsTrans_[static_cast<size_t>(TransType::LowerLegLeft)] = leg_->GetLowerTransformLeft();
+		partsTrans_[static_cast<size_t>(TransType::FootLeft)] = leg_->GetFootTransformLeft();
+
+		partsTrans_[static_cast<size_t>(TransType::UpperLegRight)] = leg_->GetUpperTransformRight();
+		partsTrans_[static_cast<size_t>(TransType::LowerLegRight)] = leg_->GetLowerTransformRight();
+		partsTrans_[static_cast<size_t>(TransType::FootRight)] = leg_->GetFootTransformRight();
 	}
 }
 
