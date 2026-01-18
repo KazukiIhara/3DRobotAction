@@ -37,6 +37,8 @@ public:
 
 	BossMech* GetMech();
 
+	void InitMechInitParam();
+
 	bool GetIsAIActive()const;
 
 	void SetIsAIActive(bool isActive);
@@ -48,6 +50,8 @@ public:
 private:
 	// 機体
 	std::unique_ptr<BossMech> mech_;
+	BossMech::InitParam initParam_;
+
 	// AI
 	std::unique_ptr<BossAI> ai_;
 

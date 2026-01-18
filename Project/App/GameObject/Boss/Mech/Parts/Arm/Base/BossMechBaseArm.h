@@ -20,8 +20,11 @@ public:
 	struct InitParam {
 		// モデル名
 		std::string upperModelName;
+		Vector3 upperTranslate;
 		std::string lowerModelName;
+		Vector3 lowerTranslate;
 		std::string handModelName;
+		Vector3 handTranslate;
 	};
 	// 右左
 	enum class Side {
@@ -29,13 +32,16 @@ public:
 		Right
 	};
 public:
-	BossMechBaseArm(BossMech* mech);
+	BossMechBaseArm(const BossMechBaseArm::InitParam& param,BossMech* mech);
 	~BossMechBaseArm()override = default;
 
 	virtual void Update()override;
 	void Draw()override;
 
 	void DebugDraw()override;
+
+	void SetInitParam(const InitParam& param);
+	void SetInitTranslate(const InitParam& param);
 
 	Transform3D* GetUpperTransform();
 	Transform3D* GetLowerTransform();

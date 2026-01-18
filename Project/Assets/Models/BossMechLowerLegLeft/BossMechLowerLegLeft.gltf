@@ -15,18 +15,18 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"\u7acb\u65b9\u4f53.003"
+			"name":"\u7acb\u65b9\u4f53.005"
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.015",
+			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.018",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
-					0.10000000149011612,
-					0.10000000149011612,
-					0.10000000149011612,
+					0.05000000074505806,
+					0.05000000074505806,
+					0.05000000074505806,
 					1
 				],
 				"metallicFactor":0,
@@ -36,7 +36,7 @@
 	],
 	"meshes":[
 		{
-			"name":"\u7acb\u65b9\u4f53.013",
+			"name":"\u7acb\u65b9\u4f53.027",
 			"primitives":[
 				{
 					"attributes":{
@@ -56,14 +56,14 @@
 			"componentType":5126,
 			"count":24,
 			"max":[
-				0.20000000298023224,
+				0.25,
 				0,
-				0.20000000298023224
+				0.25
 			],
 			"min":[
-				-0.20000000298023224,
-				-0.800000011920929,
-				-0.20000000298023224
+				-0.25,
+				-1,
+				-0.25
 			],
 			"type":"VEC3"
 		},
@@ -115,7 +115,7 @@
 	"buffers":[
 		{
 			"byteLength":840,
-			"uri":"BossMechLowerArmRight.bin"
+			"uri":"BossMechLowerLegLeft.bin"
 		}
 	]
 }

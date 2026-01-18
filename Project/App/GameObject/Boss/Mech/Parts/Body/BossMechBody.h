@@ -14,11 +14,12 @@ class BossMech;
 /// <summary>
 /// ボス胴体
 /// </summary>
-class BossMechBody :public IBossMechParts {
+class BossMechBody:public IBossMechParts {
 public:
 	struct InitParam {
 		// モデル名
 		std::string modelName;
+		Vector3 translate;
 	};
 
 public:
@@ -29,6 +30,9 @@ public:
 	void Draw()override;
 
 	void DebugDraw()override;
+
+	void SetInitParam(const InitParam& param);
+	void SetInitTranslate(const InitParam& param);
 
 	Transform3D* GetTransform();
 

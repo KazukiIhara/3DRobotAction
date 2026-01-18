@@ -11,13 +11,14 @@ BossMechBody::BossMechBody(const BossMechBody::InitParam& param, BossMech* mech)
 	// 機体の参照ポインタを受け取る
 	mech_ = mech;
 
-	// 初期化パラメータを受け取る
-	bodyModelName_ = param.modelName;
-	// モデル読み込み、Drawer作成
-	MAGISYSTEM::LoadCreateModel(bodyModelName_);
-
 	// トランスフォーム作成
 	bodyTrans_ = MAGISYSTEM::AddTransform3D();
+
+	// 機体クラスと親子付け
+	bodyTrans_->SetParent(mech_->GetTransform(), false);
+
+	// 初期化パラメータ取得
+	SetInitParam(param);
 }
 
 void BossMechBody::Update() {
@@ -30,7 +31,24 @@ void BossMechBody::Draw() {
 }
 
 void BossMechBody::DebugDraw() {
-	MAGISYSTEM::DrawLineSphere(bodyTrans_->GetWorldPosition(), 0.2f, Color::Red);
+	const float debugSphereRadius = MAGISYSTEM::GetParameterValue<float>({ "MechInitParam","DebugSphere" });
+	MAGISYSTEM::DrawLineSphere(bodyTrans_->GetWorldPosition(), debugSphereRadius, Color::Red);
+}
+
+void BossMechBody::SetInitParam(const InitParam& param) {
+	// モデル名取得
+	bodyModelName_ = param.modelName;
+
+	// モデル読み込みDrawer作成
+	MAGISYSTEM::LoadCreateModel(bodyModelName_);
+
+	// トランスフォーム反映
+	bodyTrans_->SetTranslate(param.translate);
+}
+
+void BossMechBody::SetInitTranslate(const InitParam& param) {
+	// トランスフォーム反映
+	bodyTrans_->SetTranslate(param.translate);
 }
 
 Transform3D* BossMechBody::GetTransform() {

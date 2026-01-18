@@ -25,20 +25,19 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
 	// パーツを作成
-	head_ = std::make_unique<BossMechHead>(initParam.head, this);
 	body_ = std::make_unique<BossMechBody>(initParam.body, this);
-	armR_ = std::make_unique<BossMechRightArm>(initParam.arm, this);
-	armL_ = std::make_unique<BossMechLeftArm>(initParam.arm, this);
-	legR_ = std::make_unique<BossMechRightLeg>(initParam.leg, this);
-	legL_ = std::make_unique<BossMechLeftLeg>(initParam.leg, this);
+
+	head_ = std::make_unique<BossMechHead>(initParam.head, this);
+	armR_ = std::make_unique<BossMechRightArm>(initParam.armR, this);
+	armL_ = std::make_unique<BossMechLeftArm>(initParam.armL, this);
+	leg_ = std::make_unique<BossMechLeg>(initParam.leg, this);
 
 	// パーツをリストに追加
 	parts_.push_back(head_.get());
 	parts_.push_back(body_.get());
 	parts_.push_back(armR_.get());
 	parts_.push_back(armL_.get());
-	parts_.push_back(legR_.get());
-	parts_.push_back(legL_.get());
+	parts_.push_back(leg_.get());
 
 	// 武器をマップに追加
 	weapons_["LaserGun"] = std::make_unique<BossMechWeaponLaserGun>(this);
@@ -59,11 +58,14 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 
 }
 
-void BossMech::Update(bool isShowDebugUI) {
+void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BossMech::InitParam& param) {
 #if defined (DEBUG) | (DEVELOP)
 	// デバッグUIを表示
 	if (isShowDebugUI) {
 		DebugDraw();
+	}
+	if (debugFlag_.editPartsTransform) {
+		SetInitParam(param);
 	}
 #endif
 
@@ -110,6 +112,30 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	}
 }
 
+Transform3D* BossMech::GetTransform() {
+	return transform_;
+}
+
+BossMechHead* BossMech::GetHead() {
+	return head_.get();
+}
+
+BossMechBody* BossMech::GetBody() {
+	return body_.get();
+}
+
+BossMechRightArm* BossMech::GetRightArm() {
+	return armR_.get();
+}
+
+BossMechLeftArm* BossMech::GetLeftArm() {
+	return armL_.get();
+}
+
+BossMechLeg* BossMech::GetLeg() {
+	return leg_.get();
+}
+
 BossMechBaseWeapon* BossMech::GetWeapon(const std::string& name) {
 	// 名前で武器を検索
 	auto it = weapons_.find(name);
@@ -144,6 +170,30 @@ void BossMech::DebugDraw() {
 	}
 }
 
+void BossMech::SetInitParam(const BossMech::InitParam& initParam) {
+	// パラメータ受け取り
+	// 頭
+	if (head_) {
+		head_->SetInitTranslate(initParam.head);
+	}
+	// 胴体
+	if (body_) {
+		body_->SetInitTranslate(initParam.body);
+	}
+	// 右腕
+	if (armR_) {
+		armR_->SetInitTranslate(initParam.armR);
+	}
+	// 左腕
+	if (armL_) {
+		armL_->SetInitTranslate(initParam.armL);
+	}
+	// 足
+	if (leg_) {
+		leg_->SetInitTranslate(initParam.leg);
+	}
+}
+
 BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
 	auto it = states_.find(state);
 	if (it != states_.end()) {
@@ -158,7 +208,6 @@ const std::string BossMech::StateToString(BossMech::BossMechState state) {
 	switch (state) {
 		case BossMech::BossMechState::Idle:
 			return "Idle";
-			break;
 		case BossMech::BossMechState::LaserShot:
 			return "LaserShot";
 		default:
@@ -166,25 +215,49 @@ const std::string BossMech::StateToString(BossMech::BossMechState state) {
 	}
 }
 
-const std::string BossMech::PartsTypeToString(BossMech::PartsType partsType) {
-	// パーツタイプを文字列に変換
+const std::string BossMech::TransTypeToString(BossMech::TransType partsType) {
 	switch (partsType) {
-		case BossMech::PartsType::Head:
+		case BossMech::TransType::Head:
 			return "Head";
-		case BossMech::PartsType::Body:
+		case BossMech::TransType::Body:
 			return "Body";
-		case BossMech::PartsType::ArmR:
-			return "RightArm";
-		case BossMech::PartsType::ArmL:
-			return "LeftArm";
-		case BossMech::PartsType::LegR:
-			return "RightLeg";
-		case BossMech::PartsType::LegL:
-			return "LeftLeg";
+
+		case BossMech::TransType::UpperArmLeft:
+			return "UpperArmLeft";
+		case BossMech::TransType::LowerArmLeft:
+			return "LowerArmLeft";
+		case BossMech::TransType::HandLeft:
+			return "HandLeft";
+
+		case BossMech::TransType::UpperArmRight:
+			return "UpperArmRight";
+		case BossMech::TransType::LowerArmRight:
+			return "LowerArmRight";
+		case BossMech::TransType::HandRight:
+			return "HandRight";
+
+		case BossMech::TransType::Waist:
+			return "Waist";
+
+		case BossMech::TransType::UpperLegLeft:
+			return "UpperLegLeft";
+		case BossMech::TransType::LowerLegLeft:
+			return "LowerLegLeft";
+		case BossMech::TransType::FootLeft:
+			return "FootLeft";
+
+		case BossMech::TransType::UpperLegRight:
+			return "UpperLegRight";
+		case BossMech::TransType::LowerLegRight:
+			return "LowerLegRight";
+		case BossMech::TransType::FootRight:
+			return "FootRight";
+
 		default:
 			return "Unknown";
 	}
 }
+
 void BossMech::ShowDebugWidow() {
 	// デバッグ操作ウィンドウ
 	ImGui::Begin("BossMech");
@@ -226,14 +299,19 @@ void BossMech::ShowDebugWidow() {
 	}
 
 	ImGui::SeparatorText("DebugFlag");
-	if (ImGui::Button("SwitchPartsDebug")) {
+	if (ImGui::Button("ShowPartsDebugDraw")) {
 		SwitchShowPartsTransform();
 	}
-
-
+	if (ImGui::Button("EditPartsTrans")) {
+		SwitchEditPartsTransform();
+	}
 	ImGui::End();
 }
 
 void BossMech::SwitchShowPartsTransform() {
 	debugFlag_.showPartsTransform = !debugFlag_.showPartsTransform;
+}
+
+void BossMech::SwitchEditPartsTransform() {
+	debugFlag_.editPartsTransform = !debugFlag_.editPartsTransform;
 }

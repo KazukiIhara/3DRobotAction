@@ -5,8 +5,7 @@
 using namespace MAGIMath;
 
 DebugCamera3D::DebugCamera3D()
-	:Camera3D("DebugCamera", true) {
-}
+	:Camera3D("DebugCamera", true) {}
 
 void DebugCamera3D::Update() {
 	// マウス入力の取得
@@ -33,11 +32,8 @@ void DebugCamera3D::Update() {
 }
 
 void DebugCamera3D::HandleCameraRotation(const POINT& delta) {
-	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
+	if (MAGISYSTEM::PushKey(DIK_LCONTROL) && GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
 		float rotateSpeed = 0.6f;
-		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
-			rotateSpeed *= 0.3f;
-		}
 
 		// Yaw（左右）・Pitch（上下）更新
 		yaw_ -= delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime();
@@ -50,15 +46,12 @@ void DebugCamera3D::HandleCameraRotation(const POINT& delta) {
 }
 
 void DebugCamera3D::HandleCameraTranslation(const POINT& delta) {
-	if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) {
+	if (MAGISYSTEM::PushKey(DIK_LCONTROL) && GetAsyncKeyState(VK_MBUTTON) & 0x8000) {
 		Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
 		Vector3 right = Normalize(Cross({ 0, 1, 0 }, forward));
 		Vector3 up = Normalize(Cross(forward, right));
 
 		float moveSpeed = 1.0f;
-		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
-			moveSpeed *= 0.3f;
-		}
 
 		Vector3 moveDelta =
 			(right * static_cast<float>(-delta.x) +
@@ -69,11 +62,9 @@ void DebugCamera3D::HandleCameraTranslation(const POINT& delta) {
 }
 
 void DebugCamera3D::HandleCameraZoom(int64_t wheelDelta) {
-	if (wheelDelta != 0) {
+	if (MAGISYSTEM::PushKey(DIK_LCONTROL) && wheelDelta != 0) {
 		float zoomSpeed = 0.3f;
-		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
-			zoomSpeed *= 0.3f;
-		}
+
 		Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
 		eye_ += forward * (wheelDelta * zoomSpeed * MAGISYSTEM::GetDeltaTime());
 	}

@@ -1,0 +1,218 @@
+{
+  "Boss": {
+    "Body": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechBody"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": 3.299999952316284,
+          "z": 0.0
+        }
+      }
+    },
+    "FootLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechFootLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.100000023841858,
+          "z": 0.0
+        }
+      }
+    },
+    "FootRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechFootRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.100000023841858,
+          "z": 0.0
+        }
+      }
+    },
+    "HandLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechHandLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.0399999618530273,
+          "z": 0.0
+        }
+      }
+    },
+    "HandRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechHandRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.0399999618530273,
+          "z": 0.0
+        }
+      }
+    },
+    "Head": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechHead"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": 0.949999988079071,
+          "z": 0.0
+        }
+      }
+    },
+    "LowerArmLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechLowerArmLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -0.8199999928474426,
+          "z": 0.0
+        }
+      }
+    },
+    "LowerArmRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechLowerArmRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -0.8199999928474426,
+          "z": 0.0
+        }
+      }
+    },
+    "LowerLegLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechLowerLegLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.0399999618530273,
+          "z": 0.0
+        }
+      }
+    },
+    "LowerLegRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechLowerLegRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.0399999618530273,
+          "z": 0.0
+        }
+      }
+    },
+    "UpperArmLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechUpperArmLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 1.2000000476837158,
+          "y": 0.5,
+          "z": 0.0
+        }
+      }
+    },
+    "UpperArmRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechUpperArmRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": -1.2000000476837158,
+          "y": 0.5,
+          "z": 0.0
+        }
+      }
+    },
+    "UpperLegLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechUpperLegLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.3499999940395355,
+          "y": -0.27000001072883606,
+          "z": 0.0
+        }
+      }
+    },
+    "UpperLegRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechUpperLegRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": -0.3499999940395355,
+          "y": -0.27000001072883606,
+          "z": 0.0
+        }
+      }
+    },
+    "Waist": {
+      "ModelName": {
+        "type": "String",
+        "value": "BossMechWaist"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -0.800000011920929,
+          "z": 0.0
+        }
+      }
+    }
+  },
+  "DebugSphere": {
+    "type": "Float",
+    "value": 0.6000000238418579
+  }
+}
