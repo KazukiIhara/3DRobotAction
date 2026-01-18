@@ -4,6 +4,8 @@
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "GameObject/AttackCollider/AttackCollider.h"
 
+#include "Random/Random.h"
+
 Missile::Missile(
 	const MissileType& missileType,
 	const Vector3& wPos,
@@ -17,16 +19,16 @@ Missile::Missile(
 	type_ = missileType;
 
 	switch (type_) {
-	case MissileType::Dual:
-		speed_ = 20.0f;
-		boostAcc_ = 60.0f;
-		maxBoostSpeed_ = 50.0f;
-		boostTime_ = 0.5f;
-		guidedAcc_ = 100.0f;
-		maxGuidedSpeed_ = 80.0f;
-		break;
-	default:
-		break;
+		case MissileType::Dual:
+			speed_ = 20.0f;
+			boostAcc_ = 60.0f;
+			maxBoostSpeed_ = 50.0f;
+			boostTime_ = 0.5f;
+			guidedAcc_ = 100.0f;
+			maxGuidedSpeed_ = 80.0f;
+			break;
+		default:
+			break;
 	}
 
 	// トランスフォーム作成
@@ -53,11 +55,11 @@ void Missile::Update() {
 	}
 
 	switch (type_) {
-	case MissileType::Dual:
-		UpdateDualMissile();
-		break;
-	default:
-		break;
+		case MissileType::Dual:
+			UpdateDualMissile();
+			break;
+		default:
+			break;
 	}
 
 	// 進行方向に向ける
@@ -73,6 +75,17 @@ void Missile::Update() {
 	}
 
 	TickLifeAndFinalize(dt);
+	for (size_t i = 0; i < 100; i++) {
+		GPUParticleEmitData bodySmokeEffect_;
+		bodySmokeEffect_.texIndex = MAGISYSTEM::GetTextureIndex("smoke.png");
+		bodySmokeEffect_.velo = Random::GenerateVector3(-0.5f, 0.5f);
+		bodySmokeEffect_.pos = transform_->GetWorldPosition() + Random::GenerateVector3(-0.2f, 0.2f);
+		bodySmokeEffect_.life = Random::GenerateFloat(0.5f, 0.8f);
+		bodySmokeEffect_.size = Random::GenerateVector2(0.05f, 0.1f);
+
+		MAGISYSTEM::EmitParticle(bodySmokeEffect_);
+	}
+
 }
 
 void Missile::Draw() {
@@ -105,20 +118,20 @@ void Missile::UpdateDualMissile() {
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
 	switch (phase_) {
-	case MissilePhase::Boost:
-		speed_ += boostAcc_ * dt;
-		boostTime_ -= dt;
+		case MissilePhase::Boost:
+			speed_ += boostAcc_ * dt;
+			boostTime_ -= dt;
 
-		if (boostTime_ <= 0.0f) {
-			phase_ = MissilePhase::Guided;
-			EnterGuidedDualMissile();
-		}
-		speed_ = std::min(speed_, maxBoostSpeed_);
-		break;
+			if (boostTime_ <= 0.0f) {
+				phase_ = MissilePhase::Guided;
+				EnterGuidedDualMissile();
+			}
+			speed_ = std::min(speed_, maxBoostSpeed_);
+			break;
 
-	case MissilePhase::Guided:
-		speed_ += guidedAcc_ * dt;
-		speed_ = std::min(speed_, maxGuidedSpeed_);
-		break;
+		case MissilePhase::Guided:
+			speed_ += guidedAcc_ * dt;
+			speed_ = std::min(speed_, maxGuidedSpeed_);
+			break;
 	}
 }
