@@ -64,7 +64,7 @@ namespace Magi {
 		// ニアクリップ距離
 		const float nearClipRange_ = 1.0f;
 		// ファークリップ距離
-		const float farClipRange_ = 1000.0f;
+		const float farClipRange_ = 500.0f;
 
 		Matrix4x4 lightView_{};
 		Matrix4x4 lightProj_{};
