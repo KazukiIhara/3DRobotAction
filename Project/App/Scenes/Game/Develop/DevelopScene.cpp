@@ -97,8 +97,10 @@ void DevelopScene::Initialize() {
 	boss_ = std::make_unique<Boss>(damageObjectManager_.get(), gameEffectManager_.get(), player_->GetMechCore());
 
 
+	// 機体アニメーションコンテナクラス
+	mechAnimationContainer_ = std::make_unique<MechAnimationContainer>();
 	// 機体アニメーション作成クラス
-	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(boss_->GetMech());
+	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get(), boss_->GetMech());
 
 
 	// 床追加

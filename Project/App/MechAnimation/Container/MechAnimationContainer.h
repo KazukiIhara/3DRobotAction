@@ -13,21 +13,31 @@
 /// </summary>
 class MechAnimationContainer {
 public:
-	MechAnimationContainer() = default;
+	MechAnimationContainer();
 	~MechAnimationContainer() = default;
 
+	// クリップを追加（overwrite=trueで上書き）
 	bool AddClip(const std::string& name, const MechAnimation::Clip& clip, bool overwrite = false);
+
+	// 指定名のクリップを削除
 	bool RemoveClip(const std::string& name);
 
+	// 指定名のクリップが存在するか
 	bool HasClip(const std::string& name) const;
 
+	// クリップ取得（読み取り専用）
 	const MechAnimation::Clip* GetClip(const std::string& name) const;
+
+	// クリップ取得（編集用）
 	MechAnimation::Clip* GetClipMutable(const std::string& name);
 
+	// クリップのフレーム配列を取得
 	const std::vector<MechAnimation::Pose>* GetFrames(const std::string& name) const;
 
+	// 登録されているクリップ名一覧を取得
 	std::vector<std::string> GetClipNames() const;
 
 private:
+	// 名前 -> クリップ
 	std::unordered_map<std::string, MechAnimation::Clip> clips_;
 };

@@ -1,5 +1,9 @@
 #include "MechAnimationContainer.h"
 
+MechAnimationContainer::MechAnimationContainer() {
+	
+}
+
 bool MechAnimationContainer::AddClip(const std::string& name, const MechAnimation::Clip& clip, bool overwrite) {
 	if (name.empty()) { return false; } // 名前チェック
 
