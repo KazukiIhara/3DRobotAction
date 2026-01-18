@@ -96,6 +96,13 @@ void DevelopScene::Initialize() {
 	// ボス作成
 	boss_ = std::make_unique<Boss>(damageObjectManager_.get(), gameEffectManager_.get(), player_->GetMechCore());
 
+
+	// 機体アニメーションコンテナクラス
+	mechAnimationContainer_ = std::make_unique<MechAnimationContainer>();
+	// 機体アニメーション作成クラス
+	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get(), boss_->GetMech());
+
+
 	// 床追加
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
 	MAGISYSTEM::ImportSceneData("SceneData", true);
@@ -103,21 +110,26 @@ void DevelopScene::Initialize() {
 }
 
 void DevelopScene::Update() {
-#if defined(DEBUG) || defined(DEVELOP)
-	ImGui::Begin("DevelopUI");
+	// デバッグ用途の処理
+	{
+		ImGui::Begin("DevelopUI");
 
-	ImGui::SeparatorText("Scene");
-	if (ImGui::Button("ResetScene")) {
-		ChangeScene("Develop");
+		ImGui::SeparatorText("Scene");
+		if (ImGui::Button("ResetScene")) {
+			ChangeScene("Develop");
+		}
+
+		ImGui::SeparatorText("Boss");
+		if (ImGui::Button("SwitchDebugDraw")) {
+			boss_->SwitchDebugDraw();
+		}
+
+		ImGui::End();
+
+		// 機体アニメーション作成クラス
+		mechAnimationEdit_->Update();
 	}
 
-	ImGui::SeparatorText("Boss");
-	if (ImGui::Button("SwitchDebugDraw")) {
-		boss_->SwitchDebugDraw();
-	}
-
-	ImGui::End();
-#endif
 	// 平行光源をセット
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 

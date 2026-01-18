@@ -65,7 +65,9 @@ public:
 
 		UpperLegRight,  // 上足R
 		LowerLegRight,  // 下足R
-		FootRight       // 足R
+		FootRight,      // 足R
+
+		Count
 	};
 	// ステート
 	enum class BossMechState {
@@ -95,6 +97,9 @@ public:
 	BossMechLeftArm* GetLeftArm();
 	BossMechLeg* GetLeg();
 
+	// 関節トランスフォーム取得
+	Transform3D* GetPartsTransform(BossMech::TransType type);
+
 	// 武器へのアクセッサ
 	BossMechBaseWeapon* GetWeapon(const std::string& name);
 
@@ -112,6 +117,8 @@ public:
 	void SetInitParam(const BossMech::InitParam& initParam);
 
 private:
+	// トランスフォームの配列を作成
+	void CreatePartsTransformArray();
 	// 対応するステートを取得
 	BossMechBaseState* GetState(BossMech::BossMechState state);
 	// ステートを文字列に変換
@@ -140,6 +147,9 @@ private:
 
 	// パーツリスト
 	std::vector<IBossMechParts*> parts_;
+
+	// トランスフォームリスト
+	std::array<Transform3D*, static_cast<size_t>(BossMech::TransType::Count)> partsTrans_{};
 
 	// 武器マップ
 	std::unordered_map<std::string, std::unique_ptr<BossMechBaseWeapon>> weapons_;

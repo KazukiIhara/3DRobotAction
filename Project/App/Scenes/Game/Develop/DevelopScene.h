@@ -19,6 +19,9 @@
 #include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
 #include "GameObject/Damage/CollisionSystem/DamageCollisionSystem.h"
 
+#include "MechAnimation/Edit/MechAnimationEdit.h"
+#include "MechAnimation/Container/MechAnimationContainer.h"
+
 /// <summary>
 /// 開発用シーン
 /// </summary>
@@ -51,6 +54,13 @@ private:
 	std::unique_ptr<DamageCollisionSystem> damageCollisionSystem_;
 	// 攻撃オブジェクトマネージャ
 	std::unique_ptr<DamageObjectManager> damageObjectManager_;
+
+
+	// 機体アニメーション作成クラス
+	std::unique_ptr<MechAnimationEdit> mechAnimationEdit_;
+	// 機体アニメーションコンテナクラス
+	std::unique_ptr<MechAnimationContainer> mechAnimationContainer_;
+
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};

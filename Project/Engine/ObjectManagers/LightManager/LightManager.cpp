@@ -27,7 +27,7 @@ LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	CreateDirectionalLightFrustumResource();
 	MapDirectionalLightFrustumData();
 
-	lightProj_ = MakeOrthographicMatrix(150.0f, 150.0f, nearClipRange_, farClipRange_);
+	lightProj_ = MakeOrthographicMatrix(100.0f, 100.0f, nearClipRange_, farClipRange_);
 
 	Logger::Log("LightManager Initialize\n");
 }
@@ -52,7 +52,6 @@ void LightManager::Update() {
 	// シーン中心から離れた位置にライト（eye）を置く
 	const float lightDistance = 100.0f;
 
-	Vector3 up = Vector3(1.0f, 0.0f, 0.0f);
 	Vector3 position = target_ - lightDir * lightDistance;
 
 	// ビュー行列（ライト空間ビュー）
