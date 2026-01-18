@@ -15,7 +15,7 @@ BossMechBody::BossMechBody(const BossMechBody::InitParam& param, BossMech* mech)
 	bodyTrans_ = MAGISYSTEM::AddTransform3D();
 
 	// 腰と親子付け
-	bodyTrans_->SetParent(mech_->GetTransform(), false);
+	bodyTrans_->SetParent(mech_->GetLeg()->GetWaistTransform(), false);
 
 	// 初期化パラメータ取得
 	SetInitParam(param);
