@@ -19,6 +19,9 @@ void BossMechStateLaserShot::Update([[maybe_unused]] BossMech* mech) {
 	time_ -= dt;
 	time_ = std::max(0.0f, time_);
 
+	const float t = 1.0f - time_;
+	mech->GetAnimator()->ApplyAnimation("Test", t);
+
 	// タイマー0で待機状態に遷移
 	if (time_ == 0.0f) {
 		mech->ChangeState(BossMech::BossMechState::Idle);

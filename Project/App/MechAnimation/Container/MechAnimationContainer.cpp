@@ -1,15 +1,19 @@
 #include "MechAnimationContainer.h"
 
 MechAnimationContainer::MechAnimationContainer() {
-	
+
 }
 
 bool MechAnimationContainer::AddClip(const std::string& name, const MechAnimation::Clip& clip, bool overwrite) {
-	if (name.empty()) { return false; } // 名前チェック
+	if (name.empty()) {
+		return false;
+	} // 名前チェック
 
 	auto it = clips_.find(name);
 	if (it != clips_.end()) {
-		if (!overwrite) { return false; } // 上書き禁止
+		if (!overwrite) {
+			return false;
+		} // 上書き禁止
 		it->second = clip; // 上書き
 		return true;
 	}
@@ -20,7 +24,9 @@ bool MechAnimationContainer::AddClip(const std::string& name, const MechAnimatio
 
 bool MechAnimationContainer::RemoveClip(const std::string& name) {
 	auto it = clips_.find(name);
-	if (it == clips_.end()) { return false; } // 存在チェック
+	if (it == clips_.end()) {
+		return false;
+	} // 存在チェック
 
 	clips_.erase(it); // 削除
 	return true;
@@ -32,19 +38,25 @@ bool MechAnimationContainer::HasClip(const std::string& name) const {
 
 const MechAnimation::Clip* MechAnimationContainer::GetClip(const std::string& name) const {
 	auto it = clips_.find(name);
-	if (it == clips_.end()) { return nullptr; } // 取得失敗
+	if (it == clips_.end()) {
+		return nullptr;
+	} // 取得失敗
 	return &it->second; // 参照返し
 }
 
 MechAnimation::Clip* MechAnimationContainer::GetClipMutable(const std::string& name) {
 	auto it = clips_.find(name);
-	if (it == clips_.end()) { return nullptr; } // 取得失敗
+	if (it == clips_.end()) {
+		return nullptr;
+	} // 取得失敗
 	return &it->second; // 参照返し
 }
 
 const std::vector<MechAnimation::Pose>* MechAnimationContainer::GetFrames(const std::string& name) const {
 	const MechAnimation::Clip* clip = GetClip(name);
-	if (!clip) { return nullptr; } // 取得失敗
+	if (!clip) {
+		return nullptr;
+	} // 取得失敗
 	return &clip->frames; // フレーム参照
 }
 

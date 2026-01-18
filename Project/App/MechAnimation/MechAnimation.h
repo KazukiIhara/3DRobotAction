@@ -8,10 +8,32 @@
 // 数学
 #include "Math/Utility/MathUtility.h"
 
-#include "GameObject/Boss/Mech/BossMech.h"
-
 namespace MechAnimation {
-	static constexpr size_t kJointCount = static_cast<size_t>(BossMech::TransType::Count);
+	// パーツ列挙型
+	enum class TransType {
+		Head,           // 頭
+		Body,           // 胴体
+
+		UpperArmLeft,   // 上腕L
+		LowerArmLeft,   // 下腕L
+		HandLeft,       // 手L
+
+		UpperArmRight,  // 上腕R
+		LowerArmRight,  // 下腕R
+		HandRight,      // 手R
+
+		Waist,          // 腰
+		UpperLegLeft,   // 上足L
+		LowerLegLeft,   // 下足L
+		FootLeft,       // 足L
+
+		UpperLegRight,  // 上足R
+		LowerLegRight,  // 下足R
+		FootRight,      // 足R
+
+		Count
+	};
+	constexpr size_t kJointCount = static_cast<size_t>(TransType::Count);
 
 	/// <summary>
 	/// 1フレーム分の関節回転（FK）
@@ -32,8 +54,12 @@ namespace MechAnimation {
 	/// 0.0f～1.0f をクランプ
 	/// </summary>
 	inline float Clamp01(float t) {
-		if (t < 0.0f) { return 0.0f; }
-		if (t > 1.0f) { return 1.0f; }
+		if (t < 0.0f) {
+			return 0.0f;
+		}
+		if (t > 1.0f) {
+			return 1.0f;
+		}
 		return t;
 	}
 
@@ -41,8 +67,12 @@ namespace MechAnimation {
 	/// フレームが0/1のときも安全に扱うための取得
 	/// </summary>
 	inline const Pose* GetPose(const Clip& clip, size_t frameIndex) {
-		if (clip.frames.empty()) { return nullptr; }
-		if (frameIndex >= clip.frames.size()) { return &clip.frames.back(); }
+		if (clip.frames.empty()) {
+			return nullptr;
+		}
+		if (frameIndex >= clip.frames.size()) {
+			return &clip.frames.back();
+		}
 		return &clip.frames[frameIndex];
 	}
 
@@ -56,8 +86,12 @@ namespace MechAnimation {
 		outAlpha = 0.0f;
 
 		const size_t count = clip.frames.size();
-		if (count == 0) { return; }
-		if (count == 1) { return; }
+		if (count == 0) {
+			return;
+		}
+		if (count == 1) {
+			return;
+		}
 
 		t = Clamp01(t);
 

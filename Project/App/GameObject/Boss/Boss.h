@@ -8,6 +8,7 @@
 // 前方宣言
 class DamageObjectManager;
 class GameEffectManager;
+class MechAnimationContainer;
 class MechCore;
 
 // 実装メモ
@@ -28,6 +29,7 @@ public:
 public:
 	Boss(DamageObjectManager* damageObjectManager,
 		GameEffectManager* gameEffectManager,
+		MechAnimationContainer* animationContainer,
 		MechCore* playerMech);
 
 	~Boss() = default;
