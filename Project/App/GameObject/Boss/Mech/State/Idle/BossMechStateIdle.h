@@ -16,4 +16,6 @@ public:
 	void Enter(BossMech* mech)override;
 	void Update(BossMech* mech)override;
 	void Exit(BossMech* mech)override;
+private:
+	float idleAnimationT_ = 0.0f;
 };

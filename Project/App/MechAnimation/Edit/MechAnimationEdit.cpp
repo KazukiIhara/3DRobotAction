@@ -1,11 +1,15 @@
 #include "MechAnimationEdit.h"
 
 #include <numbers>
+#include <algorithm>
 
 #include "MechAnimation/Container/MechAnimationContainer.h"
 #include "GameObject/Boss/Mech/BossMech.h"
 #include "3D/Transform3D/Transform3D.h"
 #include "ImGuiController/ImGuiController.h"
+
+// 再生側
+#include "MechAnimation/Animator/MechAnimator.h"
 
 namespace {
 	// Rad <-> Deg 変換係数
@@ -21,6 +25,10 @@ namespace {
 	Vector3 ToRad(const Vector3& d) {
 		return { d.x * kDegToRad, d.y * kDegToRad, d.z * kDegToRad };
 	}
+
+	float ClampMin0(float v) {
+		return (v < 0.0f) ? 0.0f : v;
+	}
 }
 
 MechAnimationEdit::MechAnimationEdit(MechAnimationContainer* container) {
@@ -31,6 +39,10 @@ MechAnimationEdit::MechAnimationEdit(MechAnimationContainer* container) {
 void MechAnimationEdit::SetBossMech(BossMech* mech) {
 	// 編集対象Mechを差し替え
 	mech_ = mech;
+
+	// 再生状態をリセット
+	isPlaying_ = false;
+	playTimeSec_ = 0.0f;
 }
 
 bool MechAnimationEdit::AddAnimationClip(const std::string& name, const MechAnimation::Clip& clip, bool overwrite) {
@@ -46,6 +58,9 @@ void MechAnimationEdit::Update() {
 	if (!mech_) {
 		return;
 	} // 未設定ガード
+
+	// 再生更新
+	UpdatePlayback();
 
 	// UI更新
 	ShowWindow();
@@ -93,14 +108,60 @@ void MechAnimationEdit::ShowWindow() {
 						// 選択状態更新
 						selectedClipIndex_ = i;
 						selectedClipName_ = names[i];
+
 						// Pose選択をリセット
 						selectedPoseIndex_ = -1;
+
+						// 再生を止める
+						isPlaying_ = false;
+						playTimeSec_ = 0.0f;
 					}
 				}
 				ImGui::EndListBox();
 			}
 		}
 
+		//=========================
+		// Playback
+		//=========================
+		ImGui::SeparatorText("Playback");
+
+		// 再生秒数（0未満禁止 / 初期1.0想定）
+		playDurationSec_ = ClampMin0(playDurationSec_);
+		ImGui::DragFloat("Duration (sec)", &playDurationSec_, 0.05f, 0.0f, 1000.0f, "%.2f");
+
+		// ブレンド秒数（0未満禁止）
+		lerpTimeSec_ = ClampMin0(lerpTimeSec_);
+		ImGui::DragFloat("Lerp (sec)", &lerpTimeSec_, 0.02f, 0.0f, 1000.0f, "%.2f");
+
+		// 再生操作
+		if (ImGui::Button("Play")) {
+			if (!selectedClipName_.empty()) {
+				isPlaying_ = true;
+				playTimeSec_ = 0.0f; // t=0から開始
+			}
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Stop")) {
+			isPlaying_ = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Reset")) {
+			playTimeSec_ = 0.0f;
+			if (!selectedClipName_.empty()) {
+				ApplyAtNormalizedTime(0.0f); // t=0を適用
+			}
+		}
+
+		// 再生状況
+		{
+			const float t = (playDurationSec_ <= 0.0f) ? 0.0f : std::clamp(playTimeSec_ / playDurationSec_, 0.0f, 1.0f);
+			ImGui::Text("t : %.3f", t);
+		}
+
+		//=========================
+		// Pose buttons
+		//=========================
 		// ポーズ操作ボタン（Add / Delete / Apply）
 		if (ImGui::Button("Add Pose")) {
 			AddPoseToSelectedClip();
@@ -158,6 +219,53 @@ void MechAnimationEdit::ShowWindow() {
 	}
 
 	ImGui::End();
+}
+
+void MechAnimationEdit::UpdatePlayback() {
+	if (!isPlaying_) {
+		return;
+	}
+	if (!mech_) {
+		return;
+	}
+	if (selectedClipName_.empty()) {
+		return;
+	}
+
+	// 秒数0なら即終了（t=1適用）
+	if (playDurationSec_ <= 0.0f) {
+		ApplyAtNormalizedTime(1.0f);
+		isPlaying_ = false;
+		return;
+	}
+
+	// 経過時間加算
+	const float dt = ImGui::GetIO().DeltaTime;
+	playTimeSec_ += dt;
+
+	// 正規化時間
+	const float t = std::clamp(playTimeSec_ / playDurationSec_, 0.0f, 1.0f);
+
+	// t適用
+	ApplyAtNormalizedTime(t);
+
+	// 終了
+	if (t >= 1.0f) {
+		isPlaying_ = false;
+	}
+}
+
+void MechAnimationEdit::ApplyAtNormalizedTime(float t) {
+	if (!mech_) {
+		return;
+	}
+	MechAnimator* animator = mech_->GetAnimator();
+	if (!animator) {
+		return;
+	}
+
+	// クリップ再生（Animator側でt=0時の姿勢保存＆ブレンド開始）
+	animator->ApplyAnimation(selectedClipName_, t, lerpTimeSec_);
 }
 
 void MechAnimationEdit::DrawRotate(BossMech* mech, int typeValue, const char* label) {
