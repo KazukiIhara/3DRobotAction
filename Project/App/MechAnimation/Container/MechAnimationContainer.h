@@ -14,7 +14,7 @@
 class MechAnimationContainer {
 public:
 	MechAnimationContainer();
-	~MechAnimationContainer() = default;
+	~MechAnimationContainer();
 
 	// クリップを追加（overwrite=trueで上書き）
 	bool AddClip(const std::string& name, const MechAnimation::Clip& clip, bool overwrite = false);
@@ -37,7 +37,15 @@ public:
 	// 登録されているクリップ名一覧を取得
 	std::vector<std::string> GetClipNames() const;
 
+	// 全クリップを書き出し
+	bool SaveAllClips() const;
+
+	// ディレクトリ内の全jsonを読み込んで追加
+	bool LoadAllClips(bool overwrite = true);
+
 private:
 	// 名前 -> クリップ
 	std::unordered_map<std::string, MechAnimation::Clip> clips_;
+
+	const std::string kDirectoryPath_ = "Assets/MechAnimations/";
 };
