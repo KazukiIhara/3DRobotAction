@@ -12,7 +12,7 @@ class MechAnimationContainer;
 /// </summary>
 class MechAnimationEdit {
 public:
-	MechAnimationEdit(MechAnimationContainer* container, BossMech* mech);
+	MechAnimationEdit(MechAnimationContainer* container);
 	~MechAnimationEdit() = default;
 
 	void Update();

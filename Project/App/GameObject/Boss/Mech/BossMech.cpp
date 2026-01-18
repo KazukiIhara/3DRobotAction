@@ -1,12 +1,12 @@
 #include "BossMech.h"
 
 #include "MAGI.h"
-#include "MAGIAssert/MAGIAssert.h" 
+#include "MAGIAssert/MAGIAssert.h"
 
 #include "GameObject/Mech/MechCore/MechCore.h"
 #include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
 #include "GameEffects/System/GameEffectManager/GameEffectManager.h"
-
+#include "MechAnimation/Container/MechAnimationContainer.h"
 
 // ステートクラス
 #include "GameObject/Boss/Mech/State/Idle/BossMechStateIdle.h"
@@ -14,23 +14,29 @@
 
 using namespace Magi;
 
-BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* damageObjectManager, GameEffectManager* gameEffectManager, MechCore* playerMech) {
+BossMech::BossMech(
+	const BossMech::InitParam& initParam,
+	DamageObjectManager* damageObjectManager,
+	GameEffectManager* gameEffectManager,
+	MechAnimationContainer* mechAnimationContainer,
+	MechCore* playerMech
+) {
 	// 参照ポインタを受け取る
 	damageObjectManager_ = damageObjectManager;
 	gameEffectManager_ = gameEffectManager;
+	mechAnimationContainer_ = mechAnimationContainer;
 	playerMech_ = playerMech;
 
-	// トランスフォーム作成
+	// ルートトランスフォーム作成
 	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(initParam.position);
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
-	// パーツを作成
+	// パーツを作成（Bodyが親になる想定）
 	body_ = std::make_unique<BossMechBody>(initParam.body, this);
-
 	head_ = std::make_unique<BossMechHead>(initParam.head, this);
 	armR_ = std::make_unique<BossMechRightArm>(initParam.armR, this);
 	armL_ = std::make_unique<BossMechLeftArm>(initParam.armL, this);
-	leg_ = std::make_unique<BossMechLeg>(initParam.leg, this);
+	leg_  = std::make_unique<BossMechLeg>(initParam.leg, this);
 
 	// パーツをリストに追加
 	parts_.push_back(head_.get());
@@ -45,28 +51,24 @@ BossMech::BossMech(const BossMech::InitParam& initParam, DamageObjectManager* da
 	// 武器をマップに追加
 	weapons_["LaserGun"] = std::make_unique<BossMechWeaponLaserGun>(this);
 
-	// 実装メモ
-	/*
-		胴体のみこのBossMech(コア)と親子付け
-		そのほかのパーツはBodyのトランスフォームを親とする
-		各パーツ内のさらに細かいパーツはパーツ作成時に親子付けする
-	*/
-
 	// ステートテーブル作成
-	states_[BossMech::BossMechState::Idle] = std::make_unique<BossMechStateIdle>();
+	states_[BossMech::BossMechState::Idle]      = std::make_unique<BossMechStateIdle>();
 	states_[BossMech::BossMechState::LaserShot] = std::make_unique<BossMechStateLaserShot>();
+
+	// アニメーションクラスを作成
+	animator_ = std::make_unique<MechAnimator>(mechAnimationContainer_, this);
 
 	// 最初のステートを設定
 	ChangeState(BossMechState::Idle);
-
 }
 
 void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BossMech::InitParam& param) {
-#if defined (DEBUG) | (DEVELOP)
+#if defined(DEBUG) || defined(DEVELOP)
 	// デバッグUIを表示
 	if (isShowDebugUI) {
 		DebugDraw();
 	}
+	// デバッグ編集が有効なら初期化値を反映
 	if (debugFlag_.editPartsTransform) {
 		SetInitParam(param);
 	}
@@ -86,7 +88,6 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	for (auto& weapon : weapons_) {
 		weapon.second->Update();
 	}
-
 }
 
 void BossMech::Draw() {
@@ -99,7 +100,6 @@ void BossMech::Draw() {
 	for (auto& weapon : weapons_) {
 		weapon.second->Draw();
 	}
-
 }
 
 void BossMech::ChangeState(BossMech::BossMechState nextState) {
@@ -139,7 +139,8 @@ BossMechLeg* BossMech::GetLeg() {
 	return leg_.get();
 }
 
-Transform3D* BossMech::GetPartsTransform(BossMech::TransType type) {
+Transform3D* BossMech::GetPartsTransform(MechAnimation::TransType type) {
+	// 配列境界チェック
 	const size_t index = static_cast<size_t>(type);
 	if (index >= partsTrans_.size()) {
 		return nullptr;
@@ -154,6 +155,10 @@ BossMechBaseWeapon* BossMech::GetWeapon(const std::string& name) {
 		return nullptr;
 	}
 	return it->second.get();
+}
+
+MechAnimator* BossMech::GetAnimator() {
+	return animator_.get();
 }
 
 MechCore* BossMech::GetPlayerMech() {
@@ -182,70 +187,70 @@ void BossMech::DebugDraw() {
 }
 
 void BossMech::SetInitParam(const BossMech::InitParam& initParam) {
-	// パラメータ受け取り
-	// 頭
+	// 頭の初期値反映
 	if (head_) {
 		head_->SetInitTranslate(initParam.head);
 	}
-	// 胴体
+	// 胴体の初期値反映
 	if (body_) {
 		body_->SetInitTranslate(initParam.body);
 	}
-	// 右腕
+	// 右腕の初期値反映
 	if (armR_) {
 		armR_->SetInitTranslate(initParam.armR);
 	}
-	// 左腕
+	// 左腕の初期値反映
 	if (armL_) {
 		armL_->SetInitTranslate(initParam.armL);
 	}
-	// 足
+	// 足の初期値反映
 	if (leg_) {
 		leg_->SetInitTranslate(initParam.leg);
 	}
 }
 
-
 void BossMech::CreatePartsTransformArray() {
+	// 全要素を初期化
 	partsTrans_.fill(nullptr);
 
 	// Head / Body
 	if (head_) {
-		partsTrans_[static_cast<size_t>(TransType::Head)] = head_->GetHeadTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::Head)] = head_->GetHeadTransform();
 	}
 	if (body_) {
-		partsTrans_[static_cast<size_t>(TransType::Body)] = body_->GetTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::Body)] = body_->GetTransform();
 	}
 
 	// Arm Left
 	if (armL_) {
-		partsTrans_[static_cast<size_t>(TransType::UpperArmLeft)] = armL_->GetUpperTransform();
-		partsTrans_[static_cast<size_t>(TransType::LowerArmLeft)] = armL_->GetLowerTransform();
-		partsTrans_[static_cast<size_t>(TransType::HandLeft)] = armL_->GetHandTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::UpperArmLeft)] = armL_->GetUpperTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::LowerArmLeft)] = armL_->GetLowerTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::HandLeft)]     = armL_->GetHandTransform();
 	}
 
 	// Arm Right
 	if (armR_) {
-		partsTrans_[static_cast<size_t>(TransType::UpperArmRight)] = armR_->GetUpperTransform();
-		partsTrans_[static_cast<size_t>(TransType::LowerArmRight)] = armR_->GetLowerTransform();
-		partsTrans_[static_cast<size_t>(TransType::HandRight)] = armR_->GetHandTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::UpperArmRight)] = armR_->GetUpperTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::LowerArmRight)] = armR_->GetLowerTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::HandRight)]     = armR_->GetHandTransform();
 	}
 
 	// Leg
 	if (leg_) {
-		partsTrans_[static_cast<size_t>(TransType::Waist)] = leg_->GetWaistTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::Waist)] = leg_->GetWaistTransform();
 
-		partsTrans_[static_cast<size_t>(TransType::UpperLegLeft)] = leg_->GetUpperTransformLeft();
-		partsTrans_[static_cast<size_t>(TransType::LowerLegLeft)] = leg_->GetLowerTransformLeft();
-		partsTrans_[static_cast<size_t>(TransType::FootLeft)] = leg_->GetFootTransformLeft();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::UpperLegLeft)] = leg_->GetUpperTransformLeft();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::LowerLegLeft)] = leg_->GetLowerTransformLeft();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::FootLeft)]     = leg_->GetFootTransformLeft();
 
-		partsTrans_[static_cast<size_t>(TransType::UpperLegRight)] = leg_->GetUpperTransformRight();
-		partsTrans_[static_cast<size_t>(TransType::LowerLegRight)] = leg_->GetLowerTransformRight();
-		partsTrans_[static_cast<size_t>(TransType::FootRight)] = leg_->GetFootTransformRight();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::UpperLegRight)] = leg_->GetUpperTransformRight();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::LowerLegRight)] = leg_->GetLowerTransformRight();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::FootRight)]     = leg_->GetFootTransformRight();
 	}
 }
 
 BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
+	// ステートテーブルから検索
 	auto it = states_.find(state);
 	if (it != states_.end()) {
 		return it->second.get();
@@ -266,42 +271,42 @@ const std::string BossMech::StateToString(BossMech::BossMechState state) {
 	}
 }
 
-const std::string BossMech::TransTypeToString(BossMech::TransType partsType) {
+const std::string BossMech::TransTypeToString(MechAnimation::TransType partsType) {
 	switch (partsType) {
-		case BossMech::TransType::Head:
+		case MechAnimation::TransType::Head:
 			return "Head";
-		case BossMech::TransType::Body:
+		case MechAnimation::TransType::Body:
 			return "Body";
 
-		case BossMech::TransType::UpperArmLeft:
+		case MechAnimation::TransType::UpperArmLeft:
 			return "UpperArmLeft";
-		case BossMech::TransType::LowerArmLeft:
+		case MechAnimation::TransType::LowerArmLeft:
 			return "LowerArmLeft";
-		case BossMech::TransType::HandLeft:
+		case MechAnimation::TransType::HandLeft:
 			return "HandLeft";
 
-		case BossMech::TransType::UpperArmRight:
+		case MechAnimation::TransType::UpperArmRight:
 			return "UpperArmRight";
-		case BossMech::TransType::LowerArmRight:
+		case MechAnimation::TransType::LowerArmRight:
 			return "LowerArmRight";
-		case BossMech::TransType::HandRight:
+		case MechAnimation::TransType::HandRight:
 			return "HandRight";
 
-		case BossMech::TransType::Waist:
+		case MechAnimation::TransType::Waist:
 			return "Waist";
 
-		case BossMech::TransType::UpperLegLeft:
+		case MechAnimation::TransType::UpperLegLeft:
 			return "UpperLegLeft";
-		case BossMech::TransType::LowerLegLeft:
+		case MechAnimation::TransType::LowerLegLeft:
 			return "LowerLegLeft";
-		case BossMech::TransType::FootLeft:
+		case MechAnimation::TransType::FootLeft:
 			return "FootLeft";
 
-		case BossMech::TransType::UpperLegRight:
+		case MechAnimation::TransType::UpperLegRight:
 			return "UpperLegRight";
-		case BossMech::TransType::LowerLegRight:
+		case MechAnimation::TransType::LowerLegRight:
 			return "LowerLegRight";
-		case BossMech::TransType::FootRight:
+		case MechAnimation::TransType::FootRight:
 			return "FootRight";
 
 		default:
@@ -315,6 +320,7 @@ void BossMech::ShowDebugWidow() {
 
 	ImGui::SeparatorText("Parameter");
 	{
+		// 現在ステート表示
 		ImGui::Text("CurrentState :");
 		ImGui::SameLine();
 		const std::string state = StateToString(currentState_.first);
@@ -333,12 +339,11 @@ void BossMech::ShowDebugWidow() {
 		for (const auto& [stateEnum, statePtr] : states_) {
 			(void)statePtr;
 
-			ImGui::PushID(index++); // ID衝突対策
-
-			// ボタンラベル
-			const std::string stateName = StateToString(stateEnum);
+			// ID衝突対策
+			ImGui::PushID(index++);
 
 			// ステート切り替えボタン
+			const std::string stateName = StateToString(stateEnum);
 			if (ImGui::Button(stateName.c_str(), ImVec2(-1.0f, 0.0f))) {
 				ChangeState(stateEnum);
 			}
@@ -350,19 +355,26 @@ void BossMech::ShowDebugWidow() {
 	}
 
 	ImGui::SeparatorText("DebugFlag");
-	if (ImGui::Button("ShowPartsDebugDraw")) {
-		SwitchShowPartsTransform();
+	{
+		// パーツのデバッグ描画切り替え
+		if (ImGui::Button("ShowPartsDebugDraw")) {
+			SwitchShowPartsTransform();
+		}
+		// パーツ編集モード切り替え
+		if (ImGui::Button("EditPartsTrans")) {
+			SwitchEditPartsTransform();
+		}
 	}
-	if (ImGui::Button("EditPartsTrans")) {
-		SwitchEditPartsTransform();
-	}
+
 	ImGui::End();
 }
 
 void BossMech::SwitchShowPartsTransform() {
+	// 表示フラグ反転
 	debugFlag_.showPartsTransform = !debugFlag_.showPartsTransform;
 }
 
 void BossMech::SwitchEditPartsTransform() {
+	// 編集フラグ反転
 	debugFlag_.editPartsTransform = !debugFlag_.editPartsTransform;
 }

@@ -7,6 +7,7 @@ using namespace Magi;
 Boss::Boss(
 	DamageObjectManager* damageObjectManager,
 	GameEffectManager* gameEffectManager,
+	MechAnimationContainer* animationContainer,
 	MechCore* playerMech
 ) {
 
@@ -18,6 +19,7 @@ Boss::Boss(
 		initParam_,
 		damageObjectManager,
 		gameEffectManager,
+		animationContainer,
 		playerMech
 	);
 	// AIの作成

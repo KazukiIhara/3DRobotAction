@@ -19,68 +19,61 @@ MechAnimator::MechAnimator(MechAnimationContainer* container, BossMech* mech) {
 	mech_ = mech;
 }
 
-void MechAnimator::SetContainer(MechAnimationContainer* container) {
-	container_ = container;
-}
+void MechAnimator::ApplyAnimation(const std::string& name, float t, float blendT) {
 
-void MechAnimator::SetBossMech(BossMech* mech) {
-	mech_ = mech;
-}
-
-bool MechAnimator::SetClip(const std::string& name) {
-	if (!container_) {
-		return false;
-	}
-	if (!container_->HasClip(name)) {
-		return false;
-	}
-	clipName_ = name;
-	return true;
-}
-
-const std::string& MechAnimator::GetClipName() const {
-	return clipName_;
-}
-
-const MechAnimation::Clip* MechAnimator::GetCurrentClip() const {
-	if (!container_) {
-		return nullptr;
-	}
-	if (clipName_.empty()) {
-		return nullptr;
-	}
-	return container_->GetClip(clipName_);
-}
-
-void MechAnimator::ApplyAnimation(float t) {
-	const MechAnimation::Clip* clip = GetCurrentClip();
+	const MechAnimation::Clip* clip = container_->GetClip(name);
 	if (!clip) {
 		return;
 	}
 
-	const auto& frames = clip->frames;
-	const int frameCount = static_cast<int>(frames.size());
-	if (frameCount <= 0) {
+	if (clip->frames.empty()) {
 		return;
 	}
 
 	// 範囲クランプ
 	t = std::clamp(t, 0.0f, 1.0f);
 
-	// 1フレームならそのまま適用
-	if (frameCount == 1) {
-		ApplyPose(frames[0]);
-		return;
+	// 再生開始時に現在姿勢を保存
+	if (t == 0.0f) {
+		playingClipName_ = name;
+		blendFromPose_ = CaptureCurrentPose();
 	}
 
-	// t をフレーム位置へ変換
-	const float pos = t * static_cast<float>(frameCount - 1);
-	const int i0 = std::clamp(static_cast<int>(pos), 0, frameCount - 1);
-	const int i1 = std::min(i0 + 1, frameCount - 1);
-	const float localT = pos - static_cast<float>(i0);
+	// クリップをサンプル
+	const MechAnimation::Pose targetPose = SampleClipPose(*clip, t);
 
-	// 補間して適用
-	ApplyPoseLerp(frames[static_cast<size_t>(i0)], frames[static_cast<size_t>(i1)], localT);
+	// ブレンド率
+	float alpha = 1.0f;
+	if (blendT > 0.0f) {
+		alpha = std::clamp(t / blendT, 0.0f, 1.0f);
+	}
+
+	// ブレンドして適用
+	MechAnimation::Pose outPose{};
+	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
+		outPose.rotations[i] = Slerp(blendFromPose_.rotations[i], targetPose.rotations[i], alpha);
+	}
+	ApplyPose(outPose);
+}
+
+MechAnimation::Pose MechAnimator::CaptureCurrentPose() const {
+	MechAnimation::Pose pose{};
+
+	const Quaternion identity = MakeIdentityQuaternion();
+
+	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
+		const auto type = static_cast<MechAnimation::TransType>(i);
+		if (mech_) {
+			Transform3D* trans = mech_->GetPartsTransform(type);
+			if (trans) {
+				pose.rotations[i] = trans->GetQuaternion(); // 現在回転
+			} else {
+				pose.rotations[i] = identity; // 無効はidentity
+			}
+		}
+	}
+
+	return pose;
 }
 
 void MechAnimator::ApplyPose(const MechAnimation::Pose& pose) {
@@ -89,38 +82,44 @@ void MechAnimator::ApplyPose(const MechAnimation::Pose& pose) {
 	}
 
 	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
-		// 対応する関節を取得
-		const auto type = static_cast<BossMech::TransType>(i);
+		const auto type = static_cast<MechAnimation::TransType>(i);
 		Transform3D* trans = mech_->GetPartsTransform(type);
 		if (!trans) {
 			continue;
 		}
 
-		// 回転を適用
+		// 回転反映
 		trans->SetQuaternion(pose.rotations[i]);
 	}
 }
 
-void MechAnimator::ApplyPoseLerp(const MechAnimation::Pose& a, const MechAnimation::Pose& b, float t) {
-	if (!mech_) {
-		return;
-	}
+MechAnimation::Pose MechAnimator::SampleClipPose(const MechAnimation::Clip& clip, float t) const {
+	MechAnimation::Pose result{};
 
-	// 補間率クランプ
+	const auto& frames = clip.frames;
+	const int frameCount = static_cast<int>(frames.size());
+
+	// 範囲クランプ
 	t = std::clamp(t, 0.0f, 1.0f);
 
-	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
-		// 対応する関節を取得
-		const auto type = static_cast<BossMech::TransType>(i);
-		Transform3D* trans = mech_->GetPartsTransform(type);
-		if (!trans) {
-			continue;
-		}
-
-		// クォータニオン補間
-		const Quaternion q = MAGIMath::Slerp(a.rotations[i], b.rotations[i], t);
-
-		// 回転を適用
-		trans->SetQuaternion(q);
+	// 1フレーム
+	if (frameCount == 1) {
+		return frames[0];
 	}
+
+	// フレーム位置
+	const float pos = t * static_cast<float>(frameCount - 1);
+	const int i0 = std::clamp(static_cast<int>(pos), 0, frameCount - 1);
+	const int i1 = std::min(i0 + 1, frameCount - 1);
+	const float localT = pos - static_cast<float>(i0);
+
+	// Pose補間
+	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
+		result.rotations[i] =
+			Slerp(frames[static_cast<size_t>(i0)].rotations[i],
+				frames[static_cast<size_t>(i1)].rotations[i],
+				localT);
+	}
+
+	return result;
 }

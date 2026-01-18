@@ -88,20 +88,20 @@ void DevelopScene::Initialize() {
 	damageCollisionSystem_ = std::make_unique<DamageCollisionSystem>();
 	// 攻撃オブジェクトマネージャ
 	damageObjectManager_ = std::make_unique<DamageObjectManager>(damageCollisionSystem_.get());
+	// 機体アニメーションコンテナクラス
+	mechAnimationContainer_ = std::make_unique<MechAnimationContainer>();
+	// 機体アニメーション作成クラス
+	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get());
 
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
 	player_->SetIsOperation(true);
 
 	// ボス作成
-	boss_ = std::make_unique<Boss>(damageObjectManager_.get(), gameEffectManager_.get(), player_->GetMechCore());
+	boss_ = std::make_unique<Boss>(damageObjectManager_.get(), gameEffectManager_.get(), mechAnimationContainer_.get(), player_->GetMechCore());
 
-
-	// 機体アニメーションコンテナクラス
-	mechAnimationContainer_ = std::make_unique<MechAnimationContainer>();
-	// 機体アニメーション作成クラス
-	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get(), boss_->GetMech());
-
+	// アニメーション作成クラスにボスをセット
+	mechAnimationEdit_->SetBossMech(boss_->GetMech());
 
 	// 床追加
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");

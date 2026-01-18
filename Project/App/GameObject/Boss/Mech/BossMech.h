@@ -19,9 +19,14 @@
 // ステート基底クラス
 #include "GameObject/Boss/Mech/State/BossMechBaseState.h"
 
+// アニメーションクラス
+#include "MechAnimation/Animator/MechAnimator.h"
+
+
 // 前方宣言
 class DamageObjectManager;
 class GameEffectManager;
+class MechAnimationContainer;
 class MechCore;
 
 /// <summary>
@@ -45,30 +50,6 @@ public:
 		bool showPartsTransform = false;
 		bool editPartsTransform = false;
 	};
-	// パーツ列挙型
-	enum class TransType {
-		Head,           // 頭
-		Body,           // 胴体
-
-		UpperArmLeft,   // 上腕L
-		LowerArmLeft,   // 下腕L
-		HandLeft,       // 手L
-
-		UpperArmRight,  // 上腕R
-		LowerArmRight,  // 下腕R
-		HandRight,      // 手R
-
-		Waist,          // 腰
-		UpperLegLeft,   // 上足L
-		LowerLegLeft,   // 下足L
-		FootLeft,       // 足L
-
-		UpperLegRight,  // 上足R
-		LowerLegRight,  // 下足R
-		FootRight,      // 足R
-
-		Count
-	};
 	// ステート
 	enum class BossMechState {
 		Idle,
@@ -79,6 +60,7 @@ public:
 		const BossMech::InitParam& initParam,
 		DamageObjectManager* damageObjectManager,
 		GameEffectManager* gameEffectManager,
+		MechAnimationContainer* animationContainer,
 		MechCore* playerMech
 	);
 	~BossMech() = default;
@@ -98,10 +80,13 @@ public:
 	BossMechLeg* GetLeg();
 
 	// 関節トランスフォーム取得
-	Transform3D* GetPartsTransform(BossMech::TransType type);
+	Transform3D* GetPartsTransform(MechAnimation::TransType type);
 
 	// 武器へのアクセッサ
 	BossMechBaseWeapon* GetWeapon(const std::string& name);
+
+	// アニメーション再生クラスへのアクセッサ
+	MechAnimator* GetAnimator();
 
 	// プレイヤー機体へのアクセッサ
 	MechCore* GetPlayerMech();
@@ -125,7 +110,7 @@ private:
 	const std::string StateToString(BossMech::BossMechState state);
 
 	// パーツタイプを文字列に変換
-	const std::string TransTypeToString(BossMech::TransType partsType);
+	const std::string TransTypeToString(MechAnimation::TransType partsType);
 
 	// デバッグウィンドウ描画
 	void ShowDebugWidow();
@@ -149,7 +134,7 @@ private:
 	std::vector<IBossMechParts*> parts_;
 
 	// トランスフォームリスト
-	std::array<Transform3D*, static_cast<size_t>(BossMech::TransType::Count)> partsTrans_{};
+	std::array<Transform3D*, static_cast<size_t>(MechAnimation::TransType::Count)> partsTrans_{};
 
 	// 武器マップ
 	std::unordered_map<std::string, std::unique_ptr<BossMechBaseWeapon>> weapons_;
@@ -159,12 +144,16 @@ private:
 	// 現在のステート
 	std::pair<BossMech::BossMechState, BossMechBaseState*> currentState_;
 
+	// アニメーションクラス
+	std::unique_ptr<MechAnimator> animator_;
+
 	// デバッグフラグ構造体
 	DebugFlag debugFlag_{};
 
 	// 参照ポインタ
 	DamageObjectManager* damageObjectManager_ = nullptr;
 	GameEffectManager* gameEffectManager_ = nullptr;
+	MechAnimationContainer* mechAnimationContainer_ = nullptr;
 	MechCore* playerMech_ = nullptr;
 
 };
