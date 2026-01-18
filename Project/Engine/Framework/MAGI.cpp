@@ -561,7 +561,7 @@ void MAGISYSTEM::Update() {
 	}
 
 	// デバッグカメラモード切替
-	if (directInput_->TriggerKey(DIK_P)) {
+	if (directInput_->PushKey(DIK_LCONTROL) && directInput_->TriggerKey(DIK_P)) {
 		camera3DManager_->GetIsDebugCamera() = !camera3DManager_->GetIsDebugCamera();
 	}
 

@@ -36,21 +36,36 @@ public:
 		// 各パーツのデータ
 		BossMechHead::InitParam head;
 		BossMechBody::InitParam body;
-		BossMechBaseArm::InitParam arm;
+		BossMechBaseArm::InitParam armR;
+		BossMechBaseArm::InitParam armL;
 		BossMechLeg::InitParam leg;
 	};
 	// デバッグUIフラグ
 	struct DebugFlag {
 		bool showPartsTransform = false;
+		bool editPartsTransform = false;
 	};
 	// パーツ列挙型
-	enum class PartsType {
-		Head,
-		Body,
-		ArmR,
-		ArmL,
-		LegR,
-		LegL
+	enum class TransType {
+		Head,           // 頭
+		Body,           // 胴体
+
+		UpperArmLeft,   // 上腕L
+		LowerArmLeft,   // 下腕L
+		HandLeft,       // 手L
+
+		UpperArmRight,  // 上腕R
+		LowerArmRight,  // 下腕R
+		HandRight,      // 手R
+
+		Waist,          // 腰
+		UpperLegLeft,   // 上足L
+		LowerLegLeft,   // 下足L
+		FootLeft,       // 足L
+
+		UpperLegRight,  // 上足R
+		LowerLegRight,  // 下足R
+		FootRight       // 足R
 	};
 	// ステート
 	enum class BossMechState {
@@ -66,7 +81,7 @@ public:
 	);
 	~BossMech() = default;
 
-	void Update([[maybe_unused]] bool isShowDebugUI);
+	void Update([[maybe_unused]] bool isShowDebugUI, const BossMech::InitParam& param);
 	void Draw();
 
 	void ChangeState(BossMech::BossMechState nextState);
@@ -74,7 +89,11 @@ public:
 	Transform3D* GetTransform();
 
 	// パーツへのアクセッサ
-
+	BossMechHead* GetHead();
+	BossMechBody* GetBody();
+	BossMechRightArm* GetRightArm();
+	BossMechLeftArm* GetLeftArm();
+	BossMechLeg* GetLeg();
 
 	// 武器へのアクセッサ
 	BossMechBaseWeapon* GetWeapon(const std::string& name);
@@ -89,6 +108,9 @@ public:
 	// デバッグ用描画
 	void DebugDraw();
 
+	// 初期化パラメータを受け取る
+	void SetInitParam(const BossMech::InitParam& initParam);
+
 private:
 	// 対応するステートを取得
 	BossMechBaseState* GetState(BossMech::BossMechState state);
@@ -96,13 +118,14 @@ private:
 	const std::string StateToString(BossMech::BossMechState state);
 
 	// パーツタイプを文字列に変換
-	const std::string PartsTypeToString(BossMech::PartsType partsType);
+	const std::string TransTypeToString(BossMech::TransType partsType);
 
 	// デバッグウィンドウ描画
 	void ShowDebugWidow();
 
 	// デバッグフラグ切り替え
 	void SwitchShowPartsTransform();
+	void SwitchEditPartsTransform();
 
 private:
 	// トランスフォーム
@@ -126,10 +149,8 @@ private:
 	// 現在のステート
 	std::pair<BossMech::BossMechState, BossMechBaseState*> currentState_;
 
-
 	// デバッグフラグ構造体
 	DebugFlag debugFlag_{};
-
 
 	// 参照ポインタ
 	DamageObjectManager* damageObjectManager_ = nullptr;

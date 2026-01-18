@@ -7,7 +7,7 @@
 
 using namespace Magi;
 
-BossMechBaseArm::BossMechBaseArm(BossMech* mech) {
+BossMechBaseArm::BossMechBaseArm(const BossMechBaseArm::InitParam& param, BossMech* mech) {
 	// 機体の参照ポインタを受け取る
 	mech_ = mech;
 
@@ -16,13 +16,17 @@ BossMechBaseArm::BossMechBaseArm(BossMech* mech) {
 	upperTrans_ = MAGISYSTEM::AddTransform3D();
 	// 下腕
 	lowerTrans_ = MAGISYSTEM::AddTransform3D();
-	lowerTrans_->SetParent(upperTrans_,false);
+	lowerTrans_->SetParent(upperTrans_, false);
 	// 手
 	handTrans_ = MAGISYSTEM::AddTransform3D();
 	handTrans_->SetParent(lowerTrans_, false);
 
-	// 胴体に親子付け
-	
+	// 胴体と紐づけ
+	upperTrans_->SetParent(mech->GetBody()->GetTransform(), false);
+
+	// 初期化パラメータを受け取る
+	SetInitParam(param);
+
 }
 
 void BossMechBaseArm::Update() {
@@ -36,9 +40,32 @@ void BossMechBaseArm::Draw() {
 }
 
 void BossMechBaseArm::DebugDraw() {
-	MAGISYSTEM::DrawLineSphere(upperTrans_->GetWorldPosition(), 0.2f, Color::Red);
-	MAGISYSTEM::DrawLineSphere(lowerTrans_->GetWorldPosition(), 0.2f, Color::Blue);
-	MAGISYSTEM::DrawLineSphere(handTrans_->GetWorldPosition(), 0.2f, Color::Yellow);
+	const float debugSphereRadius = MAGISYSTEM::GetParameterValue<float>({ "MechInitParam","DebugSphere" });
+	MAGISYSTEM::DrawLineSphere(upperTrans_->GetWorldPosition(), debugSphereRadius, Color::Red);
+	MAGISYSTEM::DrawLineSphere(lowerTrans_->GetWorldPosition(),debugSphereRadius, Color::Blue);
+	MAGISYSTEM::DrawLineSphere(handTrans_->GetWorldPosition(),debugSphereRadius, Color::Yellow);
+}
+
+void BossMechBaseArm::SetInitParam(const InitParam& param) {
+	// モデル名取得
+	upperModelName_ = param.upperModelName;
+	lowerModelName_ = param.lowerModelName;
+	handModelName_ = param.handModelName;
+
+	// モデル読み込みDrawer作成
+	MAGISYSTEM::LoadCreateModel(upperModelName_);
+	MAGISYSTEM::LoadCreateModel(lowerModelName_);
+	MAGISYSTEM::LoadCreateModel(handModelName_);
+
+	upperTrans_->SetTranslate(param.upperTranslate);
+	lowerTrans_->SetTranslate(param.lowerTranslate);
+	handTrans_->SetTranslate(param.handTranslate);
+}
+
+void BossMechBaseArm::SetInitTranslate(const InitParam& param) {
+	upperTrans_->SetTranslate(param.upperTranslate);
+	lowerTrans_->SetTranslate(param.lowerTranslate);
+	handTrans_->SetTranslate(param.handTranslate);
 }
 
 Transform3D* BossMechBaseArm::GetUpperTransform() {

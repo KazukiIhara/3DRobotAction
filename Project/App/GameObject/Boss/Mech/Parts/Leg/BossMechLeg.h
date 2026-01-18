@@ -19,18 +19,26 @@ public:
 	struct InitParam {
 		// 腰モデル名
 		std::string waistModelName;
+		Vector3 waistTranslate;
 
 		// 上足モデル名
 		std::string upperModelNameLeft;
+		Vector3 upperTranslateLeft;
 		std::string upperModelNameRight;
+		Vector3 upperTranslateRight;
 
 		// 下足モデル名
 		std::string lowerModelNameLeft;
+		Vector3 lowerTranslateLeft;
 		std::string lowerModelNameRight;
+		Vector3 lowerTranslateRight;
 
 		// 足モデル名
 		std::string footModelNameLeft;
+		Vector3 footTranslateLeft;
 		std::string footModelNameRight;
+		Vector3 footTranslateRight;
+
 	};
 public:
 	BossMechLeg(const BossMechLeg::InitParam& param, BossMech* mech);
@@ -40,6 +48,9 @@ public:
 	void Draw()override;
 
 	void DebugDraw()override;
+
+	void SetInitParam(const InitParam& param);
+	void SetInitTranslate(const InitParam& param);
 
 	Transform3D* GetWaistTransform();
 

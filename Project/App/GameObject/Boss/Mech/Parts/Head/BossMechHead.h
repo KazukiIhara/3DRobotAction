@@ -19,6 +19,7 @@ public:
 	struct InitParam {
 		// モデル名
 		std::string modelName;
+		Vector3 translate;
 	};
 public:
 	BossMechHead(const BossMechHead::InitParam& param, BossMech* mech);
@@ -28,6 +29,9 @@ public:
 	void Draw()override;
 
 	void DebugDraw()override;
+
+	void SetInitParam(const InitParam& param);
+	void SetInitTranslate(const InitParam& param);
 
 	Transform3D* GetHeadTransform();
 
