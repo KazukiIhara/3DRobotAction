@@ -2,6 +2,8 @@
 
 #include "GameObject/Boss/Mech/BossMech.h"
 
+#include "GameObject/Mech/MechCore/MechCore.h"
+
 #include "MAGI.h"
 
 using namespace Magi;
@@ -18,6 +20,7 @@ void BossMechStateIdle::Update([[maybe_unused]] BossMech* mech) {
 	if (idleAnimationT_ == 1.0f) {
 		idleAnimationT_ = 0.0f;
 	}
+
 }
 
 void BossMechStateIdle::Exit([[maybe_unused]] BossMech* mech) {

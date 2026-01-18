@@ -358,6 +358,14 @@ Vector3 MAGIMath::Right(const Quaternion& q) {
 		});
 }
 
+Vector3 MAGIMath::Up(const Quaternion& q) {
+	return Normalize(Vector3{
+		2.0f * (q.x * q.y - q.w * q.z),
+		1.0f - 2.0f * (q.x * q.x + q.z * q.z),
+		2.0f * (q.y * q.z + q.w * q.x)
+		});
+}
+
 Vector3 MAGIMath::DirectionFromYawPitch(float yaw, float pitch) {
 	float cosPitch = std::cosf(pitch);
 	return Normalize(Vector3{
