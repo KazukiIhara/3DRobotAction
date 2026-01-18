@@ -14,7 +14,7 @@ BossMechBody::BossMechBody(const BossMechBody::InitParam& param, BossMech* mech)
 	// トランスフォーム作成
 	bodyTrans_ = MAGISYSTEM::AddTransform3D();
 
-	// 機体クラスと親子付け
+	// 腰と親子付け
 	bodyTrans_->SetParent(mech_->GetTransform(), false);
 
 	// 初期化パラメータ取得

@@ -32,11 +32,11 @@ BossMech::BossMech(
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
 	// パーツを作成（Bodyが親になる想定）
+	leg_ = std::make_unique<BossMechLeg>(initParam.leg, this);
 	body_ = std::make_unique<BossMechBody>(initParam.body, this);
 	head_ = std::make_unique<BossMechHead>(initParam.head, this);
 	armR_ = std::make_unique<BossMechRightArm>(initParam.armR, this);
 	armL_ = std::make_unique<BossMechLeftArm>(initParam.armL, this);
-	leg_ = std::make_unique<BossMechLeg>(initParam.leg, this);
 
 	// パーツをリストに追加
 	parts_.push_back(head_.get());
