@@ -9,7 +9,7 @@ using namespace Magi;
 void BossMechStateLaserShot::Enter([[maybe_unused]] BossMech* mech) {
 	time_ = MAGISYSTEM::GetParameterValue<float>({ "BossMechState","LaserShot","Time" });
 	// 攻撃
-	mech->GetWeapon("LaserGun")->Attack();
+	//mech->GetWeapon("LaserGun")->Attack();
 }
 
 void BossMechStateLaserShot::Update([[maybe_unused]] BossMech* mech) {
@@ -20,7 +20,8 @@ void BossMechStateLaserShot::Update([[maybe_unused]] BossMech* mech) {
 	time_ = std::max(0.0f, time_);
 
 	const float t = 1.0f - time_;
-	mech->GetAnimator()->ApplyAnimation("Test", t);
+	const float lerpT = MAGISYSTEM::GetParameterValue<float>({ "DebugParam","ByeAnimationLerpT" });
+	mech->GetAnimator()->ApplyAnimation("Bye", t, lerpT);
 
 	// タイマー0で待機状態に遷移
 	if (time_ == 0.0f) {

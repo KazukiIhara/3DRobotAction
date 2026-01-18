@@ -36,7 +36,7 @@ BossMech::BossMech(
 	head_ = std::make_unique<BossMechHead>(initParam.head, this);
 	armR_ = std::make_unique<BossMechRightArm>(initParam.armR, this);
 	armL_ = std::make_unique<BossMechLeftArm>(initParam.armL, this);
-	leg_  = std::make_unique<BossMechLeg>(initParam.leg, this);
+	leg_ = std::make_unique<BossMechLeg>(initParam.leg, this);
 
 	// パーツをリストに追加
 	parts_.push_back(head_.get());
@@ -52,7 +52,7 @@ BossMech::BossMech(
 	weapons_["LaserGun"] = std::make_unique<BossMechWeaponLaserGun>(this);
 
 	// ステートテーブル作成
-	states_[BossMech::BossMechState::Idle]      = std::make_unique<BossMechStateIdle>();
+	states_[BossMech::BossMechState::Idle] = std::make_unique<BossMechStateIdle>();
 	states_[BossMech::BossMechState::LaserShot] = std::make_unique<BossMechStateLaserShot>();
 
 	// アニメーションクラスを作成
@@ -71,6 +71,10 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	// デバッグ編集が有効なら初期化値を反映
 	if (debugFlag_.editPartsTransform) {
 		SetInitParam(param);
+	}
+	// 更新停止フラグ
+	if (debugFlag_.stopUpdate) {
+		return;
 	}
 #endif
 
@@ -225,14 +229,14 @@ void BossMech::CreatePartsTransformArray() {
 	if (armL_) {
 		partsTrans_[static_cast<size_t>(MechAnimation::TransType::UpperArmLeft)] = armL_->GetUpperTransform();
 		partsTrans_[static_cast<size_t>(MechAnimation::TransType::LowerArmLeft)] = armL_->GetLowerTransform();
-		partsTrans_[static_cast<size_t>(MechAnimation::TransType::HandLeft)]     = armL_->GetHandTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::HandLeft)] = armL_->GetHandTransform();
 	}
 
 	// Arm Right
 	if (armR_) {
 		partsTrans_[static_cast<size_t>(MechAnimation::TransType::UpperArmRight)] = armR_->GetUpperTransform();
 		partsTrans_[static_cast<size_t>(MechAnimation::TransType::LowerArmRight)] = armR_->GetLowerTransform();
-		partsTrans_[static_cast<size_t>(MechAnimation::TransType::HandRight)]     = armR_->GetHandTransform();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::HandRight)] = armR_->GetHandTransform();
 	}
 
 	// Leg
@@ -241,11 +245,11 @@ void BossMech::CreatePartsTransformArray() {
 
 		partsTrans_[static_cast<size_t>(MechAnimation::TransType::UpperLegLeft)] = leg_->GetUpperTransformLeft();
 		partsTrans_[static_cast<size_t>(MechAnimation::TransType::LowerLegLeft)] = leg_->GetLowerTransformLeft();
-		partsTrans_[static_cast<size_t>(MechAnimation::TransType::FootLeft)]     = leg_->GetFootTransformLeft();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::FootLeft)] = leg_->GetFootTransformLeft();
 
 		partsTrans_[static_cast<size_t>(MechAnimation::TransType::UpperLegRight)] = leg_->GetUpperTransformRight();
 		partsTrans_[static_cast<size_t>(MechAnimation::TransType::LowerLegRight)] = leg_->GetLowerTransformRight();
-		partsTrans_[static_cast<size_t>(MechAnimation::TransType::FootRight)]     = leg_->GetFootTransformRight();
+		partsTrans_[static_cast<size_t>(MechAnimation::TransType::FootRight)] = leg_->GetFootTransformRight();
 	}
 }
 
@@ -356,6 +360,10 @@ void BossMech::ShowDebugWidow() {
 
 	ImGui::SeparatorText("DebugFlag");
 	{
+		// 更新停止フラグ切り替え
+		if (ImGui::Button("StopUpdate")) {
+			SwitchStopUpdate();
+		}
 		// パーツのデバッグ描画切り替え
 		if (ImGui::Button("ShowPartsDebugDraw")) {
 			SwitchShowPartsTransform();
@@ -377,4 +385,8 @@ void BossMech::SwitchShowPartsTransform() {
 void BossMech::SwitchEditPartsTransform() {
 	// 編集フラグ反転
 	debugFlag_.editPartsTransform = !debugFlag_.editPartsTransform;
+}
+
+void BossMech::SwitchStopUpdate() {
+	debugFlag_.stopUpdate = !debugFlag_.stopUpdate;
 }

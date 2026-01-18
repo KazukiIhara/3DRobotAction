@@ -49,6 +49,7 @@ public:
 	struct DebugFlag {
 		bool showPartsTransform = false;
 		bool editPartsTransform = false;
+		bool stopUpdate = false;
 	};
 	// ステート
 	enum class BossMechState {
@@ -118,6 +119,7 @@ private:
 	// デバッグフラグ切り替え
 	void SwitchShowPartsTransform();
 	void SwitchEditPartsTransform();
+	void SwitchStopUpdate();
 
 private:
 	// トランスフォーム
