@@ -91,6 +91,10 @@ public:
 	[[nodiscard]] const Matrix4x4& GetWorldMatrix()const;
 	[[nodiscard]] const Vector3& GetWorldPosition()const;
 
+	[[nodiscard]] Vector3 GetRight() const;
+	[[nodiscard]] Vector3 GetUp() const;
+	[[nodiscard]] Vector3 GetForward() const;
+
 private:
 	//---------------------------- 
 	// トランスフォーム

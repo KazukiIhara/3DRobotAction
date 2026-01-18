@@ -92,6 +92,7 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	for (auto& weapon : weapons_) {
 		weapon.second->Update();
 	}
+
 }
 
 void BossMech::Draw() {

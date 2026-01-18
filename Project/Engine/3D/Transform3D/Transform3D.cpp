@@ -155,6 +155,36 @@ const Vector3& Transform3D::GetWorldPosition() const {
 	return worldPosition_;
 }
 
+Vector3 Transform3D::GetForward() const {
+	// ワールド回転取得
+	Vector3 s{}, t{};
+	Quaternion r{};
+	MAGIMath::DecomposeAffineMatrix(worldMatrix_, s, r, t);
+
+	// 前方ベクトル
+	return MAGIMath::Forward(r);
+}
+
+Vector3 Transform3D::GetRight() const {
+	// ワールド回転取得
+	Vector3 s{}, t{};
+	Quaternion r{};
+	MAGIMath::DecomposeAffineMatrix(worldMatrix_, s, r, t);
+
+	// 右ベクトル
+	return MAGIMath::Right(r);
+}
+
+Vector3 Transform3D::GetUp() const {
+	// ワールド回転取得
+	Vector3 s{}, t{};
+	Quaternion r{};
+	MAGIMath::DecomposeAffineMatrix(worldMatrix_, s, r, t);
+
+	// 上ベクトル
+	return MAGIMath::Up(r);
+}
+
 void Transform3D::SetParent(Transform3D* parent, bool keepWorld) {
 	// 同じだった場合は早期リターン
 	if (parent_ == parent) {
