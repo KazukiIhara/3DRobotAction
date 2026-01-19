@@ -14,7 +14,7 @@ PilotMechMoveSystem::PilotMechMoveSystem(PilotMech* mech) {
 	preDir_ = dir_;
 	acc_ = 0.0f;
 	speed_ = 0.0f;
-	maxSpeed_ = 0.0f;
+	maxSpeed_ = 10.0f;
 
 	velocity_ = dir_ * speed_;
 }
@@ -25,15 +25,24 @@ void PilotMechMoveSystem::Update() {
 
 	// 移動速度を計算
 	speed_ += acc_ * dt;
+	speed_ = std::max(0.0f, speed_);
 
-	// 速度をクランプ
-	speed_ = std::clamp(speed_, 0.0f, maxSpeed_);
-
-	// 方向を正規化
-	dir_ = Normalize(dir_);
+	// 速度を補間
+	if (speed_ > maxSpeed_) {
+		const float t = CalExpT(dt, 1.0f, 1.0f);
+		speed_ = Lerp(speed_, maxSpeed_, t);
+	}
 
 	// 移動方向の差によって減速させる
 	TurnDeceleration(dt);
+
+	PilotMech::State current = mech_->GetCurrentState();
+	if (current == PilotMech::State::Move) {
+		// 方向を正規化
+		dir_ = Normalize(dir_);
+		const float t = CalExpT(dt, 4.0f, 1.0f);
+		dir_ = Lerp(preDir_, dir_, t);
+	}
 
 	// 移動量計算
 	velocity_ = dir_ * speed_;
@@ -81,7 +90,8 @@ const Vector3& PilotMechMoveSystem::GetVelocity() const {
 void PilotMechMoveSystem::TurnDeceleration(float dt) {
 	// 角度差を求める
 	float dot = Dot(preDir_, dir_);
-	if (dot < 0.0f) {
+	// 角度差が大きい場合速度を小さくする
+	if (dot < -0.5f) {
 		speed_ = 0.5f;
 	}
 }

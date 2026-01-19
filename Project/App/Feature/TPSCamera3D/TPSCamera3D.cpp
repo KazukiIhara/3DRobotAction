@@ -24,7 +24,7 @@ namespace {
 }
 
 TPSCamera3D::TPSCamera3D(const std::string& name)
-	: Camera3D(name, false) // isUseYawPitch=false で開始
+	: Camera3D(name, false) 
 {
 	SetIsUseYawPitch(false);
 
@@ -39,6 +39,9 @@ void TPSCamera3D::Update() {
 		UpdateData();
 		return;
 	}
+
+	// パラメータ調整
+
 
 	const Vector3 desiredTarget = CalcDesiredTarget();
 	const Vector3 desiredEye = CalcDesiredEye(desiredTarget);

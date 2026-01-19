@@ -33,16 +33,16 @@ void PilotMechStateDodge::Enter(PilotMech* mech) {
 void PilotMechStateDodge::Update(PilotMech* mech) {
 	const float dt = MAGISYSTEM::GetDeltaTime();
 	const float time = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Dodge","Time" });
-
-	const float t = CalExpT(dt, time, 0.5f);
-
 	auto ms = mech->GetMoveSystem();
 
-	// 通常移動の最大速度まで補間
-	const float maxMoveSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
-	const float currentSpeed = ms->GetSpeed();
-	const float speed = Lerp(currentSpeed, maxMoveSpeed, t);
-	ms->SetSpeed(speed);
+	{
+		const float t = CalExpT(dt, time, 0.5f);
+		// 通常移動の最大速度まで補間
+		const float maxMoveSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
+		const float currentSpeed = ms->GetSpeed();
+		const float speed = Lerp(currentSpeed, maxMoveSpeed, t);
+		ms->SetSpeed(speed);
+	}
 
 	// タイマー更新
 	timer_ -= MAGISYSTEM::GetDeltaTime();
@@ -53,6 +53,4 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 	}
 }
 
-void PilotMechStateDodge::Exit([[maybe_unused]] PilotMech* mech) {
-
-}
+void PilotMechStateDodge::Exit([[maybe_unused]] PilotMech* mech) {}
