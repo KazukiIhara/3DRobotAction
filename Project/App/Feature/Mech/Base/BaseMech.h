@@ -70,6 +70,9 @@ public:
 	// 関節トランスフォーム取得
 	Transform3D* GetPartsTransform(MechAnimation::TransType type);
 
+	// 中心座標取得
+	const Vector3& GetCenterPos();
+
 	// 武器
 	BaseMechWeapon* GetWeapon(const std::string& name);
 

@@ -112,6 +112,13 @@ Transform3D* BaseMech::GetPartsTransform(MechAnimation::TransType type) {
 	return partsTrans_[index];
 }
 
+const Vector3& BaseMech::GetCenterPos() {
+	if (body_) {
+		return body_->GetTransform()->GetWorldPosition();
+	}
+	return Vector3{};
+}
+
 BaseMechWeapon* BaseMech::GetWeapon(const std::string& name) {
 	auto it = weapons_.find(name);
 	if (it == weapons_.end()) {
