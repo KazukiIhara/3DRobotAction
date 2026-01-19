@@ -2,7 +2,7 @@
 
 #include <string>
 
-class BossMech;
+class BaseMech;
 class MechAnimationContainer;
 
 #include "MechAnimation/MechAnimation.h"
@@ -17,15 +17,15 @@ public:
 
 	void Update();
 
-	void SetBossMech(BossMech* mech);
+	void SetBaseMech(BaseMech* mech);
 
 	bool AddAnimationClip(const std::string& name, const MechAnimation::Clip& clip, bool overwrite);
 
 private:
 	void ShowWindow();
 
-	void DrawRotate(BossMech* mech, int typeValue, const char* label);
-	void DrawTranslate(BossMech* mech, int typeValue, const char* label);
+	void DrawRotate(BaseMech* mech, int typeValue, const char* label);
+	void DrawTranslate(BaseMech* mech, int typeValue, const char* label);
 
 	// 現在の姿勢をPoseとして取得
 	MechAnimation::Pose CaptureCurrentPose() const;
@@ -52,7 +52,7 @@ private:
 	void ApplyAtNormalizedTime(float t);
 
 private:
-	BossMech* mech_ = nullptr;
+	BaseMech* mech_ = nullptr;
 	MechAnimationContainer* container_ = nullptr;
 
 	// 追加用入力

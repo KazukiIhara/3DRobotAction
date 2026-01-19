@@ -132,7 +132,7 @@ public:
 	// 
 	// コライダーの取得(今後コンポーネント化する可能性あり)
 	// 
-	MechCollider* GetCollider();
+	MechaCollider* GetCollider();
 	MechJustDodgeCollider* GetJustDodgeCollider();
 
 	//======================= 
@@ -243,7 +243,7 @@ private:
 	//=======================
 
 	// ひとまず体
-	std::unique_ptr<MechCollider> collider_;
+	std::unique_ptr<MechaCollider> collider_;
 	// ジャスト回避用の判定
 	std::unique_ptr<MechJustDodgeCollider> justDodgeCollider_;
 

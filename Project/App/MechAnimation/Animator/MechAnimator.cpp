@@ -6,7 +6,7 @@
 #include <algorithm>
 
 #include "MechAnimation/Container/MechAnimationContainer.h"
-#include "GameObject/Boss/Mech/BossMech.h"
+#include "Feature/Mech/Base/BaseMech.h"
 #include "3D/Transform3D/Transform3D.h"
 
 // 数学
@@ -14,12 +14,16 @@
 
 using namespace MAGIMath;
 
-MechAnimator::MechAnimator(MechAnimationContainer* container, BossMech* mech) {
+MechAnimator::MechAnimator(MechAnimationContainer* container, BaseMech* mech) {
 	container_ = container;
 	mech_ = mech;
 }
 
 void MechAnimator::ApplyAnimation(const std::string& name, float t, float blendT) {
+
+	if (!container_) {
+		return;
+	}
 
 	const MechAnimation::Clip* clip = container_->GetClip(name);
 	if (!clip) {
@@ -72,13 +76,16 @@ MechAnimation::Pose MechAnimator::CaptureCurrentPose() const {
 
 	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
 		const auto type = static_cast<MechAnimation::TransType>(i);
-		if (mech_) {
-			Transform3D* trans = mech_->GetPartsTransform(type);
-			if (trans) {
-				pose.rotations[i] = trans->GetQuaternion(); // 現在回転
-			} else {
-				pose.rotations[i] = identity; // 無効はidentity
-			}
+		if (!mech_) {
+			pose.rotations[i] = identity;
+			continue;
+		}
+
+		Transform3D* trans = mech_->GetPartsTransform(type);
+		if (trans) {
+			pose.rotations[i] = trans->GetQuaternion(); // 現在回転
+		} else {
+			pose.rotations[i] = identity; // 無効はidentity
 		}
 	}
 
@@ -86,7 +93,7 @@ MechAnimation::Pose MechAnimator::CaptureCurrentPose() const {
 	if (mech_) {
 		Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
 		if (waist) {
-			pose.waistTranslate = waist->GetTranslate();
+			pose.waistTranslate = waist->GetTranslate(); // 現在位置
 		}
 	}
 

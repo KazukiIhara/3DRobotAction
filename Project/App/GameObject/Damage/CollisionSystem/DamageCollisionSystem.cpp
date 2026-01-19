@@ -303,46 +303,39 @@ bool DamageCollisionSystem::IsCollision(const DamageCollider::Param& a, const Da
 		using A = std::decay_t<decltype(sa)>;
 		using B = std::decay_t<decltype(sb)>;
 
-		// Sphere - Sphere
 		if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionSphereToSphere(sa, sb);
 		}
-		// Sphere - OBB
 		else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionSphereToOBB(sa, sb);
 		}
-		// OBB - Sphere
 		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionSphereToOBB(sb, sa);
 		}
-		// OBB - OBB
 		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionOBBToOBB(sa, sb);
 		}
-		// Capsule - Sphere
 		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionCapsuleToSphere(sa, sb);
 		}
-		// Sphere - Capsule
 		else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToSphere(sb, sa);
 		}
-		// Capsule - Capsule
 		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToCapsule(sa, sb);
 		}
-		// Capsule - OBB
 		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionCapsuleToOBB(sa, sb);
 		}
-		// OBB - Capsule
 		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToOBB(sb, sa);
 		}
-
-		return false;
-		}, a, b);
+		else {
+			return false;
+		}
+	}, a, b);
 }
+
 
 bool DamageCollisionSystem::IsCollisionSphereToSphere(const DamageCollider::Sphere& a, const DamageCollider::Sphere& b) {
 	// 距離二乗

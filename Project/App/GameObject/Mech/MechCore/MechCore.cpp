@@ -130,7 +130,7 @@ MechCore::MechCore(const Vector3& position,
 		body->GetTransform()->SetParent(core_.lock()->GetTransform(), false);
 
 		// コライダーを作成
-		collider_ = std::make_unique<MechCollider>(tag_, body->GetTransform()->GetWorldPosition(), kColliderMin_, kColliderMax_);
+		collider_ = std::make_unique<MechaCollider>(tag_, body->GetTransform()->GetWorldPosition(), kColliderMin_, kColliderMax_);
 		// ジャスト回避用のコライダー
 		justDodgeCollider_ = std::make_unique<MechJustDodgeCollider>();
 
@@ -385,7 +385,7 @@ BulletHitEffect* MechCore::GetBulletHitEffect() {
 	return bulletHitEffect_.get();
 }
 
-MechCollider* MechCore::GetCollider() {
+MechaCollider* MechCore::GetCollider() {
 	return collider_.get();
 }
 

@@ -2,7 +2,7 @@
 
 #include "MAGI.h"
 
-MechCollider::MechCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL) {
+MechaCollider::MechaCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL) {
 	tag_ = tag;
 
 	posW_ = posW;
@@ -12,44 +12,44 @@ MechCollider::MechCollider(const FriendlyTag& tag, const Vector3& posW, const Ve
 	Update();
 }
 
-void MechCollider::Update() {
+void MechaCollider::Update() {
 	// 衝突情報をリセット
 	hitInfos_.clear();
 	minW_ = posW_ + minL_;
 	maxW_ = posW_ + maxL_;
 }
 
-void MechCollider::Draw() {
+void MechaCollider::Draw() {
 	// デバッグ描画
 #if defined(DEBUG) || defined(DEVELOP)
 	MAGISYSTEM::DrawLineAABB(minW_, maxW_, Color::Blue);
 #endif
 }
 
-const Vector3& MechCollider::GetMinW() const {
+const Vector3& MechaCollider::GetMinW() const {
 	return minW_;
 }
 
-const Vector3& MechCollider::GetMaxW() const {
+const Vector3& MechaCollider::GetMaxW() const {
 	return maxW_;
 }
 
-void MechCollider::AddHitInfo(const HitInfo& info) {
+void MechaCollider::AddHitInfo(const HitInfo& info) {
 	hitInfos_.push_back(info);
 }
 
-bool MechCollider::GetIsAlive()const {
+bool MechaCollider::GetIsAlive()const {
 	return isAlive_;
 }
 
-std::vector<MechCollider::HitInfo> MechCollider::GetHitInfo() const {
+std::vector<MechaCollider::HitInfo> MechaCollider::GetHitInfo() const {
 	return hitInfos_;
 }
 
-void MechCollider::SetWorldPos(const Vector3& posW) {
+void MechaCollider::SetWorldPos(const Vector3& posW) {
 	posW_ = posW;
 }
 
-void MechCollider::SetIsAlive(bool isAlive) {
+void MechaCollider::SetIsAlive(bool isAlive) {
 	isAlive_ = isAlive;
 }
