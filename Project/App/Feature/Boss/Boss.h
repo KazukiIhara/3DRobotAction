@@ -1,5 +1,6 @@
 #pragma once
 
+// C++
 #include <memory>
 
 #include "../Boss/AI/BossAI.h"
@@ -9,7 +10,6 @@
 class DamageObjectManager;
 class GameEffectManager;
 class MechAnimationContainer;
-class MechCore;
 
 // 実装メモ
 /*

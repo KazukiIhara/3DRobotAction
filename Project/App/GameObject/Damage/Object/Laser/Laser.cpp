@@ -9,6 +9,7 @@ using namespace Magi;
 Laser::Laser(const Laser::InitParam& initParam) :
 	BaseDamageObject(initParam.emitPos) {
 	// 初期化パラメータを受け取る
+	emitPos_ = initParam.emitPos;
 	dir_ = initParam.dir;
 	speed_ = initParam.speed;
 	life_ = initParam.life;

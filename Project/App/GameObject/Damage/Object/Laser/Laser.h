@@ -23,6 +23,7 @@ public:
 	void Finalize()override;
 
 private:
+	Vector3 emitPos_;
 	Vector3 dir_;
 	float speed_;
 	float life_;

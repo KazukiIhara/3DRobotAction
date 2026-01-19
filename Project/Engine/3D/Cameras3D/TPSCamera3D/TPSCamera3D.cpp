@@ -28,7 +28,6 @@ TPSCamera3D::TPSCamera3D(const std::string& name)
 {
 	SetIsUseYawPitch(false);
 
-	// 初期値を既存の Camera3D 初期値に寄せるならここで調整OK
 	smoothedEye_ = GetEye();
 	smoothedTarget_ = GetTarget();
 }
@@ -52,7 +51,7 @@ void TPSCamera3D::Update() {
 	SetTarget(smoothedTarget_);
 	SetEye(smoothedEye_);
 
-	// Camera3D 共通の更新（行列生成・GPUデータ更新・Shake適用など）
+
 	UpdateData();
 }
 
@@ -85,8 +84,12 @@ void TPSCamera3D::AddPitch(float delta) {
 	SetPitch(p);
 }
 
-TPSCamera3D::Param& TPSCamera3D::GetParam() { return param_; }
-const TPSCamera3D::Param& TPSCamera3D::GetParam() const { return param_; }
+TPSCamera3D::Param& TPSCamera3D::GetParam() {
+	return param_;
+}
+const TPSCamera3D::Param& TPSCamera3D::GetParam() const {
+	return param_;
+}
 
 Vector3 TPSCamera3D::CalcDesiredTarget() const {
 	Vector3 base = follow_->GetWorldPosition();
@@ -108,7 +111,7 @@ Vector3 TPSCamera3D::CalcDesiredEye(const Vector3& desiredTarget) const {
 	// ワールドUp固定
 	const Vector3 up = Vector3{ 0.0f, 1.0f, 0.0f };
 
-	// right を作る（Crossの実装はあなたのMathに依存）
+	// right を作る
 	Vector3 right = Normalize(Cross(up, fwd));
 
 	// 肩越し + 距離

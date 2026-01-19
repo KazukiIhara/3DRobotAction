@@ -23,64 +23,13 @@ void DevelopScene::Initialize() {
 	// リソースロード
 	//
 
-	MAGISYSTEM::LoadModel("MechHead");
-	MAGISYSTEM::CreateModelDrawer("MechHead", MAGISYSTEM::FindModel("MechHead"));
-
-	MAGISYSTEM::LoadModel("MechBody");
-	MAGISYSTEM::CreateModelDrawer("MechBody", MAGISYSTEM::FindModel("MechBody"));
-
-	MAGISYSTEM::LoadModel("MechRightArm");
-	MAGISYSTEM::CreateModelDrawer("MechRightArm", MAGISYSTEM::FindModel("MechRightArm"));
-
-	MAGISYSTEM::LoadModel("MechLeftArm");
-	MAGISYSTEM::CreateModelDrawer("MechLeftArm", MAGISYSTEM::FindModel("MechLeftArm"));
-
-	MAGISYSTEM::LoadModel("MechLeg");
-	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
-
-	MAGISYSTEM::LoadModel("AssultRifle");
-	MAGISYSTEM::CreateModelDrawer("AssultRifle", MAGISYSTEM::FindModel("AssultRifle"));
-
-	MAGISYSTEM::LoadModel("RocketLauncher");
-	MAGISYSTEM::CreateModelDrawer("RocketLauncher", MAGISYSTEM::FindModel("RocketLauncher"));
-
-	MAGISYSTEM::LoadModel("DualMissileLauncher");
-	MAGISYSTEM::CreateModelDrawer("DualMissileLauncher", MAGISYSTEM::FindModel("DualMissileLauncher"));
-
 	MAGISYSTEM::LoadModel("Ground");
 	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
-
-	// 
-	// 弾など
-	// 
-	MAGISYSTEM::LoadModel("Bullet");
-	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
-
-	MAGISYSTEM::LoadModel("Missile");
-	MAGISYSTEM::CreateModelDrawer("Missile", MAGISYSTEM::FindModel("Missile"));
-
-	// 
-	// エフェクト
-	// 
-	MAGISYSTEM::LoadModel("Spark");
-	MAGISYSTEM::CreateModelDrawer("Spark", MAGISYSTEM::FindModel("Spark"));
-	// 靄用
-	MAGISYSTEM::LoadTexture("smoke.png");
-
-	// マズルフラッシュ
-	MAGISYSTEM::LoadTexture("muzzleFlash.png");
 
 
 	//===========================
 	// マネージャの初期化
 	//===========================
-
-	// 攻撃コリジョンマネージャ
-	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
-
-	// 弾マネージャ
-	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
-
 
 	// ゲームエフェクトマネージャ
 	gameEffectManager_ = std::make_unique<GameEffectManager>();
@@ -98,12 +47,8 @@ void DevelopScene::Initialize() {
 		damageObjectManager_.get(), gameEffectManager_.get(), mechAnimationContainer_.get()
 	};
 
-	// プレイヤー作成
-	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
-	player_->SetIsOperation(true);
 
-
-	boss_ = std::make_unique<Boss>(ref, player_->GetMechCore());
+	boss_ = std::make_unique<Boss>(ref);
 
 	// アニメーション作成クラスにボスをセット
 	mechAnimationEdit_->SetBaseMech(boss_->GetMech());
@@ -138,15 +83,8 @@ void DevelopScene::Update() {
 	// 平行光源をセット
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
-	// プレイヤーを更新
-	player_->Update();
 	// ボスを更新
 	boss_->Update();
-
-	// 攻撃オブジェクトマネージャ更新
-	attackObjectManger_->Update();
-	// 攻撃判定更新
-	attackCollisionManager_->Update();
 
 	// 攻撃オブジェクトマネージャ更新
 	damageObjectManager_->Update();
@@ -157,16 +95,8 @@ void DevelopScene::Update() {
 }
 
 void DevelopScene::Draw() {
-	// プレイヤーを描画
-	player_->Draw();
-
 	// ボスを描画
 	boss_->Draw();
-
-	// 弾マネージャ描画
-	attackObjectManger_->Draw();
-	// 攻撃判定マネージャ描画
-	attackCollisionManager_->Draw();
 
 	// 攻撃オブジェクトマネージャ描画
 	damageObjectManager_->Draw();
