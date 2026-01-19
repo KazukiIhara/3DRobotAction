@@ -6,7 +6,6 @@
 //-------------------------------------------
 // シーンオブジェクト
 //-------------------------------------------
-#include "GameObject/Player/Player.h"
 #include "Feature/Boss/Boss.h"
 
 //-------------------------------------------
@@ -36,16 +35,8 @@ public:
 	void Finalize() override;
 
 private:
-	// プレイヤー
-	std::unique_ptr<Player> player_;
 	// ボス
 	std::unique_ptr<Boss> boss_;
-
-	// 攻撃判定マネージャ
-	std::unique_ptr<AttackCollisionManager> attackCollisionManager_;
-	// 弾のマネージャ
-	std::unique_ptr<AttackObjectManager> attackObjectManger_;
-
 
 	// エフェクトマネージャ
 	std::unique_ptr<GameEffectManager> gameEffectManager_;
@@ -54,7 +45,6 @@ private:
 	std::unique_ptr<DamageCollisionSystem> damageCollisionSystem_;
 	// 攻撃オブジェクトマネージャ
 	std::unique_ptr<DamageObjectManager> damageObjectManager_;
-
 
 	// 機体アニメーション作成クラス
 	std::unique_ptr<MechAnimationEdit> mechAnimationEdit_;

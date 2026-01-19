@@ -27,7 +27,7 @@ public:
 		bool isDebugDraw = false;
 	};
 public:
-	Boss(BaseMech::RefContext ref, MechCore* playerMech);
+	Boss(BaseMech::RefContext ref);
 
 	~Boss() = default;
 

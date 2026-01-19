@@ -38,28 +38,13 @@ public:
 		LaserShot
 	};
 public:
-	BossMech(const InitParam& param, const RefContext& ref, MechCore* playerMech);
+	BossMech(const InitParam& param, const RefContext& ref);
 	~BossMech() = default;
 
-	void Update([[maybe_unused]] bool isShowDebugUI, const BossMech::InitParam& param);
+	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param);
 	void Draw();
 
 	void ChangeState(BossMech::BossMechState nextState);
-
-	Transform3D* GetTransform();
-
-	// 関節トランスフォーム取得
-	Transform3D* GetPartsTransform(MechAnimation::TransType type);
-
-	// アニメーション再生クラスへのアクセッサ
-	MechAnimator* GetAnimator();
-
-	// プレイヤー機体へのアクセッサ
-	MechCore* GetPlayerMech();
-
-	// 参照ポインタへのアクセッサ
-	DamageObjectManager* GetDamageObjectManager();
-	GameEffectManager* GetGameEffectManager();
 
 	// デバッグ用描画
 	void DebugDraw();
@@ -72,8 +57,6 @@ private:
 	BossMechBaseState* GetState(BossMech::BossMechState state);
 	// ステートを文字列に変換
 	const std::string StateToString(BossMech::BossMechState state);
-
-
 
 	// パーツタイプを文字列に変換
 	const std::string TransTypeToString(MechAnimation::TransType partsType);
@@ -91,7 +74,5 @@ private:
 	std::unordered_map<BossMech::BossMechState, std::unique_ptr<BossMechBaseState>> states_;
 	// 現在のステート
 	std::pair<BossMech::BossMechState, BossMechBaseState*> currentState_;
-
-	MechCore* playerMech_ = nullptr;
 
 };

@@ -14,9 +14,8 @@
 
 using namespace Magi;
 
-BossMech::BossMech(const InitParam& param, const RefContext& ref, MechCore* playerMech) :
+BossMech::BossMech(const InitParam& param, const RefContext& ref) :
 	BaseMech(param, ref) {
-	playerMech_ = playerMech;
 
 	// 武器をマップに追加
 	RegisterWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
@@ -29,7 +28,7 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, MechCore* play
 	ChangeState(BossMechState::Idle);
 }
 
-void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BossMech::InitParam& param) {
+void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BaseMech::InitParam& param) {
 #if defined(DEBUG) || defined(DEVELOP)
 	// デバッグUIを表示
 	if (isShowDebugUI) {
@@ -91,27 +90,6 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	if (auto cs = currentState_.second) {
 		cs->Enter(this);
 	}
-}
-
-Transform3D* BossMech::GetTransform() {
-	return transform_;
-}
-
-Transform3D* BossMech::GetPartsTransform(MechAnimation::TransType type) {
-	// 配列境界チェック
-	const size_t index = static_cast<size_t>(type);
-	if (index >= partsTrans_.size()) {
-		return nullptr;
-	}
-	return partsTrans_[index];
-}
-
-MechAnimator* BossMech::GetAnimator() {
-	return animator_.get();
-}
-
-MechCore* BossMech::GetPlayerMech() {
-	return playerMech_;
 }
 
 void BossMech::DebugDraw() {

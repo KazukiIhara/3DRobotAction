@@ -30,7 +30,6 @@ void Camera3DManager::Update() {
 
 	for (auto& camera : cameras3D_) {
 		camera->Update();
-		camera->PlayAnimation();
 		camera->UpdateData();
 	}
 
