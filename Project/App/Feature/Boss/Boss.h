@@ -1,5 +1,6 @@
 #pragma once
 
+// C++
 #include <memory>
 
 #include "../Boss/AI/BossAI.h"
@@ -9,7 +10,6 @@
 class DamageObjectManager;
 class GameEffectManager;
 class MechAnimationContainer;
-class MechCore;
 
 // 実装メモ
 /*
@@ -27,8 +27,7 @@ public:
 		bool isDebugDraw = false;
 	};
 public:
-	Boss(BaseMech::RefContext ref, MechCore* playerMech);
-
+	Boss(BaseMech::RefContext ref);
 	~Boss() = default;
 
 	void Update();
@@ -36,11 +35,9 @@ public:
 
 	BossMech* GetMech();
 
-	void InitMechInitParam();
+	void LoadMechInitParam();
 
-	bool GetIsAIActive()const;
-
-	void SetIsAIActive(bool isActive);
+	Flag GetFlag()const;
 
 	void SwitchDebugDraw();
 	void SwitchAIActive();

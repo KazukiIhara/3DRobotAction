@@ -17,11 +17,10 @@
 
 #include "Feature/Mech/Weapon/BaseMechWeapon.h"
 
-#include "MechAnimation/MechAnimation.h"
-#include "GameCommon/GameCommon.h"
 #include "MechAnimation/Animator/MechAnimator.h"
-
 #include "Feature/Mech/Collider/MechCollider.h"
+
+#include "GameCommon/GameCommon.h"
 
 // Forward
 class DamageObjectManager;
@@ -55,8 +54,13 @@ public:
 	BaseMech(const InitParam& param, const RefContext& ref);
 	virtual ~BaseMech() = default;
 
-	virtual void Update(bool isShowDebugUI);
-	virtual void Draw();
+	virtual void Update(bool isShowDebugUI, const BaseMech::InitParam& param);
+	void Draw();
+	void DebugDraw();
+
+	virtual void ShowDebugWindow() {};
+
+	void DebugUpdate(bool isShowDebugUI, const BaseMech::InitParam& param);
 
 	Transform3D* GetTransform();
 
@@ -79,6 +83,9 @@ public:
 	// アニメーター
 	MechAnimator* GetAnimator();
 
+	// パーツタイプを文字列に変換
+	const std::string TransTypeToString(MechAnimation::TransType partsType);
+
 	DebugFlag& GetDebugFlag();
 	const DebugFlag& GetDebugFlag() const;
 
@@ -87,21 +94,26 @@ public:
 	MechAnimationContainer* GetAnimationContainer();
 
 protected:
+	// 初期化パラメータを受け取る
+	void SetInitParam(const BaseMech::InitParam& initParam);
+
 	// パーツを追加
 	void AddParts(IMechParts* parts);
 	// 武器を追加
 	void RegisterWeapon(const std::string& name, std::unique_ptr<BaseMechWeapon> weapon);
-
-	// デバッグUIの中身は派生に任せる
-	virtual void ShowDebugWindow() {}
+	// デバッグフラグのUIを出す
+	void ShowDebugFlagUI();
 
 private:
 	void CreateParts(const InitParam& param);
 	void PartsSetUp();
-	void DebugDraw();
 	void BuildPartsList();
 	void BuildPartsTransformArray();
 
+	// デバッグフラグ切り替え
+	void SwitchShowPartsTransform();
+	void SwitchEditPartsTransform();
+	void SwitchStopUpdate();
 protected:
 	Transform3D* transform_ = nullptr;
 

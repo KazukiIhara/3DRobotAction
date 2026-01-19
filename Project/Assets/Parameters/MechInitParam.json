@@ -214,5 +214,225 @@
   "DebugSphere": {
     "type": "Float",
     "value": 0.6000000238418579
+  },
+  "Pilot": {
+    "Body": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechBody"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": 0.8500000238418579,
+          "z": 0.0
+        }
+      }
+    },
+    "FootLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechFootLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.100000023841858,
+          "z": 0.0
+        }
+      }
+    },
+    "FootRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechFootRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.100000023841858,
+          "z": 0.0
+        }
+      }
+    },
+    "HandLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechHandLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.0399999618530273,
+          "z": 0.0
+        }
+      }
+    },
+    "HandRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechHandRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.0399999618530273,
+          "z": 0.0
+        }
+      }
+    },
+    "Head": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechHead"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": 0.949999988079071,
+          "z": 0.0
+        }
+      }
+    },
+    "InitPos": {
+      "type": "Vec3",
+      "value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -20.0
+      }
+    },
+    "LowerArmLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechLowerArmLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -0.8199999928474426,
+          "z": 0.0
+        }
+      }
+    },
+    "LowerArmRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechLowerArmRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -0.8199999928474426,
+          "z": 0.0
+        }
+      }
+    },
+    "LowerLegLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechLowerLegLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.0399999618530273,
+          "z": 0.0
+        }
+      }
+    },
+    "LowerLegRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechLowerLegRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.0399999618530273,
+          "z": 0.0
+        }
+      }
+    },
+    "UpperArmLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechUpperArmLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 1.2000000476837158,
+          "y": 0.5,
+          "z": 0.0
+        }
+      }
+    },
+    "UpperArmRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechUpperArmRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": -1.2000000476837158,
+          "y": 0.5,
+          "z": 0.0
+        }
+      }
+    },
+    "UpperLegLeft": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechUpperLegLeft"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.3499999940395355,
+          "y": -0.27000001072883606,
+          "z": 0.0
+        }
+      }
+    },
+    "UpperLegRight": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechUpperLegRight"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": -0.3499999940395355,
+          "y": -0.27000001072883606,
+          "z": 0.0
+        }
+      }
+    },
+    "Waist": {
+      "ModelName": {
+        "type": "String",
+        "value": "PilotMechWaist"
+      },
+      "Translate": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": 2.5,
+          "z": 0.0
+        }
+      }
+    }
   }
 }

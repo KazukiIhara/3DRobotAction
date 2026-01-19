@@ -8,6 +8,8 @@
 
 #include "TextureDataContainer/TextureDataContainer.h"
 
+#include "MAGIAssert/MAGIAssert.h"
+
 using namespace Magi;
 using namespace MAGIMath;
 
@@ -98,7 +100,9 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 		aiProcess_PopulateArmatureData |   // アーマチュアデータを整理（Assimp 5.3 以降）
 		aiProcess_GenSmoothNormals
 	);
-	assert(scene && scene->HasMeshes());
+
+
+	MAGIAssert::Assert(scene && scene->HasMeshes(), "NoHasMeses:" + modelName);
 
 	// ノード読み込み
 	newModelData.rootNode = ReadNode(scene->mRootNode);
@@ -128,7 +132,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + normalMapPath.C_Str();
 				textureDataContainer_->LoadNormalMap(materialData.normalMapTextureFilePath);
 				materialData.hasNormalMap = true;
-			} 
+			}
 
 		} else {
 			// テクスチャがない場合は念のためデフォルトテクスチャのパスを設定

@@ -1,6 +1,5 @@
 #include "DevelopScene.h"
 
-#include "GameEffects/LaserEffect/LaserEffect.h"
 
 using namespace Magi;
 
@@ -15,72 +14,31 @@ void DevelopScene::Initialize() {
 	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
+
+	// 3Dカメラ作成
+	std::unique_ptr<TPSCamera3D> sceneCamera3D = std::make_unique<TPSCamera3D>("SceneCamera3D");
+	// マネージャに追加
+	Camera3D* camera = MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D));
+
+	// TPSカメラにキャスト
+	camera_ = dynamic_cast<TPSCamera3D*>(camera);
+	// 現在のカメラに設定
+	camera_->ApplyCurrent();
+
 	// ライトを設定
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
-
+	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// 
 	// リソースロード
 	//
 
-	MAGISYSTEM::LoadModel("MechHead");
-	MAGISYSTEM::CreateModelDrawer("MechHead", MAGISYSTEM::FindModel("MechHead"));
-
-	MAGISYSTEM::LoadModel("MechBody");
-	MAGISYSTEM::CreateModelDrawer("MechBody", MAGISYSTEM::FindModel("MechBody"));
-
-	MAGISYSTEM::LoadModel("MechRightArm");
-	MAGISYSTEM::CreateModelDrawer("MechRightArm", MAGISYSTEM::FindModel("MechRightArm"));
-
-	MAGISYSTEM::LoadModel("MechLeftArm");
-	MAGISYSTEM::CreateModelDrawer("MechLeftArm", MAGISYSTEM::FindModel("MechLeftArm"));
-
-	MAGISYSTEM::LoadModel("MechLeg");
-	MAGISYSTEM::CreateModelDrawer("MechLeg", MAGISYSTEM::FindModel("MechLeg"));
-
-	MAGISYSTEM::LoadModel("AssultRifle");
-	MAGISYSTEM::CreateModelDrawer("AssultRifle", MAGISYSTEM::FindModel("AssultRifle"));
-
-	MAGISYSTEM::LoadModel("RocketLauncher");
-	MAGISYSTEM::CreateModelDrawer("RocketLauncher", MAGISYSTEM::FindModel("RocketLauncher"));
-
-	MAGISYSTEM::LoadModel("DualMissileLauncher");
-	MAGISYSTEM::CreateModelDrawer("DualMissileLauncher", MAGISYSTEM::FindModel("DualMissileLauncher"));
-
 	MAGISYSTEM::LoadModel("Ground");
 	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
-
-	// 
-	// 弾など
-	// 
-	MAGISYSTEM::LoadModel("Bullet");
-	MAGISYSTEM::CreateModelDrawer("Bullet", MAGISYSTEM::FindModel("Bullet"));
-
-	MAGISYSTEM::LoadModel("Missile");
-	MAGISYSTEM::CreateModelDrawer("Missile", MAGISYSTEM::FindModel("Missile"));
-
-	// 
-	// エフェクト
-	// 
-	MAGISYSTEM::LoadModel("Spark");
-	MAGISYSTEM::CreateModelDrawer("Spark", MAGISYSTEM::FindModel("Spark"));
-	// 靄用
-	MAGISYSTEM::LoadTexture("smoke.png");
-
-	// マズルフラッシュ
-	MAGISYSTEM::LoadTexture("muzzleFlash.png");
-
 
 	//===========================
 	// マネージャの初期化
 	//===========================
-
-	// 攻撃コリジョンマネージャ
-	attackCollisionManager_ = std::make_unique<AttackCollisionManager>();
-
-	// 弾マネージャ
-	attackObjectManger_ = std::make_unique<AttackObjectManager>(attackCollisionManager_.get());
-
 
 	// ゲームエフェクトマネージャ
 	gameEffectManager_ = std::make_unique<GameEffectManager>();
@@ -93,17 +51,16 @@ void DevelopScene::Initialize() {
 	// 機体アニメーション作成クラス
 	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get());
 
-	// ボス作成
+	// 機体の作成に必要なシステムのポインタ
 	BaseMech::RefContext ref{
 		damageObjectManager_.get(), gameEffectManager_.get(), mechAnimationContainer_.get()
 	};
 
-	// プレイヤー作成
-	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
-	player_->SetIsOperation(true);
+	// パイロット
+	pilot_ = std::make_unique<Pilot>(ref, camera_);
 
-
-	boss_ = std::make_unique<Boss>(ref, player_->GetMechCore());
+	// ボス作成
+	boss_ = std::make_unique<Boss>(ref);
 
 	// アニメーション作成クラスにボスをセット
 	mechAnimationEdit_->SetBaseMech(boss_->GetMech());
@@ -129,6 +86,10 @@ void DevelopScene::Update() {
 			boss_->SwitchDebugDraw();
 		}
 
+		ImGui::SeparatorText("Pilot");
+		if (ImGui::Button("SwitchDebugDraw")) {
+			pilot_->SwitchDebugDraw();
+		}
 		ImGui::End();
 
 		// 機体アニメーション作成クラス
@@ -138,15 +99,11 @@ void DevelopScene::Update() {
 	// 平行光源をセット
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
-	// プレイヤーを更新
-	player_->Update();
+	// パイロットを更新
+	pilot_->Update();
+
 	// ボスを更新
 	boss_->Update();
-
-	// 攻撃オブジェクトマネージャ更新
-	attackObjectManger_->Update();
-	// 攻撃判定更新
-	attackCollisionManager_->Update();
 
 	// 攻撃オブジェクトマネージャ更新
 	damageObjectManager_->Update();
@@ -157,16 +114,11 @@ void DevelopScene::Update() {
 }
 
 void DevelopScene::Draw() {
-	// プレイヤーを描画
-	player_->Draw();
+	// パイロットを更新
+	pilot_->Draw();
 
 	// ボスを描画
 	boss_->Draw();
-
-	// 弾マネージャ描画
-	attackObjectManger_->Draw();
-	// 攻撃判定マネージャ描画
-	attackCollisionManager_->Draw();
 
 	// 攻撃オブジェクトマネージャ描画
 	damageObjectManager_->Draw();

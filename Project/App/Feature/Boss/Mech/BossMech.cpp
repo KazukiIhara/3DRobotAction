@@ -3,7 +3,6 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
-#include "GameObject/Mech/MechCore/MechCore.h"
 #include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
 #include "GameEffects/System/GameEffectManager/GameEffectManager.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
@@ -14,9 +13,8 @@
 
 using namespace Magi;
 
-BossMech::BossMech(const InitParam& param, const RefContext& ref, MechCore* playerMech) :
+BossMech::BossMech(const InitParam& param, const RefContext& ref) :
 	BaseMech(param, ref) {
-	playerMech_ = playerMech;
 
 	// 武器をマップに追加
 	RegisterWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
@@ -29,55 +27,17 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, MechCore* play
 	ChangeState(BossMechState::Idle);
 }
 
-void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BossMech::InitParam& param) {
-#if defined(DEBUG) || defined(DEVELOP)
-	// デバッグUIを表示
-	if (isShowDebugUI) {
-		DebugDraw();
-	}
-	// デバッグ編集が有効なら初期化値を反映
-	if (debugFlag_.editPartsTransform) {
-		SetInitParam(param);
-	}
-	// 更新停止フラグ
-	if (debugFlag_.stopUpdate) {
-		return;
-	}
-#endif
+
+void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BaseMech::InitParam& param) {
+	// デバッグの更新
+	DebugUpdate(isShowDebugUI, param);
 
 	// ステート更新
 	if (auto& state = currentState_.second) {
 		state->Update(this);
 	}
-
-	// 全パーツを更新
-	for (auto& part : parts_) {
-		part->Update();
-	}
-
-	// 全武器を更新
-	for (auto& weapon : weapons_) {
-		weapon.second->Update();
-	}
-
-	// コライダーを更新
-	collider_->Update();
-
-}
-
-void BossMech::Draw() {
-	// 全パーツを描画
-	for (auto& part : parts_) {
-		part->Draw();
-	}
-
-	// 全武器を描画
-	for (auto& weapon : weapons_) {
-		weapon.second->Draw();
-	}
-
-	// コライダーを描画
-	collider_->Draw();
+	// 基底クラスの更新
+	BaseMech::Update(isShowDebugUI, param);
 }
 
 void BossMech::ChangeState(BossMech::BossMechState nextState) {
@@ -93,66 +53,6 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	}
 }
 
-Transform3D* BossMech::GetTransform() {
-	return transform_;
-}
-
-Transform3D* BossMech::GetPartsTransform(MechAnimation::TransType type) {
-	// 配列境界チェック
-	const size_t index = static_cast<size_t>(type);
-	if (index >= partsTrans_.size()) {
-		return nullptr;
-	}
-	return partsTrans_[index];
-}
-
-MechAnimator* BossMech::GetAnimator() {
-	return animator_.get();
-}
-
-MechCore* BossMech::GetPlayerMech() {
-	return playerMech_;
-}
-
-void BossMech::DebugDraw() {
-	// デバッグウィンドウ描画処理
-	ShowDebugWidow();
-	// パーツデバッグ描画
-	if (debugFlag_.isDebugDraw) {
-		// 各パーツのデバッグ描画
-		for (auto& part : parts_) {
-			part->DebugDraw();
-		}
-		// 武器のデバッグ描画
-		for (auto& w : weapons_) {
-			w.second->DebugDraw();
-		}
-	}
-
-}
-
-void BossMech::SetInitParam(const BossMech::InitParam& initParam) {
-	// 頭の初期値反映
-	if (head_) {
-		head_->SetInitTranslate(initParam.head);
-	}
-	// 胴体の初期値反映
-	if (body_) {
-		body_->SetInitTranslate(initParam.body);
-	}
-	// 右腕の初期値反映
-	if (armR_) {
-		armR_->SetInitTranslate(initParam.armR);
-	}
-	// 左腕の初期値反映
-	if (armL_) {
-		armL_->SetInitTranslate(initParam.armL);
-	}
-	// 足の初期値反映
-	if (leg_) {
-		leg_->SetInitTranslate(initParam.leg);
-	}
-}
 
 BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
 	// ステートテーブルから検索
@@ -176,50 +76,7 @@ const std::string BossMech::StateToString(BossMech::BossMechState state) {
 	}
 }
 
-const std::string BossMech::TransTypeToString(MechAnimation::TransType partsType) {
-	switch (partsType) {
-		case MechAnimation::TransType::Head:
-			return "Head";
-		case MechAnimation::TransType::Body:
-			return "Body";
-
-		case MechAnimation::TransType::UpperArmLeft:
-			return "UpperArmLeft";
-		case MechAnimation::TransType::LowerArmLeft:
-			return "LowerArmLeft";
-		case MechAnimation::TransType::HandLeft:
-			return "HandLeft";
-
-		case MechAnimation::TransType::UpperArmRight:
-			return "UpperArmRight";
-		case MechAnimation::TransType::LowerArmRight:
-			return "LowerArmRight";
-		case MechAnimation::TransType::HandRight:
-			return "HandRight";
-
-		case MechAnimation::TransType::Waist:
-			return "Waist";
-
-		case MechAnimation::TransType::UpperLegLeft:
-			return "UpperLegLeft";
-		case MechAnimation::TransType::LowerLegLeft:
-			return "LowerLegLeft";
-		case MechAnimation::TransType::FootLeft:
-			return "FootLeft";
-
-		case MechAnimation::TransType::UpperLegRight:
-			return "UpperLegRight";
-		case MechAnimation::TransType::LowerLegRight:
-			return "LowerLegRight";
-		case MechAnimation::TransType::FootRight:
-			return "FootRight";
-
-		default:
-			return "Unknown";
-	}
-}
-
-void BossMech::ShowDebugWidow() {
+void BossMech::ShowDebugWindow() {
 	// デバッグ操作ウィンドウ
 	ImGui::Begin("BossMech");
 
@@ -259,35 +116,9 @@ void BossMech::ShowDebugWidow() {
 		ImGui::EndChild();
 	}
 
-	ImGui::SeparatorText("DebugFlag");
-	{
-		// 更新停止フラグ切り替え
-		if (ImGui::Button("StopUpdate")) {
-			SwitchStopUpdate();
-		}
-		// パーツのデバッグ描画切り替え
-		if (ImGui::Button("ShowPartsDebug")) {
-			SwitchShowPartsTransform();
-		}
-		// パーツ編集モード切り替え
-		if (ImGui::Button("EditPartsTrans")) {
-			SwitchEditPartsTransform();
-		}
-	}
+	// デバッグフラグのUI
+	ShowDebugFlagUI();
 
 	ImGui::End();
 }
 
-void BossMech::SwitchShowPartsTransform() {
-	// 表示フラグ反転
-	debugFlag_.isDebugDraw = !debugFlag_.isDebugDraw;
-}
-
-void BossMech::SwitchEditPartsTransform() {
-	// 編集フラグ反転
-	debugFlag_.editPartsTransform = !debugFlag_.editPartsTransform;
-}
-
-void BossMech::SwitchStopUpdate() {
-	debugFlag_.stopUpdate = !debugFlag_.stopUpdate;
-}

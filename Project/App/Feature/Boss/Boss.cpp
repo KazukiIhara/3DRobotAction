@@ -4,27 +4,21 @@
 
 using namespace Magi;
 
-Boss::Boss(BaseMech::RefContext ref, MechCore* playerMech
-) {
+Boss::Boss(BaseMech::RefContext ref) {
 
 	// パラメータ作成
-	InitMechInitParam();
+	LoadMechInitParam();
 
 	// 機体の作成
-	mech_ = std::make_unique<BossMech>(
-		initParam_,
-		ref,
-		playerMech
-	);
+	mech_ = std::make_unique<BossMech>(initParam_, ref);
 	// AIの作成
 
 
 }
 
-
 void Boss::Update() {
 #if defined (DEBUG)|(DEVELOP)
-	InitMechInitParam();
+	LoadMechInitParam();
 #endif
 
 	// 機体の更新
@@ -41,7 +35,7 @@ BossMech* Boss::GetMech() {
 	return mech_.get();
 }
 
-void Boss::InitMechInitParam() {
+void Boss::LoadMechInitParam() {
 	initParam_.head.modelName = MAGISYSTEM::GetParameterValue<std::string>({ "MechInitParam","Boss","Head","ModelName" });
 	initParam_.head.translate = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Boss","Head","Translate" });
 
@@ -80,12 +74,8 @@ void Boss::InitMechInitParam() {
 	initParam_.leg.footTranslateRight = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Boss","FootRight","Translate" });
 }
 
-bool Boss::GetIsAIActive()const {
-	return flag_.isAIActive;
-}
-
-void Boss::SetIsAIActive(bool isActive) {
-	flag_.isAIActive = isActive;
+Boss::Flag Boss::GetFlag() const {
+	return flag_;
 }
 
 void Boss::SwitchDebugDraw() {

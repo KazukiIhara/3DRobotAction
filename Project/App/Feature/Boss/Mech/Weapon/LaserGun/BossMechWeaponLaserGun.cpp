@@ -50,7 +50,7 @@ void BossMechWeaponLaserGun::Attack() {
 	// 発射座標
 	const Vector3 shotPos = fireTransform_->GetWorldPosition();
 	// プレイヤーの座標を取得
-	const Vector3 playerPos = dynamic_cast<BossMech*>(mech_)->GetPlayerMech()->GetBodyWPos();
+	const Vector3 playerPos = { 0.0f,0.0f,0.0f };
 	// 方向を計算
 	const Vector3 dir = Normalize(playerPos - shotPos);
 	// 弾速取得
