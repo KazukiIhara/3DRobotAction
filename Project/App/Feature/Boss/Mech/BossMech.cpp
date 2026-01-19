@@ -11,10 +11,15 @@
 #include "Feature/Boss/Mech/State/Idle/BossMechStateIdle.h"
 #include "Feature/Boss/Mech/State/LaserShot/BossMechStateLaserShot.h"
 
+// プレイヤー機体
+#include "Feature/Pilot/Mech/PilotMech.h"
+
 using namespace Magi;
 
-BossMech::BossMech(const InitParam& param, const RefContext& ref) :
+BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pilotMech) :
 	BaseMech(param, ref) {
+	// プレイヤー機体の参照ポインタを受け取る
+	pilotMech_ = pilotMech;
 
 	// 武器をマップに追加
 	RegisterWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));

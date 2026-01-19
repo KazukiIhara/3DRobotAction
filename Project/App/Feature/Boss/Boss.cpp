@@ -4,13 +4,12 @@
 
 using namespace Magi;
 
-Boss::Boss(BaseMech::RefContext ref) {
-
+Boss::Boss(BaseMech::RefContext ref, PilotMech* pilotMech) {
 	// パラメータ作成
 	LoadMechInitParam();
 
 	// 機体の作成
-	mech_ = std::make_unique<BossMech>(initParam_, ref);
+	mech_ = std::make_unique<BossMech>(initParam_, ref, pilotMech);
 	// AIの作成
 
 

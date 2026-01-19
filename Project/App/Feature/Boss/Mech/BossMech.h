@@ -9,6 +9,8 @@
 // ステート基底クラス
 #include "Feature/Boss/Mech/State/BossMechBaseState.h"
 
+class PilotMech;
+
 /// <summary>
 /// ボス機体クラス
 /// </summary>
@@ -20,7 +22,7 @@ public:
 		LaserShot
 	};
 public:
-	BossMech(const InitParam& param, const RefContext& ref);
+	BossMech(const InitParam& param, const RefContext& ref, PilotMech* pilotMech);
 	~BossMech() = default;
 
 	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param)override;
@@ -42,5 +44,9 @@ private:
 
 	// 現在のステート
 	std::pair<BossMech::State, BossMechBaseState*> currentState_;
+
+
+	// プレイヤー機体の参照ポインタ
+	PilotMech* pilotMech_;
 
 };

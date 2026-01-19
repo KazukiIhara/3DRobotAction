@@ -72,7 +72,7 @@ void DevelopScene::Initialize() {
 	pilot_ = std::make_unique<Pilot>(ref, pref);
 
 	// ボス作成
-	boss_ = std::make_unique<Boss>(ref);
+	boss_ = std::make_unique<Boss>(ref,pilot_->GetMech());
 
 	// アニメーション作成クラスにボスをセット
 	mechAnimationEdit_->SetBaseMech(boss_->GetMech());

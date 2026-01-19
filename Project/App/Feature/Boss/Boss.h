@@ -10,6 +10,7 @@
 class DamageObjectManager;
 class GameEffectManager;
 class MechAnimationContainer;
+class PilotMech;
 
 // 実装メモ
 /*
@@ -27,7 +28,7 @@ public:
 		bool isDebugDraw = false;
 	};
 public:
-	Boss(BaseMech::RefContext ref);
+	Boss(BaseMech::RefContext ref, PilotMech* pilotMech);
 	~Boss() = default;
 
 	void Update();
@@ -53,5 +54,6 @@ private:
 
 	// フラグ構造体
 	Flag flag_;
+
 
 };
