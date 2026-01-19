@@ -5,6 +5,7 @@
 
 #include "Math/Types/AllMathTypes.h"
 #include "MAGIAssert/MAGIAssert.h"
+#include "GameCommon/GameCommon.h"
 
 /// <summary>
 /// ダメージコライダー
@@ -38,7 +39,7 @@ public:
 		Capsule
 	>;
 public:
-	DamageCollider(Param param);
+	DamageCollider(Param param, FriendlyTag tag);
 	~DamageCollider() = default;
 
 	void Update();
@@ -64,12 +65,18 @@ public:
 	// 生存フラグを取得
 	bool GetIsAlive()const;
 
+	// 識別タグを取得
+	FriendlyTag GetTag()const;
+
 private:
 	// パラメータ
 	Param param_{};
 
 	// 衝突情報
 	HitInfo hitInfo_{};
+
+	// 識別タグ
+	FriendlyTag tag_;
 
 	// 生存フラグ
 	bool isAlive_ = true;

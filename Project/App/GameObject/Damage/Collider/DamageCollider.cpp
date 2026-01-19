@@ -4,9 +4,9 @@
 
 using namespace Magi;
 
-DamageCollider::DamageCollider(Param param) {
+DamageCollider::DamageCollider(Param param, FriendlyTag tag) {
 	param_ = std::move(param);
-
+	tag_ = tag;
 }
 
 void DamageCollider::Update() {
@@ -55,4 +55,8 @@ void DamageCollider::SetIsAlive(bool isAlive) {
 
 bool DamageCollider::GetIsAlive()const {
 	return isAlive_;
+}
+
+FriendlyTag DamageCollider::GetTag() const {
+	return tag_;
 }
