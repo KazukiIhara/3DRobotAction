@@ -3,6 +3,8 @@
 // C++
 #include <memory>
 
+#include "Feature/Pilot/Mech/PilotMech.h"
+
 // 前方宣言
 class DamageObjectManager;
 class GameEffectManager;

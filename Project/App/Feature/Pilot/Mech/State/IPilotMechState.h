@@ -3,7 +3,7 @@
 class PilotMech;
 
 /// <summary>
-/// 
+/// パイロット機体のステート既定クラス
 /// </summary>
 class IPilotMechState {
 public:

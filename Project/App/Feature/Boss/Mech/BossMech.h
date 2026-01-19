@@ -1,11 +1,5 @@
 #pragma once
 
-// C++
-#include <string>
-#include <memory>
-#include <vector>
-#include <unordered_map>
-
 // 機体基底クラス
 #include "Feature/Mech/Base/BaseMech.h"
 
@@ -14,18 +8,6 @@
 
 // ステート基底クラス
 #include "Feature/Boss/Mech/State/BossMechBaseState.h"
-
-// アニメーションクラス
-#include "MechAnimation/Animator/MechAnimator.h"
-
-// コライダークラス
-#include "Feature/Mech/Collider/MechCollider.h"
-
-// 前方宣言
-class DamageObjectManager;
-class GameEffectManager;
-class MechAnimationContainer;
-class MechCore;
 
 /// <summary>
 /// ボス機体クラス
