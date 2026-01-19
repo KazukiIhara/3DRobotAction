@@ -6,13 +6,16 @@
 //-------------------------------------------
 // シーンオブジェクト
 //-------------------------------------------
+
+// パイロット
+#include "Feature/Pilot/Pilot.h"
+
+// ボス
 #include "Feature/Boss/Boss.h"
 
 //-------------------------------------------
 // シーンに配置するマネージャ
 //-------------------------------------------
-#include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
-#include "GameObject/AttackObjectManager/AttackObjectManager.h"
 #include "GameEffects/System/GameEffectManager/GameEffectManager.h"
 
 #include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
@@ -35,12 +38,16 @@ public:
 	void Finalize() override;
 
 private:
+	// シーンカメラの参照ポインタ
+	TPSCamera3D* camera_;
+
+	// パイロット
+	std::unique_ptr<Pilot> pilot_;
 	// ボス
 	std::unique_ptr<Boss> boss_;
 
 	// エフェクトマネージャ
 	std::unique_ptr<GameEffectManager> gameEffectManager_;
-
 	// コリジョンシステム
 	std::unique_ptr<DamageCollisionSystem> damageCollisionSystem_;
 	// 攻撃オブジェクトマネージャ
@@ -50,7 +57,6 @@ private:
 	std::unique_ptr<MechAnimationEdit> mechAnimationEdit_;
 	// 機体アニメーションコンテナクラス
 	std::unique_ptr<MechAnimationContainer> mechAnimationContainer_;
-
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};

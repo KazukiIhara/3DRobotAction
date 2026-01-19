@@ -1,6 +1,5 @@
 #include "DevelopScene.h"
 
-#include "GameEffects/LaserEffect/LaserEffect.h"
 
 using namespace Magi;
 
@@ -15,9 +14,20 @@ void DevelopScene::Initialize() {
 	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
+
+	// 3Dカメラ作成
+	std::unique_ptr<TPSCamera3D> sceneCamera3D = std::make_unique<TPSCamera3D>("SceneCamera3D");
+	// マネージャに追加
+	Camera3D* camera = MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D));
+
+	// TPSカメラにキャスト
+	camera_ = dynamic_cast<TPSCamera3D*>(camera);
+	// 現在のカメラに設定
+	camera_->ApplyCurrent();
+
 	// ライトを設定
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
-
+	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// 
 	// リソースロード
@@ -25,7 +35,6 @@ void DevelopScene::Initialize() {
 
 	MAGISYSTEM::LoadModel("Ground");
 	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
-
 
 	//===========================
 	// マネージャの初期化
@@ -42,12 +51,15 @@ void DevelopScene::Initialize() {
 	// 機体アニメーション作成クラス
 	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get());
 
-	// ボス作成
+	// 機体の作成に必要なシステムのポインタ
 	BaseMech::RefContext ref{
 		damageObjectManager_.get(), gameEffectManager_.get(), mechAnimationContainer_.get()
 	};
 
+	// パイロット
+	pilot_ = std::make_unique<Pilot>(ref, camera_);
 
+	// ボス作成
 	boss_ = std::make_unique<Boss>(ref);
 
 	// アニメーション作成クラスにボスをセット
@@ -74,6 +86,10 @@ void DevelopScene::Update() {
 			boss_->SwitchDebugDraw();
 		}
 
+		ImGui::SeparatorText("Pilot");
+		if (ImGui::Button("SwitchDebugDraw")) {
+			pilot_->SwitchDebugDraw();
+		}
 		ImGui::End();
 
 		// 機体アニメーション作成クラス
@@ -82,6 +98,9 @@ void DevelopScene::Update() {
 
 	// 平行光源をセット
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
+
+	// パイロットを更新
+	pilot_->Update();
 
 	// ボスを更新
 	boss_->Update();
@@ -95,6 +114,9 @@ void DevelopScene::Update() {
 }
 
 void DevelopScene::Draw() {
+	// パイロットを更新
+	pilot_->Draw();
+
 	// ボスを描画
 	boss_->Draw();
 

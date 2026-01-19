@@ -33,9 +33,6 @@ private:
 	// ステートを文字列に変換
 	const std::string StateToString(BossMech::BossMechState state);
 
-	// パーツタイプを文字列に変換
-	const std::string TransTypeToString(MechAnimation::TransType partsType);
-
 	// デバッグウィンドウ描画
 	void ShowDebugWindow()override;
 

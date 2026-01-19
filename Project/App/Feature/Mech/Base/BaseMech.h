@@ -55,7 +55,7 @@ public:
 	virtual ~BaseMech() = default;
 
 	virtual void Update(bool isShowDebugUI, const BaseMech::InitParam& param);
-	virtual void Draw();
+	void Draw();
 	void DebugDraw();
 
 	virtual void ShowDebugWindow() {};
@@ -82,6 +82,9 @@ public:
 
 	// アニメーター
 	MechAnimator* GetAnimator();
+
+	// パーツタイプを文字列に変換
+	const std::string TransTypeToString(MechAnimation::TransType partsType);
 
 	DebugFlag& GetDebugFlag();
 	const DebugFlag& GetDebugFlag() const;

@@ -28,7 +28,6 @@ public:
 	};
 public:
 	Boss(BaseMech::RefContext ref);
-
 	~Boss() = default;
 
 	void Update();
@@ -36,11 +35,9 @@ public:
 
 	BossMech* GetMech();
 
-	void InitMechInitParam();
+	void LoadMechInitParam();
 
-	bool GetIsAIActive()const;
-
-	void SetIsAIActive(bool isActive);
+	Flag GetFlag()const;
 
 	void SwitchDebugDraw();
 	void SwitchAIActive();

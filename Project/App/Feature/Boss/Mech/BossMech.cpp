@@ -76,49 +76,6 @@ const std::string BossMech::StateToString(BossMech::BossMechState state) {
 	}
 }
 
-const std::string BossMech::TransTypeToString(MechAnimation::TransType partsType) {
-	switch (partsType) {
-		case MechAnimation::TransType::Head:
-			return "Head";
-		case MechAnimation::TransType::Body:
-			return "Body";
-
-		case MechAnimation::TransType::UpperArmLeft:
-			return "UpperArmLeft";
-		case MechAnimation::TransType::LowerArmLeft:
-			return "LowerArmLeft";
-		case MechAnimation::TransType::HandLeft:
-			return "HandLeft";
-
-		case MechAnimation::TransType::UpperArmRight:
-			return "UpperArmRight";
-		case MechAnimation::TransType::LowerArmRight:
-			return "LowerArmRight";
-		case MechAnimation::TransType::HandRight:
-			return "HandRight";
-
-		case MechAnimation::TransType::Waist:
-			return "Waist";
-
-		case MechAnimation::TransType::UpperLegLeft:
-			return "UpperLegLeft";
-		case MechAnimation::TransType::LowerLegLeft:
-			return "LowerLegLeft";
-		case MechAnimation::TransType::FootLeft:
-			return "FootLeft";
-
-		case MechAnimation::TransType::UpperLegRight:
-			return "UpperLegRight";
-		case MechAnimation::TransType::LowerLegRight:
-			return "LowerLegRight";
-		case MechAnimation::TransType::FootRight:
-			return "FootRight";
-
-		default:
-			return "Unknown";
-	}
-}
-
 void BossMech::ShowDebugWindow() {
 	// デバッグ操作ウィンドウ
 	ImGui::Begin("BossMech");
