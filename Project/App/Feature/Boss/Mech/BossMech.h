@@ -23,16 +23,9 @@ public:
 	BossMech(const InitParam& param, const RefContext& ref);
 	~BossMech() = default;
 
-	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param);
-	void Draw();
+	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param)override;
 
 	void ChangeState(BossMech::BossMechState nextState);
-
-	// デバッグ用描画
-	void DebugDraw();
-
-	// 初期化パラメータを受け取る
-	void SetInitParam(const BossMech::InitParam& initParam);
 
 private:
 	// 対応するステートを取得
@@ -44,16 +37,12 @@ private:
 	const std::string TransTypeToString(MechAnimation::TransType partsType);
 
 	// デバッグウィンドウ描画
-	void ShowDebugWidow();
-
-	// デバッグフラグ切り替え
-	void SwitchShowPartsTransform();
-	void SwitchEditPartsTransform();
-	void SwitchStopUpdate();
+	void ShowDebugWindow()override;
 
 private:
 	// ステートテーブル
 	std::unordered_map<BossMech::BossMechState, std::unique_ptr<BossMechBaseState>> states_;
+
 	// 現在のステート
 	std::pair<BossMech::BossMechState, BossMechBaseState*> currentState_;
 

@@ -21,6 +21,9 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 	// パーツ作成
 	CreateParts(param);
 
+	// 一応パラメータ初期化
+	SetInitParam(param);
+
 	// 関節配列初期化
 	partsTrans_.fill(nullptr);
 
@@ -37,15 +40,7 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 
 }
 
-void BaseMech::Update(bool isShowDebugUI) {
-#if defined(DEBUG) || defined(DEVELOP)
-	if (isShowDebugUI) {
-		DebugDraw();
-	}
-	if (debugFlag_.stopUpdate) {
-		return;
-	}
-#endif
+void BaseMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BaseMech::InitParam& param) {
 
 	// パーツ更新
 	for (auto& p : parts_) {
@@ -82,6 +77,39 @@ void BaseMech::Draw() {
 	if (collider_) {
 		collider_->Draw();
 	}
+}
+
+void BaseMech::DebugDraw() {
+	// デバッグウィンドウ描画処理
+	ShowDebugWindow();
+
+	// パーツデバッグ描画
+	if (debugFlag_.isDebugDraw) {
+		// 各パーツのデバッグ描画
+		for (auto& part : parts_) {
+			part->DebugDraw();
+		}
+		// 武器のデバッグ描画
+		for (auto& w : weapons_) {
+			w.second->DebugDraw();
+		}
+	}
+}
+
+void BaseMech::DebugUpdate(bool isShowDebugUI, const BaseMech::InitParam& param) {
+#if defined(DEBUG) || defined(DEVELOP)
+	if (isShowDebugUI) {
+		DebugDraw();
+	}
+	// デバッグ編集が有効なら初期化値を反映
+	if (debugFlag_.editPartsTransform) {
+		SetInitParam(param);
+	}
+	// 更新停止フラグ
+	if (debugFlag_.stopUpdate) {
+		return;
+	}
+#endif
 }
 
 Transform3D* BaseMech::GetTransform() {
@@ -131,7 +159,6 @@ MechAnimator* BaseMech::GetAnimator() {
 	return animator_.get();
 }
 
-
 BaseMech::DebugFlag& BaseMech::GetDebugFlag() {
 	return debugFlag_;
 }
@@ -149,6 +176,29 @@ MechAnimationContainer* BaseMech::GetAnimationContainer() {
 	return ref_.animationContainer;
 }
 
+void BaseMech::SetInitParam(const BaseMech::InitParam& initParam) {
+	// 頭の初期値反映
+	if (head_) {
+		head_->SetInitTranslate(initParam.head);
+	}
+	// 胴体の初期値反映
+	if (body_) {
+		body_->SetInitTranslate(initParam.body);
+	}
+	// 右腕の初期値反映
+	if (armR_) {
+		armR_->SetInitTranslate(initParam.armR);
+	}
+	// 左腕の初期値反映
+	if (armL_) {
+		armL_->SetInitTranslate(initParam.armL);
+	}
+	// 足の初期値反映
+	if (leg_) {
+		leg_->SetInitTranslate(initParam.leg);
+	}
+}
+
 void BaseMech::AddParts(IMechParts* parts) {
 	parts_.push_back(parts);
 }
@@ -160,6 +210,24 @@ void BaseMech::RegisterWeapon(const std::string& name, std::unique_ptr<BaseMechW
 	weapons_[name] = std::move(weapon);
 }
 
+
+void BaseMech::ShowDebugFlagUI() {
+	ImGui::SeparatorText("DebugFlag");
+	{
+		// 更新停止フラグ切り替え
+		if (ImGui::Button("StopUpdate")) {
+			SwitchStopUpdate();
+		}
+		// パーツのデバッグ描画切り替え
+		if (ImGui::Button("ShowPartsDebug")) {
+			SwitchShowPartsTransform();
+		}
+		// パーツ編集モード切り替え
+		if (ImGui::Button("EditPartsTrans")) {
+			SwitchEditPartsTransform();
+		}
+	}
+}
 
 void BaseMech::CreateParts(const InitParam& param) {
 	// 生成順が重要（親参照があるため）
@@ -228,6 +296,16 @@ void BaseMech::BuildPartsTransformArray() {
 	}
 }
 
-void BaseMech::DebugDraw() {
-	ShowDebugWindow();
+void BaseMech::SwitchShowPartsTransform() {
+	// 表示フラグ反転
+	debugFlag_.isDebugDraw = !debugFlag_.isDebugDraw;
+}
+
+void BaseMech::SwitchEditPartsTransform() {
+	// 編集フラグ反転
+	debugFlag_.editPartsTransform = !debugFlag_.editPartsTransform;
+}
+
+void BaseMech::SwitchStopUpdate() {
+	debugFlag_.stopUpdate = !debugFlag_.stopUpdate;
 }
