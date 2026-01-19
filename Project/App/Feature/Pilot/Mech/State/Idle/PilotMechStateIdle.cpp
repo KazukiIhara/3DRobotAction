@@ -2,7 +2,7 @@
 
 #include "Feature/Pilot/Mech/PilotMech.h"
 #include "Feature/GameInputSystem/GameInputSystem.h"
-#include "Feature/Pilot/Mech/System/PilotMechMoveSystem.h"
+#include "Feature/Pilot/Mech/System/Move/PilotMechMoveSystem.h"
 
 #include "Math/Utility/MathUtility.h"
 
@@ -25,8 +25,12 @@ void PilotMechStateIdle::Update(PilotMech* mech) {
 	}
 
 	// 摩擦による減速処理
-
-
+	const float acc = -20.0f;
+	const float maxSpeed = 20.0f;
+	// 移動システム
+	auto ms = mech->GetMoveSystem();
+	ms->SetAcc(acc);
+	ms->SetMaxSpeed(maxSpeed);
 }
 
 void PilotMechStateIdle::Exit(PilotMech* mech) {

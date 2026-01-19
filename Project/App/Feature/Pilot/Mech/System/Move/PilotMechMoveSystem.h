@@ -22,11 +22,17 @@ public:
 	void SetSpeed(float speed);
 	void SetMaxSpeed(float maxSpeed);
 
-	const Vector3 GetVelocity()const;
+	const Vector3& GetDir()const;
+	const Vector3& GetVelocity()const;
+
+private:
+	// 旋回による減速処理
+	void TurnDeceleration(float dt);
 
 private:
 	Vector3 velocity_;
 	Vector3 dir_;
+	Vector3 preDir_;
 	float acc_;
 	float speed_;
 	float maxSpeed_;

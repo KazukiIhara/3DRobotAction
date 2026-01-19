@@ -18,6 +18,10 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(param.position);
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
+	// 描画用トランスフォーム
+	drawTransform_ = MAGISYSTEM::AddTransform3D();
+	drawTransform_->SetParent(transform_, false);
+
 	// パーツ作成
 	CreateParts(param);
 
@@ -114,6 +118,10 @@ void BaseMech::DebugUpdate(bool isShowDebugUI, const BaseMech::InitParam& param)
 
 Transform3D* BaseMech::GetTransform() {
 	return transform_;
+}
+
+Transform3D* BaseMech::GetDrawTransform() {
+	return drawTransform_;
 }
 
 MechPartsHead* BaseMech::GetHead() {
