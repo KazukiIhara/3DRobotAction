@@ -476,7 +476,7 @@ void MechCore::QuickBoostFovEffect() {
 	const float targetFovArriveTime = MAGISYSTEM::GetParameterValue<float>({ "MechCommonParam","QuickBoost","TargetFovArriveTime" });
 
 	const float currentFovY = core_.lock()->GetCamera3D("MainCamera")->GetFovY();
-	const float t = CalExpAlpha(MAGISYSTEM::GetDeltaTime(), targetFovArriveTime, 0.99f);
+	const float t = CalExpT(MAGISYSTEM::GetDeltaTime(), targetFovArriveTime, 0.99f);
 
 	float targetFovY = 0.0f;
 	// クイックブースト中

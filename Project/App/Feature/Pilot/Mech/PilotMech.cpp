@@ -68,6 +68,10 @@ void PilotMech::ChangeState(PilotMech::State nextState) {
 	}
 }
 
+PilotMech::State PilotMech::GetCurrentState()const {
+	return currentState_.first;
+}
+
 PilotMechMoveSystem* PilotMech::GetMoveSystem() {
 	return moveSystem_.get();
 }

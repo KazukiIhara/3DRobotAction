@@ -31,6 +31,8 @@ public:
 
 	void ChangeState(PilotMech::State nextState);
 
+	PilotMech::State GetCurrentState()const;
+
 	// システムを取得
 	PilotMechMoveSystem* GetMoveSystem();
 	GameInputSystem* GetInputSys();

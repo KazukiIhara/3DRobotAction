@@ -278,7 +278,7 @@ Vector4 MAGIMath::Lerp(const Vector4& v1, const Vector4& v2, float t) {
 	return v1 + (v2 - v1) * t;
 }
 
-float MAGIMath::CalExpAlpha(float dt, float secondsToArrive, float reachRate) {
+float MAGIMath::CalExpT(float dt, float secondsToArrive, float reachRate) {
 	reachRate = std::clamp(reachRate, 0.0f, 0.999999f);
 	secondsToArrive = std::max(secondsToArrive, 0.0001f);
 

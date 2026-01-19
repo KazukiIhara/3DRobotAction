@@ -14,7 +14,7 @@ PilotMechMoveSystem::PilotMechMoveSystem(PilotMech* mech) {
 	preDir_ = dir_;
 	acc_ = 0.0f;
 	speed_ = 0.0f;
-	maxSpeed_ = 0.0f;
+	maxSpeed_ = 10.0f;
 
 	velocity_ = dir_ * speed_;
 }
@@ -25,15 +25,24 @@ void PilotMechMoveSystem::Update() {
 
 	// 移動速度を計算
 	speed_ += acc_ * dt;
+	speed_ = std::max(0.0f, speed_);
 
-	// 速度をクランプ
-	speed_ = std::clamp(speed_, 0.0f, maxSpeed_);
-
-	// 方向を正規化
-	dir_ = Normalize(dir_);
+	// 速度を補間
+	if (speed_ > maxSpeed_) {
+		const float t = CalExpT(dt, 1.0f, 1.0f);
+		speed_ = Lerp(speed_, maxSpeed_, t);
+	}
 
 	// 移動方向の差によって減速させる
 	TurnDeceleration(dt);
+
+	PilotMech::State current = mech_->GetCurrentState();
+	if (current == PilotMech::State::Move) {
+		// 方向を正規化
+		dir_ = Normalize(dir_);
+		const float t = CalExpT(dt, 4.0f, 1.0f);
+		dir_ = Lerp(preDir_, dir_, t);
+	}
 
 	// 移動量計算
 	velocity_ = dir_ * speed_;
@@ -42,7 +51,7 @@ void PilotMechMoveSystem::Update() {
 	preDir_ = dir_;
 
 	// 機体を動かす
-	mech_->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
+	mech_->GetTransform()->AddTranslate(velocity_ * dt);
 }
 
 void PilotMechMoveSystem::SetDir(const Vector3& dir) {
@@ -66,6 +75,10 @@ void PilotMechMoveSystem::SetMaxSpeed(float maxSpeed) {
 	maxSpeed_ = maxSpeed;
 }
 
+float PilotMechMoveSystem::GetSpeed() const {
+	return speed_;
+}
+
 const Vector3& PilotMechMoveSystem::GetDir() const {
 	return dir_;
 }
@@ -74,18 +87,11 @@ const Vector3& PilotMechMoveSystem::GetVelocity() const {
 	return velocity_;
 }
 
-
 void PilotMechMoveSystem::TurnDeceleration(float dt) {
-	// 前方向が無効なら初期化
-	Vector3 preN = preDir_;
-	if (LengthSquared(preN) <= 1.0e-8f) {
-		preN = dir_;
-	} else {
-		preN = Normalize(preN);
-	}
 	// 角度差を求める
-	float dot = Dot(preN, dir_);
-	if (dot < 0.0f) {
+	float dot = Dot(preDir_, dir_);
+	// 角度差が大きい場合速度を小さくする
+	if (dot < -0.5f) {
 		speed_ = 0.5f;
 	}
 }
