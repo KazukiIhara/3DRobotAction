@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "Feature/Pilot/Mech/PilotMech.h"
-#include "Feature/Pilot/Operater/PilotOperater.h"
 
 #include "Feature/TPSCamera3D/TPSCamera3D.h"
 
@@ -38,12 +37,12 @@ public:
 	void SwitchIsPause();
 
 private:
+	// カメラ操作
+	void CameraOperation();
+private:
 	// 機体
 	std::unique_ptr<PilotMech> mech_;
 	PilotMech::InitParam initParam_;
-
-	// 機体操作クラス
-	std::unique_ptr<PilotOperator> operator_;
 
 	// カメラの参照ポインタ
 	TPSCamera3D* camera_ = nullptr;

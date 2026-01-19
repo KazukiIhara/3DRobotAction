@@ -16,17 +16,15 @@ Pilot::Pilot(BaseMech::RefContext ref, TPSCamera3D* camera) {
 	// 機体の胴体を追従対象にする
 	camera_->SetFollowTransform(mech_->GetPartsTransform(MechAnimation::TransType::Body));
 
-
-	// 機体操作クラス
-	operator_ = std::make_unique<PilotOperator>(mech_.get(), camera_);
 }
 
 void Pilot::Update() {
 #if defined (DEBUG)|(DEVELOP)
 	LoadMechInitParam();
 #endif
-	// 操作更新
-	operator_->Update();
+
+	// カメラ操作
+	CameraOperation();
 
 	// 機体の更新
 	mech_->Update(flag_.isDebugDraw, initParam_);
@@ -93,4 +91,29 @@ void Pilot::SwitchDebugDraw() {
 
 void Pilot::SwitchIsPause() {
 	flag_.isPause = !flag_.isPause;
+}
+
+void Pilot::CameraOperation() {
+	if (!camera_) {
+		return;
+	}
+
+	const int kPadId = 0;
+	if (!MAGISYSTEM::IsPadConnected(kPadId)) {
+		return;
+	}
+
+	// デルタタイム取得
+	const float dt = MAGISYSTEM::GetDeltaTime();
+
+	// 右スティック入力
+	Vector2 rs = MAGISYSTEM::GetRightStick(kPadId);
+
+	// 感度
+	const float yawSens = 2.2f;
+	const float pitchSens = 2.0f;
+
+	// yaw/pitch 反映
+	camera_->AddYaw(rs.x * yawSens * dt);
+	camera_->AddPitch(rs.y * pitchSens * dt);
 }

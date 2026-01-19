@@ -11,16 +11,20 @@ PilotMechMoveSystem::PilotMechMoveSystem(PilotMech* mech) {
 	mech_ = mech;
 
 	dir_ = { 0.0f,0.0f,1.0f };
+	acc_ = 0.0f;
 	speed_ = 0.0f;
-	velocity_ = dir_ * speed_;
 	maxSpeed_ = 0.0f;
+
+	velocity_ = dir_ * speed_;
 }
 
 void PilotMechMoveSystem::Update() {
-	// 移動速度を制限(0.0の場合は制限しない)
-	if (maxSpeed_ != 0.0) {
-		speed_ = std::min(maxSpeed_, speed_);
-	}
+	// 移動速度を計算
+	speed_ += acc_ * MAGISYSTEM::GetDeltaTime();
+
+	// 最大速度を制限
+	speed_ = std::min(maxSpeed_, speed_);
+
 	// 移動量計算
 	velocity_ = dir_ * speed_ * MAGISYSTEM::GetDeltaTime();
 
@@ -29,6 +33,10 @@ void PilotMechMoveSystem::Update() {
 
 void PilotMechMoveSystem::SetDir(const Vector3& dir) {
 	dir_ = dir;
+}
+
+void PilotMechMoveSystem::SetAcc(float acc) {
+	acc_ = acc;
 }
 
 void PilotMechMoveSystem::SetSpeed(float speed) {

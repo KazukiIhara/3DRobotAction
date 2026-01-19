@@ -17,6 +17,7 @@ public:
 	void Update();
 
 	void SetDir(const Vector3& dir);
+	void SetAcc(float acc);
 	void SetSpeed(float speed);
 	void SetMaxSpeed(float maxSpeed);
 
@@ -25,6 +26,7 @@ public:
 private:
 	Vector3 velocity_;
 	Vector3 dir_;
+	float acc_;
 	float speed_;
 	float maxSpeed_;
 
