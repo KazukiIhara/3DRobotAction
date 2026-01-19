@@ -82,12 +82,12 @@ void DevelopScene::Update() {
 		}
 
 		ImGui::SeparatorText("Boss");
-		if (ImGui::Button("SwitchDebugDraw")) {
+		if (ImGui::Button("BossDebugDraw")) {
 			boss_->SwitchDebugDraw();
 		}
 
 		ImGui::SeparatorText("Pilot");
-		if (ImGui::Button("SwitchDebugDraw")) {
+		if (ImGui::Button("PilotDebugDraw")) {
 			pilot_->SwitchDebugDraw();
 		}
 		ImGui::End();

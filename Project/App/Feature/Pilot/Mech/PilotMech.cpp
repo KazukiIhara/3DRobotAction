@@ -7,21 +7,31 @@
 #include "GameEffects/System/GameEffectManager/GameEffectManager.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
 
+// ステートクラス
+#include "Feature/Pilot/Mech/State/Idle/PilotMechStateIdle.h"
+#include "Feature/Pilot/Mech/State/Move/PilotMechStateMove.h"
+#include "Feature/Pilot/Mech/State/Dodge/PilotMechStateDodge.h"
+#include "Feature/Pilot/Mech/State/JustDodge/PilotMechStateJustDodge.h"
+
 using namespace Magi;
 
 PilotMech::PilotMech(const InitParam& param, const RefContext& ref) :
 	BaseMech(param, ref) {
 
-	// ステートテーブル作成
-
+	// 武器をマップに追加
 
 	// システム作成
 	// 移動システム
 	moveSystem_ = std::make_unique<PilotMechMoveSystem>(this);
 
+	// ステートテーブル作成
+	states_[State::Idle] = std::make_unique<PilotMechStateIdle>();
+	states_[State::Move] = std::make_unique<PilotMechStateMove>();
+	states_[State::Dodge] = std::make_unique<PilotMechStateDodge>();
+	states_[State::JustDodge] = std::make_unique<PilotMechStateJustDodge>();
 
 	// 最初のステートを設定
-	ChangeState(PilotMechState::Idle);
+	ChangeState(State::Idle);
 
 }
 
@@ -41,17 +51,53 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 	BaseMech::Update(isShowDebugUI, param);
 }
 
-void PilotMech::ChangeState(PilotMech::PilotMechState nextState) {
+void PilotMech::ChangeState(PilotMech::State nextState) {
+	// 旧ステートの終了処理
+	if (auto cs = currentState_.second) {
+		cs->Exit(this);
+	}
 
+	// 変更後ステートの開始処理
+	currentState_ = std::make_pair(nextState, GetState(nextState));
+	if (auto cs = currentState_.second) {
+		cs->Enter(this);
+	}
 }
 
-const std::string PilotMech::StateToString(PilotMech::PilotMechState state) {
-	return std::string();
+IPilotMechState* PilotMech::GetState(PilotMech::State state) {
+	// ステートテーブルから検索
+	auto it = states_.find(state);
+	if (it != states_.end()) {
+		return it->second.get();
+	}
+
+	MAGIAssert::Assert(false, "Not find IPilotMechState!");
+	return {};
+}
+
+const std::string PilotMech::StateToString(PilotMech::State state) {
+	switch (state) {
+		case PilotMech::State::Idle:
+			return "Idle";
+		case PilotMech::State::Move:
+			return "Move";
+		case PilotMech::State::Dodge:
+			return "Dodge";
+		case PilotMech::State::JustDodge:
+			return "JustDodge";
+		default:
+			return "Unknown";
+	}
+}
+
+PilotMechMoveSystem* PilotMech::GetMoveSystem() {
+	return moveSystem_.get();
 }
 
 void PilotMech::ShowDebugWindow() {
 	// デバッグ操作ウィンドウ
 	ImGui::Begin("PlayerMech");
+
 	ImGui::SeparatorText("Parameter");
 	{
 		// 現在ステート表示
