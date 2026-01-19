@@ -27,3 +27,8 @@ Transform3D* BossMechBaseWeapon::GetTransform() {
 const Vector3 BossMechBaseWeapon::GetFireWorldPos() const {
 	return fireTransform_->GetWorldPosition();
 }
+
+void BossMechBaseWeapon::DebugDraw() {
+	MAGISYSTEM::DrawLineSphere(transform_->GetWorldPosition(), 0.5f, Color::Yellow);
+	MAGISYSTEM::DrawLineSphere(fireTransform_->GetWorldPosition(), 0.5f, Color::Red);
+}

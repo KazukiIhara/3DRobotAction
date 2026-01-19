@@ -1485,6 +1485,47 @@ void MAGISYSTEM::DrawLineAABB(const Vector3& min, const Vector3& max, const Vect
 	lineDrawer3D_->AddLine(v010, v011, color); // 左上
 }
 
+void MAGISYSTEM::DrawLineOBB(const Vector3& center, const Vector3 axis[3], const Vector3& halfSize, const Vector4& color) {
+	// 軸（必要なら正規化）
+	const Vector3 ax = axis[0];
+	const Vector3 ay = axis[1];
+	const Vector3 az = axis[2];
+
+	// 3方向の半径ベクトル
+	const Vector3 ex = ax * halfSize.x;
+	const Vector3 ey = ay * halfSize.y;
+	const Vector3 ez = az * halfSize.z;
+
+	// 8つの頂点を生成（符号の組み合わせ）
+	const Vector3 v000 = center - ex - ey - ez;
+	const Vector3 v100 = center + ex - ey - ez;
+	const Vector3 v010 = center - ex + ey - ez;
+	const Vector3 v110 = center + ex + ey - ez;
+
+	const Vector3 v001 = center - ex - ey + ez;
+	const Vector3 v101 = center + ex - ey + ez;
+	const Vector3 v011 = center - ex + ey + ez;
+	const Vector3 v111 = center + ex + ey + ez;
+
+	// 手前面
+	lineDrawer3D_->AddLine(v000, v100, color);
+	lineDrawer3D_->AddLine(v100, v110, color);
+	lineDrawer3D_->AddLine(v110, v010, color);
+	lineDrawer3D_->AddLine(v010, v000, color);
+
+	// 奥面
+	lineDrawer3D_->AddLine(v001, v101, color);
+	lineDrawer3D_->AddLine(v101, v111, color);
+	lineDrawer3D_->AddLine(v111, v011, color);
+	lineDrawer3D_->AddLine(v011, v001, color);
+
+	// 手前-奥の接続
+	lineDrawer3D_->AddLine(v000, v001, color);
+	lineDrawer3D_->AddLine(v100, v101, color);
+	lineDrawer3D_->AddLine(v110, v111, color);
+	lineDrawer3D_->AddLine(v010, v011, color);
+}
+
 void MAGISYSTEM::DrawLineSphere(const Vector3& wPos, float radius, const Vector4& color, uint32_t segment) {
 	// セグメントが少なすぎる場合は何もしない
 	if (segment < 3) {

@@ -21,6 +21,11 @@ public:
 		Vector3 axis[3];
 		Vector3 halfSize;
 	};
+	struct Capsule {
+		Vector3 p0;
+		Vector3 p1;
+		float radius;
+	};
 
 	// 衝突情報
 	struct HitInfo {
@@ -29,7 +34,8 @@ public:
 public:
 	using Param = std::variant<
 		Sphere,
-		OBB
+		OBB,
+		Capsule
 	>;
 public:
 	DamageCollider(Param param);
@@ -48,6 +54,9 @@ public:
 		MAGIAssert::Assert(p);
 		return *p;
 	}
+
+	void SetHitInfo(const HitInfo& info);
+	HitInfo GetHitInfo()const;
 
 	// 生存フラグをセット
 	void SetIsAlive(bool isAlive);

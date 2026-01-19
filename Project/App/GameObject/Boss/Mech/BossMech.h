@@ -22,6 +22,9 @@
 // アニメーションクラス
 #include "MechAnimation/Animator/MechAnimator.h"
 
+// コライダークラス
+#include "GameObject/Boss/Mech/Collider/BossMechCollider.h"
+
 // 前方宣言
 class DamageObjectManager;
 class GameEffectManager;
@@ -33,6 +36,11 @@ class MechCore;
 /// </summary>
 class BossMech {
 public:
+	// 識別タグ
+	enum class Tag {
+		Player,
+		Enemy
+	};
 	// 初期化パラメータ
 	struct InitParam {
 		// 初期座標
@@ -46,7 +54,7 @@ public:
 	};
 	// デバッグUIフラグ
 	struct DebugFlag {
-		bool showPartsTransform = false;
+		bool isDebugDraw = false;
 		bool editPartsTransform = false;
 		bool stopUpdate = false;
 	};
@@ -124,6 +132,9 @@ private:
 	// トランスフォーム
 	Transform3D* transform_;
 
+	// タグ
+	Tag tag_ = Tag::Enemy;
+
 	// パーツ
 	std::unique_ptr<BossMechHead> head_;
 	std::unique_ptr<BossMechBody> body_;
@@ -147,6 +158,9 @@ private:
 
 	// アニメーションクラス
 	std::unique_ptr<MechAnimator> animator_;
+
+	// コライダー
+	std::unique_ptr<BossMechCollider> collider_;
 
 	// デバッグフラグ構造体
 	DebugFlag debugFlag_{};

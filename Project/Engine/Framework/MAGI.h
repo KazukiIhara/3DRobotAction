@@ -539,6 +539,8 @@ public: // エンジンの機能
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color);
 	// ラインでAABBを描画
 	static void DrawLineAABB(const Vector3& min, const Vector3& max, const Vector4& color);
+	// ラインでOBBを描画
+	void DrawLineOBB(const Vector3& center, const Vector3 axis[3], const Vector3& halfSize, const Vector4& color);
 	// ラインで球体を描画
 	static void DrawLineSphere(const Vector3& wPos, float radius, const Vector4& color, uint32_t segment = 16);
 #pragma endregion
