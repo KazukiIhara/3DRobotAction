@@ -8,6 +8,7 @@
 
 // システムクラス
 #include "Feature/Pilot/Mech/System/Move/PilotMechMoveSystem.h"
+#include "Feature/Pilot/Mech/System/ModelDir/PilotMechModelDirSystem.h"
 
 class GameInputSystem;
 
@@ -53,6 +54,8 @@ private:
 
 	// 移動システム
 	std::unique_ptr<PilotMechMoveSystem> moveSystem_;
+	// モデルの向き管理システム
+	std::unique_ptr<PilotMechModelDirSystem> modelDirSystem_;
 
 	// 入力システムの参照ポインタ
 	GameInputSystem* inputSys_ = nullptr;

@@ -120,7 +120,7 @@ Transform3D* BaseMech::GetTransform() {
 	return transform_;
 }
 
-Transform3D* BaseMech::GetDrawTransform() {
+Transform3D* BaseMech::GetModelTransform() {
 	return drawTransform_;
 }
 

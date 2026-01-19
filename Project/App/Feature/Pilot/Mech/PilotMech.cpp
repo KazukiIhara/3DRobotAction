@@ -25,6 +25,7 @@ PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSys
 	// システム作成
 	// 移動システム
 	moveSystem_ = std::make_unique<PilotMechMoveSystem>(this);
+	modelDirSystem_ = std::make_unique<PilotMechModelDirSystem>(this);
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<PilotMechStateIdle>();
@@ -48,6 +49,7 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 
 	// システム更新
 	moveSystem_->Update();
+	modelDirSystem_->Update();
 
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);

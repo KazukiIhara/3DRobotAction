@@ -32,8 +32,8 @@ MechPartsLeg::MechPartsLeg(const InitParam& param, BaseMech* mech) {
 	footTransRight_->SetParent(lowerTransRight_, false);
 
 	// Mechと紐づけ
-	if (mech_ && mech_->GetDrawTransform()) {
-		waistTrans_->SetParent(mech_->GetDrawTransform(), false);
+	if (mech_ && mech_->GetModelTransform()) {
+		waistTrans_->SetParent(mech_->GetModelTransform(), false);
 	}
 
 	// 初期化反映

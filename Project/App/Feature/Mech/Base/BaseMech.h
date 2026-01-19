@@ -63,7 +63,7 @@ public:
 	void DebugUpdate(bool isShowDebugUI, const BaseMech::InitParam& param);
 
 	Transform3D* GetTransform();
-	Transform3D* GetDrawTransform();
+	Transform3D* GetModelTransform();
 
 	// 標準パーツアクセッサ
 	MechPartsHead* GetHead();
