@@ -93,15 +93,20 @@ void DevelopScene::Initialize() {
 	// 機体アニメーション作成クラス
 	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get());
 
+	// ボス作成
+	BaseMech::RefContext ref{
+		damageObjectManager_.get(), gameEffectManager_.get(), mechAnimationContainer_.get()
+	};
+
 	// プレイヤー作成
 	player_ = std::make_unique<Player>(attackObjectManger_.get(), gameEffectManager_.get());
 	player_->SetIsOperation(true);
 
-	// ボス作成
-	boss_ = std::make_unique<Boss>(damageObjectManager_.get(), gameEffectManager_.get(), mechAnimationContainer_.get(), player_->GetMechCore());
+
+	boss_ = std::make_unique<Boss>(ref, player_->GetMechCore());
 
 	// アニメーション作成クラスにボスをセット
-	mechAnimationEdit_->SetBossMech(boss_->GetMech());
+	mechAnimationEdit_->SetBaseMech(boss_->GetMech());
 
 	// 床追加
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");

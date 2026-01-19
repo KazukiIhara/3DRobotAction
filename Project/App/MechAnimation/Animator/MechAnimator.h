@@ -6,7 +6,7 @@
 #include "MechAnimation/MechAnimation.h"
 
 // Forward
-class BossMech;
+class BaseMech;
 class Transform3D;
 class MechAnimationContainer;
 
@@ -15,7 +15,7 @@ class MechAnimationContainer;
 /// </summary>
 class MechAnimator {
 public:
-	MechAnimator(MechAnimationContainer* container, BossMech* mech);
+	MechAnimator(MechAnimationContainer* container, BaseMech* mech);
 	~MechAnimator() = default;
 
 	// アニメーション適用
@@ -33,7 +33,7 @@ private:
 
 private:
 	MechAnimationContainer* container_ = nullptr;
-	BossMech* mech_ = nullptr;
+	BaseMech* mech_ = nullptr;
 
 	// 補間用の開始姿勢
 	MechAnimation::Pose blendFromPose_{};

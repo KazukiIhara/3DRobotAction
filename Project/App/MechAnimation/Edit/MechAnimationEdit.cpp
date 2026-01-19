@@ -4,9 +4,10 @@
 #include <algorithm>
 
 #include "MechAnimation/Container/MechAnimationContainer.h"
-#include "GameObject/Boss/Mech/BossMech.h"
 #include "3D/Transform3D/Transform3D.h"
 #include "ImGuiController/ImGuiController.h"
+
+#include "Feature/Mech/Base/BaseMech.h"
 
 // 再生側
 #include "MechAnimation/Animator/MechAnimator.h"
@@ -36,7 +37,7 @@ MechAnimationEdit::MechAnimationEdit(MechAnimationContainer* container) {
 	container_ = container;
 }
 
-void MechAnimationEdit::SetBossMech(BossMech* mech) {
+void MechAnimationEdit::SetBaseMech(BaseMech* mech) {
 	// 編集対象Mechを差し替え
 	mech_ = mech;
 
@@ -273,7 +274,7 @@ void MechAnimationEdit::ApplyAtNormalizedTime(float t) {
 	animator->ApplyAnimation(selectedClipName_, t, lerpTimeSec_);
 }
 
-void MechAnimationEdit::DrawRotate(BossMech* mech, int typeValue, const char* label) {
+void MechAnimationEdit::DrawRotate(BaseMech* mech, int typeValue, const char* label) {
 	// 型変換（MechAnimation::TransType）
 	const auto type = static_cast<MechAnimation::TransType>(typeValue);
 
@@ -294,7 +295,7 @@ void MechAnimationEdit::DrawRotate(BossMech* mech, int typeValue, const char* la
 	}
 }
 
-void MechAnimationEdit::DrawTranslate(BossMech* mech, int typeValue, const char* label) {
+void MechAnimationEdit::DrawTranslate(BaseMech* mech, int typeValue, const char* label) {
 	// 型変換（MechAnimation::TransType）
 	const auto type = static_cast<MechAnimation::TransType>(typeValue);
 

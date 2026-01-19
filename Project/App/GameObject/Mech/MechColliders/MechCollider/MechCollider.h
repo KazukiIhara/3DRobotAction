@@ -8,7 +8,7 @@
 /// <summary>
 /// 機体のコライダー
 /// </summary>
-class MechCollider {
+class MechaCollider {
 public:
 	// 衝突に関するデータ
 	struct HitInfo {
@@ -18,8 +18,8 @@ public:
 		int32_t damage;
 	};
 
-	MechCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
-	~MechCollider() = default;
+	MechaCollider(const FriendlyTag& tag, const Vector3& posW, const Vector3& minL, const Vector3& maxL);
+	~MechaCollider() = default;
 
 	void Update();
 
@@ -31,7 +31,7 @@ public:
 	void AddHitInfo(const HitInfo& info);
 
 	bool GetIsAlive()const;
-	std::vector<MechCollider::HitInfo> GetHitInfo()const;
+	std::vector<MechaCollider::HitInfo> GetHitInfo()const;
 
 	void SetWorldPos(const Vector3& posW);
 	void SetIsAlive(bool isAlve);

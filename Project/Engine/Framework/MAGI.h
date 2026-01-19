@@ -612,7 +612,7 @@ public: // エンジンの機能
 	static void DrawModel(
 		const std::string& name,
 		const Matrix4x4& worldMatrix,
-		const ModelMaterial& material
+		const ModelMaterial& material = ModelMaterial{}
 	);
 
 	// SkinModelDrawer追加

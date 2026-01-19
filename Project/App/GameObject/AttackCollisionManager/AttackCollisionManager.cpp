@@ -79,7 +79,7 @@ void AttackCollisionManager::CheckCollision() {
 					// 衝突している
 
 					// コリジョンインフォをセット
-					MechCollider::HitInfo mInfo = {
+					MechaCollider::HitInfo mInfo = {
 						true,
 						atkCollider->GetWPos(),
 						atkCollider->GetType(),

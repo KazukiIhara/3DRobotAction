@@ -7,7 +7,7 @@
 // シーンオブジェクト
 //-------------------------------------------
 #include "GameObject/Player/Player.h"
-#include "GameObject/Boss/Boss.h"
+#include "Feature/Boss/Boss.h"
 
 //-------------------------------------------
 // シーンに配置するマネージャ
