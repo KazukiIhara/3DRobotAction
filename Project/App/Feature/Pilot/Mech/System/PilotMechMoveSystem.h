@@ -17,6 +17,7 @@ public:
 	void Update();
 
 	void SetDir(const Vector3& dir);
+	void SetDirXZ(const Vector2& dirXZ);
 	void SetAcc(float acc);
 	void SetSpeed(float speed);
 	void SetMaxSpeed(float maxSpeed);

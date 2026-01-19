@@ -9,6 +9,8 @@
 // システムクラス
 #include "Feature/Pilot/Mech/System/PilotMechMoveSystem.h"
 
+class GameInputSystem;
+
 /// <summary>
 /// パイロット機体クラス
 /// </summary>
@@ -21,12 +23,16 @@ public:
 		JustDodge,
 	};
 public:
-	PilotMech(const InitParam& param, const RefContext& ref);
+	PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* InputSys);
 	~PilotMech() = default;
 
 	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param);
 
 	void ChangeState(PilotMech::State nextState);
+
+	// システムを取得
+	PilotMechMoveSystem* GetMoveSystem();
+	GameInputSystem* GetInputSys();
 
 private:
 	// ステート取得
@@ -34,9 +40,6 @@ private:
 
 	// ステート文字列変換
 	const std::string StateToString(PilotMech::State state);
-
-	// システムを取得
-	PilotMechMoveSystem* GetMoveSystem();
 
 	// デバッグウィンドウ描画
 	void ShowDebugWindow()override;
@@ -51,4 +54,6 @@ private:
 	// 移動システム
 	std::unique_ptr<PilotMechMoveSystem> moveSystem_;
 
+	// 入力システムの参照ポインタ
+	GameInputSystem* inputSys_ = nullptr;
 };

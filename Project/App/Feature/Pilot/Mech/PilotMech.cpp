@@ -15,8 +15,10 @@
 
 using namespace Magi;
 
-PilotMech::PilotMech(const InitParam& param, const RefContext& ref) :
+PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* inputSys) :
 	BaseMech(param, ref) {
+
+	inputSys_ = inputSys;
 
 	// 武器をマップに追加
 
@@ -64,6 +66,14 @@ void PilotMech::ChangeState(PilotMech::State nextState) {
 	}
 }
 
+PilotMechMoveSystem* PilotMech::GetMoveSystem() {
+	return moveSystem_.get();
+}
+
+GameInputSystem* PilotMech::GetInputSys() {
+	return inputSys_;
+}
+
 IPilotMechState* PilotMech::GetState(PilotMech::State state) {
 	// ステートテーブルから検索
 	auto it = states_.find(state);
@@ -88,10 +98,6 @@ const std::string PilotMech::StateToString(PilotMech::State state) {
 		default:
 			return "Unknown";
 	}
-}
-
-PilotMechMoveSystem* PilotMech::GetMoveSystem() {
-	return moveSystem_.get();
 }
 
 void PilotMech::ShowDebugWindow() {

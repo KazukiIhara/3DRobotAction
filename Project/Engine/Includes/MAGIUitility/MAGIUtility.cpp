@@ -118,3 +118,43 @@ Vector2 MAGIUtility::TransformWorldToScreen(const Vector3& worldPos) {
 
 	return Vector2(sx, sy);
 }
+
+Vector3 MAGIUtility::StickToMoveDirOnPlane(const Vector2& stick, const Vector3& cameraEye, const Vector3& cameraTarget, const Vector3& planeNormal) {
+	// 平面法線を正規化
+	const Vector3 up = SafeNormalize3(planeNormal);
+	if (LengthSq3(up) <= 1.0e-8f) {
+		return { 0.0f, 0.0f, 0.0f };
+	}
+
+	// カメラForwardを平面へ射影
+	const Vector3 camFwd = cameraTarget - cameraEye;
+	const Vector3 fwdOnPlane = SafeNormalize3(ProjectOnPlane(camFwd, up));
+	if (LengthSq3(fwdOnPlane) <= 1.0e-8f) {
+		return { 0.0f, 0.0f, 0.0f };
+	}
+
+	// Right生成
+	const Vector3 rightOnPlane = SafeNormalize3(Cross(up, fwdOnPlane));
+	if (LengthSq3(rightOnPlane) <= 1.0e-8f) {
+		return { 0.0f, 0.0f, 0.0f };
+	}
+
+	// スティック→移動方向
+	const Vector3 move = rightOnPlane * stick.x + fwdOnPlane * stick.y;
+	return SafeNormalize3(move);
+}
+
+Vector2 MAGIUtility::StickToMoveDirXZ(const Vector2& stick, const Vector3& cameraEye, const Vector3& cameraTarget, const Vector3& planeNormal) {
+	const Vector3 dir = StickToMoveDirOnPlane(stick, cameraEye, cameraTarget, planeNormal);
+
+	// XZに落とす
+	const Vector2 xz{ dir.x, dir.z };
+	const float lsq = LengthSq2(xz);
+	if (lsq <= 1.0e-8f) {
+		return { 0.0f, 0.0f };
+	}
+
+	// 2D正規化
+	const float len = std::sqrt(lsq);
+	return { xz.x / len, xz.y / len };
+}

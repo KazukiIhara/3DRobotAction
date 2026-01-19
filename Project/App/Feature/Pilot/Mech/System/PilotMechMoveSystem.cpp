@@ -22,8 +22,8 @@ void PilotMechMoveSystem::Update() {
 	// 移動速度を計算
 	speed_ += acc_ * MAGISYSTEM::GetDeltaTime();
 
-	// 最大速度を制限
-	speed_ = std::min(maxSpeed_, speed_);
+	// 速度をクランプ
+	speed_ = std::clamp(speed_, 0.0f, maxSpeed_);
 
 	// 移動量計算
 	velocity_ = dir_ * speed_ * MAGISYSTEM::GetDeltaTime();
@@ -33,6 +33,11 @@ void PilotMechMoveSystem::Update() {
 
 void PilotMechMoveSystem::SetDir(const Vector3& dir) {
 	dir_ = dir;
+}
+
+void PilotMechMoveSystem::SetDirXZ(const Vector2& dirXZ) {
+	dir_.x = dirXZ.x;
+	dir_.z = dirXZ.y;
 }
 
 void PilotMechMoveSystem::SetAcc(float acc) {
