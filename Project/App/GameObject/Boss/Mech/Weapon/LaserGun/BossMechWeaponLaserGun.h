@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject/Boss/Mech/Weapon/Base/BossMechBaseWeapon.h"
+#include "Structs/ModelStruct.h"
 
 // 実装メモ
 /*
@@ -20,6 +21,6 @@ public:
 	void Draw()override;
 
 	void Attack()override;
-
-
+private:
+	ModelMaterial mat_;
 };

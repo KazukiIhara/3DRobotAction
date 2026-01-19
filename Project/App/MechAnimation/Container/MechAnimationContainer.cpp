@@ -26,6 +26,7 @@ namespace {
 	}
 
 	// Pose -> json
+	// Pose -> json
 	json PoseToJson(const MechAnimation::Pose& pose) {
 		json j;
 		j["rotations"] = json::array();
@@ -41,9 +42,20 @@ namespace {
 			j["rotations"].push_back(jq);
 		}
 
+		// waistTranslateを書き出し
+		{
+			json jt;
+			jt["x"] = pose.waistTranslate.x;
+			jt["y"] = pose.waistTranslate.y;
+			jt["z"] = pose.waistTranslate.z;
+			j["waistTranslate"] = jt;
+		}
+
 		return j;
 	}
 
+
+	// json -> Pose
 	// json -> Pose
 	bool JsonToPose(const json& j, MechAnimation::Pose& outPose) {
 		if (!j.contains("rotations")) {
@@ -59,6 +71,9 @@ namespace {
 		// 不足分はidentity
 		const Quaternion identity{ 0.0f,0.0f,0.0f,1.0f };
 		outPose.rotations.fill(identity);
+
+		// waistTranslateはデフォルト0
+		outPose.waistTranslate = Vector3{ 0.0f, 0.0f, 0.0f };
 
 		for (size_t i = 0; i < n; ++i) {
 			const auto& jq = arr[i];
@@ -76,24 +91,34 @@ namespace {
 			outPose.rotations[i] = q;
 		}
 
+		// waistTranslateを復元
+		if (j.contains("waistTranslate") && j["waistTranslate"].is_object()) {
+			const auto& jt = j["waistTranslate"];
+
+			// 値取得
+			if (jt.contains("x")) outPose.waistTranslate.x = jt["x"].get<float>();
+			if (jt.contains("y")) outPose.waistTranslate.y = jt["y"].get<float>();
+			if (jt.contains("z")) outPose.waistTranslate.z = jt["z"].get<float>();
+		}
+
 		return true;
 	}
 
+
 	// Clip -> json
 	json ClipToJson(const std::string& name, const MechAnimation::Clip& clip) {
-		json j;
-		j["version"] = 1;
-		j["name"] = name;
-		j["jointCount"] = static_cast<int>(MechAnimation::kJointCount);
+	json j;
+	j["version"] = 1;
+	j["name"] = name;
+	j["jointCount"] = static_cast<int>(MechAnimation::kJointCount);
 
-		j["frames"] = json::array();
-		// framesを書き出し
-		for (const auto& pose : clip.frames) {
-			j["frames"].push_back(PoseToJson(pose));
-		}
-
-		return j;
+	j["frames"] = json::array();
+	for (const auto& pose : clip.frames) {
+		j["frames"].push_back(PoseToJson(pose));
 	}
+
+	return j;
+}
 
 	// json -> Clip
 	bool JsonToClip(const json& j, MechAnimation::Clip& outClip) {

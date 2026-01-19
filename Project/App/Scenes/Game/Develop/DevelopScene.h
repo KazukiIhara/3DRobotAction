@@ -50,7 +50,7 @@ private:
 	// エフェクトマネージャ
 	std::unique_ptr<GameEffectManager> gameEffectManager_;
 
-	// コリジョンマネージャ
+	// コリジョンシステム
 	std::unique_ptr<DamageCollisionSystem> damageCollisionSystem_;
 	// 攻撃オブジェクトマネージャ
 	std::unique_ptr<DamageObjectManager> damageObjectManager_;

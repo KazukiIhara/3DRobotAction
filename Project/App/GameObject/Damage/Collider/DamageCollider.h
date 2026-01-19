@@ -5,6 +5,7 @@
 
 #include "Math/Types/AllMathTypes.h"
 #include "MAGIAssert/MAGIAssert.h"
+#include "GameCommon/GameCommon.h"
 
 /// <summary>
 /// ダメージコライダー
@@ -21,6 +22,11 @@ public:
 		Vector3 axis[3];
 		Vector3 halfSize;
 	};
+	struct Capsule {
+		Vector3 p0;
+		Vector3 p1;
+		float radius;
+	};
 
 	// 衝突情報
 	struct HitInfo {
@@ -29,10 +35,11 @@ public:
 public:
 	using Param = std::variant<
 		Sphere,
-		OBB
+		OBB,
+		Capsule
 	>;
 public:
-	DamageCollider(Param param);
+	DamageCollider(Param param, FriendlyTag tag);
 	~DamageCollider() = default;
 
 	void Update();
@@ -49,11 +56,17 @@ public:
 		return *p;
 	}
 
+	void SetHitInfo(const HitInfo& info);
+	HitInfo GetHitInfo()const;
+
 	// 生存フラグをセット
 	void SetIsAlive(bool isAlive);
 
 	// 生存フラグを取得
 	bool GetIsAlive()const;
+
+	// 識別タグを取得
+	FriendlyTag GetTag()const;
 
 private:
 	// パラメータ
@@ -61,6 +74,9 @@ private:
 
 	// 衝突情報
 	HitInfo hitInfo_{};
+
+	// 識別タグ
+	FriendlyTag tag_;
 
 	// 生存フラグ
 	bool isAlive_ = true;

@@ -32,11 +32,11 @@ BossMech::BossMech(
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
 	// パーツを作成（Bodyが親になる想定）
+	leg_ = std::make_unique<BossMechLeg>(initParam.leg, this);
 	body_ = std::make_unique<BossMechBody>(initParam.body, this);
 	head_ = std::make_unique<BossMechHead>(initParam.head, this);
 	armR_ = std::make_unique<BossMechRightArm>(initParam.armR, this);
 	armL_ = std::make_unique<BossMechLeftArm>(initParam.armL, this);
-	leg_ = std::make_unique<BossMechLeg>(initParam.leg, this);
 
 	// パーツをリストに追加
 	parts_.push_back(head_.get());
@@ -57,6 +57,9 @@ BossMech::BossMech(
 
 	// アニメーションクラスを作成
 	animator_ = std::make_unique<MechAnimator>(mechAnimationContainer_, this);
+
+	// コライダーを作成
+	collider_ = std::make_unique<BossMechCollider>(this);
 
 	// 最初のステートを設定
 	ChangeState(BossMechState::Idle);
@@ -93,6 +96,9 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 		weapon.second->Update();
 	}
 
+	// コライダーを更新
+	collider_->Update();
+
 }
 
 void BossMech::Draw() {
@@ -105,6 +111,9 @@ void BossMech::Draw() {
 	for (auto& weapon : weapons_) {
 		weapon.second->Draw();
 	}
+
+	// コライダーを描画
+	collider_->Draw();
 }
 
 void BossMech::ChangeState(BossMech::BossMechState nextState) {
@@ -181,14 +190,18 @@ GameEffectManager* BossMech::GetGameEffectManager() {
 void BossMech::DebugDraw() {
 	// デバッグウィンドウ描画処理
 	ShowDebugWidow();
-
-	// 各パーツのデバッグ描画
-	for (auto& part : parts_) {
-		// パーツデバッグ描画
-		if (debugFlag_.showPartsTransform) {
+	// パーツデバッグ描画
+	if (debugFlag_.isDebugDraw) {
+		// 各パーツのデバッグ描画
+		for (auto& part : parts_) {
 			part->DebugDraw();
 		}
+		// 武器のデバッグ描画
+		for (auto& w : weapons_) {
+			w.second->DebugDraw();
+		}
 	}
+
 }
 
 void BossMech::SetInitParam(const BossMech::InitParam& initParam) {
@@ -366,7 +379,7 @@ void BossMech::ShowDebugWidow() {
 			SwitchStopUpdate();
 		}
 		// パーツのデバッグ描画切り替え
-		if (ImGui::Button("ShowPartsDebugDraw")) {
+		if (ImGui::Button("ShowPartsDebug")) {
 			SwitchShowPartsTransform();
 		}
 		// パーツ編集モード切り替え
@@ -380,7 +393,7 @@ void BossMech::ShowDebugWidow() {
 
 void BossMech::SwitchShowPartsTransform() {
 	// 表示フラグ反転
-	debugFlag_.showPartsTransform = !debugFlag_.showPartsTransform;
+	debugFlag_.isDebugDraw = !debugFlag_.isDebugDraw;
 }
 
 void BossMech::SwitchEditPartsTransform() {

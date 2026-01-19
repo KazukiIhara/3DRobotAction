@@ -177,34 +177,39 @@ void MechAnimationEdit::ShowWindow() {
 
 		ImGui::SeparatorText("PoseEdit");
 
-		// 関節回転編集（MechAnimation::TransType に統一）
-		if (ImGui::CollapsingHeader("Head / Body", ImGuiTreeNodeFlags_DefaultOpen)) {
+		// Waistの
+		if (ImGui::CollapsingHeader("WaistTrans", ImGuiTreeNodeFlags_DefaultOpen)) {
+			DrawTranslate(mech_, static_cast<int>(MechAnimation::TransType::Waist), "WaistTranslate");
+		}
+		// 関節回転編集
+		if (ImGui::CollapsingHeader("Head", ImGuiTreeNodeFlags_DefaultOpen)) {
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::Head), "Head");
+		}
+
+		if (ImGui::CollapsingHeader(" Body", ImGuiTreeNodeFlags_DefaultOpen)) {
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::Body), "Body");
 		}
 
-		if (ImGui::CollapsingHeader("Arm Left", ImGuiTreeNodeFlags_DefaultOpen)) {
-			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::UpperArmLeft), "UpperArmLeft");
-			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::LowerArmLeft), "LowerArmLeft");
-			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::HandLeft), "HandLeft");
-		}
-
-		if (ImGui::CollapsingHeader("Arm Right", ImGuiTreeNodeFlags_DefaultOpen)) {
+		if (ImGui::CollapsingHeader("Arm", ImGuiTreeNodeFlags_DefaultOpen)) {
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::UpperArmRight), "UpperArmRight");
+			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::UpperArmLeft), "UpperArmLeft");
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::LowerArmRight), "LowerArmRight");
+			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::LowerArmLeft), "LowerArmLeft");
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::HandRight), "HandRight");
+			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::HandLeft), "HandLeft");
 		}
 
 		if (ImGui::CollapsingHeader("Leg", ImGuiTreeNodeFlags_DefaultOpen)) {
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::Waist), "Waist");
 
-			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::UpperLegLeft), "UpperLegLeft");
-			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::LowerLegLeft), "LowerLegLeft");
-			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::FootLeft), "FootLeft");
-
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::UpperLegRight), "UpperLegRight");
+			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::UpperLegLeft), "UpperLegLeft");
+
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::LowerLegRight), "LowerLegRight");
+			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::LowerLegLeft), "LowerLegLeft");
+
 			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::FootRight), "FootRight");
+			DrawRotate(mech_, static_cast<int>(MechAnimation::TransType::FootLeft), "FootLeft");
 		}
 
 		//=========================
@@ -289,11 +294,36 @@ void MechAnimationEdit::DrawRotate(BossMech* mech, int typeValue, const char* la
 	}
 }
 
+void MechAnimationEdit::DrawTranslate(BossMech* mech, int typeValue, const char* label) {
+	// 型変換（MechAnimation::TransType）
+	const auto type = static_cast<MechAnimation::TransType>(typeValue);
+
+	// 対応トランスフォーム取得
+	Transform3D* trans = mech->GetPartsTransform(type);
+	if (!trans) {
+		return;
+	}
+
+	// 現在位置
+	const Vector3 t = trans->GetTranslate();
+	float v[3] = { t.x, t.y, t.z };
+
+	// 位置UI
+	if (ImGui::DragFloat3(label, v, 0.01f, -1000.0f, 1000.0f, "%.3f")) {
+		// 位置反映
+		trans->SetTranslate(Vector3{ v[0], v[1], v[2] });
+	}
+}
+
+
 MechAnimation::Pose MechAnimationEdit::CaptureCurrentPose() const {
 	MechAnimation::Pose pose{};
 
 	// Identity
 	const Quaternion identity{ 0.0f,0.0f,0.0f,1.0f };
+
+	// Waist translate初期化
+	pose.waistTranslate = Vector3{ 0.0f, 0.0f, 0.0f };
 
 	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
 		// 対応トランスフォーム取得
@@ -314,8 +344,17 @@ MechAnimation::Pose MechAnimationEdit::CaptureCurrentPose() const {
 		}
 	}
 
+	// Waistの位置を保存
+	if (mech_) {
+		Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
+		if (waist) {
+			pose.waistTranslate = waist->GetTranslate(); // 現在位置
+		}
+	}
+
 	return pose;
 }
+
 
 void MechAnimationEdit::AddPoseToSelectedClip() {
 	if (!container_) {
@@ -411,10 +450,19 @@ void MechAnimationEdit::ApplyPoseToMech(const MechAnimation::Pose& pose) {
 			continue;
 		}
 
-		// Pose適用
+		// Pose適用（回転）
 		trans->SetQuaternion(pose.rotations[i]);
 	}
+
+	// Waistの位置反映
+	{
+		Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
+		if (waist) {
+			waist->SetTranslate(pose.waistTranslate); // 位置反映
+		}
+	}
 }
+
 
 void MechAnimationEdit::ShowPoseList() {
 	ImGui::SeparatorText("Pose List");

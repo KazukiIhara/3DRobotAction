@@ -28,8 +28,8 @@ BossMechLeg::BossMechLeg(const BossMechLeg::InitParam& param, BossMech* mech) {
 	footTransRight_ = MAGISYSTEM::AddTransform3D();
 	footTransRight_->SetParent(lowerTransRight_, false);
 
-	// 胴体と紐づけ
-	waistTrans_->SetParent(mech->GetBody()->GetTransform(), false);
+	// Mechと紐づけ
+	waistTrans_->SetParent(mech->GetTransform(), false);
 
 	SetInitParam(param);
 
