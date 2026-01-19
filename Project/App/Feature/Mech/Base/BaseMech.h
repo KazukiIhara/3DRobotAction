@@ -84,6 +84,9 @@ public:
 	MechAnimationContainer* GetAnimationContainer();
 
 protected:
+	// パーツを追加
+	void AddParts(IMechParts* parts);
+	// 武器を追加
 	void RegisterWeapon(const std::string& name, std::unique_ptr<BaseMechWeapon> weapon);
 
 	// デバッグUIの中身は派生に任せる

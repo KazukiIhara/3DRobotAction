@@ -142,6 +142,10 @@ MechAnimationContainer* BaseMech::GetAnimationContainer() {
 	return ref_.animationContainer;
 }
 
+void BaseMech::AddParts(IMechParts* parts) {
+	parts_.push_back(parts);
+}
+
 void BaseMech::RegisterWeapon(const std::string& name, std::unique_ptr<BaseMechWeapon> weapon) {
 	if (name.empty() || !weapon) {
 		return;
