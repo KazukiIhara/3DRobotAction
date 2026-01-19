@@ -11,6 +11,7 @@
 class DamageObjectManager;
 class GameEffectManager;
 class MechAnimationContainer;
+class GameOperator;
 
 /// <summary>
 /// パイロット(要はプレイヤー)
@@ -21,7 +22,8 @@ class Pilot {
 		bool isDebugDraw = false;
 	};
 public:
-	Pilot(BaseMech::RefContext ref, TPSCamera3D* camera);
+	Pilot(BaseMech::RefContext ref, 
+		TPSCamera3D* camera);
 	~Pilot() = default;
 
 	void Update();
