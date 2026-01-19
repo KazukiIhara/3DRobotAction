@@ -60,7 +60,6 @@ namespace MAGIUtility {
 	Vector2 StickToMoveDirXZ(
 		const Vector2& stick,
 		const Vector3& cameraEye,
-		const Vector3& cameraTarget,
-		const Vector3& planeNormal = { 0.0f, 1.0f, 0.0f }
+		const Vector3& cameraTarget
 	);
 }

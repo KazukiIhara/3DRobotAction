@@ -42,7 +42,7 @@ void PilotMechMoveSystem::Update() {
 	preDir_ = dir_;
 
 	// 機体を動かす
-	mech_->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
+	mech_->GetTransform()->AddTranslate(velocity_ * dt);
 }
 
 void PilotMechMoveSystem::SetDir(const Vector3& dir) {
@@ -66,6 +66,10 @@ void PilotMechMoveSystem::SetMaxSpeed(float maxSpeed) {
 	maxSpeed_ = maxSpeed;
 }
 
+float PilotMechMoveSystem::GetSpeed() const {
+	return speed_;
+}
+
 const Vector3& PilotMechMoveSystem::GetDir() const {
 	return dir_;
 }
@@ -74,17 +78,9 @@ const Vector3& PilotMechMoveSystem::GetVelocity() const {
 	return velocity_;
 }
 
-
 void PilotMechMoveSystem::TurnDeceleration(float dt) {
-	// 前方向が無効なら初期化
-	Vector3 preN = preDir_;
-	if (LengthSquared(preN) <= 1.0e-8f) {
-		preN = dir_;
-	} else {
-		preN = Normalize(preN);
-	}
 	// 角度差を求める
-	float dot = Dot(preN, dir_);
+	float dot = Dot(preDir_, dir_);
 	if (dot < 0.0f) {
 		speed_ = 0.5f;
 	}

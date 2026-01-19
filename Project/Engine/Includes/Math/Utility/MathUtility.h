@@ -160,7 +160,7 @@ namespace MAGIMath {
 	Vector4 Lerp(const Vector4& v1, const Vector4& v2, float t);
 
 	// 指数補完係数を計算
-	float CalExpAlpha(float dt, float secondsToArrive, float reachRate);
+	float CalExpT(float dt, float secondsToArrive, float reachRate);
 
 	// 正規化
 	Vector2 Normalize(const Vector2& v);

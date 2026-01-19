@@ -22,7 +22,7 @@ public:
 	void SetSpeed(float speed);
 	void SetMaxSpeed(float maxSpeed);
 
-	
+	float GetSpeed()const;
 	const Vector3& GetDir()const;
 	const Vector3& GetVelocity()const;
 

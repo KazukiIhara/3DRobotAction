@@ -1,0 +1,22 @@
+{
+  "Dodge": {
+    "FirstSpeed": {
+      "type": "Float",
+      "value": 50.0
+    },
+    "Time": {
+      "type": "Float",
+      "value": 0.6000000238418579
+    }
+  },
+  "Move": {
+    "Acc": {
+      "type": "Float",
+      "value": 15.0
+    },
+    "MaxSpeed": {
+      "type": "Float",
+      "value": 20.0
+    }
+  }
+}

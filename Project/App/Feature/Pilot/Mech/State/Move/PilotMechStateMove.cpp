@@ -14,7 +14,7 @@ using namespace MAGIUtility;
 
 void PilotMechStateMove::Enter(PilotMech* mech) {
 	auto ms = mech->GetMoveSystem();
-	const float maxSpeed = 20.0f;
+	const float maxSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
 	ms->SetMaxSpeed(maxSpeed);
 }
 
@@ -28,12 +28,17 @@ void PilotMechStateMove::Update(PilotMech* mech) {
 			mech->ChangeState(PilotMech::State::Idle);
 			return;
 		}
+		
+		if (command.dodge) {
+			mech->ChangeState(PilotMech::State::Dodge);
+			return;
+		}
 
 		// 移動処理
 		Camera3D* cuCamera = MAGISYSTEM::GetCurrentCamera3D();
 		const Vector2 dir = StickToMoveDirXZ(command.common.StickL, cuCamera->GetEye(), cuCamera->GetTarget());
-		const float acc = 10.0f;
-		const float maxSpeed = 20.0f;
+		const float acc = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","Acc" });
+		const float maxSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
 		// 移動システム
 		auto ms = mech->GetMoveSystem();
 		ms->SetDirXZ(dir);
