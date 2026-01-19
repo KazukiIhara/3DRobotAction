@@ -1,21 +1,25 @@
 #include "Pilot.h"
 
-#include "MAGI.h"
+#include "Feature/TPSCamera3D/TPSCamera3D.h"
+#include "Feature/GameInputSystem/GameInputSystem.h"
 
+#include "MAGI.h"
 using namespace Magi;
 
-Pilot::Pilot(BaseMech::RefContext ref, TPSCamera3D* camera) {
-	// パラメータ作成
+Pilot::Pilot(BaseMech::RefContext ref, RefContext pRef) {
+	// 入力システム受け取り
+	inputSys_ = pRef.inputSys;
+	// カメラセット
+	camera_ = pRef.camera;
+
+	// パラメータ読み込み
 	LoadMechInitParam();
 
 	// 機体の作成
-	mech_ = std::make_unique<PilotMech>(initParam_, ref);
+	mech_ = std::make_unique<PilotMech>(initParam_, ref, inputSys_);
 
-	// カメラセット
-	camera_ = camera;
 	// 機体の胴体を追従対象にする
 	camera_->SetFollowTransform(mech_->GetPartsTransform(MechAnimation::TransType::Body));
-
 }
 
 void Pilot::Update() {
@@ -38,6 +42,22 @@ void Pilot::Draw() {
 
 PilotMech* Pilot::GetMech() {
 	return mech_.get();
+}
+
+Pilot::Flag Pilot::GetFlag() const {
+	return flag_;
+}
+
+void Pilot::SwitchDebugDraw() {
+	flag_.isDebugDraw = !flag_.isDebugDraw;
+}
+
+void Pilot::SwitchIsPause() {
+	flag_.isPause = !flag_.isPause;
+}
+
+GameInputSystem* Pilot::GetInputSys() {
+	return inputSys_;
 }
 
 void Pilot::LoadMechInitParam() {
@@ -81,37 +101,23 @@ void Pilot::LoadMechInitParam() {
 	initParam_.leg.footTranslateRight = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Pilot","FootRight","Translate" });
 }
 
-Pilot::Flag Pilot::GetFlag() const {
-	return flag_;
-}
-
-void Pilot::SwitchDebugDraw() {
-	flag_.isDebugDraw = !flag_.isDebugDraw;
-}
-
-void Pilot::SwitchIsPause() {
-	flag_.isPause = !flag_.isPause;
-}
-
 void Pilot::CameraOperation() {
 	if (!camera_) {
 		return;
 	}
-
-	const int kPadId = 0;
-	if (!MAGISYSTEM::IsPadConnected(kPadId)) {
+	// コマンドペア取得
+	auto commandPair = inputSys_->GetPilotCommand();
+	if (!commandPair.first) {
 		return;
 	}
 
-	// デルタタイム取得
+	// コマンド取得
+	auto command = commandPair.second;
+
+	const Vector2 rs = command.common.StickR;
 	const float dt = MAGISYSTEM::GetDeltaTime();
-
-	// 右スティック入力
-	Vector2 rs = MAGISYSTEM::GetRightStick(kPadId);
-
-	// 感度
-	const float yawSens = 2.2f;
-	const float pitchSens = 2.0f;
+	const float yawSens = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam" ,"YawSens" });
+	const float pitchSens = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam" ,"PitchSens" });
 
 	// yaw/pitch 反映
 	camera_->AddYaw(rs.x * yawSens * dt);

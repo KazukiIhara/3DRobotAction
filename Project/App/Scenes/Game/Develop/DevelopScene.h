@@ -4,8 +4,16 @@
 #include "MAGI.h"
 
 //-------------------------------------------
+// 操作クラス
+//-------------------------------------------
+#include "Feature/GameInputSystem/GameInputSystem.h"
+
+//-------------------------------------------
 // シーンオブジェクト
 //-------------------------------------------
+
+// カメラ
+#include "Feature/TPSCamera3D/TPSCamera3D.h"
 
 // パイロット
 #include "Feature/Pilot/Pilot.h"
@@ -38,6 +46,9 @@ public:
 	void Finalize() override;
 
 private:
+	// 入力システム
+	std::unique_ptr<GameInputSystem> inputSys_;
+
 	// シーンカメラの参照ポインタ
 	TPSCamera3D* camera_;
 

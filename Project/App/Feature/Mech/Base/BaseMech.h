@@ -63,6 +63,7 @@ public:
 	void DebugUpdate(bool isShowDebugUI, const BaseMech::InitParam& param);
 
 	Transform3D* GetTransform();
+	Transform3D* GetModelTransform();
 
 	// 標準パーツアクセッサ
 	MechPartsHead* GetHead();
@@ -116,6 +117,8 @@ private:
 	void SwitchStopUpdate();
 protected:
 	Transform3D* transform_ = nullptr;
+
+	Transform3D* drawTransform_ = nullptr;
 
 	FriendlyTag tag_;
 

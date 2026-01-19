@@ -36,6 +36,13 @@ void DevelopScene::Initialize() {
 	MAGISYSTEM::LoadModel("Ground");
 	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
 
+
+	//===========================
+	// 操作クラスの初期化
+	//===========================
+	inputSys_ = std::make_unique<GameInputSystem>();
+
+
 	//===========================
 	// マネージャの初期化
 	//===========================
@@ -51,13 +58,18 @@ void DevelopScene::Initialize() {
 	// 機体アニメーション作成クラス
 	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get());
 
-	// 機体の作成に必要なシステムのポインタ
+	// 機体の作成に必要なシステムの参照ポインタ
 	BaseMech::RefContext ref{
 		damageObjectManager_.get(), gameEffectManager_.get(), mechAnimationContainer_.get()
 	};
 
+	// パイロット作成に必要な参照ポインタ配列
+	Pilot::RefContext pref{
+		camera_, inputSys_.get()
+	};
+
 	// パイロット
-	pilot_ = std::make_unique<Pilot>(ref, camera_);
+	pilot_ = std::make_unique<Pilot>(ref, pref);
 
 	// ボス作成
 	boss_ = std::make_unique<Boss>(ref);
@@ -98,6 +110,9 @@ void DevelopScene::Update() {
 
 	// 平行光源をセット
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
+
+	// コマンドを更新
+	inputSys_->Update();
 
 	// パイロットを更新
 	pilot_->Update();

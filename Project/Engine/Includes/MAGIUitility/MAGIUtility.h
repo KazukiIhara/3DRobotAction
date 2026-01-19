@@ -14,6 +14,25 @@
 #include "Structs/ColorStruct.h"
 #include "Structs/Primitive3DStruct.h"
 
+using namespace MAGIMath;
+
+namespace {
+
+	Vector3 ProjectOnPlane(const Vector3& v, const Vector3& planeN) {
+		// v - n * dot(v,n)
+		return v - planeN * Dot(v, planeN);
+	}
+
+	Vector3 SafeNormalize3(const Vector3& v) {
+		const float lsq = LengthSquared(v);
+		if (lsq <= 1.0e-8f) {
+			return { 0.0f, 0.0f, 0.0f };
+		}
+		return Normalize(v);
+	}
+
+}
+
 /// <summary>
 /// 便利関数
 /// </summary>
@@ -38,4 +57,10 @@ namespace MAGIUtility {
 
 	Vector2 TransformWorldToScreen(const Vector3& worldPos);
 
+	Vector2 StickToMoveDirXZ(
+		const Vector2& stick,
+		const Vector3& cameraEye,
+		const Vector3& cameraTarget,
+		const Vector3& planeNormal = { 0.0f, 1.0f, 0.0f }
+	);
 }

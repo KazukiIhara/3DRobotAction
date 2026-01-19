@@ -15,14 +15,17 @@
 
 using namespace Magi;
 
-PilotMech::PilotMech(const InitParam& param, const RefContext& ref) :
+PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* inputSys) :
 	BaseMech(param, ref) {
+
+	inputSys_ = inputSys;
 
 	// 武器をマップに追加
 
 	// システム作成
 	// 移動システム
 	moveSystem_ = std::make_unique<PilotMechMoveSystem>(this);
+	modelDirSystem_ = std::make_unique<PilotMechModelDirSystem>(this);
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<PilotMechStateIdle>();
@@ -46,6 +49,7 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 
 	// システム更新
 	moveSystem_->Update();
+	modelDirSystem_->Update();
 
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
@@ -62,6 +66,14 @@ void PilotMech::ChangeState(PilotMech::State nextState) {
 	if (auto cs = currentState_.second) {
 		cs->Enter(this);
 	}
+}
+
+PilotMechMoveSystem* PilotMech::GetMoveSystem() {
+	return moveSystem_.get();
+}
+
+GameInputSystem* PilotMech::GetInputSys() {
+	return inputSys_;
 }
 
 IPilotMechState* PilotMech::GetState(PilotMech::State state) {
@@ -88,10 +100,6 @@ const std::string PilotMech::StateToString(PilotMech::State state) {
 		default:
 			return "Unknown";
 	}
-}
-
-PilotMechMoveSystem* PilotMech::GetMoveSystem() {
-	return moveSystem_.get();
 }
 
 void PilotMech::ShowDebugWindow() {

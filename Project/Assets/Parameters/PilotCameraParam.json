@@ -1,0 +1,10 @@
+{
+  "PitchSens": {
+    "type": "Float",
+    "value": 2.0
+  },
+  "YawSens": {
+    "type": "Float",
+    "value": 2.200000047683716
+  }
+}

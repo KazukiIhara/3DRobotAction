@@ -118,3 +118,12 @@ Vector2 MAGIUtility::TransformWorldToScreen(const Vector3& worldPos) {
 
 	return Vector2(sx, sy);
 }
+
+Vector2 MAGIUtility::StickToMoveDirXZ(const Vector2& stick, const Vector3& cameraEye, const Vector3& cameraTarget, const Vector3& planeNormal) {
+	Vector3 forward = cameraTarget - cameraEye;
+	forward.y = 0.0f;
+	forward = Normalize(forward);
+	Vector3 right = Normalize(Cross({ 0.0f,1.0f,0.0f }, forward));
+	const Vector3 tempDir = Normalize(right * stick.x + forward * stick.y);
+	return Vector2(tempDir.x, tempDir.z);
+}

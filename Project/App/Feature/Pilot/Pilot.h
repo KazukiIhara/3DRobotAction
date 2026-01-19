@@ -3,27 +3,31 @@
 // C++
 #include <memory>
 
+// 機体クラス
 #include "Feature/Pilot/Mech/PilotMech.h"
-
-#include "Feature/TPSCamera3D/TPSCamera3D.h"
 
 // 前方宣言
 class DamageObjectManager;
 class GameEffectManager;
 class MechAnimationContainer;
-class GameOperator;
+class GameInputSystem;
+class TPSCamera3D;
 
 /// <summary>
 /// パイロット(要はプレイヤー)
 /// </summary>
 class Pilot {
+public:
 	struct Flag {
 		bool isPause = false;
 		bool isDebugDraw = false;
 	};
+	struct RefContext {
+		TPSCamera3D* camera;
+		GameInputSystem* inputSys;
+	};
 public:
-	Pilot(BaseMech::RefContext ref, 
-		TPSCamera3D* camera);
+	Pilot(BaseMech::RefContext ref, RefContext pRef);
 	~Pilot() = default;
 
 	void Update();
@@ -31,16 +35,19 @@ public:
 
 	PilotMech* GetMech();
 
-	void LoadMechInitParam();
-
 	Flag GetFlag()const;
 
 	void SwitchDebugDraw();
 	void SwitchIsPause();
 
+	GameInputSystem* GetInputSys();
+
 private:
+	// 機体初期化パラメータ取得
+	void LoadMechInitParam();
 	// カメラ操作
 	void CameraOperation();
+
 private:
 	// 機体
 	std::unique_ptr<PilotMech> mech_;
@@ -48,6 +55,8 @@ private:
 
 	// カメラの参照ポインタ
 	TPSCamera3D* camera_ = nullptr;
+	// インプットシステムの参照ポインタ
+	GameInputSystem* inputSys_ = nullptr;
 
 	// フラグ構造体
 	Flag flag_;
