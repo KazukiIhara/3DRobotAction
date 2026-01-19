@@ -15,6 +15,11 @@ PilotMech::PilotMech(const InitParam& param, const RefContext& ref) :
 	// ステートテーブル作成
 
 
+	// システム作成
+	// 移動システム
+	moveSystem_ = std::make_unique<PilotMechMoveSystem>(this);
+
+
 	// 最初のステートを設定
 	ChangeState(PilotMechState::Idle);
 
@@ -28,6 +33,10 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 	if (auto& state = currentState_.second) {
 		state->Update(this);
 	}
+
+	// システム更新
+	moveSystem_->Update();
+
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
 }

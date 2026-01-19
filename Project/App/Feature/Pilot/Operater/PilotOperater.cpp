@@ -2,7 +2,7 @@
 
 #include "MAGI.h"
 
-#include "Cameras3D/TPSCamera3D/TPSCamera3D.h"
+#include "Feature/TPSCamera3D/TPSCamera3D.h"
 
 using namespace Magi;
 
