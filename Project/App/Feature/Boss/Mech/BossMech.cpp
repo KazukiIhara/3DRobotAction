@@ -20,11 +20,11 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref) :
 	RegisterWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
 
 	// ステートテーブル作成
-	states_[BossMech::BossMechState::Idle] = std::make_unique<BossMechStateIdle>();
-	states_[BossMech::BossMechState::LaserShot] = std::make_unique<BossMechStateLaserShot>();
+	states_[State::Idle] = std::make_unique<BossMechStateIdle>();
+	states_[State::LaserShot] = std::make_unique<BossMechStateLaserShot>();
 
 	// 最初のステートを設定
-	ChangeState(BossMechState::Idle);
+	ChangeState(State::Idle);
 }
 
 
@@ -40,7 +40,7 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	BaseMech::Update(isShowDebugUI, param);
 }
 
-void BossMech::ChangeState(BossMech::BossMechState nextState) {
+void BossMech::ChangeState(BossMech::State nextState) {
 	// 旧ステートの終了処理
 	if (auto cs = currentState_.second) {
 		cs->Exit(this);
@@ -53,8 +53,7 @@ void BossMech::ChangeState(BossMech::BossMechState nextState) {
 	}
 }
 
-
-BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
+BossMechBaseState* BossMech::GetState(BossMech::State state) {
 	// ステートテーブルから検索
 	auto it = states_.find(state);
 	if (it != states_.end()) {
@@ -65,11 +64,11 @@ BossMechBaseState* BossMech::GetState(BossMech::BossMechState state) {
 	return {};
 }
 
-const std::string BossMech::StateToString(BossMech::BossMechState state) {
+const std::string BossMech::StateToString(BossMech::State state) {
 	switch (state) {
-		case BossMech::BossMechState::Idle:
+		case BossMech::State::Idle:
 			return "Idle";
-		case BossMech::BossMechState::LaserShot:
+		case BossMech::State::LaserShot:
 			return "LaserShot";
 		default:
 			return "Unknown";

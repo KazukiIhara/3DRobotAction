@@ -4,14 +4,14 @@
 #include <memory>
 
 #include "Feature/Pilot/Mech/PilotMech.h"
-#include "Feature/Pilot/Operater/PilotOperater.h"
 
-#include "Cameras3D/TPSCamera3D/TPSCamera3D.h"
+#include "Feature/TPSCamera3D/TPSCamera3D.h"
 
 // 前方宣言
 class DamageObjectManager;
 class GameEffectManager;
 class MechAnimationContainer;
+class GameOperator;
 
 /// <summary>
 /// パイロット(要はプレイヤー)
@@ -22,7 +22,8 @@ class Pilot {
 		bool isDebugDraw = false;
 	};
 public:
-	Pilot(BaseMech::RefContext ref, TPSCamera3D* camera);
+	Pilot(BaseMech::RefContext ref, 
+		TPSCamera3D* camera);
 	~Pilot() = default;
 
 	void Update();
@@ -38,13 +39,13 @@ public:
 	void SwitchIsPause();
 
 private:
+	// カメラ操作
+	void CameraOperation();
+private:
 	// 機体
 	std::unique_ptr<PilotMech> mech_;
 	PilotMech::InitParam initParam_;
 
-	// 機体操作クラス
-	std::unique_ptr<PilotOperator> operator_;
-	
 	// カメラの参照ポインタ
 	TPSCamera3D* camera_ = nullptr;
 

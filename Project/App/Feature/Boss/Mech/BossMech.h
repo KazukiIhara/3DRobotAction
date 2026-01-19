@@ -15,7 +15,7 @@
 class BossMech:public BaseMech {
 public:
 	// ステート
-	enum class BossMechState {
+	enum class State {
 		Idle,
 		LaserShot
 	};
@@ -25,22 +25,22 @@ public:
 
 	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param)override;
 
-	void ChangeState(BossMech::BossMechState nextState);
+	void ChangeState(BossMech::State nextState);
 
 private:
 	// 対応するステートを取得
-	BossMechBaseState* GetState(BossMech::BossMechState state);
+	BossMechBaseState* GetState(BossMech::State state);
 	// ステートを文字列に変換
-	const std::string StateToString(BossMech::BossMechState state);
+	const std::string StateToString(BossMech::State state);
 
 	// デバッグウィンドウ描画
 	void ShowDebugWindow()override;
 
 private:
 	// ステートテーブル
-	std::unordered_map<BossMech::BossMechState, std::unique_ptr<BossMechBaseState>> states_;
+	std::unordered_map<BossMech::State, std::unique_ptr<BossMechBaseState>> states_;
 
 	// 現在のステート
-	std::pair<BossMech::BossMechState, BossMechBaseState*> currentState_;
+	std::pair<BossMech::State, BossMechBaseState*> currentState_;
 
 };

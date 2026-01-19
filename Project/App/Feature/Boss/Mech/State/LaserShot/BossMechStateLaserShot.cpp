@@ -22,7 +22,7 @@ void BossMechStateLaserShot::Update([[maybe_unused]] BossMech* mech) {
 
 	// タイマー0で待機状態に遷移
 	if (time_ == 0.0f) {
-		mech->ChangeState(BossMech::BossMechState::Idle);
+		mech->ChangeState(BossMech::State::Idle);
 	}
 
 }
