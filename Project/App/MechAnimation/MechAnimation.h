@@ -40,6 +40,7 @@ namespace MechAnimation {
 	/// </summary>
 	struct Pose {
 		std::array<Quaternion, kJointCount> rotations{};
+		Vector3 waistTranslate{};
 	};
 
 	/// <summary>

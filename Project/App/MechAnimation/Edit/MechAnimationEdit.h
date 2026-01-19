@@ -23,7 +23,9 @@ public:
 
 private:
 	void ShowWindow();
+
 	void DrawRotate(BossMech* mech, int typeValue, const char* label);
+	void DrawTranslate(BossMech* mech, int typeValue, const char* label);
 
 	// 現在の姿勢をPoseとして取得
 	MechAnimation::Pose CaptureCurrentPose() const;
