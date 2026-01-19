@@ -11,6 +11,7 @@ PilotMechMoveSystem::PilotMechMoveSystem(PilotMech* mech) {
 	mech_ = mech;
 
 	dir_ = { 0.0f,0.0f,1.0f };
+	preDir_ = dir_;
 	acc_ = 0.0f;
 	speed_ = 0.0f;
 	maxSpeed_ = 0.0f;
@@ -44,8 +45,7 @@ void PilotMechMoveSystem::Update() {
 	mech_->GetTransform()->AddTranslate(velocity_ * MAGISYSTEM::GetDeltaTime());
 
 	// 機体を進行方向に向ける
-	const Quaternion q = DirectionToQuaternion(dir_);
-	mech_->GetDrawTransform()->SetQuaternion(q);
+	TurnToDirection();
 }
 
 void PilotMechMoveSystem::SetDir(const Vector3& dir) {
@@ -75,6 +75,15 @@ const Vector3& PilotMechMoveSystem::GetDir() const {
 
 const Vector3& PilotMechMoveSystem::GetVelocity() const {
 	return velocity_;
+}
+
+void PilotMechMoveSystem::TurnToDirection() {
+
+	const Vector2 currentDir = Vector2(dir_.x, dir_.z);
+	const float yaw = std::atan2(currentDir.x, currentDir.y);
+	const Quaternion targetQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
+
+	mech_->GetDrawTransform()->SetQuaternion(targetQ);
 }
 
 void PilotMechMoveSystem::TurnDeceleration(float dt) {
