@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Feature/Mech/Weapon/BaseMechWeapon.h"
+#include "Feature/Boss/Mech/Weapon/Base/BaseBossMechWeapon.h"
 #include "Structs/ModelStruct.h"
 
 // 実装メモ
@@ -9,15 +9,13 @@
 	攻撃判定とエフェクトを発生させる
 */
 
-class BossMech;
-
 /// <summary>
 /// ボス武器レーザー銃
 /// </summary>
-class BossMechWeaponLaserGun:public BaseMechWeapon {
+class BossMechWeaponLaserGun :public BaseBossMechWeapon {
 public:
 	BossMechWeaponLaserGun(BossMech* mech);
-	~BossMechWeaponLaserGun() = default;
+	~BossMechWeaponLaserGun()override = default;
 
 	void Update()override;
 	void Draw()override;

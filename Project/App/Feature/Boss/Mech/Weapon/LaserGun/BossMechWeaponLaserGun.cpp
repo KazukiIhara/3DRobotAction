@@ -13,7 +13,7 @@
 #include "GameEffects/LaserEffect/LaserEffect.h"
 
 // プレイヤーの機体参照用
-#include "GameObject/Mech/MechCore/MechCore.h"
+#include "Feature/Pilot/Mech/PilotMech.h"
 
 // フレームワーク
 #include "MAGI.h"
@@ -21,7 +21,8 @@
 using namespace Magi;
 
 BossMechWeaponLaserGun::BossMechWeaponLaserGun(BossMech* mech) :
-	BaseMechWeapon(mech) {
+	BaseBossMechWeapon(mech) {
+
 	MAGISYSTEM::LoadCreateModel("BossMechLaserGun");
 
 	MAGISYSTEM::AddParameterData({ "BossMechWeapon","LaserGun","FireOffset" }, ParamType::Vec3);
@@ -50,7 +51,7 @@ void BossMechWeaponLaserGun::Attack() {
 	// 発射座標
 	const Vector3 shotPos = fireTransform_->GetWorldPosition();
 	// プレイヤーの座標を取得
-	const Vector3 playerPos = { 0.0f,0.0f,0.0f };
+	const Vector3 playerPos = GetBossMech()->GetPilotMech()->GetCenterPos();
 	// 方向を計算
 	const Vector3 dir = Normalize(playerPos - shotPos);
 	// 弾速取得

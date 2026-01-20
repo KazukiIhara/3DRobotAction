@@ -11,13 +11,25 @@
 /// <summary>
 /// レーザー攻撃
 /// </summary>
-class BossMechStateLaserShot:public BossMechBaseState {
+class BossMechStateLaserShot :public BossMechBaseState {
+public:
+	enum class Phase {
+		StartUp,
+		Charge,
+		EndLag,
+	};
 public:
 	~BossMechStateLaserShot()override = default;
 	void Enter(BossMech* mech)override;
 	void Update(BossMech* mech)override;
 	void Exit(BossMech* mech)override;
+
 private:
+	void UpdateStartUp(float dt, BossMech* mech);
+	void UpdateEndLag(float dt, BossMech* mech);
+private:
+	// フェーズ
+	Phase phase_ = Phase::StartUp;
 	// タイマー
-	float time_ = 0.0f;
+	float timer_ = 0.0f;
 };

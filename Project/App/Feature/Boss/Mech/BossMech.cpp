@@ -58,6 +58,10 @@ void BossMech::ChangeState(BossMech::State nextState) {
 	}
 }
 
+PilotMech* BossMech::GetPilotMech() {
+	return pilotMech_;
+}
+
 BossMechBaseState* BossMech::GetState(BossMech::State state) {
 	// ステートテーブルから検索
 	auto it = states_.find(state);

@@ -1,6 +1,10 @@
 {
   "LaserShot": {
-    "Time": {
+    "TimeEndLag": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "TimeStartUp": {
       "type": "Float",
       "value": 1.0
     }
