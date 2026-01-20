@@ -15,19 +15,38 @@ using namespace MAGIUtility;
 void PilotMechStateDodge::Enter(PilotMech* mech) {
 	// タイマー
 	const float time = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Dodge","Time" });
-	// ステートのタイマーセット
-	timer_ = time;
-
 	// 初速
 	const float firstSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Dodge","FirstSpeed" });
+
+	// ステートのタイマーセット
+	timer_ = time;
 
 	// 加速量を0にする
 	auto ms = mech->GetMoveSystem();
 	ms->SetAcc(0.0f);
-
 	// 初速と最大速度をセット
 	ms->SetSpeed(firstSpeed);
 	ms->SetMaxSpeed(firstSpeed);
+
+	// 入力取得
+	auto commandPair = mech->GetInputSys()->GetPilotCommand();
+	if (commandPair.first) {
+		auto command = commandPair.second;
+		Camera3D* cuCamera = MAGISYSTEM::GetCurrentCamera3D();
+		Vector2 dir{};
+		// 入力がない場合は前方に回避
+		if (Length(command.common.StickL)) {
+			dir = command.common.StickL; ;
+		} else {
+			dir = { 0.0f,1.0f };
+		}
+		// カメラの向きを前方に変換
+		dir = StickToMoveDirXZ(dir, cuCamera->GetEye(), cuCamera->GetTarget());
+		ms->SetDirXZ(dir);
+
+	}
+
+
 }
 
 void PilotMechStateDodge::Update(PilotMech* mech) {

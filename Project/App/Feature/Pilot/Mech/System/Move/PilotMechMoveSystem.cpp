@@ -33,11 +33,11 @@ void PilotMechMoveSystem::Update() {
 		speed_ = Lerp(speed_, maxSpeed_, t);
 	}
 
-	// 移動方向の差によって減速させる
-	TurnDeceleration(dt);
-
 	PilotMech::State current = mech_->GetCurrentState();
 	if (current == PilotMech::State::Move) {
+		// 移動方向の差によって減速させる
+		TurnDeceleration(dt);
+
 		// 方向を正規化
 		dir_ = Normalize(dir_);
 		const float t = CalExpT(dt, 4.0f, 1.0f);

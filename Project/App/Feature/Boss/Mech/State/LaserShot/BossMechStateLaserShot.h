@@ -15,6 +15,7 @@ class BossMechStateLaserShot :public BossMechBaseState {
 public:
 	enum class Phase {
 		StartUp,
+		Charge,
 		EndLag,
 	};
 public:

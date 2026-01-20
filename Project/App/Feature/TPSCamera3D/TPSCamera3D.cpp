@@ -24,12 +24,16 @@ namespace {
 }
 
 TPSCamera3D::TPSCamera3D(const std::string& name)
-	: Camera3D(name, false) 
-{
+	: Camera3D(name, false) {
 	SetIsUseYawPitch(false);
 
 	smoothedEye_ = GetEye();
 	smoothedTarget_ = GetTarget();
+
+
+	// パラメータロード
+	LoadParam();
+
 }
 
 void TPSCamera3D::Update() {
@@ -40,8 +44,8 @@ void TPSCamera3D::Update() {
 		return;
 	}
 
-	// パラメータ調整
-
+	// パラメータロード
+	LoadParam();
 
 	const Vector3 desiredTarget = CalcDesiredTarget();
 	const Vector3 desiredEye = CalcDesiredEye(desiredTarget);
@@ -56,6 +60,26 @@ void TPSCamera3D::Update() {
 
 
 	UpdateData();
+}
+
+void TPSCamera3D::LoadParam() {
+	// 距離/オフセット
+	param_.distance = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "Distance" });
+	param_.height = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "Height" });
+	param_.shoulder = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "Shoulder" });
+
+	// 回転速度
+	param_.yawSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "YawSpeed" });
+	param_.pitchSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "PitchSpeed" });
+
+	// ピッチ制限
+	param_.pitchMin = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "PitchMin" });
+	param_.pitchMax = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "PitchMax" });
+
+	// 追従スムージング
+	param_.posSmooth = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "PosSmooth" });
+	param_.targetSmooth = MAGISYSTEM::GetParameterValue<float>({ "PilotCameraParam", "TargetSmooth" });
+
 }
 
 void TPSCamera3D::SetFollowTransform(Transform3D* follow) {

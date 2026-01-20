@@ -32,6 +32,9 @@ public:
 
 	void Update() override;
 
+	// パラメータ読み込み
+	void LoadParam();
+
 	// 追従
 	void SetFollowTransform(Transform3D* follow);
 	void SetLockOnTarget(Transform3D* lockOn);

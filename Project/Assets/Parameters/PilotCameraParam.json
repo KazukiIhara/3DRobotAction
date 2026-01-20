@@ -1,10 +1,46 @@
 {
+  "Distance": {
+    "type": "Float",
+    "value": 6.0
+  },
+  "Height": {
+    "type": "Float",
+    "value": 2.0
+  },
+  "PitchMax": {
+    "type": "Float",
+    "value": 0.6000000238418579
+  },
+  "PitchMin": {
+    "type": "Float",
+    "value": -1.2000000476837158
+  },
   "PitchSens": {
     "type": "Float",
     "value": 2.0
   },
+  "PitchSpeed": {
+    "type": "Float",
+    "value": 2.0
+  },
+  "PosSmooth": {
+    "type": "Float",
+    "value": 10.0
+  },
+  "Shoulder": {
+    "type": "Float",
+    "value": 0.6000000238418579
+  },
+  "TargetSmooth": {
+    "type": "Float",
+    "value": 10.0
+  },
   "YawSens": {
     "type": "Float",
     "value": 2.200000047683716
+  },
+  "YawSpeed": {
+    "type": "Float",
+    "value": 2.5
   }
 }

@@ -24,13 +24,14 @@ void PilotMechStateMove::Update(PilotMech* mech) {
 	// 移動入力なしでIdleに遷移
 	if (commandPair.first) {
 		auto command = commandPair.second;
-		if (!Length(command.common.StickL)) {
-			mech->ChangeState(PilotMech::State::Idle);
-			return;
-		}
-		
+
 		if (command.dodge) {
 			mech->ChangeState(PilotMech::State::Dodge);
+			return;
+		}
+
+		if (!Length(command.common.StickL)) {
+			mech->ChangeState(PilotMech::State::Idle);
 			return;
 		}
 

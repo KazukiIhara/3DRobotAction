@@ -1,12 +1,12 @@
 {
   "LaserShot": {
-    "TimeStartUp":{
-      "type":"Float",
-      "value":1.0
+    "TimeEndLag": {
+      "type": "Float",
+      "value": 1.0
     },
-    "TimeEndlag":{
-      "type":"Float",
-      "value":1.0
+    "TimeStartUp": {
+      "type": "Float",
+      "value": 1.0
     }
   }
 }
