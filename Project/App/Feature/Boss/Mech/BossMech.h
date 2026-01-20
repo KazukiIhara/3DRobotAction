@@ -29,6 +29,8 @@ public:
 
 	void ChangeState(BossMech::State nextState);
 
+	PilotMech* GetPilotMech();
+
 private:
 	// 対応するステートを取得
 	BossMechBaseState* GetState(BossMech::State state);
