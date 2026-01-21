@@ -1,11 +1,11 @@
 {
   "Distance": {
     "type": "Float",
-    "value": 6.0
+    "value": 4.0
   },
   "Height": {
     "type": "Float",
-    "value": 2.0
+    "value": 1.0
   },
   "PitchMax": {
     "type": "Float",
@@ -25,11 +25,11 @@
   },
   "PosSmooth": {
     "type": "Float",
-    "value": 10.0
+    "value": 15.0
   },
   "Shoulder": {
     "type": "Float",
-    "value": 0.6000000238418579
+    "value": 0.0
   },
   "TargetSmooth": {
     "type": "Float",

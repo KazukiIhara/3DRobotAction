@@ -42,6 +42,10 @@ void MechCollider::Draw() {
 	}
 }
 
+const std::array<MechCollider::Capsule, 9>& MechCollider::GetList() const {
+	return colliders_;
+}
+
 void MechCollider::SetCapsule(size_t idx, MechAnimation::TransType a, MechAnimation::TransType b) {
 	// 端点ワールド座標
 	colliders_[idx].p0 = mech_->GetPartsTransform(a)->GetWorldPosition();

@@ -13,8 +13,8 @@ void AttackCollisionManager::Update() {
 		std::remove_if(attackColliders_.begin(), attackColliders_.end(),
 			[](auto& b) { return !b->GetIsAlive(); }),
 		attackColliders_.end());
-
-	// コライダーの位置を更新
+	
+	// 衝突情報のリセット
 	for (auto& collider : attackColliders_) {
 		collider->Update();
 	}

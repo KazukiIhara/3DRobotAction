@@ -315,6 +315,16 @@ void Transform3D::SetScale(const Vector3& scale) {
 	isChanged_ = true;
 }
 
+void Transform3D::SetScaleX(float x) {
+	scale_.x = x;
+	isChanged_ = true;
+}
+
+void Transform3D::SetScaleY(float y) {
+	scale_.y = y;
+	isChanged_ = true;
+}
+
 void Transform3D::SetScaleZ(float z) {
 	scale_.z = z;
 	isChanged_ = true;

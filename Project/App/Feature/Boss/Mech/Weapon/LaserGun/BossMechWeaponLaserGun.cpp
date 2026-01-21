@@ -4,13 +4,13 @@
 #include "Feature/Boss/Mech/BossMech.h"
 
 // マネージャ
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
-#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 
 // レーザー
-#include "GameObject/Damage/Object/Laser/Laser.h"
+#include "Feature/Damage/Object/Laser/Laser.h"
 // レーザーエフェクト
-#include "GameEffects/LaserEffect/LaserEffect.h"
+#include "Feature/Effect/LaserEffect/LaserEffect.h"
 
 // プレイヤーの機体参照用
 #include "Feature/Pilot/Mech/PilotMech.h"
@@ -67,23 +67,13 @@ void BossMechWeaponLaserGun::Attack() {
 		lParam.dir = dir;
 		lParam.speed = speed;
 		lParam.life = life;
-
 		// レーザーを追加
-		std::unique_ptr<Laser> laser = std::make_unique<Laser>(lParam);
+		Laser::RefContext ref{
+			.damageCollisionSystem = mech_->GetDamageCollisionSystem(),
+			.effectManager = mech_->GetGameEffectManager()
+		};
+		std::unique_ptr<Laser> laser = std::make_unique<Laser>(lParam, ref);
 		atkM->Add(std::move(laser));
-	}
-
-	// エフェクト発生処理
-	if (auto efcM = mech_->GetGameEffectManager()) {
-		LaserEffect::InitParam eParam{};
-		eParam.emitPos = shotPos;
-		eParam.dir = dir;
-		eParam.speed = speed;
-		eParam.life = life;
-
-		// レーザーエフェクト追加
-		std::unique_ptr<LaserEffect> laserEffect = std::make_unique<LaserEffect>(eParam);
-		efcM->Add(std::move(laserEffect));
 	}
 
 }

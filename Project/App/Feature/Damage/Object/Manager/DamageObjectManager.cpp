@@ -1,8 +1,7 @@
 #include "DamageObjectManager.h"
 
-DamageObjectManager::DamageObjectManager(DamageCollisionSystem* collisionSystem) {
+DamageObjectManager::DamageObjectManager() {
 	objects_.clear();
-	collisionSystem_ = collisionSystem;
 }
 
 void DamageObjectManager::Update() {
@@ -29,8 +28,6 @@ void DamageObjectManager::Add(std::unique_ptr<BaseDamageObject> object) {
 	if (!object) {
 		return;
 	}
-
-	object->SetCollisionSystem(collisionSystem_);
 	objects_.push_back(std::move(object));
 }
 

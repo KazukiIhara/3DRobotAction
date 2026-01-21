@@ -49,10 +49,10 @@ void DevelopScene::Initialize() {
 
 	// ゲームエフェクトマネージャ
 	gameEffectManager_ = std::make_unique<GameEffectManager>();
+	// 攻撃オブジェクトマネージャ
+	damageObjectManager_ = std::make_unique<DamageObjectManager>();
 	// コリジョンマネージャ
 	damageCollisionSystem_ = std::make_unique<DamageCollisionSystem>();
-	// 攻撃オブジェクトマネージャ
-	damageObjectManager_ = std::make_unique<DamageObjectManager>(damageCollisionSystem_.get());
 	// 機体アニメーションコンテナクラス
 	mechAnimationContainer_ = std::make_unique<MechAnimationContainer>();
 	// 機体アニメーション作成クラス
@@ -60,19 +60,28 @@ void DevelopScene::Initialize() {
 
 	// 機体の作成に必要なシステムの参照ポインタ
 	BaseMech::RefContext ref{
-		damageObjectManager_.get(), gameEffectManager_.get(), mechAnimationContainer_.get()
+		damageObjectManager_.get(),
+		gameEffectManager_.get(),
+		damageCollisionSystem_.get(),
+		mechAnimationContainer_.get()
 	};
 
 	// パイロット作成に必要な参照ポインタ配列
 	Pilot::RefContext pref{
-		camera_, inputSys_.get()
+		camera_,
+		inputSys_.get()
 	};
 
 	// パイロット
 	pilot_ = std::make_unique<Pilot>(ref, pref);
 
 	// ボス作成
-	boss_ = std::make_unique<Boss>(ref,pilot_->GetMech());
+	boss_ = std::make_unique<Boss>(ref, pilot_->GetMech());
+
+	// 攻撃判定マネージャに機体を追加
+	damageCollisionSystem_->AddMech(pilot_->GetMech());
+	damageCollisionSystem_->AddMech(boss_->GetMech());
+	
 
 	// アニメーション作成クラスにボスをセット
 	mechAnimationEdit_->SetBaseMech(boss_->GetMech());
@@ -123,6 +132,9 @@ void DevelopScene::Update() {
 	// 攻撃オブジェクトマネージャ更新
 	damageObjectManager_->Update();
 
+	// 攻撃判定システム更新
+	damageCollisionSystem_->Update();
+
 	// エフェクトマネージャ更新
 	gameEffectManager_->Update();
 
@@ -137,6 +149,9 @@ void DevelopScene::Draw() {
 
 	// 攻撃オブジェクトマネージャ描画
 	damageObjectManager_->Draw();
+
+	// 攻撃判定システム描画
+	damageCollisionSystem_->Draw();
 
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();

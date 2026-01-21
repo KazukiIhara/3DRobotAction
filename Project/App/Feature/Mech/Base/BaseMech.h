@@ -8,8 +8,9 @@
 
 #include "Math/Utility/MathUtility.h"
 
-#include "3D/Transform3D/Transform3D.h"
+#include "Feature/ILockOnTarget/ILockOnTarget.h"
 
+#include "3D/Transform3D/Transform3D.h"
 #include "Feature/Mech/Parts/Head/MechPartsHead.h"
 #include "Feature/Mech/Parts/Body/MechPartsBody.h"
 #include "Feature/Mech/Parts/Arm/MechPartsArm.h"
@@ -24,10 +25,11 @@
 
 // Forward
 class DamageObjectManager;
+class DamageCollisionSystem;
 class GameEffectManager;
 class MechAnimationContainer;
 
-class BaseMech {
+class BaseMech: public ILockOnTarget {
 public:
 	struct InitParam {
 		Vector3 position{};
@@ -47,6 +49,7 @@ public:
 	struct RefContext {
 		DamageObjectManager* damageObjectManager = nullptr;
 		GameEffectManager* gameEffectManager = nullptr;
+		DamageCollisionSystem* damageCollisionSystem = nullptr;
 		MechAnimationContainer* animationContainer = nullptr;
 	};
 
@@ -76,13 +79,19 @@ public:
 	Transform3D* GetPartsTransform(MechAnimation::TransType type);
 
 	// 中心座標取得
-	const Vector3& GetCenterPos();
+	const Vector3& GetCenterPos()override;
 
 	// 武器
 	BaseMechWeapon* GetWeapon(const std::string& name);
 
 	// アニメーター
 	MechAnimator* GetAnimator();
+
+	// コライダー取得
+	MechCollider* GetCollider();
+
+	// タグ取得
+	FriendlyTag GetTag()const;
 
 	// パーツタイプを文字列に変換
 	const std::string TransTypeToString(MechAnimation::TransType partsType);
@@ -91,6 +100,7 @@ public:
 	const DebugFlag& GetDebugFlag() const;
 
 	DamageObjectManager* GetDamageObjectManager();
+	DamageCollisionSystem* GetDamageCollisionSystem();
 	GameEffectManager* GetGameEffectManager();
 	MechAnimationContainer* GetAnimationContainer();
 
@@ -118,7 +128,7 @@ private:
 protected:
 	Transform3D* transform_ = nullptr;
 
-	Transform3D* drawTransform_ = nullptr;
+	Transform3D* modelTransform_ = nullptr;
 
 	FriendlyTag tag_;
 

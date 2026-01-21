@@ -30,6 +30,9 @@ public:
 
 	void Draw();
 
+	const std::array<MechCollider::Capsule, 9>& GetList()const;
+
+private:
 	void SetCapsule(size_t idx, MechAnimation::TransType a, MechAnimation::TransType b);
 private:
 	std::array<Capsule, 9> colliders_;

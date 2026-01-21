@@ -3,8 +3,8 @@
 #include "MAGI.h"
 #include "3D/Transform3D/Transform3D.h"
 
-#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Damage/Object/Manager/DamageObjectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
 #include "Feature/Mech/Weapon/BaseMechWeapon.h"
 
@@ -19,8 +19,8 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
 	// 描画用トランスフォーム
-	drawTransform_ = MAGISYSTEM::AddTransform3D();
-	drawTransform_->SetParent(transform_, false);
+	modelTransform_ = MAGISYSTEM::AddTransform3D();
+	modelTransform_->SetParent(transform_, false);
 
 	// パーツ作成
 	CreateParts(param);
@@ -121,7 +121,7 @@ Transform3D* BaseMech::GetTransform() {
 }
 
 Transform3D* BaseMech::GetModelTransform() {
-	return drawTransform_;
+	return modelTransform_;
 }
 
 MechPartsHead* BaseMech::GetHead() {
@@ -148,7 +148,7 @@ Transform3D* BaseMech::GetPartsTransform(MechAnimation::TransType type) {
 	return partsTrans_[index];
 }
 
-const Vector3& BaseMech::GetCenterPos() {
+const Vector3& BaseMech::GetCenterPos(){
 	if (body_) {
 		return body_->GetTransform()->GetWorldPosition();
 	}
@@ -165,6 +165,14 @@ BaseMechWeapon* BaseMech::GetWeapon(const std::string& name) {
 
 MechAnimator* BaseMech::GetAnimator() {
 	return animator_.get();
+}
+
+MechCollider* BaseMech::GetCollider() {
+	return collider_.get();
+}
+
+FriendlyTag BaseMech::GetTag()const {
+	return tag_;
 }
 
 const std::string BaseMech::TransTypeToString(MechAnimation::TransType partsType) {
@@ -220,6 +228,9 @@ const BaseMech::DebugFlag& BaseMech::GetDebugFlag() const {
 
 DamageObjectManager* BaseMech::GetDamageObjectManager() {
 	return ref_.damageObjectManager;
+}
+DamageCollisionSystem* BaseMech::GetDamageCollisionSystem() {
+	return ref_.damageCollisionSystem;
 }
 GameEffectManager* BaseMech::GetGameEffectManager() {
 	return ref_.gameEffectManager;

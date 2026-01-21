@@ -19,6 +19,9 @@ void BossMechStateLaserShot::Update([[maybe_unused]] BossMech* mech) {
 	case BossMechStateLaserShot::Phase::StartUp:
 		UpdateStartUp(dt, mech);
 		break;
+	case BossMechStateLaserShot::Phase::Charge:
+		
+		break;
 	case BossMechStateLaserShot::Phase::EndLag:
 		UpdateEndLag(dt, mech);
 		break;
@@ -34,7 +37,10 @@ void BossMechStateLaserShot::UpdateStartUp(float dt, BossMech* mech) {
 	const float timeStartUp = MAGISYSTEM::GetParameterValue<float>({ "BossMechState","LaserShot","TimeStartUp" });
 	
 	const float t = 1.0f - timer_ / timeStartUp;
+	// FKアニメーション適用
 	mech->GetAnimator()->ApplyAnimation("BossLaserShot", t);
+
+
 
 	// タイマー更新
 	timer_ -= dt;
@@ -46,6 +52,12 @@ void BossMechStateLaserShot::UpdateStartUp(float dt, BossMech* mech) {
 		timer_ = timeEndLag;
 		phase_ = Phase::EndLag;
 	}
+}
+
+void BossMechStateLaserShot::UpdateCharge(float dt, BossMech* mech) {
+	
+
+
 }
 
 void BossMechStateLaserShot::UpdateEndLag(float dt, BossMech* mech) {

@@ -2,7 +2,7 @@
   "Dodge": {
     "FirstSpeed": {
       "type": "Float",
-      "value": 60.0
+      "value": 40.0
     },
     "Time": {
       "type": "Float",

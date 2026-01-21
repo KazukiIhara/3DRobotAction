@@ -21,7 +21,7 @@ using namespace MAGIUtility;
 //-------------------------------------------
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
 /// <summary>
 /// 終了判定
@@ -60,7 +60,7 @@ enum class StartAnimPhase {
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
-class PlayScene :public Magi::BaseScene {
+class PlayScene:public Magi::BaseScene {
 public:
 	using BaseScene::BaseScene;
 	~PlayScene()override = default;

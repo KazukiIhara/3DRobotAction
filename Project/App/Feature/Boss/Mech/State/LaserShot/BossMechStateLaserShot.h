@@ -26,6 +26,7 @@ public:
 
 private:
 	void UpdateStartUp(float dt, BossMech* mech);
+	void UpdateCharge(float dt, BossMech* mech);
 	void UpdateEndLag(float dt, BossMech* mech);
 private:
 	// フェーズ

@@ -3,8 +3,8 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
-#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Damage/Object/Manager/DamageObjectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
 
 // ステートクラス
@@ -17,8 +17,11 @@ using namespace Magi;
 
 PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* inputSys) :
 	BaseMech(param, ref) {
-
 	inputSys_ = inputSys;
+
+	tag_ = FriendlyTag::PlayerSide;
+	
+	modelTransform_->SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
 	// 武器をマップに追加
 

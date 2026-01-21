@@ -10,11 +10,19 @@ DamageCollider::DamageCollider(Param param, FriendlyTag tag) {
 }
 
 void DamageCollider::Update() {
-	// 衝突情報をリセット
-	hitInfo_ = DamageCollider::HitInfo{};
+
 }
 
 void DamageCollider::DebugDraw() {
+
+	Vector4 color{};
+
+	if (tag_ == FriendlyTag::PlayerSide) {
+		color = Color::Blue;
+	} else {
+		color = Color::Red;
+	}
+	
 	std::visit([&](const auto& shape) {
 		using T = std::decay_t<decltype(shape)>;
 

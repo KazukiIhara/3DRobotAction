@@ -3,10 +3,10 @@
 #include "MechCoreStateJustDodge.h"
 
 #include "GameObject/Mech/MechCore/MechCore.h"
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
 
-#include "GameEffects/JustDodgeEffect/JustDodgeEffect.h"
+#include "Feature/Effect/JustDodgeEffect/JustDodgeEffect.h"
 
 #include "MAGI.h"
 

@@ -16,6 +16,17 @@ class PilotMech;
 /// </summary>
 class BossMech:public BaseMech {
 public:
+	// プレイヤーに向きを向けるフラグ
+	struct LookAtXY {
+		bool X;
+		bool Y;
+	};
+	struct LookAtFlag {
+		// 全身
+		LookAtXY mech;
+		// 頭
+		LookAtXY head;
+	};
 	// ステート
 	enum class State {
 		Idle,

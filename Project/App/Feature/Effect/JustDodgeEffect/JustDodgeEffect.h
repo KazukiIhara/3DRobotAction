@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "GameEffects/System/BaseGameEffect/BaseGameEffect.h"
+#include "Feature/Effect/System/BaseGameEffect/BaseGameEffect.h"
 #include "Structs/Primitive3DStruct.h"
 #include "Math/Types/AllMathTypes.h"
 

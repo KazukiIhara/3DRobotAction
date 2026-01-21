@@ -2,9 +2,9 @@
 
 // C++
 #include <algorithm>
-#include <cmath>
-#include <limits>
-#include <vector>
+
+#include "Feature/Mech/Base/BaseMech.h"
+#include "Feature/Damage/Collider/DamageCollider.h"
 
 #include "Math/Utility/MathUtility.h"
 
@@ -225,16 +225,16 @@ DamageCollisionSystem::DamageCollisionSystem() {
 
 void DamageCollisionSystem::Update() {
 	// 死亡コライダー除去
-	RemoveDeadColliders_();
+	RemoveDeadColliders();
 
 	// 衝突結果リセット
 	hitPairs_.clear();
 
-	// コライダー更新
-	UpdateColliders_();
+	// ダメージコライダー更新
+	UpdateDamageColliders();
 
-	// 形状同士の判定
-	CheckCollision_();
+	// 機体×ダメージ判定
+	CheckCollision();
 }
 
 void DamageCollisionSystem::Draw() {
@@ -245,54 +245,94 @@ void DamageCollisionSystem::Draw() {
 #endif
 }
 
-std::weak_ptr<DamageCollider> DamageCollisionSystem::AddCollider(std::shared_ptr<DamageCollider> collider) {
+void DamageCollisionSystem::AddMech(BaseMech* mech) {
+	mechlist_.push_back(mech);
+}
+
+DamageCollider* DamageCollisionSystem::AddCollider(std::unique_ptr<DamageCollider> collider) {
 	colliders_.push_back(std::move(collider));
-	return colliders_.back();
+	return colliders_.back().get();
 }
 
 void DamageCollisionSystem::Clear() {
+	mechlist_.clear();
 	colliders_.clear();
 	hitPairs_.clear();
 }
 
-const std::vector<std::pair<const DamageCollider*, const DamageCollider*>>& DamageCollisionSystem::GetHitPairs() const {
+const std::vector<DamageCollisionSystem::HitPair>& DamageCollisionSystem::GetHitPairs() const {
 	return hitPairs_;
 }
 
-void DamageCollisionSystem::RemoveDeadColliders_() {
+void DamageCollisionSystem::RemoveDeadColliders() {
 	colliders_.erase(
 		std::remove_if(colliders_.begin(), colliders_.end(),
-			[](const std::shared_ptr<DamageCollider>& c) { return !c->GetIsAlive(); }),
+			[](const std::unique_ptr<DamageCollider>& c) { return !c->GetIsAlive(); }),
 		colliders_.end()
 	);
 }
 
-void DamageCollisionSystem::UpdateColliders_() {
+void DamageCollisionSystem::UpdateDamageColliders() {
 	for (auto& c : colliders_) {
+		// ヒット情報リセット
+		DamageCollider::HitInfo hit{};
+		hit.isHit_ = false;
+		c->SetHitInfo(hit);
+
+		// コライダー更新
 		c->Update();
 	}
 }
 
-void DamageCollisionSystem::CheckCollision_() {
-	// 全ペア判定
-	for (size_t i = 0; i < colliders_.size(); ++i) {
-		for (size_t j = i + 1; j < colliders_.size(); ++j) {
-			auto& a = colliders_[i];
-			auto& b = colliders_[j];
+void DamageCollisionSystem::CheckCollision() {
+	for (auto* mech : mechlist_) {
+		// null ガード
+		if (!mech) {
+			continue;
+		}
 
-			// 生存のみ
-			if (!a->GetIsAlive() || !b->GetIsAlive()) {
+		// タグ取得
+		const auto mechTag = mech->GetTag();
+
+		// 機体コライダー取得
+		auto* mechCollider = mech->GetCollider();
+		if (!mechCollider) {
+			continue;
+		}
+
+		// 機体カプセル配列取得
+		const auto& mechCapsules = mechCollider->GetList();
+
+		for (const auto& mCap : mechCapsules) {
+			// 無効カプセルスキップ
+			if (mCap.radius <= 0.0f) {
 				continue;
 			}
 
-			// 形状同士判定
-			if (IsCollision(a->GetParam(), b->GetParam())) {
-				// 衝突ペア登録
-				hitPairs_.push_back({ a.get(), b.get() });
+			// 機体カプセルを Damage 側 Param に変換
+			DamageCollider::Param mechParam = DamageCollider::Capsule{ mCap.p0, mCap.p1, mCap.radius };
 
-				// 衝突情報セット
-				a->SetHitInfo({ true });
-				b->SetHitInfo({ true });
+			for (auto& dmg : colliders_) {
+				// 生存のみ
+				if (!dmg->GetIsAlive()) {
+					continue;
+				}
+
+				// 同じタグならスキップ
+				if (mechTag == dmg->GetTag()) {
+					continue;
+				}
+
+				// 形状同士判定
+				if (IsCollision(mechParam, dmg->GetParam())) {
+					// 衝突ペア登録
+					hitPairs_.push_back({ mech, dmg.get() });
+
+					// ダメージ側のみ衝突情報セット
+					DamageCollider::HitInfo hit{};
+					hit.isHit_ = true;
+					dmg->SetHitInfo(hit);
+				}
 			}
 		}
 	}
@@ -305,35 +345,26 @@ bool DamageCollisionSystem::IsCollision(const DamageCollider::Param& a, const Da
 
 		if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionSphereToSphere(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::OBB>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionSphereToOBB(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Sphere>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionSphereToOBB(sb, sa);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::OBB>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionOBBToOBB(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Sphere>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionCapsuleToSphere(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::Capsule>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToSphere(sb, sa);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Capsule>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToCapsule(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::OBB>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionCapsuleToOBB(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Capsule>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToOBB(sb, sa);
-		}
-		else {
+		} else {
 			return false;
 		}
-	}, a, b);
+		}, a, b);
 }
 
 

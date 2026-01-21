@@ -2,10 +2,10 @@
 
 // MyHeader
 #include "Math/Types/AllMathTypes.h"
+#include "Feature/Damage/Collider/DamageCollider.h"
 
 // 前方宣言
 class Transform3D;
-class DamageCollider;
 class DamageCollisionSystem;
 
 // 実装メモ
@@ -20,15 +20,16 @@ class DamageCollisionSystem;
 /// </summary>
 class BaseDamageObject {
 public:
-	BaseDamageObject(const Vector3& worldPos);
+	BaseDamageObject(const Vector3& worldPos, DamageCollisionSystem* damageCollisionSystem);
 	virtual ~BaseDamageObject() = default;
 
-	void SetCollisionSystem(DamageCollisionSystem* collisionSystem);
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 	virtual void Finalize();
 
+	void AddDamageCollider(DamageCollider::Param param, FriendlyTag tag);
 	DamageCollider* GetDamageCollider();
+	DamageCollisionSystem* GetCollisionSystem();
 	bool GetIsAlive()const;
 
 protected:
@@ -39,7 +40,7 @@ protected:
 
 private:
 	// コライダーの参照ポインタ
-	DamageCollider* damageCollider_ = nullptr;
+	DamageCollider* collider_ = nullptr;
 	// コライダーマネージャの参照ポインタ
 	DamageCollisionSystem* collisionSystem_ = nullptr;
 };

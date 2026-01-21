@@ -28,7 +28,7 @@ public:
 
 private:
 	// 旋回による減速処理
-	void TurnDeceleration(float dt);
+	void TurnDeceleration();
 
 private:
 	Vector3 velocity_;
