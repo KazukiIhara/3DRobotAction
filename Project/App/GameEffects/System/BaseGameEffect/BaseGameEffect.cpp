@@ -7,3 +7,7 @@ BaseGameEffect::BaseGameEffect(const Vector3& emitPos) {
 bool BaseGameEffect::IsAlive() const {
 	return isAlive_;
 }
+
+void BaseGameEffect::SetWorldPos(const Vector3& worldPos) {
+	worldPos_ = worldPos;
+}

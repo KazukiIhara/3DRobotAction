@@ -20,7 +20,7 @@ public:
 	GameEffectManager();
 	~GameEffectManager() = default;
 
-	void Add(std::unique_ptr<BaseGameEffect> effect);
+	BaseGameEffect* Add(std::unique_ptr<BaseGameEffect> effect);
 	void Update();
 	void Draw();
 

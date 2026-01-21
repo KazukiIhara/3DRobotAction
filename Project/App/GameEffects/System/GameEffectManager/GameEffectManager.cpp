@@ -4,8 +4,9 @@ GameEffectManager::GameEffectManager() {
 	effects_.clear();
 }
 
-void GameEffectManager::Add(std::unique_ptr<BaseGameEffect> effect) {
+BaseGameEffect* GameEffectManager::Add(std::unique_ptr<BaseGameEffect> effect) {
 	effects_.push_back(std::move(effect));
+	return effects_.back().get();
 }
 
 void GameEffectManager::Update() {
@@ -37,7 +38,7 @@ void GameEffectManager::DeleteGarbage() {
 					return false;
 				}
 				e->Finalize();
-				return true; 
+				return true;
 			}),
 		effects_.end()
 	);
