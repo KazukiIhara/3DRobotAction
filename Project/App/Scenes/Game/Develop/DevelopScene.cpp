@@ -29,13 +29,8 @@ void DevelopScene::Initialize() {
 	directionalLight_.direction = Normalize(Vector3(1.0f, -1.0f, 0.5f));
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
-	// 
 	// リソースロード
-	//
-
-	MAGISYSTEM::LoadModel("Ground");
-	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
-
+	LoadResource();
 
 	//===========================
 	// 操作クラスの初期化
@@ -81,7 +76,7 @@ void DevelopScene::Initialize() {
 	// 攻撃判定マネージャに機体を追加
 	damageCollisionSystem_->AddMech(pilot_->GetMech());
 	damageCollisionSystem_->AddMech(boss_->GetMech());
-	
+
 
 	// アニメーション作成クラスにボスをセット
 	mechAnimationEdit_->SetBaseMech(boss_->GetMech());
@@ -159,4 +154,21 @@ void DevelopScene::Draw() {
 
 void DevelopScene::Finalize() {
 	MAGISYSTEM::DeleteAll();
+}
+
+void DevelopScene::LoadResource() {
+	// テクスチャ
+	MAGISYSTEM::LoadTexture("gradation.png");
+	MAGISYSTEM::LoadTexture("dodgeEffect.png");
+	MAGISYSTEM::LoadTexture("Circle2.png");
+	MAGISYSTEM::LoadTexture("electric_0.png");
+	MAGISYSTEM::LoadTexture("lensFlare.png");
+	MAGISYSTEM::LoadTexture("gradationToon.png");
+
+
+
+	// モデル
+	MAGISYSTEM::LoadModel("Ground");
+	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
+
 }

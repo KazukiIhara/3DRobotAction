@@ -44,7 +44,8 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Finalize() override;
-
+private:
+	void LoadResource();
 private:
 	// 入力システム
 	std::unique_ptr<GameInputSystem> inputSys_;

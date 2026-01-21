@@ -28,8 +28,17 @@ void PilotMechStateJustDodge::Enter(PilotMech* mech) {
 }
 
 void PilotMechStateJustDodge::Update(PilotMech* mech) {
+	// デルタタイムをスローにする処理
+	const float kStateTime = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","JustDodge","Time" });
+	const float deltaMulS = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","JustDodge","DeltaMulStart" });
+	const float deltaMulE = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","JustDodge","DeltaMulEnd" });
+	SimpleAnimation<float> deltaTimeAnimation = SimpleAnimation<float>(deltaMulS, deltaMulE, EasingType::EaseInQuart);
 
-
+	// ステート時間を0.0f~1.0fに変換
+	const float t = 1.0f - timer_ / kStateTime;
+	const float deltaMul = deltaTimeAnimation.GetValue(t);
+	// デルタタイムに倍率を書ける
+	MAGISYSTEM::SetDeltaTimeMultiplier(deltaMul);
 
 	// タイマー更新(生デルタタイムを使う)
 	timer_ -= MAGISYSTEM::GetRawDeltaTime();
@@ -42,5 +51,6 @@ void PilotMechStateJustDodge::Update(PilotMech* mech) {
 }
 
 void PilotMechStateJustDodge::Exit(PilotMech* mech) {
-
+	// 念のため1.0fに戻す
+	MAGISYSTEM::SetDeltaTimeMultiplier(1.0f);
 }

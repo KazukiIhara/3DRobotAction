@@ -25,10 +25,15 @@ class Transform3D;
 /// </summary>
 class LaserEffect:public BaseGameEffect {
 public:
+	enum class Col {
+		RED,
+		BLUE,
+	};
 	struct InitParam {
 		Vector3 emitPos{};
 		Vector3 dir{};
 		float life = 0.0f;
+		Col color = Col::RED;
 	};
 public:
 	LaserEffect(const InitParam& initParam);
@@ -44,6 +49,9 @@ private:
 	void DebugUpdate();
 
 private:
+	// 色
+	Col color_ = Col::RED;
+
 	// タイマー
 	float life_ = 0.0f;
 	// 方向

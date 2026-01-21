@@ -20,9 +20,17 @@
     }
   },
   "JustDodge": {
-    "Time": {
+    "DeltaMulEnd": {
       "type": "Float",
       "value": 1.0
+    },
+    "DeltaMulStart": {
+      "type": "Float",
+      "value": 0.20000000298023224
+    },
+    "Time": {
+      "type": "Float",
+      "value": 0.8999999761581421
     }
   },
   "Move": {
