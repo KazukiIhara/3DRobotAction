@@ -21,6 +21,8 @@ public:
 	virtual void Draw() = 0;
 	virtual void Finalize() {};
 
+	void SetWorldPos(const Vector3& worldPos);
+
 	bool IsAlive()const;
 
 protected:
