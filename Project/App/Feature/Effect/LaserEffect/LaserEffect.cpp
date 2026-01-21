@@ -10,7 +10,8 @@ using namespace Magi;
 LaserEffect::LaserEffect(const InitParam& initParam) :
 	BaseGameEffect(initParam.emitPos) {
 	// エディットシーン用に一応ロード処理を書く
-	MAGISYSTEM::LoadTexture("laser.png");
+	MAGISYSTEM::LoadTexture("laserBlue.png");
+	MAGISYSTEM::LoadTexture("laserRed.png");
 
 	// パラメータ初期化
 	life_ = initParam.life;
@@ -37,10 +38,14 @@ LaserEffect::LaserEffect(const InitParam& initParam) :
 		planeMat_.uvRotate = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","Laser","PlaneUVRotate" });
 	}
 
+	// 加算合成
 	planeMat_.blendMode = BlendMode::Add;
-	planeMat_.textureName = "laser.png";
 
-
+	if (color_ == Col::RED) {
+		planeMat_.textureName = "laserRed.png";
+	} else {
+		planeMat_.textureName = "laserBule.png";
+	}
 }
 
 void LaserEffect::Update() {
