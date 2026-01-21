@@ -5,7 +5,7 @@
 #include <vector>
 
 // 攻撃オブジェクトの基底クラス
-#include "GameObject/Damage/Object/Base/BaseDamageObject.h"
+#include "Feature/Damage/Object/Base/BaseDamageObject.h"
 
 // 攻撃判定マネージャ
 class DamageCollisionSystem;

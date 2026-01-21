@@ -9,12 +9,12 @@
 #include "MAGI.h"
 
 // エフェクトマネージャ
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
 /// <summary>
 /// エフェクト作成シーン
 /// </summary>
-class EffectEditScene :public Magi::BaseScene {
+class EffectEditScene:public Magi::BaseScene {
 public:
 	using BaseScene::BaseScene;
 	~EffectEditScene()override = default;

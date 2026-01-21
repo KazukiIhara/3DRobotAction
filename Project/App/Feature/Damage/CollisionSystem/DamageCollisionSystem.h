@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-#include "GameObject/Damage/Collider/DamageCollider.h"
+#include "Feature/Damage/Collider/DamageCollider.h"
 
 /// <summary>
 /// ダメージ当たり判定システム（形状同士）

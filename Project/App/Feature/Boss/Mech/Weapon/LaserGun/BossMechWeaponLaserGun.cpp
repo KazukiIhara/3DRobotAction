@@ -4,13 +4,13 @@
 #include "Feature/Boss/Mech/BossMech.h"
 
 // マネージャ
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
-#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 
 // レーザー
-#include "GameObject/Damage/Object/Laser/Laser.h"
+#include "Feature/Damage/Object/Laser/Laser.h"
 // レーザーエフェクト
-#include "GameEffects/LaserEffect/LaserEffect.h"
+#include "Feature/Effect/LaserEffect/LaserEffect.h"
 
 // プレイヤーの機体参照用
 #include "Feature/Pilot/Mech/PilotMech.h"

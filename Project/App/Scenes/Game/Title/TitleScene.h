@@ -14,14 +14,14 @@
 #include "GameObject/Enemy/Enemy.h"
 #include "GameObject/PlayerUI/PlayerUI.h"
 
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "GameObject/AttackCollisionManager/AttackCollisionManager.h"
 #include "GameObject/AttackObjectManager/AttackObjectManager.h"
 
 /// <summary>
 /// タイトルシーン
 /// </summary>
-class TitleScene :public Magi::BaseScene {
+class TitleScene:public Magi::BaseScene {
 public:
 	using BaseScene::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~TitleScene()override = default;

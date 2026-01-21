@@ -1,7 +1,7 @@
 #pragma once
 
 // 基底クラス
-#include "GameObject/Damage/Object/Base/BaseDamageObject.h"
+#include "Feature/Damage/Object/Base/BaseDamageObject.h"
 
 /// <summary>
 /// レーザー

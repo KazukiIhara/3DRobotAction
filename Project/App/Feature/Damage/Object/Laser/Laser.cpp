@@ -1,6 +1,6 @@
 #include "Laser.h"
 
-#include "GameObject/Damage/CollisionSystem/DamageCollisionSystem.h"
+#include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 
 #include "MAGI.h"
 

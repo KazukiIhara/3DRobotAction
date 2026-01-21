@@ -1,8 +1,8 @@
 #include "EffectEditScene.h"
 
 // Effects
-#include "GameEffects/JustDodgeEffect/JustDodgeEffect.h"
-#include "GameEffects/LaserEffect/LaserEffect.h"
+#include "Feature/Effect/JustDodgeEffect/JustDodgeEffect.h"
+#include "Feature/Effect/LaserEffect/LaserEffect.h"
 
 void EffectEditScene::Initialize() {
 	// 2Dカメラ作成

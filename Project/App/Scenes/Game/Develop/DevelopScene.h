@@ -24,10 +24,10 @@
 //-------------------------------------------
 // シーンに配置するマネージャ
 //-------------------------------------------
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
-#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
-#include "GameObject/Damage/CollisionSystem/DamageCollisionSystem.h"
+#include "Feature/Damage/Object/Manager/DamageObjectManager.h"
+#include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 
 #include "MechAnimation/Edit/MechAnimationEdit.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
