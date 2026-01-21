@@ -325,7 +325,7 @@ void DamageCollisionSystem::CheckCollision() {
 						PilotMechJustDodgeCollider::Sphere sphere = jdC->GetCollider();
 						DamageCollider::Param jdParam = DamageCollider::Sphere{ sphere.center,sphere.radius };
 
-						if (IsCollision(jdParam, jdParam)) {
+						if (IsCollision(jdParam, dmg->GetParam())) {
 							// 衝突情報セット
 							jdC->SetIsHit(true);
 							DamageCollider::HitInfo hit{};

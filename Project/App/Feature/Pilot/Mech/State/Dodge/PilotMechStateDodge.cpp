@@ -50,12 +50,9 @@ void PilotMechStateDodge::Enter(PilotMech* mech) {
 }
 
 void PilotMechStateDodge::Update(PilotMech* mech) {
-
 	// デルタタイム更新
 	const float dt = MAGISYSTEM::GetDeltaTime();
-
 	const float time = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Dodge","Time" });
-	auto ms = mech->GetMoveSystem();
 
 	// ジャスト回避判定
 	if (mech->GetJustDodgeCollider()->GetIsHit()) {
@@ -63,7 +60,10 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 		return;
 	}
 
+
+	// 速度処理
 	{
+		auto ms = mech->GetMoveSystem();
 		const float t = CalExpT(dt, time, 0.5f);
 		// 通常移動の最大速度まで補間
 		const float maxMoveSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
