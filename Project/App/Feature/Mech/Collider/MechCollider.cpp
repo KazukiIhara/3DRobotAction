@@ -36,10 +36,12 @@ void MechCollider::Update() {
 }
 
 void MechCollider::Draw() {
+#if defined (DEBUG) | (DEVELOP)
 	for (auto& collider : colliders_) {
 		MAGISYSTEM::DrawLineSphere(collider.p0, collider.radius, Color::Blue, 16);
 		MAGISYSTEM::DrawLineSphere(collider.p1, collider.radius, Color::Blue, 16);
 	}
+#endif
 }
 
 const std::array<MechCollider::Capsule, 9>& MechCollider::GetList() const {

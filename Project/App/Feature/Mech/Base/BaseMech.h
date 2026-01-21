@@ -59,7 +59,7 @@ public:
 
 	virtual void Update(bool isShowDebugUI, const BaseMech::InitParam& param);
 	void Draw();
-	void DebugDraw();
+	virtual void DebugDraw();
 
 	virtual void ShowDebugWindow() {};
 

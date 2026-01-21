@@ -1,0 +1,8 @@
+{
+  "JustDodgeCollider": {
+    "Radius": {
+      "type": "Float",
+      "value": 2.0
+    }
+  }
+}

@@ -15,12 +15,13 @@
 
 using namespace Magi;
 
-PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* inputSys) :
-	BaseMech(param, ref) {
+PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* inputSys)
+	:BaseMech(param, ref) {
+
 	inputSys_ = inputSys;
 
 	tag_ = FriendlyTag::PlayerSide;
-	
+
 	modelTransform_->SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
 	// 武器をマップに追加
@@ -29,6 +30,9 @@ PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSys
 	// 移動システム
 	moveSystem_ = std::make_unique<PilotMechMoveSystem>(this);
 	modelDirSystem_ = std::make_unique<PilotMechModelDirSystem>(this);
+
+	// ジャスト回避コライダー実装
+	justDodgeCollider_ = std::make_unique<PilotMechJustDodgeCollider>(this);
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<PilotMechStateIdle>();
@@ -54,8 +58,18 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 	moveSystem_->Update();
 	modelDirSystem_->Update();
 
+	// コライダー更新
+	justDodgeCollider_->Update();
+
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
+}
+
+void PilotMech::DebugDraw() {
+	BaseMech::DebugDraw();
+	if (debugFlag_.isDebugDraw) {
+		justDodgeCollider_->Draw();
+	}
 }
 
 void PilotMech::ChangeState(PilotMech::State nextState) {

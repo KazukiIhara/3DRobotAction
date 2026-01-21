@@ -50,7 +50,7 @@ void LightManager::Update() {
 	const Vector3 lightDir = Normalize(directionalLight_.direction);
 
 	// シーン中心から離れた位置にライト（eye）を置く
-	const float lightDistance = 50.0f;
+	const float lightDistance = 100.0f;
 
 	Vector3 position = target_ - lightDir * lightDistance;
 

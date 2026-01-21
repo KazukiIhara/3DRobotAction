@@ -77,10 +77,6 @@ void BaseMech::Draw() {
 		}
 	}
 
-	// コライダー描画
-	if (collider_) {
-		collider_->Draw();
-	}
 }
 
 void BaseMech::DebugDraw() {
@@ -96,6 +92,10 @@ void BaseMech::DebugDraw() {
 		// 武器のデバッグ描画
 		for (auto& w : weapons_) {
 			w.second->DebugDraw();
+		}
+		// コライダー描画
+		if (collider_) {
+			collider_->Draw();
 		}
 	}
 }
@@ -148,7 +148,7 @@ Transform3D* BaseMech::GetPartsTransform(MechAnimation::TransType type) {
 	return partsTrans_[index];
 }
 
-const Vector3& BaseMech::GetCenterPos(){
+const Vector3& BaseMech::GetCenterPos() {
 	if (body_) {
 		return body_->GetTransform()->GetWorldPosition();
 	}

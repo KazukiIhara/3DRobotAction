@@ -10,6 +10,10 @@
 #include "Feature/Pilot/Mech/System/Move/PilotMechMoveSystem.h"
 #include "Feature/Pilot/Mech/System/ModelDir/PilotMechModelDirSystem.h"
 
+// ジャスト回避コライダー
+#include "Feature/Pilot/Mech/JustDodgeCollider/PilotMechJustDodgeCollider.h"
+
+// 前方宣言
 class GameInputSystem;
 
 /// <summary>
@@ -28,6 +32,8 @@ public:
 	~PilotMech() = default;
 
 	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param);
+
+	void DebugDraw()override;
 
 	void ChangeState(PilotMech::State nextState);
 
@@ -58,6 +64,9 @@ private:
 	std::unique_ptr<PilotMechMoveSystem> moveSystem_;
 	// モデルの向き管理システム
 	std::unique_ptr<PilotMechModelDirSystem> modelDirSystem_;
+
+	// ジャスト回避コライダー
+	std::unique_ptr<PilotMechJustDodgeCollider> justDodgeCollider_;
 
 	// 入力システムの参照ポインタ
 	GameInputSystem* inputSys_ = nullptr;
