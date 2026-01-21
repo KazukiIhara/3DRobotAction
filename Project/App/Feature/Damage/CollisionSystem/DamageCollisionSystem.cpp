@@ -2,9 +2,9 @@
 
 // C++
 #include <algorithm>
-#include <cmath>
-#include <limits>
-#include <vector>
+
+#include "Feature/Mech/Base/BaseMech.h"
+#include "Feature/Damage/Collider/DamageCollider.h"
 
 #include "Math/Utility/MathUtility.h"
 
@@ -101,7 +101,7 @@ namespace {
 		return LengthSquared(c1 - c2);
 	}
 
-	// 線分とAABB(原点中心)の最短距離二乗
+	// 線分とAABB(原点中心)の最短距離二乗（厳密）
 	float DistSqSegmentAABBCentered(const Vector3& p0, const Vector3& p1, const Vector3& e) {
 		// 方向
 		const Vector3 d = p1 - p0;
@@ -230,10 +230,10 @@ void DamageCollisionSystem::Update() {
 	// 衝突結果リセット
 	hitPairs_.clear();
 
-	// コライダー更新
-	UpdateColliders();
+	// ダメージコライダー更新
+	UpdateDamageColliders();
 
-	// 形状同士の判定
+	// 機体×ダメージ判定
 	CheckCollision();
 }
 
@@ -255,11 +255,12 @@ DamageCollider* DamageCollisionSystem::AddCollider(std::unique_ptr<DamageCollide
 }
 
 void DamageCollisionSystem::Clear() {
+	mechlist_.clear();
 	colliders_.clear();
 	hitPairs_.clear();
 }
 
-const std::vector<std::pair<const DamageCollider*, const DamageCollider*>>& DamageCollisionSystem::GetHitPairs() const {
+const std::vector<DamageCollisionSystem::HitPair>& DamageCollisionSystem::GetHitPairs() const {
 	return hitPairs_;
 }
 
@@ -271,32 +272,67 @@ void DamageCollisionSystem::RemoveDeadColliders() {
 	);
 }
 
-void DamageCollisionSystem::UpdateColliders() {
+void DamageCollisionSystem::UpdateDamageColliders() {
 	for (auto& c : colliders_) {
+		// ヒット情報リセット
+		DamageCollider::HitInfo hit{};
+		hit.isHit_ = false;
+		c->SetHitInfo(hit);
+
+		// コライダー更新
 		c->Update();
 	}
 }
 
 void DamageCollisionSystem::CheckCollision() {
-	// 全ペア判定
-	for (size_t i = 0; i < colliders_.size(); ++i) {
-		for (size_t j = i + 1; j < colliders_.size(); ++j) {
-			auto& a = colliders_[i];
-			auto& b = colliders_[j];
+	for (auto* mech : mechlist_) {
+		// null ガード
+		if (!mech) {
+			continue;
+		}
 
-			// 生存のみ
-			if (!a->GetIsAlive() || !b->GetIsAlive()) {
+		// タグ取得
+		const auto mechTag = mech->GetTag();
+
+		// 機体コライダー取得
+		auto* mechCollider = mech->GetCollider();
+		if (!mechCollider) {
+			continue;
+		}
+
+		// 機体カプセル配列取得
+		const auto& mechCapsules = mechCollider->GetList();
+
+		for (const auto& mCap : mechCapsules) {
+			// 無効カプセルスキップ
+			if (mCap.radius <= 0.0f) {
 				continue;
 			}
 
-			// 形状同士判定
-			if (IsCollision(a->GetParam(), b->GetParam())) {
-				// 衝突ペア登録
-				hitPairs_.push_back({ a.get(), b.get() });
+			// 機体カプセルを Damage 側 Param に変換
+			DamageCollider::Param mechParam = DamageCollider::Capsule{ mCap.p0, mCap.p1, mCap.radius };
 
-				// 衝突情報セット
-				a->SetHitInfo({ true });
-				b->SetHitInfo({ true });
+			for (auto& dmg : colliders_) {
+				// 生存のみ
+				if (!dmg->GetIsAlive()) {
+					continue;
+				}
+
+				// 同じタグならスキップ
+				if (mechTag == dmg->GetTag()) {
+					continue;
+				}
+
+				// 形状同士判定
+				if (IsCollision(mechParam, dmg->GetParam())) {
+					// 衝突ペア登録
+					hitPairs_.push_back({ mech, dmg.get() });
+
+					// ダメージ側のみ衝突情報セット
+					DamageCollider::HitInfo hit{};
+					hit.isHit_ = true;
+					dmg->SetHitInfo(hit);
+				}
 			}
 		}
 	}
