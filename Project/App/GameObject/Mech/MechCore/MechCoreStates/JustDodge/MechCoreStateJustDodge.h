@@ -21,5 +21,5 @@ public:
 	void Exit(MechCore* mechCore)override;
 private:
 	// ステート計測用タイマー
-	float timer_{};
+	float timer_ = 0.0f;
 };

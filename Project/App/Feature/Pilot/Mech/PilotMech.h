@@ -26,6 +26,7 @@ public:
 		Move,
 		Dodge,
 		JustDodge,
+		JustDodgeAttack,
 	};
 public:
 	PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* InputSys);

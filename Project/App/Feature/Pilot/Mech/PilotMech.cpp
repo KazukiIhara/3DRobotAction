@@ -12,6 +12,7 @@
 #include "Feature/Pilot/Mech/State/Move/PilotMechStateMove.h"
 #include "Feature/Pilot/Mech/State/Dodge/PilotMechStateDodge.h"
 #include "Feature/Pilot/Mech/State/JustDodge/PilotMechStateJustDodge.h"
+#include "Feature/Pilot/Mech/State/JustDodgeAttack/PilotMechStateJustDodgeAttack.h"
 
 using namespace Magi;
 
@@ -39,6 +40,7 @@ PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSys
 	states_[State::Move] = std::make_unique<PilotMechStateMove>();
 	states_[State::Dodge] = std::make_unique<PilotMechStateDodge>();
 	states_[State::JustDodge] = std::make_unique<PilotMechStateJustDodge>();
+	states_[State::JustDodgeAttack] = std::make_unique<MechCoreStateJustDodgeAttack>();
 
 	// 最初のステートを設定
 	ChangeState(State::Idle);
