@@ -32,11 +32,11 @@ public:
 	void Finalize()override;
 
 private:
-	Vector3 emitPos_;
+	Vector3 laserEndPos_;
 	Vector3 dir_;
 	float speed_;
 	float life_;
 
 	GameEffectManager* effectManager_;
-	LaserEffect* effect_;
+	LaserEffect* laserEffect_;
 };

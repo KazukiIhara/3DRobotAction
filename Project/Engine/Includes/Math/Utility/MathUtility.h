@@ -295,6 +295,10 @@ namespace MAGIMath {
 	// 向きからクオータニオン角を取得
 	Quaternion DirectionToQuaternion(const Vector3& direction);
 
+	// 向きからクオータニオン角を取得(安全版)
+	Quaternion DirectionToQuaternion_s(const Vector3& direction);
+
+
 	// 正規化したクオータニオンを返す
 	Quaternion Normalize(const Quaternion& quaternion);
 	// 逆クオータニオンを返す

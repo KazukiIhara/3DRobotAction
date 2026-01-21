@@ -18,6 +18,8 @@ class Transform3D;
 	ひとまずシリンダーを置いてみる
 */
 
+
+
 /// <summary>
 /// レーザー攻撃のエフェクト
 /// </summary>
@@ -25,8 +27,7 @@ class LaserEffect:public BaseGameEffect {
 public:
 	struct InitParam {
 		Vector3 emitPos{};
-		Vector3	dir{};
-		float speed = 0.0f;
+		Vector3 dir{};
 		float life = 0.0f;
 	};
 public:
@@ -37,6 +38,8 @@ public:
 	void Draw()override;
 	void Finalize()override;
 
+	void SetLaserEndPos(const Vector3& endPos);
+
 private:
 	void DebugUpdate();
 
@@ -45,11 +48,12 @@ private:
 	float life_ = 0.0f;
 	// 方向
 	Vector3 dir_{};
-	// 速度
-	float speed_ = 0.0f;
 
-	// エフェクトの親トランスフォーム
-	Transform3D* parent_;
+	// レーザーの親トランスフォーム
+	Transform3D* laserParent_;
+
+	// レーザーの終点
+	Vector3 laserEndPos_ = {};
 
 	// 板ポリ
 	std::array<Transform3D*, 2> planeTrans_;

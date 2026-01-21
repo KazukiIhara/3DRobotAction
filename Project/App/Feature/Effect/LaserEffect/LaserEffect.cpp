@@ -14,15 +14,12 @@ LaserEffect::LaserEffect(const InitParam& initParam) :
 
 	// パラメータ初期化
 	life_ = initParam.life;
-	dir_ = Normalize(initParam.dir);
-	speed_ = initParam.speed;
+	dir_ = initParam.dir;
+	laserEndPos_ = initParam.emitPos;
 
 	// 親トランスフォーム初期化
-	std::unique_ptr<Transform3D> parentTrans = std::make_unique<Transform3D>(worldPos_);
-	parent_ = MAGISYSTEM::AddTransform3D(std::move(parentTrans));
-
-	// 進行方向に向ける
-	parent_->SetQuaternion(DirectionToQuaternion(dir_));
+	std::unique_ptr<Transform3D> parentTrans = std::make_unique<Transform3D>(initParam.emitPos);
+	laserParent_ = MAGISYSTEM::AddTransform3D(std::move(parentTrans));
 
 	// 板ポリ初期データ取得
 	const std::array<Vector3, 2> planeInitRotate = {
@@ -35,17 +32,19 @@ LaserEffect::LaserEffect(const InitParam& initParam) :
 	for (size_t i = 0; i < 2; i++) {
 		std::unique_ptr<Transform3D> planeTrans = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), planeInitRotate[i], planeInitTranslate);
 		planeTrans_[i] = MAGISYSTEM::AddTransform3D(std::move(planeTrans));
-		planeTrans_[i]->SetParent(parent_, false);
-
+		planeMat_.uvRotate = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","Laser","PlaneUVRotate" });
+		planeTrans_[i]->SetParent(laserParent_, false);
 		planeMat_.uvRotate = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","Laser","PlaneUVRotate" });
 	}
+
 	planeMat_.blendMode = BlendMode::Add;
 	planeMat_.textureName = "laser.png";
 
-	
+
 }
 
 void LaserEffect::Update() {
+
 	// デルタタイムを取得
 	const float kDt = MAGISYSTEM::GetDeltaTime();
 	// タイマーを更新
@@ -57,10 +56,12 @@ void LaserEffect::Update() {
 		return;
 	}
 
-	// Z方向にスケールを大きくする
-	const float scalableDelta = speed_ * MAGISYSTEM::GetDeltaTime();
-	parent_->AddScaleZ(scalableDelta);
 
+	Vector3 dir = laserEndPos_ - worldPos_;
+	float length = std::max(0.01f, Length(dir));
+	const Quaternion q = DirectionToQuaternion_s(dir);
+	laserParent_->SetQuaternion(q);
+	laserParent_->SetScaleZ(length * 0.5f);
 }
 
 void LaserEffect::Draw() {
@@ -72,10 +73,14 @@ void LaserEffect::Draw() {
 
 void LaserEffect::Finalize() {
 	// トランスフォームを消す
-	parent_->SetIsAlive(false);
+	laserParent_->SetIsAlive(false);
 	for (size_t i = 0; i < 2; i++) {
 		planeTrans_[i]->SetIsAlive(false);
 	}
+}
+
+void LaserEffect::SetLaserEndPos(const Vector3& endPos) {
+	laserEndPos_ = endPos;
 }
 
 void LaserEffect::DebugUpdate() {
@@ -86,6 +91,7 @@ void LaserEffect::DebugUpdate() {
 		MAGISYSTEM::GetParameterValue<Vector3>({"EffectParam","Laser","PlaneRotate0"}),
 		MAGISYSTEM::GetParameterValue<Vector3>({"EffectParam","Laser","PlaneRotate1"})
 	};
+
 	const Vector3 planeInitTranslate = MAGISYSTEM::GetParameterValue<Vector3>({ "EffectParam","Laser","PlaneTranslate" });
 	for (size_t i = 0; i < 2; i++) {
 		planeTrans_[i]->SetRotate(planeInitRotate[i]);

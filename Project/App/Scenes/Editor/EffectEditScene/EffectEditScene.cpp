@@ -21,29 +21,38 @@ void EffectEditScene::Initialize() {
 	gameEffectManager_ = std::make_unique<GameEffectManager>();
 
 
-	MAGISYSTEM::LoadModel("Ground");
-	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
-
-
-	// 床追加
-	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-	MAGISYSTEM::ImportSceneData("SceneData", true);
-
 }
 
 void EffectEditScene::Update() {
+	static Vector3 d;
 	ImGui::Begin("EffectEditScene");
+	ImGui::DragFloat3("Dir", &d.x, 0.01f);
+
 	if (ImGui::Button("Emit")) {
 		// 今実装するエフェクト
-
 		LaserEffect::InitParam param{};
 		param.emitPos = { 0.0f,0.0f,0.0f };
-		param.dir = { 0.0f,0.0f,1.0f };
-		param.speed = 100.0f;
 		param.life = 0.5f;
-
+		param.dir = d;
 		std::unique_ptr<LaserEffect> effect = std::make_unique<LaserEffect>(param);
 		gameEffectManager_->Add(std::move(effect));
+	}
+	ImGui::End();
+
+	ImGui::Begin("Plane");
+	{
+		for (size_t i = 0; i < 4; i++) {
+			std::string n = std::to_string(i);
+			std::string s = "Plane0" + n;
+			ImGui::DragFloat3(s.c_str(), &planeData0_.verticesOffsets[i].x, 0.01f);
+		}
+	}
+	{
+		for (size_t i = 0; i < 4; i++) {
+			std::string n = std::to_string(i);
+			std::string s = "Plane1" + n;
+			ImGui::DragFloat3(s.c_str(), &planeData1_.verticesOffsets[i].x, 0.01f);
+		}
 	}
 	ImGui::End();
 
@@ -52,6 +61,8 @@ void EffectEditScene::Update() {
 }
 
 void EffectEditScene::Draw() {
+	MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData0_, MaterialData3D{});
+	MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData1_, MaterialData3D{});
 	gameEffectManager_->Draw();
 }
 

@@ -52,7 +52,7 @@ public:
 	template<class T>
 	T& GetParamMutableRef() {
 		T* p = std::get_if<T>(&param_);
-		MAGIAssert::Assert(p);
+		MAGIAssert::Assert(p, "DamageCollider: Param type mismatch");
 		return *p;
 	}
 

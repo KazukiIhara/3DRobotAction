@@ -19,6 +19,8 @@ PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSys
 	BaseMech(param, ref) {
 	inputSys_ = inputSys;
 
+	tag_ = FriendlyTag::PlayerSide;
+	
 	modelTransform_->SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
 	// 武器をマップに追加

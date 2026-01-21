@@ -25,6 +25,9 @@ public:
 	void Finalize() override;
 
 private:
+	PlaneData3D planeData0_;
+	PlaneData3D planeData1_;
+
 	// ゲームエフェクトマネージャ
 	std::unique_ptr<GameEffectManager> gameEffectManager_;
 };

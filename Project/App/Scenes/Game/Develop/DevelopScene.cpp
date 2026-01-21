@@ -78,9 +78,10 @@ void DevelopScene::Initialize() {
 	// ボス作成
 	boss_ = std::make_unique<Boss>(ref, pilot_->GetMech());
 
-
-	// 
-
+	// 攻撃判定マネージャに機体を追加
+	damageCollisionSystem_->AddMech(pilot_->GetMech());
+	damageCollisionSystem_->AddMech(boss_->GetMech());
+	
 
 	// アニメーション作成クラスにボスをセット
 	mechAnimationEdit_->SetBaseMech(boss_->GetMech());

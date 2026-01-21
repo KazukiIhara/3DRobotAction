@@ -36,7 +36,7 @@ void PilotMechMoveSystem::Update() {
 	PilotMech::State current = mech_->GetCurrentState();
 	if (current == PilotMech::State::Move) {
 		// 移動方向の差によって減速させる
-		TurnDeceleration(dt);
+		TurnDeceleration();
 
 		// 方向を正規化
 		dir_ = Normalize(dir_);
@@ -87,7 +87,7 @@ const Vector3& PilotMechMoveSystem::GetVelocity() const {
 	return velocity_;
 }
 
-void PilotMechMoveSystem::TurnDeceleration(float dt) {
+void PilotMechMoveSystem::TurnDeceleration() {
 	// 角度差を求める
 	float dot = Dot(preDir_, dir_);
 	// 角度差が大きい場合速度を小さくする

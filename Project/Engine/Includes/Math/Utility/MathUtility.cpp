@@ -1073,6 +1073,35 @@ Quaternion MAGIMath::DirectionToQuaternion(const Vector3& direction) {
 	return MakeRotateAxisAngleQuaternion(axis, angle);
 }
 
+Quaternion MAGIMath::DirectionToQuaternion_s(const Vector3& direction) {
+	// ゼロ方向ガード
+	if (LengthSquared(direction) < 1e-8f) {
+		return MakeIdentityQuaternion();
+	}
+
+	// 正規化
+	const Vector3 dir = Normalize(direction);
+
+	// 水平成分
+	const float horizontal = std::sqrt(dir.x * dir.x + dir.z * dir.z);
+
+	// yaw
+	const float yaw = std::atan2(dir.x, dir.z);
+
+	// pitch
+	const float pitch = -std::atan2(dir.y, horizontal);
+
+	// Yaw -> Pitch（YXZのイメージに合わせる）
+	const Quaternion qYaw = MakeRotateAxisAngleQuaternion({ 0.0f, 1.0f, 0.0f }, yaw);
+
+	// pitch軸は
+	const Vector3 pitchAxis = Transform({ 1.0f, 0.0f, 0.0f }, qYaw);
+	const Quaternion qPitch = MakeRotateAxisAngleQuaternion(pitchAxis, pitch);
+
+	const Quaternion targetQ = Normalize(qPitch * qYaw);
+	return targetQ;
+}
+
 Quaternion MAGIMath::Normalize(const Quaternion& quaternion) {
 	// ノルムを求める
 	float length = Norm(quaternion);
