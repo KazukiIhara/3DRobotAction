@@ -24,7 +24,12 @@ public:
 
 	Sphere GetCollider();
 
+	void SetIsHit(bool isHit);
+	bool GetIsHit();
+
 private:
-	PilotMech* mech_;
+	bool isHit_ = false;
+
 	Sphere collider_;
+	PilotMech* mech_;
 };

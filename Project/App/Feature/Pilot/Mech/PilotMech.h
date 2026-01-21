@@ -41,6 +41,8 @@ public:
 
 	// システムを取得
 	PilotMechMoveSystem* GetMoveSystem();
+	PilotMechJustDodgeCollider* GetJustDodgeCollider();
+
 	GameInputSystem* GetInputSys();
 
 private:

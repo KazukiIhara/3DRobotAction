@@ -50,9 +50,18 @@ void PilotMechStateDodge::Enter(PilotMech* mech) {
 }
 
 void PilotMechStateDodge::Update(PilotMech* mech) {
+
+	// デルタタイム更新
 	const float dt = MAGISYSTEM::GetDeltaTime();
+
 	const float time = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Dodge","Time" });
 	auto ms = mech->GetMoveSystem();
+
+	// ジャスト回避判定
+	if (mech->GetJustDodgeCollider()) {
+		mech->ChangeState(PilotMech::State::JustDodge);
+		return;
+	}
 
 	{
 		const float t = CalExpT(dt, time, 0.5f);
@@ -69,6 +78,7 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 	// タイマー終了で移動状態に遷移
 	if (timer_ == 0.0f) {
 		mech->ChangeState(PilotMech::State::Move);
+		return;
 	}
 }
 

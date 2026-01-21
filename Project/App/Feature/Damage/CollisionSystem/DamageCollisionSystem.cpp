@@ -6,6 +6,9 @@
 #include "Feature/Mech/Base/BaseMech.h"
 #include "Feature/Damage/Collider/DamageCollider.h"
 
+#include "Feature/Pilot/Mech/PilotMech.h"
+#include "Feature/Pilot/Mech/JustDodgeCollider/PilotMechJustDodgeCollider.h"
+
 #include "Math/Utility/MathUtility.h"
 
 using namespace MAGIMath;
@@ -220,15 +223,11 @@ namespace {
 
 DamageCollisionSystem::DamageCollisionSystem() {
 	colliders_.clear();
-	hitPairs_.clear();
 }
 
 void DamageCollisionSystem::Update() {
 	// 死亡コライダー除去
 	RemoveDeadColliders();
-
-	// 衝突結果リセット
-	hitPairs_.clear();
 
 	// ダメージコライダー更新
 	UpdateDamageColliders();
@@ -257,11 +256,6 @@ DamageCollider* DamageCollisionSystem::AddCollider(std::unique_ptr<DamageCollide
 void DamageCollisionSystem::Clear() {
 	mechlist_.clear();
 	colliders_.clear();
-	hitPairs_.clear();
-}
-
-const std::vector<DamageCollisionSystem::HitPair>& DamageCollisionSystem::GetHitPairs() const {
-	return hitPairs_;
 }
 
 void DamageCollisionSystem::RemoveDeadColliders() {
@@ -323,11 +317,26 @@ void DamageCollisionSystem::CheckCollision() {
 					continue;
 				}
 
+				// プレイヤー機体の場合 ジャスト回避コライダーとの判定を取る
+				if (mechTag == FriendlyTag::PlayerSide) {
+					PilotMech* pm = dynamic_cast<PilotMech*>(mech);
+					if (pm) {
+						auto jdC = pm->GetJustDodgeCollider();
+						PilotMechJustDodgeCollider::Sphere sphere = jdC->GetCollider();
+						DamageCollider::Param jdParam = DamageCollider::Sphere{ sphere.center,sphere.radius };
+
+						if (IsCollision(jdParam, jdParam)) {
+							// 衝突情報セット
+							jdC->SetIsHit(true);
+							DamageCollider::HitInfo hit{};
+							dmg->SetHitInfo(hit);
+							continue;
+						}
+					}
+				}
+
 				// 形状同士判定
 				if (IsCollision(mechParam, dmg->GetParam())) {
-					// 衝突ペア登録
-					hitPairs_.push_back({ mech, dmg.get() });
-
 					// ダメージ側のみ衝突情報セット
 					DamageCollider::HitInfo hit{};
 					hit.isHit_ = true;

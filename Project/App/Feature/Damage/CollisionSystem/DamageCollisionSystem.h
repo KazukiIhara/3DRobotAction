@@ -26,8 +26,6 @@ public:
 
 	void Clear();
 
-	const std::vector<HitPair>& GetHitPairs() const;
-
 private:
 	void RemoveDeadColliders();
 	void UpdateDamageColliders();
@@ -46,5 +44,4 @@ private:
 	std::vector<BaseMech*> mechlist_;
 	std::vector<std::unique_ptr<DamageCollider>> colliders_;
 
-	std::vector<HitPair> hitPairs_;
 };
