@@ -101,7 +101,7 @@ namespace {
 		return LengthSquared(c1 - c2);
 	}
 
-	// 線分とAABB(原点中心)の最短距離二乗（厳密）
+	// 線分とAABB(原点中心)の最短距離二乗
 	float DistSqSegmentAABBCentered(const Vector3& p0, const Vector3& p1, const Vector3& e) {
 		// 方向
 		const Vector3 d = p1 - p0;
@@ -225,16 +225,16 @@ DamageCollisionSystem::DamageCollisionSystem() {
 
 void DamageCollisionSystem::Update() {
 	// 死亡コライダー除去
-	RemoveDeadColliders_();
+	RemoveDeadColliders();
 
 	// 衝突結果リセット
 	hitPairs_.clear();
 
 	// コライダー更新
-	UpdateColliders_();
+	UpdateColliders();
 
 	// 形状同士の判定
-	CheckCollision_();
+	CheckCollision();
 }
 
 void DamageCollisionSystem::Draw() {
@@ -245,9 +245,13 @@ void DamageCollisionSystem::Draw() {
 #endif
 }
 
-std::weak_ptr<DamageCollider> DamageCollisionSystem::AddCollider(std::shared_ptr<DamageCollider> collider) {
+void DamageCollisionSystem::AddMech(BaseMech* mech) {
+	mechlist_.push_back(mech);
+}
+
+DamageCollider* DamageCollisionSystem::AddCollider(std::unique_ptr<DamageCollider> collider) {
 	colliders_.push_back(std::move(collider));
-	return colliders_.back();
+	return colliders_.back().get();
 }
 
 void DamageCollisionSystem::Clear() {
@@ -259,21 +263,21 @@ const std::vector<std::pair<const DamageCollider*, const DamageCollider*>>& Dama
 	return hitPairs_;
 }
 
-void DamageCollisionSystem::RemoveDeadColliders_() {
+void DamageCollisionSystem::RemoveDeadColliders() {
 	colliders_.erase(
 		std::remove_if(colliders_.begin(), colliders_.end(),
-			[](const std::shared_ptr<DamageCollider>& c) { return !c->GetIsAlive(); }),
+			[](const std::unique_ptr<DamageCollider>& c) { return !c->GetIsAlive(); }),
 		colliders_.end()
 	);
 }
 
-void DamageCollisionSystem::UpdateColliders_() {
+void DamageCollisionSystem::UpdateColliders() {
 	for (auto& c : colliders_) {
 		c->Update();
 	}
 }
 
-void DamageCollisionSystem::CheckCollision_() {
+void DamageCollisionSystem::CheckCollision() {
 	// 全ペア判定
 	for (size_t i = 0; i < colliders_.size(); ++i) {
 		for (size_t j = i + 1; j < colliders_.size(); ++j) {
@@ -305,35 +309,26 @@ bool DamageCollisionSystem::IsCollision(const DamageCollider::Param& a, const Da
 
 		if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionSphereToSphere(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::OBB>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionSphereToOBB(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Sphere>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionSphereToOBB(sb, sa);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::OBB>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionOBBToOBB(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Sphere>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Sphere>) {
 			return IsCollisionCapsuleToSphere(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::Capsule>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Sphere> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToSphere(sb, sa);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Capsule>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToCapsule(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::OBB>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::Capsule> && std::is_same_v<B, DamageCollider::OBB>) {
 			return IsCollisionCapsuleToOBB(sa, sb);
-		}
-		else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Capsule>) {
+		} else if constexpr (std::is_same_v<A, DamageCollider::OBB> && std::is_same_v<B, DamageCollider::Capsule>) {
 			return IsCollisionCapsuleToOBB(sb, sa);
-		}
-		else {
+		} else {
 			return false;
 		}
-	}, a, b);
+		}, a, b);
 }
 
 

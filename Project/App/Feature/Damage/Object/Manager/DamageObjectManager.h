@@ -7,15 +7,12 @@
 // 攻撃オブジェクトの基底クラス
 #include "Feature/Damage/Object/Base/BaseDamageObject.h"
 
-// 攻撃判定マネージャ
-class DamageCollisionSystem;
-
 /// <summary>
 /// 攻撃オブジェクトマネージャ
 /// </summary>
 class DamageObjectManager {
 public:
-	DamageObjectManager(DamageCollisionSystem* collisionSystem);
+	DamageObjectManager();
 	~DamageObjectManager() = default;
 
 	void Update();
@@ -28,6 +25,4 @@ private:
 	// オブジェクトリスト
 	std::vector<std::unique_ptr<BaseDamageObject>> objects_;
 
-	// コリジョンマネージャの参照ポインタ
-	DamageCollisionSystem* collisionSystem_ = nullptr;
 };

@@ -1,19 +1,42 @@
+#define NOMINMAX
+
 #include "Laser.h"
 
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
 #include "MAGI.h"
 
 using namespace Magi;
 
-Laser::Laser(const Laser::InitParam& initParam) :
-	BaseDamageObject(initParam.emitPos) {
+Laser::Laser(const Laser::InitParam& initParam, RefContext ref) :
+	BaseDamageObject(initParam.emitPos, ref.damageCollisionSystem) {
+
 	// 初期化パラメータを受け取る
 	emitPos_ = initParam.emitPos;
 	dir_ = initParam.dir;
 	speed_ = initParam.speed;
 	life_ = initParam.life;
+
+	effectManager_ = ref.effectManager;
+
 	// コライダーを生成
+	DamageCollider::Capsule capsule{
+		.p0 = emitPos_,
+		.p1 = transform_->GetWorldPosition(),
+		.radius = 1.0f
+	};
+	AddDamageCollider(capsule, FriendlyTag::EnemySide);
+
+	LaserEffect::InitParam eParam{};
+	eParam.emitPos = emitPos_;
+	eParam.dir = dir_;
+	eParam.speed = speed_;
+	eParam.life = life_;
+
+	// レーザーエフェクト追加
+	std::unique_ptr<LaserEffect> laserEffect = std::make_unique<LaserEffect>(eParam);
+	effectManager_->Add(std::move(laserEffect));
 
 }
 
@@ -36,5 +59,6 @@ void Laser::Draw() {
 }
 
 void Laser::Finalize() {
-	transform_->SetIsAlive(false);
+	BaseDamageObject::Finalize();
+
 }

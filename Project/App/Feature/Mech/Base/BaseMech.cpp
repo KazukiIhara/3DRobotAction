@@ -3,8 +3,8 @@
 #include "MAGI.h"
 #include "3D/Transform3D/Transform3D.h"
 
-#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Damage/Object/Manager/DamageObjectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
 #include "Feature/Mech/Weapon/BaseMechWeapon.h"
 
@@ -220,6 +220,9 @@ const BaseMech::DebugFlag& BaseMech::GetDebugFlag() const {
 
 DamageObjectManager* BaseMech::GetDamageObjectManager() {
 	return ref_.damageObjectManager;
+}
+DamageCollisionSystem* BaseMech::GetDamageCollisionSystem() {
+	return ref_.damageCollisionSystem;
 }
 GameEffectManager* BaseMech::GetGameEffectManager() {
 	return ref_.gameEffectManager;

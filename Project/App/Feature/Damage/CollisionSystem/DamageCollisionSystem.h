@@ -7,6 +7,8 @@
 
 #include "Feature/Damage/Collider/DamageCollider.h"
 
+class BaseMech;
+
 /// <summary>
 /// ダメージ当たり判定システム（形状同士）
 /// </summary>
@@ -18,7 +20,9 @@ public:
 	void Update();
 	void Draw();
 
-	std::weak_ptr<DamageCollider> AddCollider(std::shared_ptr<DamageCollider> collider);
+	void AddMech(BaseMech* mech);
+
+	DamageCollider* AddCollider(std::unique_ptr<DamageCollider> collider);
 	void Clear();
 
 	const std::vector<std::pair<const DamageCollider*, const DamageCollider*>>& GetHitPairs() const;
@@ -35,11 +39,12 @@ public:
 	static bool IsCollisionCapsuleToOBB(const DamageCollider::Capsule& c, const DamageCollider::OBB& b);
 
 private:
-	void RemoveDeadColliders_();
-	void UpdateColliders_();
-	void CheckCollision_();
+	void RemoveDeadColliders();
+	void UpdateColliders();
+	void CheckCollision();
 
 private:
-	std::vector<std::shared_ptr<DamageCollider>> colliders_{};
+	std::vector<BaseMech*> mechlist_;
+	std::vector<std::unique_ptr<DamageCollider>> colliders_{};
 	std::vector<std::pair<const DamageCollider*, const DamageCollider*>> hitPairs_{};
 };

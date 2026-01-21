@@ -3,8 +3,8 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
-#include "GameObject/Damage/Object/Manager/DamageObjectManager.h"
-#include "GameEffects/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Damage/Object/Manager/DamageObjectManager.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
 
 // ステートクラス

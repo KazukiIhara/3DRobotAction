@@ -24,6 +24,7 @@
 
 // Forward
 class DamageObjectManager;
+class DamageCollisionSystem;
 class GameEffectManager;
 class MechAnimationContainer;
 
@@ -47,6 +48,7 @@ public:
 	struct RefContext {
 		DamageObjectManager* damageObjectManager = nullptr;
 		GameEffectManager* gameEffectManager = nullptr;
+		DamageCollisionSystem* damageCollisionSystem = nullptr;
 		MechAnimationContainer* animationContainer = nullptr;
 	};
 
@@ -91,6 +93,7 @@ public:
 	const DebugFlag& GetDebugFlag() const;
 
 	DamageObjectManager* GetDamageObjectManager();
+	DamageCollisionSystem* GetDamageCollisionSystem();
 	GameEffectManager* GetGameEffectManager();
 	MechAnimationContainer* GetAnimationContainer();
 

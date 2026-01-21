@@ -67,23 +67,13 @@ void BossMechWeaponLaserGun::Attack() {
 		lParam.dir = dir;
 		lParam.speed = speed;
 		lParam.life = life;
-
 		// レーザーを追加
-		std::unique_ptr<Laser> laser = std::make_unique<Laser>(lParam);
+		Laser::RefContext ref{
+			.damageCollisionSystem = mech_->GetDamageCollisionSystem(),
+			.effectManager = mech_->GetGameEffectManager()
+		};
+		std::unique_ptr<Laser> laser = std::make_unique<Laser>(lParam, ref);
 		atkM->Add(std::move(laser));
-	}
-
-	// エフェクト発生処理
-	if (auto efcM = mech_->GetGameEffectManager()) {
-		LaserEffect::InitParam eParam{};
-		eParam.emitPos = shotPos;
-		eParam.dir = dir;
-		eParam.speed = speed;
-		eParam.life = life;
-
-		// レーザーエフェクト追加
-		std::unique_ptr<LaserEffect> laserEffect = std::make_unique<LaserEffect>(eParam);
-		efcM->Add(std::move(laserEffect));
 	}
 
 }
