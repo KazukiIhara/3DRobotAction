@@ -13,7 +13,6 @@ MechJustDodgeCollider::MechJustDodgeCollider() {
 }
 
 void MechJustDodgeCollider::Update(MechCore* core) {
-
 	// 衝突情報リセット
 	isHit_ = false;
 

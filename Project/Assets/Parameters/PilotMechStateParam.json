@@ -19,6 +19,12 @@
       "value": 20.0
     }
   },
+  "JustDodge": {
+    "Time": {
+      "type": "Float",
+      "value": 1.0
+    }
+  },
   "Move": {
     "Acc": {
       "type": "Float",

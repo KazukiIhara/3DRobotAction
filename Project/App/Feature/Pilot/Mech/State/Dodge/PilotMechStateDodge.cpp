@@ -58,7 +58,7 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 	auto ms = mech->GetMoveSystem();
 
 	// ジャスト回避判定
-	if (mech->GetJustDodgeCollider()) {
+	if (mech->GetJustDodgeCollider()->GetIsHit()) {
 		mech->ChangeState(PilotMech::State::JustDodge);
 		return;
 	}
