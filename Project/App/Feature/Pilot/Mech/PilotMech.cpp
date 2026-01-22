@@ -3,6 +3,7 @@
 #include "MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
+// マネージャの参照用
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
@@ -13,6 +14,7 @@
 #include "Feature/Pilot/Mech/State/Dodge/PilotMechStateDodge.h"
 #include "Feature/Pilot/Mech/State/JustDodge/PilotMechStateJustDodge.h"
 #include "Feature/Pilot/Mech/State/JustDodgeAttack/PilotMechStateJustDodgeAttack.h"
+
 
 using namespace Magi;
 

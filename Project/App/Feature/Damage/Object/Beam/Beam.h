@@ -6,30 +6,34 @@
 // エフェクトマネージャ
 class GameEffectManager;
 
-// エフェクト
-class LaserEffect;
+// 実装メモ
+/*
+	地形に当たったら爆発とかやりたくない？俺はやりたい
+*/
 
 /// <summary>
-/// レーザー
+/// ビーム
 /// </summary>
-class Laser :public BaseLinearAttack {
+class Beam :public BaseLinearAttack {
 public:
 	struct RefContext {
 		DamageCollisionSystem* damageCollisionSystem;
 		GameEffectManager* effectManager;
 	};
 	struct InitParam {
-		BaseLinearAttack::InitParam initParam_;
+		BaseLinearAttack::InitParam baseInit;
+		float thickness = 0.0f;
 	};
 public:
-	Laser(const Laser::InitParam& initParam, RefContext ref);
-	~Laser()override = default;
+	Beam(const Beam::InitParam& initParam, RefContext ref);
+	~Beam()override = default;
 
 	void Update()override;
 	void Draw()override;
 	void Finalize()override;
-
 private:
+
+	float thickness_;
+
 	GameEffectManager* effectManager_;
-	LaserEffect* laserEffect_;
 };

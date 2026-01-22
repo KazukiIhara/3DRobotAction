@@ -25,8 +25,6 @@ BossMechWeaponLaserGun::BossMechWeaponLaserGun(BossMech* mech) :
 
 	MAGISYSTEM::LoadCreateModel("BossMechLaserGun");
 
-	MAGISYSTEM::AddParameterData({ "BossMechWeapon","LaserGun","FireOffset" }, ParamType::Vec3);
-
 	// 発射位置オフセットを設定
 	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "BossMechWeapon","LaserGun","FireOffset" });
 	fireTransform_->SetTranslate(fireOffset);
@@ -63,10 +61,10 @@ void BossMechWeaponLaserGun::Attack() {
 	if (auto atkM = mech_->GetDamageObjectManager()) {
 		// レーザーのパラメータ作成
 		Laser::InitParam lParam{};
-		lParam.emitPos = shotPos;
-		lParam.dir = dir;
-		lParam.speed = speed;
-		lParam.life = life;
+		lParam.initParam_.emitPos = shotPos;
+		lParam.initParam_.dir = dir;
+		lParam.initParam_.speed = speed;
+		lParam.initParam_.life = life;
 		// レーザーを追加
 		Laser::RefContext ref{
 			.damageCollisionSystem = mech_->GetDamageCollisionSystem(),
