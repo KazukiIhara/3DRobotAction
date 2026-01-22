@@ -8,7 +8,7 @@
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 
 // レーザー
-#include "Feature/Damage/Object/Laser/Laser.h"
+#include "Feature/Damage/Object/LinearAttack/Laser/Laser.h"
 // レーザーエフェクト
 #include "Feature/Effect/LaserEffect/LaserEffect.h"
 
