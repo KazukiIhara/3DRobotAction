@@ -6,13 +6,15 @@
 // エフェクトマネージャ
 class GameEffectManager;
 
-// エフェクト
-class LaserEffect;
+// 実装メモ
+/*
+	地形に当たったら爆発とかやりたくない？俺はやりたい
+*/
 
 /// <summary>
-/// レーザー
+/// ビーム
 /// </summary>
-class Laser:public BaseDamageObject {
+class Beam :public BaseDamageObject {
 public:
 	struct RefContext {
 		DamageCollisionSystem* damageCollisionSystem;
@@ -23,22 +25,22 @@ public:
 		Vector3 dir{};
 		float speed = 0.0f;
 		float life = 0.0f;
+		float thickness = 0.0f;
 		FriendlyTag tag;
 	};
 public:
-	Laser(const Laser::InitParam& initParam, RefContext ref);
-	~Laser()override = default;
+	Beam(const Beam::InitParam& initParam, RefContext ref);
+	~Beam()override = default;
 
 	void Update()override;
 	void Draw()override;
 	void Finalize()override;
-
 private:
-	Vector3 laserEndPos_;
+	Vector3 beamEndPos_;
 	Vector3 dir_;
 	float speed_;
 	float life_;
+	float thickness_;
 
 	GameEffectManager* effectManager_;
-	LaserEffect* laserEffect_;
 };

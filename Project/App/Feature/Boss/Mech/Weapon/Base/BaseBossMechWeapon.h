@@ -4,6 +4,9 @@
 
 class BossMech;
 
+/// <summary>
+/// ボスの武器ベースクラス
+/// </summary>
 class BaseBossMechWeapon :public BaseMechWeapon {
 public:
 	using BaseMechWeapon::BaseMechWeapon;

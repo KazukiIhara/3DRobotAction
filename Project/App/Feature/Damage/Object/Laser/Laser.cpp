@@ -5,6 +5,9 @@
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
+// レーザーエフェクト
+#include "Feature/Effect/LaserEffect/LaserEffect.h"
+
 #include "MAGI.h"
 
 using namespace Magi;
@@ -26,7 +29,8 @@ Laser::Laser(const Laser::InitParam& initParam, RefContext ref) :
 		.p1 = laserEndPos_,
 		.radius = 1.0f
 	};
-	AddDamageCollider(capsule, FriendlyTag::EnemySide);
+	AddDamageCollider(capsule, initParam.tag);
+
 
 	// エフェクト作成
 	LaserEffect::InitParam eParam{};
@@ -41,7 +45,6 @@ Laser::Laser(const Laser::InitParam& initParam, RefContext ref) :
 }
 
 void Laser::Update() {
-
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
 	// ライフ更新

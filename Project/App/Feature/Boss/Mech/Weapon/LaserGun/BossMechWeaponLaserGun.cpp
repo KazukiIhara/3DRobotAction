@@ -25,8 +25,6 @@ BossMechWeaponLaserGun::BossMechWeaponLaserGun(BossMech* mech) :
 
 	MAGISYSTEM::LoadCreateModel("BossMechLaserGun");
 
-	MAGISYSTEM::AddParameterData({ "BossMechWeapon","LaserGun","FireOffset" }, ParamType::Vec3);
-
 	// 発射位置オフセットを設定
 	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "BossMechWeapon","LaserGun","FireOffset" });
 	fireTransform_->SetTranslate(fireOffset);
