@@ -10,24 +10,11 @@
 using namespace Magi;
 
 Beam::Beam(const Beam::InitParam& initParam, RefContext ref) :
-	BaseDamageObject(initParam.emitPos, ref.damageCollisionSystem) {
+	BaseLinearAttack(initParam.baseInit, ref.damageCollisionSystem) {
 
 	// 初期化パラメータを受け取る
-	dir_ = Normalize(initParam.dir);
-	speed_ = initParam.speed;
-	life_ = initParam.life;
-	beamEndPos_ = initParam.emitPos + dir_;
 	thickness_ = initParam.thickness;
 	effectManager_ = ref.effectManager;
-
-	const Vector3 worldPos = transform_->GetWorldPosition();
-	// コライダーを作成
-	DamageCollider::Capsule capsule{
-		.p0 = worldPos,
-		.p1 = beamEndPos_,
-		.radius = 1.0f
-	};
-	AddDamageCollider(capsule, initParam.tag);
 
 
 	// エフェクト作成、追加
@@ -36,22 +23,8 @@ Beam::Beam(const Beam::InitParam& initParam, RefContext ref) :
 }
 
 void Beam::Update() {
-	const float dt = MAGISYSTEM::GetDeltaTime();
-
-	// ライフ更新
-	life_ -= dt;
-	life_ = std::max(0.0f, life_);
-	if (life_ == 0.0f) {
-		isAlive_ = false;
-		return;
-	}
-	const Vector3 velocity = dir_ * speed_;
-	beamEndPos_ += velocity * dt;
-
-	// コライダー更新
-	DamageCollider::Capsule& param = GetDamageCollider()->GetParamMutableRef<DamageCollider::Capsule>();
-	param.p1 = beamEndPos_;
-
+	// 基底クラスのアップデート
+	BaseLinearAttack::Update();
 
 }
 
@@ -60,5 +33,5 @@ void Beam::Draw() {
 }
 
 void Beam::Finalize() {
-	BaseDamageObject::Finalize();
+	BaseLinearAttack::Finalize();
 }

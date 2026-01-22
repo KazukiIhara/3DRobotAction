@@ -46,5 +46,4 @@ void Laser::Draw() {
 
 void Laser::Finalize() {
 	BaseLinearAttack::Finalize();
-
 }
