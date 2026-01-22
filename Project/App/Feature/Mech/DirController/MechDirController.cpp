@@ -25,6 +25,10 @@ MechDirController::LookAtFlag& MechDirController::GetLookAtFlag() {
 	return lookAtFlag_;
 }
 
+void MechDirController::TurnToMoveDirection() {
+	
+}
+
 void MechDirController::RotateMech() {
 	// 両方Falseなら早期リターン
 	if (!lookAtFlag_.mech.yaw && !lookAtFlag_.mech.pitch) {

@@ -18,8 +18,6 @@ void PilotMechModelDirSystem::Update() {
 
 void PilotMechModelDirSystem::TurnToDirection() {
 	const Vector3 dir = mech_->GetMoveSystem()->GetDir();
-	const Vector2 currentDir = Vector2(dir.x, dir.z);
-	const float yaw = std::atan2(currentDir.x, currentDir.y);
-	const Quaternion targetQ = MakeRotateAxisAngleQuaternion({ 0.0f,1.0f,0.0f }, yaw);
+	const Quaternion targetQ = DirectionToQuaternionYaw_s(dir);
 	mech_->GetModelTransform()->SetQuaternion(targetQ);
 }

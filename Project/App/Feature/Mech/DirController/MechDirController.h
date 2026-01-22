@@ -24,18 +24,16 @@ public:
 	MechDirController(BaseMech* mech);
 	~MechDirController() = default;
 
-	void ResetFlag();
-
 	void Update();
 
 	LookAtFlag& GetLookAtFlag();
 private:
+	void TurnToMoveDirection();
 	void RotateMech();
 	void RotateHead();
 	void RotateBody();
-
 private:
 	LookAtFlag lookAtFlag_{};
-
+	bool turnToMoveDir_ = false;
 	BaseMech* mech_ = nullptr;
 };
