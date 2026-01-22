@@ -4,15 +4,9 @@
 #include "Scenes/Sample/SampleScene.h"
 
 // EditorScene
-#include "Scenes/Editor/MechEditScene/MechEditScene.h"
-
-// GameScene
-#include "Scenes/Game/Title/TitleScene.h"
-#include "Scenes/Game/Menu/MenuScene.h"
-#include "Scenes/Game/Play/PlayScene.h"
-#include "Scenes/Game/MechCustomScene/MechCustomScene.h"
 #include "Scenes/Editor/EffectEditScene/EffectEditScene.h"
 
+// GameScene
 #include "Scenes/Game/Develop/DevelopScene.h"
 
 Game::~Game() {}
@@ -28,18 +22,11 @@ void Game::Initialize() {
 	// サンプルシーン
 	sceneManager_->AddScene<SampleScene>("Sample");
 
-	// エディットシーン
-	sceneManager_->AddScene<MechEditScene>("MechEdit");
 	// エフェクト作成シーン
 	sceneManager_->AddScene<EffectEditScene>("EffectEdit");
 
 	// 開発シーン
 	sceneManager_->AddScene<DevelopScene>("Develop");
-
-	// ゲームシーン
-	sceneManager_->AddScene<TitleScene>("Title");
-	sceneManager_->AddScene<PlayScene>("Play");
-	sceneManager_->AddScene<MenuScene>("Menu");
 
 	// 最初のシーンを設定
 	sceneManager_->ChangeScene("Develop");

@@ -2,8 +2,6 @@
 
 #include "Feature/Boss/Mech/BossMech.h"
 
-#include "GameObject/Mech/MechCore/MechCore.h"
-
 #include "MAGI.h"
 
 using namespace Magi;
