@@ -60,7 +60,6 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 		return;
 	}
 
-
 	// 速度処理
 	{
 		auto ms = mech->GetMoveSystem();
@@ -82,4 +81,6 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 	}
 }
 
-void PilotMechStateDodge::Exit([[maybe_unused]] PilotMech* mech) {}
+void PilotMechStateDodge::Exit([[maybe_unused]] PilotMech* mech) {
+
+}

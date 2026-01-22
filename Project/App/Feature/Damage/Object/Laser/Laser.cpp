@@ -5,8 +5,6 @@
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
-// レーザーエフェクト
-#include "Feature/Effect/LaserEffect/LaserEffect.h"
 
 #include "MAGI.h"
 
@@ -23,7 +21,7 @@ Laser::Laser(const Laser::InitParam& initParam, RefContext ref) :
 	eParam.emitPos = worldPos;
 	eParam.dir = dir_;
 	eParam.life = life_;
-
+	eParam.color;
 	// レーザーエフェクト追加
 	std::unique_ptr<LaserEffect> laserEffect = std::make_unique<LaserEffect>(eParam);
 	laserEffect_ = dynamic_cast<LaserEffect*>(effectManager_->Add(std::move(laserEffect)));

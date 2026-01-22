@@ -37,6 +37,10 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	// デバッグの更新
 	DebugUpdate(isShowDebugUI, param);
 
+	// パイロット機体をターゲットにセット
+	const Vector3 pilotCenter = GetPilotMech()->GetCenterPos();
+	SetTargetWorldPos(pilotCenter);
+
 	// ステート更新
 	if (auto& state = currentState_.second) {
 		state->Update(this);
@@ -95,6 +99,17 @@ void BossMech::ShowDebugWindow() {
 		ImGui::SameLine();
 		const std::string state = StateToString(currentState_.first);
 		ImGui::Text(state.c_str());
+	}
+
+	ImGui::SeparatorText("LookAtFlag");
+	{
+		auto& look = GetDirController()->GetLookAtFlag();
+		ImGui::Checkbox("MechYaw", &look.mech.yaw);
+		ImGui::Checkbox("MechPitch", &look.mech.pitch);
+		ImGui::Checkbox("BodyYaw", &look.body.yaw);
+		ImGui::Checkbox("BodyPitch", &look.body.pitch);
+		ImGui::Checkbox("HeadYaw", &look.head.yaw);
+		ImGui::Checkbox("HeadPitch", &look.head.pitch);
 	}
 
 	ImGui::SeparatorText("SwitchState");

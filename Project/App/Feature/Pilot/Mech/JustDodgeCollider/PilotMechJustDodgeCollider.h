@@ -25,7 +25,7 @@ public:
 	Sphere GetCollider();
 
 	void SetIsHit(bool isHit);
-	bool GetIsHit();
+	bool GetIsHit() const;
 
 private:
 	bool isHit_ = false;

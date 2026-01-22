@@ -15,13 +15,13 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"\u7acb\u65b9\u4f53.007"
+			"name":"\u7acb\u65b9\u4f53.008"
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.020",
+			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.012",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
 					0.02500000037252903,
@@ -36,7 +36,7 @@
 	],
 	"meshes":[
 		{
-			"name":"\u7acb\u65b9\u4f53.030",
+			"name":"\u7acb\u65b9\u4f53.001",
 			"primitives":[
 				{
 					"attributes":{
@@ -56,14 +56,14 @@
 			"componentType":5126,
 			"count":24,
 			"max":[
-				0.30000001192092896,
+				0.30000004172325134,
 				0.15000000596046448,
-				0.30000001192092896
+				0.5
 			],
 			"min":[
-				-0.30000001192092896,
+				-0.30000004172325134,
 				-0.15000000596046448,
-				-0.5
+				-0.30000004172325134
 			],
 			"type":"VEC3"
 		},
@@ -115,7 +115,7 @@
 	"buffers":[
 		{
 			"byteLength":840,
-			"uri":"BossMechFootLeft.bin"
+			"uri":"BossMechFoot.bin"
 		}
 	]
 }
