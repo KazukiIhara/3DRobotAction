@@ -99,6 +99,8 @@ void Pilot::LoadMechInitParam() {
 	initParam_.leg.lowerTranslateRight = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Pilot","LowerLegRight","Translate" });
 	initParam_.leg.footModelNameRight = MAGISYSTEM::GetParameterValue<std::string>({ "MechInitParam","Pilot","FootRight","ModelName" });
 	initParam_.leg.footTranslateRight = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Pilot","FootRight","Translate" });
+
+	initParam_.tag = FriendlyTag::PlayerSide;
 }
 
 void Pilot::CameraOperation() {

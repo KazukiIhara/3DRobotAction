@@ -13,8 +13,15 @@ class MechAnimationContainer;
 class GameInputSystem;
 class TPSCamera3D;
 
+// 実装メモ
+/*
+	実質プレイヤークラス
+	名称衝突をさけるために命名を変えた　
+	コード整理後名称をプレイヤーにするかもしれない
+*/
+
 /// <summary>
-/// パイロット(要はプレイヤー)
+/// パイロット
 /// </summary>
 class Pilot {
 public:

@@ -103,7 +103,7 @@ void BossMech::ShowDebugWindow() {
 
 	ImGui::SeparatorText("LookAtFlag");
 	{
-		auto& look = GetDirController()->GetLookAtFlag();
+		auto& look = RotControlSystem()->GetLookAtFlag();
 		ImGui::Checkbox("MechYaw", &look.mech.yaw);
 		ImGui::Checkbox("MechPitch", &look.mech.pitch);
 		ImGui::Checkbox("BodyYaw", &look.body.yaw);

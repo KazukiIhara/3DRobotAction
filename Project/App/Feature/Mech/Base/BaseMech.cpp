@@ -34,8 +34,10 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 
 	// アニメーター
 	animator_ = std::make_unique<MechAnimator>(ref_.animationContainer, this);
+	// 移動制御クラス作成
+	moveSystem_ = std::make_unique<MechMoveSystem>(this);
 	// 回転制御クラス作成
-	dirController_ = std::make_unique<MechDirController>(this);
+	rotControlSystem_ = std::make_unique<MechRotControlSystem>(this);
 	// コライダー作成
 	collider_ = std::make_unique<MechCollider>(this);
 
@@ -54,9 +56,22 @@ void BaseMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 		}
 	}
 
+	// 機体の速度を計算
+	if (moveSystem_) {
+		moveSystem_->CalSpeed();
+	}
+
+	// 地形追加後　多分ここで押し戻し判定を取る
+
+
+	// 移動量を計算して追加
+	if (moveSystem_) {
+		moveSystem_->ApplyVelocity();
+	}
+
 	// 機体の回転を更新
-	if (dirController_) {
-		dirController_->Update();
+	if (rotControlSystem_) {
+		rotControlSystem_->Update();
 	}
 
 	// コライダー更新
@@ -168,8 +183,12 @@ MechAnimator* BaseMech::GetAnimator() {
 	return animator_.get();
 }
 
-MechDirController* BaseMech::GetDirController() {
-	return dirController_.get();
+MechMoveSystem* BaseMech::GetMoveSystem() {
+	return moveSystem_.get();
+}
+
+MechRotControlSystem* BaseMech::RotControlSystem() {
+	return rotControlSystem_.get();
 }
 
 MechCollider* BaseMech::GetCollider() {

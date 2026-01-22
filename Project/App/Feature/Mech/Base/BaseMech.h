@@ -21,8 +21,10 @@
 #include "Feature/Mech/Weapon/BaseMechWeapon.h"
 // アニメーションクラス
 #include "MechAnimation/Animator/MechAnimator.h"
+// 移動制御クラス
+#include "Feature/Mech/System/Move/MechMoveSystem.h"
 // 回転制御クラス
-#include "Feature/Mech/DirController/MechDirController.h"
+#include "Feature/Mech/System/RotControl/MechRotControlSystem.h"
 // コライダークラス
 #include "Feature/Mech/Collider/MechCollider.h"
 // 汎用ヘッダ
@@ -88,8 +90,10 @@ public:
 
 	// アニメーター
 	MechAnimator* GetAnimator();
+	// 移動制御クラス
+	MechMoveSystem* GetMoveSystem();
 	// 回転制御クラス
-	MechDirController* GetDirController();
+	MechRotControlSystem* RotControlSystem();
 	// コライダー取得
 	MechCollider* GetCollider();
 	// タグ取得
@@ -134,7 +138,8 @@ private:
 	void SwitchShowPartsTransform();
 	void SwitchEditPartsTransform();
 	void SwitchStopUpdate();
-protected:
+
+private:
 	// トランスフォーム
 	Transform3D* transform_ = nullptr;
 	// モデル描画トランスフォーム
@@ -162,8 +167,10 @@ protected:
 
 	// アニメーション
 	std::unique_ptr<MechAnimator> animator_;
+	// 移動制御クラス
+	std::unique_ptr<MechMoveSystem> moveSystem_;
 	// 回転制御クラス
-	std::unique_ptr<MechDirController> dirController_;
+	std::unique_ptr<MechRotControlSystem> rotControlSystem_;
 	// コライダー
 	std::unique_ptr<MechCollider> collider_;
 

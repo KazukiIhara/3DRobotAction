@@ -71,6 +71,8 @@ void Boss::LoadMechInitParam() {
 	initParam_.leg.lowerTranslateRight = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Boss","LowerLegRight","Translate" });
 	initParam_.leg.footModelNameRight = MAGISYSTEM::GetParameterValue<std::string>({ "MechInitParam","Boss","FootRight","ModelName" });
 	initParam_.leg.footTranslateRight = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Boss","FootRight","Translate" });
+
+	initParam_.tag = FriendlyTag::EnemySide;
 }
 
 Boss::Flag Boss::GetFlag() const {

@@ -6,10 +6,6 @@
 // ステート基底クラス
 #include "Feature/Pilot/Mech/State/IPilotMechState.h"
 
-// システムクラス
-#include "Feature/Pilot/Mech/System/Move/PilotMechMoveSystem.h"
-#include "Feature/Pilot/Mech/System/ModelDir/PilotMechModelDirSystem.h"
-
 // ジャスト回避コライダー
 #include "Feature/Pilot/Mech/JustDodgeCollider/PilotMechJustDodgeCollider.h"
 
@@ -40,8 +36,6 @@ public:
 
 	PilotMech::State GetCurrentState()const;
 
-	// システムを取得
-	PilotMechMoveSystem* GetMoveSystem();
 	PilotMechJustDodgeCollider* GetJustDodgeCollider();
 
 	GameInputSystem* GetInputSys();
@@ -62,11 +56,6 @@ private:
 
 	// 現在のステート
 	std::pair<PilotMech::State, IPilotMechState*> currentState_;
-
-	// 移動システム
-	std::unique_ptr<PilotMechMoveSystem> moveSystem_;
-	// モデルの向き管理システム
-	std::unique_ptr<PilotMechModelDirSystem> modelDirSystem_;
 
 	// ジャスト回避コライダー
 	std::unique_ptr<PilotMechJustDodgeCollider> justDodgeCollider_;

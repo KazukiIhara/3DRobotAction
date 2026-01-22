@@ -23,16 +23,7 @@ PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSys
 
 	inputSys_ = inputSys;
 
-	tag_ = FriendlyTag::PlayerSide;
-
-	modelTransform_->SetScale(Vector3(0.5f, 0.5f, 0.5f));
-
 	// 武器をマップに追加
-
-	// システム作成
-	// 移動システム
-	moveSystem_ = std::make_unique<PilotMechMoveSystem>(this);
-	modelDirSystem_ = std::make_unique<PilotMechModelDirSystem>(this);
 
 	// ジャスト回避コライダー実装
 	justDodgeCollider_ = std::make_unique<PilotMechJustDodgeCollider>(this);
@@ -58,10 +49,6 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 		state->Update(this);
 	}
 
-	// システム更新
-	moveSystem_->Update();
-	modelDirSystem_->Update();
-
 	// コライダー更新
 	justDodgeCollider_->Update();
 
@@ -71,7 +58,7 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 
 void PilotMech::DebugDraw() {
 	BaseMech::DebugDraw();
-	if (debugFlag_.isDebugDraw) {
+	if (GetDebugFlag().isDebugDraw) {
 		justDodgeCollider_->Draw();
 	}
 }
@@ -91,10 +78,6 @@ void PilotMech::ChangeState(PilotMech::State nextState) {
 
 PilotMech::State PilotMech::GetCurrentState()const {
 	return currentState_.first;
-}
-
-PilotMechMoveSystem* PilotMech::GetMoveSystem() {
-	return moveSystem_.get();
 }
 
 PilotMechJustDodgeCollider* PilotMech::GetJustDodgeCollider() {
