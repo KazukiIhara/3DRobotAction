@@ -61,10 +61,10 @@ void BossMechWeaponLaserGun::Attack() {
 	if (auto atkM = mech_->GetDamageObjectManager()) {
 		// レーザーのパラメータ作成
 		Laser::InitParam lParam{};
-		lParam.emitPos = shotPos;
-		lParam.dir = dir;
-		lParam.speed = speed;
-		lParam.life = life;
+		lParam.initParam_.emitPos = shotPos;
+		lParam.initParam_.dir = dir;
+		lParam.initParam_.speed = speed;
+		lParam.initParam_.life = life;
 		// レーザーを追加
 		Laser::RefContext ref{
 			.damageCollisionSystem = mech_->GetDamageCollisionSystem(),

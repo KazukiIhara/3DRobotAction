@@ -1,7 +1,7 @@
 #pragma once
 
 // 基底クラス
-#include "Feature/Damage/Object/Base/BaseDamageObject.h"
+#include "Feature/Damage/Object/LinearAttack/Base/BaseLinearAttack.h"
 
 // エフェクトマネージャ
 class GameEffectManager;
@@ -12,18 +12,14 @@ class LaserEffect;
 /// <summary>
 /// レーザー
 /// </summary>
-class Laser:public BaseDamageObject {
+class Laser :public BaseLinearAttack {
 public:
 	struct RefContext {
 		DamageCollisionSystem* damageCollisionSystem;
 		GameEffectManager* effectManager;
 	};
 	struct InitParam {
-		Vector3 emitPos{};
-		Vector3 dir{};
-		float speed = 0.0f;
-		float life = 0.0f;
-		FriendlyTag tag;
+		BaseLinearAttack::InitParam initParam_;
 	};
 public:
 	Laser(const Laser::InitParam& initParam, RefContext ref);
@@ -34,11 +30,6 @@ public:
 	void Finalize()override;
 
 private:
-	Vector3 laserEndPos_;
-	Vector3 dir_;
-	float speed_;
-	float life_;
-
 	GameEffectManager* effectManager_;
 	LaserEffect* laserEffect_;
 };
