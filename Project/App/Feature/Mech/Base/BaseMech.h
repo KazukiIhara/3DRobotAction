@@ -93,7 +93,7 @@ public:
 	// 移動制御クラス
 	MechMoveSystem* GetMoveSystem();
 	// 回転制御クラス
-	MechRotControlSystem* RotControlSystem();
+	MechRotControlSystem* GetRotControlSystem();
 	// コライダー取得
 	MechCollider* GetCollider();
 	// タグ取得

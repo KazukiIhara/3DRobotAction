@@ -3,9 +3,6 @@
 // 基底クラス
 #include "Feature/Damage/Object/Base/BaseDamageObject.h"
 
-// エフェクトマネージャ
-class GameEffectManager;
-
 /// <summary>
 /// 線上の攻撃基底クラス
 /// </summary>

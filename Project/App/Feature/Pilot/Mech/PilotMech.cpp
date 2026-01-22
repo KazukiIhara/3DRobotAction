@@ -49,6 +49,9 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 		state->Update(this);
 	}
 
+	// 進行方向に機体を向ける
+	GetRotControlSystem()->SetTurnToMoveDir(true);
+
 	// コライダー更新
 	justDodgeCollider_->Update();
 

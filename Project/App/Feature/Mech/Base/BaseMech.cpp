@@ -187,7 +187,7 @@ MechMoveSystem* BaseMech::GetMoveSystem() {
 	return moveSystem_.get();
 }
 
-MechRotControlSystem* BaseMech::RotControlSystem() {
+MechRotControlSystem* BaseMech::GetRotControlSystem() {
 	return rotControlSystem_.get();
 }
 
