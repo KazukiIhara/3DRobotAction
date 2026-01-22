@@ -32,6 +32,6 @@ void PilotMechJustDodgeCollider::SetIsHit(bool isHit) {
 	isHit_ = isHit;
 }
 
-bool PilotMechJustDodgeCollider::GetIsHit() {
+bool PilotMechJustDodgeCollider::GetIsHit() const {
 	return isHit_;
 }

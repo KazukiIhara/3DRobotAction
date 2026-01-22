@@ -3,11 +3,11 @@
 // 基底クラス
 #include "Feature/Damage/Object/LinearAttack/Base/BaseLinearAttack.h"
 
+// レーザーエフェクト
+#include "Feature/Effect/LaserEffect/LaserEffect.h"
+
 // エフェクトマネージャ
 class GameEffectManager;
-
-// エフェクト
-class LaserEffect;
 
 /// <summary>
 /// レーザー
@@ -20,6 +20,7 @@ public:
 	};
 	struct InitParam {
 		BaseLinearAttack::InitParam initParam_;
+		LaserEffect::Col color;
 	};
 public:
 	Laser(const Laser::InitParam& initParam, RefContext ref);

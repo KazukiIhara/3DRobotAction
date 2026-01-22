@@ -65,6 +65,9 @@ void BossMechWeaponLaserGun::Attack() {
 		lParam.initParam_.dir = dir;
 		lParam.initParam_.speed = speed;
 		lParam.initParam_.life = life;
+		lParam.initParam_.tag = FriendlyTag::EnemySide;
+		lParam.color = LaserEffect::Col::RED;
+
 		// レーザーを追加
 		Laser::RefContext ref{
 			.damageCollisionSystem = mech_->GetDamageCollisionSystem(),

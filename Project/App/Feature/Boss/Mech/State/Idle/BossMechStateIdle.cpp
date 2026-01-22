@@ -1,6 +1,7 @@
 #include "BossMechStateIdle.h"
 
 #include "Feature/Boss/Mech/BossMech.h"
+#include "Feature/Pilot/Mech/PilotMech.h"
 
 #include "MAGI.h"
 

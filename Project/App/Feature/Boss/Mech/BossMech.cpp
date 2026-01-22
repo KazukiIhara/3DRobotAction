@@ -97,6 +97,20 @@ void BossMech::ShowDebugWindow() {
 		ImGui::Text(state.c_str());
 	}
 
+	ImGui::SeparatorText("LookAtFlag");
+	{
+		const Vector3 pilotCenter = GetPilotMech()->GetCenterPos();
+		SetTargetWorldPos(pilotCenter);
+
+		auto& look = GetDirController()->GetLookAtFlag();
+		ImGui::Checkbox("MechYaw", &look.mech.yaw);
+		ImGui::Checkbox("MechPitch", &look.mech.pitch);
+		ImGui::Checkbox("BodyYaw", &look.body.yaw);
+		ImGui::Checkbox("BodyPitch", &look.body.pitch);
+		ImGui::Checkbox("HeadYaw", &look.head.yaw);
+		ImGui::Checkbox("HeadPitch", &look.head.pitch);
+	}
+
 	ImGui::SeparatorText("SwitchState");
 	{
 		// 箱の高さ

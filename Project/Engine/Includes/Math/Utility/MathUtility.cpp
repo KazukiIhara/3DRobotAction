@@ -1091,7 +1091,7 @@ Quaternion MAGIMath::DirectionToQuaternion_s(const Vector3& direction) {
 	// pitch
 	const float pitch = -std::atan2(dir.y, horizontal);
 
-	// Yaw -> Pitch（YXZのイメージに合わせる）
+	// Yaw
 	const Quaternion qYaw = MakeRotateAxisAngleQuaternion({ 0.0f, 1.0f, 0.0f }, yaw);
 
 	// pitch軸は
@@ -1101,6 +1101,52 @@ Quaternion MAGIMath::DirectionToQuaternion_s(const Vector3& direction) {
 	const Quaternion targetQ = Normalize(qPitch * qYaw);
 	return targetQ;
 }
+
+Quaternion MAGIMath::DirectionToQuaternionYaw_s(const Vector3& direction) {
+	// ゼロ方向ガード
+	if (LengthSquared(direction) < 1e-8f) {
+		return MakeIdentityQuaternion();
+	}
+
+	// 正規化
+	const Vector3 dir = Normalize(direction);
+
+	// 水平成分
+	const float horizontalSq = std::sqrt(dir.x * dir.x + dir.z * dir.z);
+
+	// ほぼ真上/真下なら yaw は決められないので回転なし
+	if (horizontalSq < 1e-8f) {
+		return MakeIdentityQuaternion();
+	}
+
+	// yaw（左右のみ）
+	const float yaw = std::atan2(dir.x, dir.z);
+
+	// Y軸回りに回すだけ
+	const Quaternion qYaw = MakeRotateAxisAngleQuaternion({ 0.0f, 1.0f, 0.0f }, yaw);
+	return Normalize(qYaw);
+}
+
+Quaternion MAGIMath::DirectionToQuaternionPitch_s(const Vector3& direction) {
+	// ゼロ方向ガード
+	if (LengthSquared(direction) < 1e-8f) {
+		return MakeIdentityQuaternion();
+	}
+
+	// 正規化
+	const Vector3 dir = Normalize(direction);
+
+	// 水平成分
+	const float horizontal = std::sqrt(dir.x * dir.x + dir.z * dir.z);
+
+	// pitch（上下のみ）
+	const float pitch = -std::atan2(dir.y, horizontal);
+
+	// X軸回りに回すだけ
+	const Quaternion qPitch = MakeRotateAxisAngleQuaternion({ 1.0f, 0.0f, 0.0f }, pitch);
+	return Normalize(qPitch);
+}
+
 
 Quaternion MAGIMath::Normalize(const Quaternion& quaternion) {
 	// ノルムを求める

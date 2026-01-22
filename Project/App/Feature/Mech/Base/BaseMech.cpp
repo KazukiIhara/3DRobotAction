@@ -24,10 +24,8 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 
 	// パーツ作成
 	CreateParts(param);
-
 	// 一応パラメータ初期化
 	SetInitParam(param);
-
 	// 関節配列初期化
 	partsTrans_.fill(nullptr);
 
@@ -35,17 +33,15 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 	PartsSetUp();
 
 	// アニメーター
-	if (ref_.animationContainer) {
-		animator_ = std::make_unique<MechAnimator>(ref_.animationContainer, this);
-	}
-
+	animator_ = std::make_unique<MechAnimator>(ref_.animationContainer, this);
+	// 回転制御クラス作成
+	dirController_ = std::make_unique<MechDirController>(this);
 	// コライダー作成
 	collider_ = std::make_unique<MechCollider>(this);
 
 }
 
 void BaseMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BaseMech::InitParam& param) {
-
 	// パーツ更新
 	for (auto& p : parts_) {
 		p->Update();
@@ -56,6 +52,11 @@ void BaseMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 		if (kv.second) {
 			kv.second->Update();
 		}
+	}
+
+	// 機体の回転を更新
+	if (dirController_) {
+		dirController_->Update();
 	}
 
 	// コライダー更新
@@ -167,12 +168,24 @@ MechAnimator* BaseMech::GetAnimator() {
 	return animator_.get();
 }
 
+MechDirController* BaseMech::GetDirController() {
+	return dirController_.get();
+}
+
 MechCollider* BaseMech::GetCollider() {
 	return collider_.get();
 }
 
 FriendlyTag BaseMech::GetTag()const {
 	return tag_;
+}
+
+void BaseMech::SetTargetWorldPos(const Vector3& targetWorldPos) {
+	targetWorldPos_ = targetWorldPos;
+}
+
+const Vector3& BaseMech::GetTargetWorldPos() const {
+	return targetWorldPos_;
 }
 
 const std::string BaseMech::TransTypeToString(MechAnimation::TransType partsType) {
