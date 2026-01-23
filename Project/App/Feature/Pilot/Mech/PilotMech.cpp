@@ -15,18 +15,34 @@
 #include "Feature/Pilot/Mech/State/JustDodge/PilotMechStateJustDodge.h"
 #include "Feature/Pilot/Mech/State/JustDodgeAttack/PilotMechStateJustDodgeAttack.h"
 
+// 武器
+#include "Feature/Pilot/Mech/Weapon/BeamCannonRifle/PilotMechWeaponBeamCannonRifle.h"
 
 using namespace Magi;
 
-PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* inputSys)
+// 
+// 以下改修予定
+//
+
+// ボス機体
+#include "Feature/Boss/Mech/BossMech.h"
+
+PilotMech::PilotMech(const InitParam& param, const BaseMech::RefContext& ref, GameInputSystem* inputSys)
 	:BaseMech(param, ref) {
 
 	inputSys_ = inputSys;
 
-	// 武器をマップに追加
+	// 追加パーツがあればここに追加
 
-	// ジャスト回避コライダー実装
+	// 武器をマップに追加
+	// レーザーキャノン
+	AddWeapon("BeanCannonRifle", std::make_unique<PilotMechWeaponBeamCannonRifle>(this));
+
+	// ジャスト回避コライダー
 	justDodgeCollider_ = std::make_unique<PilotMechJustDodgeCollider>(this);
+
+	// ロックオンシステム
+	lockOnSystem_ = std::make_unique<PilotMechLockOnSystem>(this);
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<PilotMechStateIdle>();
@@ -89,6 +105,10 @@ PilotMechJustDodgeCollider* PilotMech::GetJustDodgeCollider() {
 
 GameInputSystem* PilotMech::GetInputSys() {
 	return inputSys_;
+}
+
+void PilotMech::SetBossMech(BossMech* mech) {
+	lockOnSystem_->SetBoss(mech);
 }
 
 IPilotMechState* PilotMech::GetState(PilotMech::State state) {

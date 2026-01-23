@@ -51,12 +51,12 @@ void PilotMechWeaponBeamCannonRifle::Attack() {
 	if (auto atkM = mech_->GetDamageObjectManager()) {
 		// ビームキャノンのパラメータを作成
 		BeamCannon::InitParam param{};
-		param.initParam_.emitPos;
-		param.initParam_.dir;
-		param.initParam_.length;
-		param.initParam_.life;
-		param.initParam_.speed;
-		param.initParam_.thickness;
+		param.initParam_.emitPos = shotPos;
+		param.initParam_.dir = dir;
+		param.initParam_.length = length;
+		param.initParam_.life = life;
+		param.initParam_.speed = speed;
+		param.initParam_.thickness = thickness;
 
 		param.initParam_.tag = FriendlyTag::PlayerSide;
 

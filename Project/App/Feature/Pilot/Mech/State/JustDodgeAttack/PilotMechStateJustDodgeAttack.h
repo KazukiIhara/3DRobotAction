@@ -15,7 +15,6 @@
 /// </summary>
 class PilotMechStateJustDodgeAttack:public IPilotMechState {
 public:
-	PilotMechStateJustDodgeAttack();
 	~PilotMechStateJustDodgeAttack() = default;
 	void Enter(PilotMech* mech)override;
 	void Update(PilotMech* mech)override;

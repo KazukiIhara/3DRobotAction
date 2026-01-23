@@ -11,6 +11,9 @@
 #include "Feature/Boss/Mech/State/Idle/BossMechStateIdle.h"
 #include "Feature/Boss/Mech/State/LaserShot/BossMechStateLaserShot.h"
 
+// 武器クラス
+#include "Feature/Boss/Mech/Weapon/LaserGun/BossMechWeaponLaserGun.h"
+
 // プレイヤー機体
 #include "Feature/Pilot/Mech/PilotMech.h"
 
@@ -21,8 +24,11 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 	// プレイヤー機体の参照ポインタを受け取る
 	pilotMech_ = pilotMech;
 
+	// 追加パーツがあればここに追加
+
+
 	// 武器をマップに追加
-	RegisterWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
+	AddWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<BossMechStateIdle>();

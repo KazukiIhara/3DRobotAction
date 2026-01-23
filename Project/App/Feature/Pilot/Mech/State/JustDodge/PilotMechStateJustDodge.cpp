@@ -37,7 +37,20 @@ void PilotMechStateJustDodge::Enter([[maybe_unused]] PilotMech* mech) {
 }
 
 void PilotMechStateJustDodge::Update([[maybe_unused]] PilotMech* mech) {
+	// デルタタイムを取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
+
+	// 入力取得
+	auto commandPair = mech->GetInputSys()->GetPilotCommand();
+	// 移動入力なしでIdleに遷移
+	if (commandPair.first) {
+		auto command = commandPair.second;
+		// 左手攻撃コマンドでジャスト回避攻撃
+		if (command.attackL) {
+			mech->ChangeState(PilotMech::State::JustDodgeAttack);
+			return;
+		}
+	}
 
 	// デルタタイムをスローにする処理
 	const float time = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","JustDodge","Time" });
@@ -73,6 +86,6 @@ void PilotMechStateJustDodge::Update([[maybe_unused]] PilotMech* mech) {
 }
 
 void PilotMechStateJustDodge::Exit([[maybe_unused]] PilotMech* mech) {
-	// 念のため1.0fに戻す
+	// 1.0fに戻す
 	MAGISYSTEM::SetDeltaTimeMultiplier(1.0f);
 }
