@@ -558,8 +558,8 @@ public: // エンジンの機能
 	// 板ポリ描画
 	static void DrawPlane3D(
 		const Matrix4x4& worldMatrix,
-		const PlaneData3D& planeData,
-		const MaterialData3D& materialData
+		const PlaneData3D& planeData = PlaneData3D{},
+		const MaterialData3D& materialData = MaterialData3D{}
 	);
 
 #pragma endregion
@@ -568,8 +568,8 @@ public: // エンジンの機能
 	// ボックス描画
 	static void DrawBox3D(
 		const Matrix4x4& worldMatrix,
-		const BoxData3D& boxData,
-		const MaterialData3D&
+		const BoxData3D& boxData = BoxData3D{},
+		const MaterialData3D& material = MaterialData3D{}
 	);
 #pragma endregion
 
@@ -587,8 +587,8 @@ public: // エンジンの機能
 	// リング描画
 	static void DrawRing3D(
 		const Matrix4x4& worldMatrix,
-		const RingData3D& data,
-		const MaterialData3D& material
+		const RingData3D& data = RingData3D{},
+		const MaterialData3D& material = MaterialData3D{}
 	);
 #pragma endregion
 
@@ -596,8 +596,8 @@ public: // エンジンの機能
 	// シリンダー描画
 	static void DrawCylinder3D(
 		const Matrix4x4& worldMatrix,
-		const CylinderData3D& data,
-		const MaterialData3D& material
+		const CylinderData3D& data = CylinderData3D{},
+		const MaterialData3D& material = MaterialData3D{}
 	);
 #pragma endregion
 

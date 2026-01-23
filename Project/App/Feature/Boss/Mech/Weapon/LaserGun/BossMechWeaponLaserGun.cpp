@@ -9,8 +9,6 @@
 
 // レーザー
 #include "Feature/Damage/Object/LinearAttack/Laser/Laser.h"
-// レーザーエフェクト
-#include "Feature/Effect/LaserEffect/LaserEffect.h"
 
 // プレイヤーの機体参照用
 #include "Feature/Pilot/Mech/PilotMech.h"
@@ -73,6 +71,7 @@ void BossMechWeaponLaserGun::Attack() {
 			.damageCollisionSystem = mech_->GetDamageCollisionSystem(),
 			.effectManager = mech_->GetGameEffectManager()
 		};
+
 		std::unique_ptr<Laser> laser = std::make_unique<Laser>(lParam, ref);
 		atkM->Add(std::move(laser));
 	}

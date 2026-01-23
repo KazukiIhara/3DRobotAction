@@ -8,7 +8,8 @@ using namespace Magi;
 
 BaseProjectileAttack::BaseProjectileAttack(
 	const BaseProjectileAttack::InitParam& initParam,
-	DamageCollisionSystem* damageCollisionSys) :
+	DamageCollisionSystem* damageCollisionSys
+) :
 	BaseDamageObject(initParam.emitPos, damageCollisionSys) {
 
 	// 初期化パラメータを受け取る

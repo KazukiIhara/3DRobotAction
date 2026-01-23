@@ -6,7 +6,10 @@
 
 using namespace Magi;
 
-BaseLinearAttack::BaseLinearAttack(const BaseLinearAttack::InitParam& initParam, DamageCollisionSystem* damageCollisionSystem) :
+BaseLinearAttack::BaseLinearAttack(
+	const BaseLinearAttack::InitParam& initParam,
+	DamageCollisionSystem* damageCollisionSystem
+) :
 	BaseDamageObject(initParam.emitPos, damageCollisionSystem) {
 
 	// 初期化パラメータを受け取る
