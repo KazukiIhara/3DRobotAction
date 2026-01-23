@@ -90,8 +90,8 @@ public:
 	[[nodiscard]] const Vector3& GetTranslate()const;
 	[[nodiscard]] const Quaternion& GetQuaternion()const;
 
-	[[nodiscard]] const Matrix4x4& GetWorldMatrix()const;
-	[[nodiscard]] const Vector3& GetWorldPosition()const;
+	[[nodiscard]] const Matrix4x4& GetWorldMatrix();
+	[[nodiscard]] const Vector3& GetWorldPosition();
 
 	[[nodiscard]] Vector3 GetRight() const;
 	[[nodiscard]] Vector3 GetUp() const;

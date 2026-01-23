@@ -26,6 +26,10 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 
 	// 追加パーツがあればここに追加
 
+	// バリア作成
+	barrier_ = std::make_unique<BossMechBarrier>(this);
+	// パーツとして追加
+	AddParts(barrier_.get());
 
 	// 武器をマップに追加
 	AddWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
@@ -46,6 +50,9 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	// パイロット機体をターゲットにセット
 	const Vector3 pilotCenter = GetPilotMech()->GetCenterPos();
 	SetTargetWorldPos(pilotCenter);
+
+	// バリアの更新
+	barrier_->Update();
 
 	// ステート更新
 	if (auto& state = currentState_.second) {
