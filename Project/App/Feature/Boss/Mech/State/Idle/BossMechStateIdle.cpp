@@ -12,6 +12,9 @@ void BossMechStateIdle::Enter([[maybe_unused]] BossMech* mech) {
 }
 
 void BossMechStateIdle::Update([[maybe_unused]] BossMech* mech) {
+	// 機体をターゲットに向ける
+	auto& lookFlag = mech->GetRotControlSystem()->GetLookAtFlag();
+	lookFlag.mech.yaw = true;
 
 }
 

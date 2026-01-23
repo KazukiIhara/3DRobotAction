@@ -40,7 +40,9 @@ void BossMechStateLaserShot::UpdateStartUp(float dt, BossMech* mech) {
 	// FKアニメーション適用
 	mech->GetAnimator()->ApplyAnimation("BossLaserShot", t);
 
-
+	// 機体をターゲットに向ける
+	auto& lookFlag = mech->GetRotControlSystem()->GetLookAtFlag();
+	lookFlag.mech.yaw = true;
 
 	// タイマー更新
 	timer_ -= dt;
@@ -55,7 +57,10 @@ void BossMechStateLaserShot::UpdateStartUp(float dt, BossMech* mech) {
 }
 
 void BossMechStateLaserShot::UpdateCharge([[maybe_unused]] float dt, [[maybe_unused]] BossMech* mech) {
-
+	
+	// 機体をターゲットに向ける
+	auto& lookFlag = mech->GetRotControlSystem()->GetLookAtFlag();
+	lookFlag.mech.yaw = true;
 
 
 }
