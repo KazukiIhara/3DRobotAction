@@ -5,7 +5,6 @@
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
-
 #include "MAGI.h"
 
 using namespace Magi;

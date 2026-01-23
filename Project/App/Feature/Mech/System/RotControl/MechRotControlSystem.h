@@ -28,6 +28,9 @@ public:
 	void Update();
 
 	LookAtFlag& GetLookAtFlag();
+
+	void SetTurnToMoveDir(bool flag);
+
 private:
 	void TurnToMoveDirection();
 	void RotateMech();

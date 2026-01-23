@@ -6,10 +6,10 @@
 /// <summary>
 /// パイロット機体のビームライフル
 /// </summary>
-class PilotMechWeaponBeamRifle :public BasePilotMechWeapon {
+class PilotMechWeaponBeamCannonRifle :public BasePilotMechWeapon {
 public:
-	PilotMechWeaponBeamRifle(PilotMech* mech);
-	~PilotMechWeaponBeamRifle() = default;
+	PilotMechWeaponBeamCannonRifle(PilotMech* mech);
+	~PilotMechWeaponBeamCannonRifle() = default;
 
 	void Update()override;
 	void Draw()override;

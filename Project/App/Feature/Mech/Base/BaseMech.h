@@ -84,7 +84,7 @@ public:
 	// 関節トランスフォーム取得
 	Transform3D* GetPartsTransform(MechAnimation::TransType type);
 	// 中心座標取得
-	const Vector3& GetCenterPos()override;
+	Vector3 GetCenterPos()override;
 	// 武器
 	BaseMechWeapon* GetWeapon(const std::string& name);
 
@@ -93,7 +93,7 @@ public:
 	// 移動制御クラス
 	MechMoveSystem* GetMoveSystem();
 	// 回転制御クラス
-	MechRotControlSystem* RotControlSystem();
+	MechRotControlSystem* GetRotControlSystem();
 	// コライダー取得
 	MechCollider* GetCollider();
 	// タグ取得

@@ -13,10 +13,10 @@
 /// <summary>
 /// ジャスト回避後攻撃ステート
 /// </summary>
-class MechCoreStateJustDodgeAttack:public IPilotMechState {
+class PilotMechStateJustDodgeAttack:public IPilotMechState {
 public:
-	MechCoreStateJustDodgeAttack();
-	~MechCoreStateJustDodgeAttack() = default;
+	PilotMechStateJustDodgeAttack();
+	~PilotMechStateJustDodgeAttack() = default;
 	void Enter(PilotMech* mech)override;
 	void Update(PilotMech* mech)override;
 	void Exit(PilotMech* mech)override;

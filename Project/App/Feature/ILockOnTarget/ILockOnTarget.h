@@ -10,6 +10,6 @@ class ILockOnTarget {
 public:
 	virtual ~ILockOnTarget() = default;
 
-	virtual const Vector3& GetCenterPos() = 0;
+	virtual Vector3 GetCenterPos() = 0;
 
 };

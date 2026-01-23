@@ -164,7 +164,7 @@ Transform3D* BaseMech::GetPartsTransform(MechAnimation::TransType type) {
 	return partsTrans_[index];
 }
 
-const Vector3& BaseMech::GetCenterPos() {
+Vector3 BaseMech::GetCenterPos() {
 	if (body_) {
 		return body_->GetTransform()->GetWorldPosition();
 	}
@@ -187,7 +187,7 @@ MechMoveSystem* BaseMech::GetMoveSystem() {
 	return moveSystem_.get();
 }
 
-MechRotControlSystem* BaseMech::RotControlSystem() {
+MechRotControlSystem* BaseMech::GetRotControlSystem() {
 	return rotControlSystem_.get();
 }
 

@@ -12,7 +12,7 @@ using namespace MAGIMath;
 using namespace MAGIUtility;
 
 
-void PilotMechStateIdle::Enter(PilotMech* mech) {
+void PilotMechStateIdle::Enter([[maybe_unused]] PilotMech* mech) {
 
 }
 
@@ -42,6 +42,6 @@ void PilotMechStateIdle::Update(PilotMech* mech) {
 	}
 }
 
-void PilotMechStateIdle::Exit(PilotMech* mech) {
+void PilotMechStateIdle::Exit([[maybe_unused]] PilotMech* mech) {
 
 }

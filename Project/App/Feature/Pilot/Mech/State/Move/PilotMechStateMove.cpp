@@ -49,6 +49,6 @@ void PilotMechStateMove::Update(PilotMech* mech) {
 
 }
 
-void PilotMechStateMove::Exit(PilotMech* mech) {
+void PilotMechStateMove::Exit([[maybe_unused]] PilotMech* mech) {
 
 }

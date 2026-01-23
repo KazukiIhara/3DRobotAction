@@ -33,7 +33,7 @@ PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSys
 	states_[State::Move] = std::make_unique<PilotMechStateMove>();
 	states_[State::Dodge] = std::make_unique<PilotMechStateDodge>();
 	states_[State::JustDodge] = std::make_unique<PilotMechStateJustDodge>();
-	states_[State::JustDodgeAttack] = std::make_unique<MechCoreStateJustDodgeAttack>();
+	states_[State::JustDodgeAttack] = std::make_unique<PilotMechStateJustDodgeAttack>();
 
 	// 最初のステートを設定
 	ChangeState(State::Idle);
@@ -48,6 +48,9 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 	if (auto& state = currentState_.second) {
 		state->Update(this);
 	}
+
+	// 進行方向に機体を向ける
+	GetRotControlSystem()->SetTurnToMoveDir(true);
 
 	// コライダー更新
 	justDodgeCollider_->Update();

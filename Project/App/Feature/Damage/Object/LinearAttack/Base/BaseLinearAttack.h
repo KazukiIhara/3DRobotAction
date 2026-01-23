@@ -3,13 +3,10 @@
 // 基底クラス
 #include "Feature/Damage/Object/Base/BaseDamageObject.h"
 
-// エフェクトマネージャ
-class GameEffectManager;
-
 /// <summary>
 /// 線上の攻撃基底クラス
 /// </summary>
-class BaseLinearAttack :public BaseDamageObject {
+class BaseLinearAttack:public BaseDamageObject {
 public:
 	struct InitParam {
 		Vector3 emitPos{};
@@ -19,7 +16,10 @@ public:
 		FriendlyTag tag;
 	};
 public:
-	BaseLinearAttack(const BaseLinearAttack::InitParam& initParam, DamageCollisionSystem* damageCollisionSystem);
+	BaseLinearAttack(
+		const BaseLinearAttack::InitParam& initParam,
+		DamageCollisionSystem* damageCollisionSystem
+	);
 	~BaseLinearAttack() = default;
 
 	virtual void Update()override;

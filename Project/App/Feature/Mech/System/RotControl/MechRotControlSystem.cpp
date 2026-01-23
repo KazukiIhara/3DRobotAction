@@ -10,6 +10,7 @@ using namespace MAGIMath;
 MechRotControlSystem::MechRotControlSystem(BaseMech* mech) {
 	mech_ = mech;
 	lookAtFlag_ = {};
+	turnToMoveDir_ = false;
 }
 
 void MechRotControlSystem::Update() {
@@ -20,11 +21,16 @@ void MechRotControlSystem::Update() {
 	RotateMech();
 
 	// 次のフレーム用にフラグをリセット
+	turnToMoveDir_ = false;
 	lookAtFlag_ = {};
 }
 
 MechRotControlSystem::LookAtFlag& MechRotControlSystem::GetLookAtFlag() {
 	return lookAtFlag_;
+}
+
+void MechRotControlSystem::SetTurnToMoveDir(bool flag) {
+	turnToMoveDir_ = flag;
 }
 
 void MechRotControlSystem::TurnToMoveDirection() {
