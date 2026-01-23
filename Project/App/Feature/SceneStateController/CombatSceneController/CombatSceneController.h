@@ -15,7 +15,7 @@ class CombatSceneController {
 public:
 	enum class State {
 		Start,
-		Combat,
+		Battle,
 		End,
 		Pause,
 	};
@@ -23,6 +23,7 @@ public:
 	CombatSceneController(CombatSceneControl::ContextRef ref);
 	~CombatSceneController() = default;
 
+	void Start();
 	void Update();
 	void Draw();
 	

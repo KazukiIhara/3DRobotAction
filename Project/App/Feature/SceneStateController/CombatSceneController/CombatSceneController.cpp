@@ -38,6 +38,10 @@ CombatSceneController::CombatSceneController(ContextRef ref) {
 
 }
 
+void CombatSceneController::Start() {
+	
+}
+
 void CombatSceneController::Update() {
 	// ステート更新
 	if (auto& state = currentState_.second) {
