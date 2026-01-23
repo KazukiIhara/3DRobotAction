@@ -15,18 +15,34 @@
 #include "Feature/Pilot/Mech/State/JustDodge/PilotMechStateJustDodge.h"
 #include "Feature/Pilot/Mech/State/JustDodgeAttack/PilotMechStateJustDodgeAttack.h"
 
+// 武器
+#include "Feature/Pilot/Mech/Weapon/BeamCannonRifle/PilotMechWeaponBeamCannonRifle.h"
 
 using namespace Magi;
 
-PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* inputSys)
+// 
+// 以下改修予定
+//
+
+// ボス機体
+#include "Feature/Boss/Mech/BossMech.h"
+
+PilotMech::PilotMech(const InitParam& param, const BaseMech::RefContext& ref, GameInputSystem* inputSys)
 	:BaseMech(param, ref) {
 
 	inputSys_ = inputSys;
 
-	// 武器をマップに追加
+	// 追加パーツがあればここに追加
 
-	// ジャスト回避コライダー実装
+	// 武器をマップに追加
+	// ビームキャノン
+	AddWeapon("BeamCannonRifle", std::make_unique<PilotMechWeaponBeamCannonRifle>(this));
+
+	// ジャスト回避コライダー
 	justDodgeCollider_ = std::make_unique<PilotMechJustDodgeCollider>(this);
+
+	// ロックオンシステム
+	lockOnSystem_ = std::make_unique<PilotMechLockOnSystem>(this);
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<PilotMechStateIdle>();
@@ -44,13 +60,16 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 	// デバッグの更新
 	DebugUpdate(isShowDebugUI, param);
 
+	// 基本的に進行方向に機体を向ける 向けたくない場合はステートごとにこのフラグを切る
+	GetRotControlSystem()->SetTurnToMoveDir(true);
+
+	// ロックオンシステム更新
+	lockOnSystem_->Update();
+
 	// ステート更新
 	if (auto& state = currentState_.second) {
 		state->Update(this);
 	}
-
-	// 進行方向に機体を向ける
-	GetRotControlSystem()->SetTurnToMoveDir(true);
 
 	// コライダー更新
 	justDodgeCollider_->Update();
@@ -87,8 +106,16 @@ PilotMechJustDodgeCollider* PilotMech::GetJustDodgeCollider() {
 	return justDodgeCollider_.get();
 }
 
+PilotMechLockOnSystem* PilotMech::GetLockOnSystem() {
+	return lockOnSystem_.get();
+}
+
 GameInputSystem* PilotMech::GetInputSys() {
 	return inputSys_;
+}
+
+void PilotMech::SetBossMech(BossMech* mech) {
+	lockOnSystem_->SetBoss(mech);
 }
 
 IPilotMechState* PilotMech::GetState(PilotMech::State state) {

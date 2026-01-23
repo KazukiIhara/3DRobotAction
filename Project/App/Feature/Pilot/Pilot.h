@@ -53,8 +53,7 @@ private:
 	// 機体初期化パラメータ取得
 	void LoadMechInitParam();
 	// カメラ操作
-	void CameraOperation();
-
+	void CameraControl();
 private:
 	// 機体
 	std::unique_ptr<PilotMech> mech_;

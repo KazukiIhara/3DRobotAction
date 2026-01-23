@@ -1,0 +1,50 @@
+{
+  "Boss": {
+    "LaserGun": {
+      "FireOffset": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -2.5999999046325684,
+          "z": 0.3499999940395355
+        }
+      },
+      "Life": {
+        "type": "Float",
+        "value": 0.5
+      },
+      "Speed": {
+        "type": "Float",
+        "value": 100.0
+      }
+    }
+  },
+  "Pilot": {
+    "BeamCannon": {
+      "FireOffset": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      "Length": {
+        "type": "Float",
+        "value": 1.0
+      },
+      "Life": {
+        "type": "Float",
+        "value": 10.0
+      },
+      "Speed": {
+        "type": "Float",
+        "value": 100.0
+      },
+      "Thickness": {
+        "type": "Float",
+        "value": 0.5
+      }
+    }
+  }
+}

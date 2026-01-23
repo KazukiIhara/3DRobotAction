@@ -3,12 +3,10 @@
 // 機体基底クラス
 #include "Feature/Mech/Base/BaseMech.h"
 
-// 武器クラス
-#include "Feature/Boss/Mech/Weapon/LaserGun/BossMechWeaponLaserGun.h"
-
 // ステート基底クラス
 #include "Feature/Boss/Mech/State/BossMechBaseState.h"
 
+// プレイヤー機体
 class PilotMech;
 
 /// <summary>

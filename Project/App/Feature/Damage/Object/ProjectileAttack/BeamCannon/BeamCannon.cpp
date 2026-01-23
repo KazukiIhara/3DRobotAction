@@ -22,6 +22,7 @@ void BeamCannon::Update() {
 }
 
 void BeamCannon::Draw() {
+	// 仮表示
 	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix());
 }
 

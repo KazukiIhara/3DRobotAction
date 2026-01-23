@@ -5,12 +5,19 @@
 
 // ステート基底クラス
 #include "Feature/Pilot/Mech/State/IPilotMechState.h"
-
 // ジャスト回避コライダー
 #include "Feature/Pilot/Mech/JustDodgeCollider/PilotMechJustDodgeCollider.h"
+// ロックオンシステム
+#include "Feature/Pilot/Mech/System/LockOn/PilotMechLockOnSystem.h"
 
 // 前方宣言
 class GameInputSystem;
+class TPSCamera3D;
+
+// 
+// 以下改修予定
+//
+class BossMech;
 
 /// <summary>
 /// パイロット機体クラス
@@ -25,20 +32,31 @@ public:
 		JustDodgeAttack,
 	};
 public:
-	PilotMech(const InitParam& param, const RefContext& ref, GameInputSystem* InputSys);
+	PilotMech(const InitParam& param, const BaseMech::RefContext& ref, GameInputSystem* InputSys);
 	~PilotMech() = default;
 
+	// 更新
 	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param);
-
+	// デバッグ描画
 	void DebugDraw()override;
-
+	// ステートを変更
 	void ChangeState(PilotMech::State nextState);
-
+	// 現在のステートを取得
 	PilotMech::State GetCurrentState()const;
-
+	// ジャスト回避コライダーを取得
 	PilotMechJustDodgeCollider* GetJustDodgeCollider();
+	// ロックオンシステムを取得
+	PilotMechLockOnSystem* GetLockOnSystem();
 
+	// インプットシステムを取得
 	GameInputSystem* GetInputSys();
+
+	// 
+	// 以下改修予定
+	// 
+
+	// ボス機体をロックオン対象にセット
+	void SetBossMech(BossMech* mech);
 
 private:
 	// ステート取得
@@ -60,6 +78,10 @@ private:
 	// ジャスト回避コライダー
 	std::unique_ptr<PilotMechJustDodgeCollider> justDodgeCollider_;
 
+	// ロックオンシステム
+	std::unique_ptr<PilotMechLockOnSystem> lockOnSystem_;
+
 	// 入力システムの参照ポインタ
 	GameInputSystem* inputSys_ = nullptr;
+
 };
