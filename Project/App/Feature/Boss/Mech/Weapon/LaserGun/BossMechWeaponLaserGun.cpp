@@ -7,7 +7,7 @@
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 
-// レーザー
+// 攻撃オブジェクト
 #include "Feature/Damage/Object/LinearAttack/Laser/Laser.h"
 
 // プレイヤーの機体参照用
@@ -24,7 +24,7 @@ BossMechWeaponLaserGun::BossMechWeaponLaserGun(BossMech* mech) :
 	MAGISYSTEM::LoadCreateModel("BossMechWeaponLaserGun");
 
 	// 発射位置オフセットを設定
-	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "BossMechWeapon","LaserGun","FireOffset" });
+	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "WeaponParam","Boss","LaserGun","FireOffset" });
 	fireTransform_->SetTranslate(fireOffset);
 
 	// 手に紐づける
@@ -34,7 +34,7 @@ BossMechWeaponLaserGun::BossMechWeaponLaserGun(BossMech* mech) :
 
 void BossMechWeaponLaserGun::Update() {
 	// オフセットを設定
-	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "BossMechWeapon","LaserGun","FireOffset" });
+	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "WeaponParam","Boss","LaserGun","FireOffset" });
 	fireTransform_->SetTranslate(fireOffset);
 
 }
@@ -51,9 +51,9 @@ void BossMechWeaponLaserGun::Attack() {
 	// 方向を計算
 	const Vector3 dir = Normalize(playerPos - shotPos);
 	// 弾速取得
-	const float speed = MAGISYSTEM::GetParameterValue<float>({ "BossMechWeapon","LaserGun","Speed" });
+	const float speed = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserGun","Speed" });
 	// 生存時間取得
-	const float life = MAGISYSTEM::GetParameterValue<float>({ "BossMechWeapon","LaserGun","Life" });
+	const float life = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserGun","Life" });
 
 	// 攻撃作成、追加処理
 	if (auto atkM = mech_->GetDamageObjectManager()) {

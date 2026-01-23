@@ -44,13 +44,13 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 	// デバッグの更新
 	DebugUpdate(isShowDebugUI, param);
 
+	// 基本的に進行方向に機体を向ける 向けたくない場合はステートごとにこのフラグを切る
+	GetRotControlSystem()->SetTurnToMoveDir(true);
+
 	// ステート更新
 	if (auto& state = currentState_.second) {
 		state->Update(this);
 	}
-
-	// 進行方向に機体を向ける
-	GetRotControlSystem()->SetTurnToMoveDir(true);
 
 	// コライダー更新
 	justDodgeCollider_->Update();
