@@ -37,10 +37,9 @@ void PilotMechWeaponBeamCannonRifle::Draw() {
 }
 
 void PilotMechWeaponBeamCannonRifle::Attack() {
-
 	// パラメータ
 	const Vector3 shotPos = fireTransform_->GetWorldPosition();
-	const Vector3 targetPos = {};
+	const Vector3 targetPos = mech_->GetTargetWorldPos();
 	const Vector3 dir = Normalize(targetPos - shotPos);
 	const float length = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Length" });
 	const float life = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Life" });

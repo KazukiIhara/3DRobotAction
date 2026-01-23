@@ -35,8 +35,8 @@ PilotMech::PilotMech(const InitParam& param, const BaseMech::RefContext& ref, Ga
 	// 追加パーツがあればここに追加
 
 	// 武器をマップに追加
-	// レーザーキャノン
-	AddWeapon("BeanCannonRifle", std::make_unique<PilotMechWeaponBeamCannonRifle>(this));
+	// ビームキャノン
+	AddWeapon("BeamCannonRifle", std::make_unique<PilotMechWeaponBeamCannonRifle>(this));
 
 	// ジャスト回避コライダー
 	justDodgeCollider_ = std::make_unique<PilotMechJustDodgeCollider>(this);
@@ -62,6 +62,9 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 
 	// 基本的に進行方向に機体を向ける 向けたくない場合はステートごとにこのフラグを切る
 	GetRotControlSystem()->SetTurnToMoveDir(true);
+
+	// ロックオンシステム更新
+	lockOnSystem_->Update();
 
 	// ステート更新
 	if (auto& state = currentState_.second) {

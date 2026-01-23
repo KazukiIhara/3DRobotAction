@@ -16,7 +16,10 @@ using namespace MAGIMath;
 using namespace MAGIUtility;
 
 void PilotMechStateJustDodgeAttack::Enter([[maybe_unused]] PilotMech* mech) {
-	mech->GetWeapon("BeamCannonRifle");
+	mech->GetWeapon("BeamCannonRifle")->Attack();
+
+	mech->ChangeState(PilotMech::State::Move);
+
 }
 
 void PilotMechStateJustDodgeAttack::Update([[maybe_unused]] PilotMech* mech) {
