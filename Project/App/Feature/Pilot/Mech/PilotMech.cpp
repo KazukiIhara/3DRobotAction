@@ -103,6 +103,10 @@ PilotMechJustDodgeCollider* PilotMech::GetJustDodgeCollider() {
 	return justDodgeCollider_.get();
 }
 
+PilotMechLockOnSystem* PilotMech::GetLockOnSystem() {
+	return lockOnSystem_.get();
+}
+
 GameInputSystem* PilotMech::GetInputSys() {
 	return inputSys_;
 }

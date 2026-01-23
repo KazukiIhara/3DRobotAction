@@ -73,6 +73,11 @@ void DevelopScene::Initialize() {
 	// ボス作成
 	boss_ = std::make_unique<Boss>(ref, pilot_->GetMech());
 
+
+	// 暫定処理　現在はボスしかロックオン対象がいないため、直接セット
+	pilot_->GetMech()->GetLockOnSystem()->SetBoss(boss_->GetMech());
+
+
 	// 攻撃判定マネージャに機体を追加
 	damageCollisionSystem_->AddMech(pilot_->GetMech());
 	damageCollisionSystem_->AddMech(boss_->GetMech());

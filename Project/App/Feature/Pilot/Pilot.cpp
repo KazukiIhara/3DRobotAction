@@ -27,8 +27,8 @@ void Pilot::Update() {
 	LoadMechInitParam();
 #endif
 
-	// カメラ操作
-	CameraOperation();
+	// カメラ更新
+	CameraControl();
 
 	// 機体の更新
 	mech_->Update(flag_.isDebugDraw, initParam_);
@@ -103,7 +103,7 @@ void Pilot::LoadMechInitParam() {
 	initParam_.tag = FriendlyTag::PlayerSide;
 }
 
-void Pilot::CameraOperation() {
+void Pilot::CameraControl() {
 	if (!camera_) {
 		return;
 	}
@@ -111,6 +111,11 @@ void Pilot::CameraOperation() {
 	auto commandPair = inputSys_->GetPilotCommand();
 	if (!commandPair.first) {
 		return;
+	}
+
+	// ロックオン対象がいる場合
+	if (ILockOnTarget* target = mech_->GetLockOnSystem()->GetTarget()) {
+
 	}
 
 	// コマンド取得

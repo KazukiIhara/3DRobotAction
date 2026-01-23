@@ -45,6 +45,9 @@ public:
 	PilotMech::State GetCurrentState()const;
 	// ジャスト回避コライダーを取得
 	PilotMechJustDodgeCollider* GetJustDodgeCollider();
+	// ロックオンシステムを取得
+	PilotMechLockOnSystem* GetLockOnSystem();
+
 	// インプットシステムを取得
 	GameInputSystem* GetInputSys();
 
