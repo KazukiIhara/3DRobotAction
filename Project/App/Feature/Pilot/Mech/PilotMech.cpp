@@ -71,11 +71,11 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 		state->Update(this);
 	}
 
-	// コライダー更新
-	justDodgeCollider_->Update();
-
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
+
+	// コライダー更新
+	justDodgeCollider_->Update();
 }
 
 void PilotMech::DebugDraw() {

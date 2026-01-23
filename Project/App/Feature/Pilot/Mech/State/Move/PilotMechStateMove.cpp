@@ -45,6 +45,8 @@ void PilotMechStateMove::Update(PilotMech* mech) {
 		ms->SetAcc(acc);
 		ms->SetMaxSpeed(maxSpeed);
 
+		// 回転に補正を掛け　急な角度の移動量を減速する
+		ms->ApplyRotationInertia();
 	}
 
 }

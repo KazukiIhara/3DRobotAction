@@ -88,9 +88,9 @@ void MechMoveSystem::ApplyRotationInertia() {
 
 	// 角度差を求める
 	float dot = Dot(preDir_, dir_);
-	// 角度差が大きい場合速度を小さくする
+	// 角度差が大きい場合速度を0にする
 	if (dot < -0.5f) {
-		speed_ = 0.5f;
+		speed_ = 0.0f;
 	}
 
 	// 方向を正規化
