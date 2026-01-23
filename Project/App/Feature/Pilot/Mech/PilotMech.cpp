@@ -33,7 +33,7 @@ PilotMech::PilotMech(const InitParam& param, const RefContext& ref, GameInputSys
 	states_[State::Move] = std::make_unique<PilotMechStateMove>();
 	states_[State::Dodge] = std::make_unique<PilotMechStateDodge>();
 	states_[State::JustDodge] = std::make_unique<PilotMechStateJustDodge>();
-	states_[State::JustDodgeAttack] = std::make_unique<MechCoreStateJustDodgeAttack>();
+	states_[State::JustDodgeAttack] = std::make_unique<PilotMechStateJustDodgeAttack>();
 
 	// 最初のステートを設定
 	ChangeState(State::Idle);

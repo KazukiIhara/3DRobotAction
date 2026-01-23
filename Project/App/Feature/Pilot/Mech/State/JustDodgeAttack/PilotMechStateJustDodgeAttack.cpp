@@ -1,17 +1,17 @@
 #include "PilotMechStateJustDodgeAttack.h"
 
-MechCoreStateJustDodgeAttack::MechCoreStateJustDodgeAttack() {
+PilotMechStateJustDodgeAttack::PilotMechStateJustDodgeAttack() {
 
 }
 
-void MechCoreStateJustDodgeAttack::Enter(PilotMech* mech) {
+void PilotMechStateJustDodgeAttack::Enter([[maybe_unused]] PilotMech* mech) {
 
 }
 
-void MechCoreStateJustDodgeAttack::Update(PilotMech* mech) {
+void PilotMechStateJustDodgeAttack::Update([[maybe_unused]] PilotMech* mech) {
 
 }
 
-void MechCoreStateJustDodgeAttack::Exit(PilotMech* mech) {
+void PilotMechStateJustDodgeAttack::Exit([[maybe_unused]] PilotMech* mech) {
 
 }

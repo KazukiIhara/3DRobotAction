@@ -16,15 +16,15 @@ void BossMechStateLaserShot::Update([[maybe_unused]] BossMech* mech) {
 	// デルタタイムを取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
 	switch (phase_) {
-	case BossMechStateLaserShot::Phase::StartUp:
-		UpdateStartUp(dt, mech);
-		break;
-	case BossMechStateLaserShot::Phase::Charge:
-		
-		break;
-	case BossMechStateLaserShot::Phase::EndLag:
-		UpdateEndLag(dt, mech);
-		break;
+		case BossMechStateLaserShot::Phase::StartUp:
+			UpdateStartUp(dt, mech);
+			break;
+		case BossMechStateLaserShot::Phase::Charge:
+
+			break;
+		case BossMechStateLaserShot::Phase::EndLag:
+			UpdateEndLag(dt, mech);
+			break;
 	}
 }
 
@@ -35,7 +35,7 @@ void BossMechStateLaserShot::Exit([[maybe_unused]] BossMech* mech) {
 void BossMechStateLaserShot::UpdateStartUp(float dt, BossMech* mech) {
 	// 攻撃準備アニメーション
 	const float timeStartUp = MAGISYSTEM::GetParameterValue<float>({ "BossMechState","LaserShot","TimeStartUp" });
-	
+
 	const float t = 1.0f - timer_ / timeStartUp;
 	// FKアニメーション適用
 	mech->GetAnimator()->ApplyAnimation("BossLaserShot", t);
@@ -54,15 +54,15 @@ void BossMechStateLaserShot::UpdateStartUp(float dt, BossMech* mech) {
 	}
 }
 
-void BossMechStateLaserShot::UpdateCharge(float dt, BossMech* mech) {
-	
+void BossMechStateLaserShot::UpdateCharge([[maybe_unused]] float dt, [[maybe_unused]] BossMech* mech) {
+
 
 
 }
 
 void BossMechStateLaserShot::UpdateEndLag(float dt, BossMech* mech) {
 	// 攻撃終了アニメーション
-	const float timeEndLag = MAGISYSTEM::GetParameterValue<float>({ "BossMechState","LaserShot","TimeEndLag" });
+	// const float timeEndLag = MAGISYSTEM::GetParameterValue<float>({ "BossMechState","LaserShot","TimeEndLag" });
 
 
 	// タイマー更新
