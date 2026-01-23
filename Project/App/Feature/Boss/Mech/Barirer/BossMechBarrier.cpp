@@ -12,7 +12,7 @@ BossMechBarrier::BossMechBarrier(BossMech* mech) {
 	mech_ = mech;
 	// パラメータをロード
 	const float radius = MAGISYSTEM::GetParameterValue<float>({ "BossMechParam","Barrier","Radius" });
-
+	const float hp = MAGISYSTEM::GetParameterValue<float>({ "BossMechParam","Barrier","HP" });
 	// 設定
 	transform_ = MAGISYSTEM::AddTransform3D();
 	// 胴体に親子付け
@@ -23,6 +23,10 @@ BossMechBarrier::BossMechBarrier(BossMech* mech) {
 
 	// マテリアルの設定
 	mat_.blendMode = BlendMode::Add;
+
+	// パラメータ設定
+	status_.hp = hp;
+	status_.isActive_ = true;
 
 	// コライダーを設定
 	collider_.radius = radius;
@@ -40,29 +44,32 @@ void BossMechBarrier::Update() {
 #endif
 
 	// バリア破壊
-	if (state_.hp <= 0.0f) {
-		state_.isActive_ = false;
+	if (status_.hp <= 0.0f) {
+		status_.isActive_ = false;
 	}
 
+	// コライダーに値をセット
 	collider_.wPos = transform_->GetWorldPosition();
 }
 
 void BossMechBarrier::Draw() {
-	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), data_, mat_);
+	if (status_.isActive_) {
+		MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), data_, mat_);
+	}
 }
 
 void BossMechBarrier::Damage(float damage) {
-	state_.hp -= damage;
-	state_.hp = std::max(0.0f, state_.hp);
+	status_.hp -= damage;
+	status_.hp = std::max(0.0f, status_.hp);
 }
 
 void BossMechBarrier::RepairBarrier() {
 	// HPを回復
-	state_.hp;
+	status_.hp;
 }
 
-const BossMechBarrier::State& BossMechBarrier::GetState() {
-	return state_;
+const BossMechBarrier::Status& BossMechBarrier::GetState() {
+	return status_;
 }
 
 const BossMechBarrier::Collider& BossMechBarrier::GetCollider() {

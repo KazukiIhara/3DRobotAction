@@ -13,16 +13,11 @@
 // ボス機体
 class BossMech;
 
-// 実装メモ
-/*
-
-*/
-
 /// <summary>
 /// ボスのバリア
 /// </summary>
 class BossMechBarrier: public IMechParts {
-	struct State {
+	struct Status {
 		// 有効フラグ
 		bool isActive_ = true;
 		// 耐久力
@@ -45,7 +40,7 @@ public:
 	// バリア復活
 	void RepairBarrier();
 
-	const State& GetState();
+	const Status& GetState();
 
 	const Collider& GetCollider();
 
@@ -54,7 +49,7 @@ private:
 	SphereData3D data_;
 	MaterialData3D mat_;
 
-	State state_{};
+	Status status_{};
 	Collider collider_{};
 	BossMech* mech_ = nullptr;
 };

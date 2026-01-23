@@ -34,6 +34,9 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 	// 武器をマップに追加
 	AddWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
 
+	// ステータスを初期化
+	status_ = std::unique_ptr<BossMechStatus>();
+
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<BossMechStateIdle>();
 	states_[State::LaserShot] = std::make_unique<BossMechStateLaserShot>();
@@ -73,6 +76,14 @@ void BossMech::ChangeState(BossMech::State nextState) {
 	if (auto cs = currentState_.second) {
 		cs->Enter(this);
 	}
+}
+
+BossMechBarrier* BossMech::GetBarrier() {
+	return barrier_.get();
+}
+
+BossMechStatus* BossMech::GetStatus() {
+	return status_.get();
 }
 
 PilotMech* BossMech::GetPilotMech() {

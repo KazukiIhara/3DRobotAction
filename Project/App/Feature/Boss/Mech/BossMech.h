@@ -9,6 +9,9 @@
 // バリア
 #include "Feature/Boss/Mech/Barirer/BossMechBarrier.h"
 
+// ステータスクラス
+#include "Feature/Boss/Mech/Status/BossMechStatus.h"
+
 // プレイヤー機体
 class PilotMech;
 
@@ -31,7 +34,10 @@ public:
 	void ChangeState(BossMech::State nextState);
 
 	// バリアを取得
+	BossMechBarrier* GetBarrier();
 
+	// ステータスを取得
+	BossMechStatus* GetStatus();
 
 	// パイロット機体の参照を取得
 	PilotMech* GetPilotMech();
@@ -54,6 +60,9 @@ private:
 
 	// バリア
 	std::unique_ptr<BossMechBarrier> barrier_;
+
+	// ステータス
+	std::unique_ptr<BossMechStatus> status_;
 
 	// プレイヤー機体の参照ポインタ
 	PilotMech* pilotMech_;
