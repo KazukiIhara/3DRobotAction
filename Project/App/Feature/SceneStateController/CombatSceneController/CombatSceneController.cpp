@@ -22,6 +22,12 @@
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 
 
+// シーンステート
+#include "Feature/SceneStateController/CombatSceneController/States/Start/CombatSceneStateStart.h"
+#include "Feature/SceneStateController/CombatSceneController/States/Battle/CombatSceneStateBattle.h"
+#include "Feature/SceneStateController/CombatSceneController/States/End/CombatSceneStateEnd.h"
+#include "Feature/SceneStateController/CombatSceneController/States/Pause/CombatSceneStatePause.h"
+
 #include "MAGIAssert/MAGIAssert.h"
 
 using namespace CombatSceneControl;
@@ -31,15 +37,16 @@ CombatSceneController::CombatSceneController(ContextRef ref) {
 	ref_ = ref;
 
 	// ステートテーブルを作成
-
-
-	// 最初のステートを設定
-
+	states_[State::Start] = std::make_unique<CombatSceneStateStart>();
+	states_[State::Battle] = std::make_unique<CombatSceneStateStart>();
+	states_[State::End] = std::make_unique<CombatSceneStateStart>();
+	states_[State::Pause] = std::make_unique<CombatSceneStateStart>();
 
 }
 
-void CombatSceneController::Start() {
-	
+void CombatSceneController::Start(CombatSceneController::State state) {
+	// ステート開始
+	ChangeState(state);
 }
 
 void CombatSceneController::Update() {

@@ -18,8 +18,6 @@ Pilot::Pilot(BaseMech::RefContext ref, RefContext pRef) {
 	// 機体の作成
 	mech_ = std::make_unique<PilotMech>(initParam_, ref, inputSys_);
 
-	// 機体の胴体を追従対象にする
-	camera_->SetFollowTransform(mech_->GetPartsTransform(MechAnimation::TransType::Body));
 }
 
 void Pilot::Update() {

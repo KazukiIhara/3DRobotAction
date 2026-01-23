@@ -1,9 +1,38 @@
 #include "CombatSceneStateBattle.h"
 
-void CombatSceneStateBattle::Enter(CombatSceneControl::ContextRef ref) {}
+//-------------------------------------------
+// 操作クラス
+//-------------------------------------------
+#include "Feature/GameInputSystem/GameInputSystem.h"
 
-void CombatSceneStateBattle::Update(CombatSceneControl::ContextRef ref) {}
+// カメラ
+#include "Feature/TPSCamera3D/TPSCamera3D.h"
 
-void CombatSceneStateBattle::Draw(CombatSceneControl::ContextRef ref) {}
+// パイロット
+#include "Feature/Pilot/Pilot.h"
 
-void CombatSceneStateBattle::Exit(CombatSceneControl::ContextRef ref) {}
+// ボス
+#include "Feature/Boss/Boss.h"
+
+//-------------------------------------------
+// マネージャ
+//-------------------------------------------
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
+#include "Feature/Damage/Object/Manager/DamageObjectManager.h"
+#include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
+
+void CombatSceneStateBattle::Enter([[maybe_unused]]CombatSceneControl::ContextRef ref) {
+
+}
+
+void CombatSceneStateBattle::Update([[maybe_unused]]CombatSceneControl::ContextRef ref) {
+
+}
+
+void CombatSceneStateBattle::Draw([[maybe_unused]]CombatSceneControl::ContextRef ref) {
+
+}
+
+void CombatSceneStateBattle::Exit([[maybe_unused]]CombatSceneControl::ContextRef ref) {
+
+}

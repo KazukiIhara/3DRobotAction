@@ -23,7 +23,7 @@ public:
 	CombatSceneController(CombatSceneControl::ContextRef ref);
 	~CombatSceneController() = default;
 
-	void Start();
+	void Start(CombatSceneController::State state);
 	void Update();
 	void Draw();
 	

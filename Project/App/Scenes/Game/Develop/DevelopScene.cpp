@@ -83,45 +83,66 @@ void DevelopScene::Initialize() {
 	damageCollisionSystem_->AddMech(boss_->GetMech());
 
 
+	// シーンコントローラ作成
+	CombatSceneControl::ContextRef cscRef = {
+		inputSys_.get(),
+		camera_,
+		pilot_.get(),
+		boss_.get(),
+		gameEffectManager_.get(),
+		damageCollisionSystem_.get(),
+		damageObjectManager_.get(),
+	};
+	sceneController_ = std::make_unique<CombatSceneController>(cscRef);
+
+
 	// アニメーション作成クラスにボスをセット
 	mechAnimationEdit_->SetBaseMech(boss_->GetMech());
-
-	// 床追加
-	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-	MAGISYSTEM::ImportSceneData("SceneData", true);
 
 }
 
 void DevelopScene::Update() {
+
+#if defined(DEBUG)|(DEVELOP)
 	// デバッグ用途の処理
-	{
-		ImGui::Begin("DevelopUI");
+	ImGui::Begin("DevelopUI");
 
-		ImGui::SeparatorText("Scene");
-		if (ImGui::Button("ResetScene")) {
-			ChangeScene("Develop");
-		}
-
-		ImGui::SeparatorText("Boss");
-		if (ImGui::Button("BossDebugDraw")) {
-			boss_->SwitchDebugDraw();
-		}
-
-		ImGui::SeparatorText("Pilot");
-		if (ImGui::Button("PilotDebugDraw")) {
-			pilot_->SwitchDebugDraw();
-		}
-		ImGui::End();
-
-		// 機体アニメーション作成クラス
-		mechAnimationEdit_->Update();
+	ImGui::SeparatorText("Scene");
+	if (ImGui::Button("ResetScene")) {
+		ChangeScene("Develop");
 	}
+	if (ImGui::Button("StartCombatScene")) {
+		sceneController_->Start(CombatSceneController::State::Start);
+	}
+
+	ImGui::SeparatorText("Pilot");
+	if (ImGui::Button("PilotDebugDraw")) {
+		pilot_->SwitchDebugDraw();
+	}
+
+	ImGui::SeparatorText("Boss");
+	if (ImGui::Button("BossDebugDraw")) {
+		boss_->SwitchDebugDraw();
+	}
+
+
+	ImGui::End();
+
+	// 機体アニメーション作成クラス
+	mechAnimationEdit_->Update();
+
+	// ステージデータ作成クラス
+
+#endif
 
 	// 平行光源をセット
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// コマンドを更新
 	inputSys_->Update();
+
+	// シーン管理クラス更新
+	sceneController_->Update();
 
 	// パイロットを更新
 	pilot_->Update();
@@ -141,6 +162,9 @@ void DevelopScene::Update() {
 }
 
 void DevelopScene::Draw() {
+	// シーン管理クラス更新
+	sceneController_->Draw();
+
 	// パイロットを更新
 	pilot_->Draw();
 
@@ -169,11 +193,5 @@ void DevelopScene::LoadResource() {
 	MAGISYSTEM::LoadTexture("electric_0.png");
 	MAGISYSTEM::LoadTexture("lensFlare.png");
 	MAGISYSTEM::LoadTexture("gradationToon.png");
-
-
-
-	// モデル
-	MAGISYSTEM::LoadModel("Ground");
-	MAGISYSTEM::CreateModelDrawer("Ground", MAGISYSTEM::FindModel("Ground"));
 
 }
