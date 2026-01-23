@@ -1,0 +1,12 @@
+{
+  "Barrier": {
+    "HP": {
+      "type": "Float",
+      "value": 100.0
+    },
+    "Radius": {
+      "type": "Float",
+      "value": 5.0
+    }
+  }
+}

@@ -147,11 +147,15 @@ const Quaternion& Transform3D::GetQuaternion()const {
 	return rotate_;
 }
 
-const Matrix4x4& Transform3D::GetWorldMatrix() const {
+const Matrix4x4& Transform3D::GetWorldMatrix() {
+	// 正確な行列を返すために一旦更新
+	Update();
 	return worldMatrix_;
 }
 
-const Vector3& Transform3D::GetWorldPosition() const {
+const Vector3& Transform3D::GetWorldPosition() {
+	// 正確な座標を返すために一旦更新
+	Update();
 	return worldPosition_;
 }
 

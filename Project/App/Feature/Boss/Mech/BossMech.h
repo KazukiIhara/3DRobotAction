@@ -6,6 +6,12 @@
 // ステート基底クラス
 #include "Feature/Boss/Mech/State/BossMechBaseState.h"
 
+// バリア
+#include "Feature/Boss/Mech/Barirer/BossMechBarrier.h"
+
+// ステータスクラス
+#include "Feature/Boss/Mech/Status/BossMechStatus.h"
+
 // プレイヤー機体
 class PilotMech;
 
@@ -24,9 +30,16 @@ public:
 	~BossMech() = default;
 
 	void Update([[maybe_unused]] bool isShowDebugUI, const BaseMech::InitParam& param)override;
-
+	// ステート切り替え
 	void ChangeState(BossMech::State nextState);
 
+	// バリアを取得
+	BossMechBarrier* GetBarrier();
+
+	// ステータスを取得
+	BossMechStatus* GetStatus();
+
+	// パイロット機体の参照を取得
 	PilotMech* GetPilotMech();
 
 private:
@@ -45,6 +58,11 @@ private:
 	// 現在のステート
 	std::pair<BossMech::State, BossMechBaseState*> currentState_;
 
+	// バリア
+	std::unique_ptr<BossMechBarrier> barrier_;
+
+	// ステータス
+	std::unique_ptr<BossMechStatus> status_;
 
 	// プレイヤー機体の参照ポインタ
 	PilotMech* pilotMech_;
