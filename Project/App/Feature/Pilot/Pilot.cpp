@@ -115,7 +115,7 @@ void Pilot::CameraControl() {
 
 	// ロックオン対象がいる場合
 	if (ILockOnTarget* target = mech_->GetLockOnSystem()->GetTarget()) {
-
+		camera_->SetLockOnTarget(target);
 	}
 
 	// コマンド取得

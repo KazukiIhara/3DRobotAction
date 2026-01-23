@@ -1,14 +1,10 @@
 #pragma once
 
-#include "3D/Cameras3D/Camera3D/Camera3D.h"
+#include "Cameras3D/Camera3D/Camera3D.h"
 
-// Forward
+class ILockOnTarget;
 class Transform3D;
 
-/// <summary>
-/// TPS用 Camera3D 派生
-/// eye/target を自前で計算して Camera3D の UpdateData に流す
-/// </summary>
 class TPSCamera3D : public Camera3D {
 public:
 	struct Param {
@@ -32,14 +28,9 @@ public:
 
 	void Update() override;
 
-	// パラメータ読み込み
-	void LoadParam();
-
-	// 追従
 	void SetFollowTransform(Transform3D* follow);
-	void SetLockOnTarget(Transform3D* lockOn);
+	void SetLockOnTarget(ILockOnTarget* lockOn);
 
-	// 入力
 	void AddYaw(float delta);
 	void AddPitch(float delta);
 
@@ -47,15 +38,33 @@ public:
 	const Param& GetParam() const;
 
 private:
-	Vector3 CalcDesiredTarget() const;
-	Vector3 CalcDesiredEye(const Vector3& desiredTarget) const;
+	void LoadParam();
+
+	// 追従点
+	Vector3 CalcPivot() const;
+
+	// 注視点
+	Vector3 CalcLookAt(const Vector3& pivot) const;
+
+	// カメラ位置
+	Vector3 CalcDesiredEye(const Vector3& pivot) const;
+
+	// ロックオン角度更新
+	void UpdateLockOnAngles(const Vector3& pivot, float dt);
+
+	// ロックオン入力オフセット初期化
+	void ResetLockOffset();
 
 private:
 	Transform3D* follow_ = nullptr;
-	Transform3D* lockOn_ = nullptr;
+	ILockOnTarget* lockOn_ = nullptr;
 
 	Param param_{};
 
-	Vector3 smoothedEye_{ 0.0f, 3.0f, -5.0f };
-	Vector3 smoothedTarget_{ 0.0f, 0.0f, 0.0f };
+	Vector3 smoothedEye_{};
+	Vector3 smoothedTarget_{};
+
+	float lockOffsetYaw_ = 0.0f;
+	float lockOffsetPitch_ = 0.0f;
+	bool wasLockOn_ = false;
 };
