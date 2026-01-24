@@ -34,26 +34,64 @@ using namespace CombatSceneControl;
 
 CombatSceneController::CombatSceneController(ContextRef ref) {
 	// 参照ポインタ受け取り
-	ref_ = ref;
+	ref_ = {
+		ref.inputSys,
+		ref.camera,
+		ref.pilot,
+		ref.boss,
+		ref.effectMgr,
+		ref.collisionSys,
+		ref.damageObjMgr,
+		this
+	};
 
 	// ステートテーブルを作成
-	states_[State::Start] = std::make_unique<CombatSceneStateStart>();
-	states_[State::Battle] = std::make_unique<CombatSceneStateStart>();
-	states_[State::End] = std::make_unique<CombatSceneStateStart>();
-	states_[State::Pause] = std::make_unique<CombatSceneStateStart>();
+	states_[State::None] = nullptr;
 
+	states_[State::Start] = std::make_unique<CombatSceneStateStart>();
+	states_[State::Battle] = std::make_unique<CombatSceneStateBattle>();
+	states_[State::End] = std::make_unique<CombatSceneStateEnd>();
+	states_[State::Pause] = std::make_unique<CombatSceneStatePause>();
+
+	// 文字列取得用マップを作成
+	statesStrMap_[State::None] = "None";
+	statesStrMap_[State::Start] = "Start";
+	statesStrMap_[State::Battle] = "Battle";
+	statesStrMap_[State::End] = "End";
+	statesStrMap_[State::Pause] = "Pause";
+
+	// 初期状態　何もしない
+	currentState_ = std::make_pair(CombatSceneController::State::None, GetState(CombatSceneController::State::None));
+
+	// 終了通知フラグ
+	isEnd_ = false;
 }
 
 void CombatSceneController::Start(CombatSceneController::State state) {
 	// ステート開始
 	ChangeState(state);
+
+	// 開始
+	isEnd_ = false;
 }
 
-void CombatSceneController::Update() {
+void CombatSceneController::End() {
+	// ステートの終了処理
+	if (auto cs = currentState_.second) {
+		cs->Exit(ref_);
+	}
+	currentState_ = std::make_pair(CombatSceneController::State::None, GetState(CombatSceneController::State::None));
+
+	// 終了
+	isEnd_ = true;
+}
+
+bool CombatSceneController::Update() {
 	// ステート更新
 	if (auto& state = currentState_.second) {
 		state->Update(ref_);
 	}
+	return isEnd_;
 }
 
 void CombatSceneController::Draw() {
@@ -76,6 +114,10 @@ void CombatSceneController::ChangeState(CombatSceneController::State state) {
 	}
 }
 
+std::string CombatSceneController::GetCurrentStateStr() {
+	return GetStateStr(currentState_.first);
+}
+
 ICombatSceneState* CombatSceneController::GetState(CombatSceneController::State state) {
 	// ステートテーブルから検索
 	auto it = states_.find(state);
@@ -85,4 +127,14 @@ ICombatSceneState* CombatSceneController::GetState(CombatSceneController::State 
 
 	MAGIAssert::Assert(false, "Not find CombatSceneState!");
 	return {};
+}
+
+std::string CombatSceneController::GetStateStr(CombatSceneController::State state) {
+	// ステートテーブルから検索
+	auto it = statesStrMap_.find(state);
+	if (it != statesStrMap_.end()) {
+		return it->second;
+	}
+
+	return "UNKNOWN";
 }

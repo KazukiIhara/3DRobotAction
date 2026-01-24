@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "CombatSceneStateEnd.h"
 
 //-------------------------------------------
@@ -27,18 +29,31 @@
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 
-void CombatSceneStateEnd::Enter([[maybe_unused]] CombatSceneControl::ContextRef ref) {
+#include "Feature/SceneStateController/CombatSceneController/CombatSceneController.h"
+
+#include "MAGI.h"
+
+using namespace Magi;
+
+void CombatSceneStateEnd::Enter([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
+	timer_ = 1.0f;
+}
+
+void CombatSceneStateEnd::Update([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
+
+
+
+	timer_ -= MAGISYSTEM::GetDeltaTime();
+	timer_ = std::max(0.0f, timer_);
+	if (timer_ <= 0.0f) {
+		ref.cbc->End();
+	}
+}
+
+void CombatSceneStateEnd::Draw([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }
 
-void CombatSceneStateEnd::Update([[maybe_unused]] CombatSceneControl::ContextRef ref) {
-
-}
-
-void CombatSceneStateEnd::Draw([[maybe_unused]] CombatSceneControl::ContextRef ref) {
-
-}
-
-void CombatSceneStateEnd::Exit([[maybe_unused]] CombatSceneControl::ContextRef ref) {
+void CombatSceneStateEnd::Exit([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }
