@@ -1,5 +1,6 @@
 #include "PilotMechWeaponBeamCannonRifle.h"
 
+// パイロット機体
 #include "Feature/Pilot/Mech/PilotMech.h"
 
 // マネージャ
@@ -21,7 +22,8 @@ PilotMechWeaponBeamCannonRifle::PilotMechWeaponBeamCannonRifle(PilotMech* mech) 
 
 
 	// オフセットの設定
-
+	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "WeaponParam","Pilot","BeamCannon","FireOffset" });
+	fireTransform_->SetTranslate(fireOffset);
 
 	// 手に紐づける
 	transform_->SetParent(mech->GetPartsTransform(MechAnimation::TransType::HandLeft), false);
@@ -45,7 +47,7 @@ void PilotMechWeaponBeamCannonRifle::Attack() {
 	const float life = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Life" });
 	const float speed = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Speed" });
 	const float thickness = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Thickness" });
-	
+
 	// 攻撃作成、追加処理
 	if (auto atkM = mech_->GetDamageObjectManager()) {
 		// ビームキャノンのパラメータを作成
@@ -66,8 +68,8 @@ void PilotMechWeaponBeamCannonRifle::Attack() {
 		};
 
 		// ビームキャノンを追加
-		std::unique_ptr<BeamCannon> laser = std::make_unique<BeamCannon>(param, ref);
-		atkM->Add(std::move(laser));
+		std::unique_ptr<BeamCannon> beamCannon = std::make_unique<BeamCannon>(param, ref);
+		atkM->Add(std::move(beamCannon));
 
 	}
 

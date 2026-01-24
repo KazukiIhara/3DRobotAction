@@ -63,7 +63,7 @@ void DebugCamera3D::HandleCameraTranslation(const POINT& delta) {
 
 void DebugCamera3D::HandleCameraZoom(int64_t wheelDelta) {
 	if (MAGISYSTEM::PushKey(DIK_LCONTROL) && wheelDelta != 0) {
-		float zoomSpeed = 0.3f;
+		float zoomSpeed = 0.6f;
 
 		Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
 		eye_ += forward * (wheelDelta * zoomSpeed * MAGISYSTEM::GetDeltaTime());

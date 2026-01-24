@@ -47,6 +47,12 @@ void PilotMechStateMove::Update(PilotMech* mech) {
 
 		// 回転に補正を掛け　急な角度の移動量を減速する
 		ms->ApplyRotationInertia();
+
+
+		// 右手武器で攻撃
+		if (command.attackR) {
+			mech->GetWeapon("BeamMachineGun")->Attack();
+		}
 	}
 
 }

@@ -4,7 +4,7 @@
 #include "Structs/ModelStruct.h"
 
 /// <summary>
-/// パイロット機体のビームライフル
+/// パイロット機体のビームキャノンライフル
 /// </summary>
 class PilotMechWeaponBeamCannonRifle :public BasePilotMechWeapon {
 public:

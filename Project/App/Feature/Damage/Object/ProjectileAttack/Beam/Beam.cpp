@@ -1,28 +1,30 @@
-#include "BeamCannon.h"
+#include "Beam.h"
 
 #include "MAGI.h"
 
 using namespace Magi;
 
-BeamCannon::BeamCannon(const BeamCannon::InitParam& initParam, RefContext ref) :
+Beam::Beam(const Beam::InitParam& initParam, RefContext ref) :
 	BaseProjectileAttack(initParam.initParam_, ref.damageCollisionSystem) {
 
 	effectManager_ = ref.effectManager;
 
-	// エフェクトの作成など
+	// ひとまずの処理
+	transform_->SetScale(Vector3(0.3f, 0.3f, 0.3f));
 }
 
-void BeamCannon::Update() {
+void Beam::Update() {
 	// 基底クラスの更新
 	BaseProjectileAttack::Update();
 
 }
 
-void BeamCannon::Draw() {
-	// 仮表示
+void Beam::Draw() {
+	// ひとまず仮表示
 	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix());
+
 }
 
-void BeamCannon::Finalize() {
+void Beam::Finalize() {
 	BaseProjectileAttack::Finalize();
 }
