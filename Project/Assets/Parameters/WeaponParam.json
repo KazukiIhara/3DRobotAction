@@ -57,7 +57,7 @@
       },
       "FireRateSec": {
         "type": "Int32",
-        "value": 10
+        "value": 15
       },
       "Length": {
         "type": "Float",
