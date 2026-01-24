@@ -32,6 +32,7 @@ void GameInputSystem::UpdatePilotCommand() {
 		pC.attackL = MAGISYSTEM::GetLeftTrigger(0);
 		pC.attackR = MAGISYSTEM::GetRightTrigger(0);
 
+		pC.switchLockOn = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
 	}
 
 }

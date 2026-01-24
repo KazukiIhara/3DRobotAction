@@ -4,5 +4,23 @@
       "type": "Float",
       "value": 2.0
     }
+  },
+  "KinematicSystem": {
+    "AABBHalfSize": {
+      "type": "Vec3",
+      "value": {
+        "x": 1.5,
+        "y": 2.5,
+        "z": 1.5
+      }
+    },
+    "AABBOffset": {
+      "type": "Vec3",
+      "value": {
+        "x": 0.0,
+        "y": 2.5,
+        "z": 0.0
+      }
+    }
   }
 }

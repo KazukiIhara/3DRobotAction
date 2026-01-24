@@ -36,6 +36,8 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 	animator_ = std::make_unique<MechAnimator>(ref_.animationContainer, this);
 	// 移動制御クラス作成
 	moveSystem_ = std::make_unique<MechMoveSystem>(this);
+	// 地形押し戻し、接地判定クラス
+	kinematicSystem_ = std::make_unique<MechKinematicSystem>(this);
 	// 回転制御クラス作成
 	rotControlSystem_ = std::make_unique<MechRotControlSystem>(this);
 	// コライダー作成
@@ -58,15 +60,12 @@ void BaseMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 
 	// 機体の速度を計算
 	if (moveSystem_) {
-		moveSystem_->CalSpeed();
+		moveSystem_->Update();
 	}
 
-	// 地形追加後　多分ここで押し戻し判定を取る
-
-
-	// 移動量を計算して追加
-	if (moveSystem_) {
-		moveSystem_->ApplyVelocity();
+	// 地形押し戻し、接地判定
+	if (kinematicSystem_) {
+		kinematicSystem_->Update();
 	}
 
 	// 機体の回転を更新
@@ -108,6 +107,10 @@ void BaseMech::DebugDraw() {
 		// 武器のデバッグ描画
 		for (auto& w : weapons_) {
 			w.second->DebugDraw();
+		}
+		// 地形用当たり判定描画
+		if (kinematicSystem_) {
+			kinematicSystem_->Draw();
 		}
 		// コライダー描画
 		if (collider_) {
@@ -185,6 +188,10 @@ MechAnimator* BaseMech::GetAnimator() {
 
 MechMoveSystem* BaseMech::GetMoveSystem() {
 	return moveSystem_.get();
+}
+
+MechKinematicSystem* BaseMech::GetKinematicSystem() {
+	return kinematicSystem_.get();
 }
 
 MechRotControlSystem* BaseMech::GetRotControlSystem() {
@@ -269,6 +276,10 @@ GameEffectManager* BaseMech::GetGameEffectManager() {
 }
 MechAnimationContainer* BaseMech::GetAnimationContainer() {
 	return ref_.animationContainer;
+}
+
+CombatStageData* BaseMech::GetCombatStageData() {
+	return ref_.stageData;
 }
 
 void BaseMech::SetInitParam(const BaseMech::InitParam& initParam) {

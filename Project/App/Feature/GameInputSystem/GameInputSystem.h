@@ -32,6 +32,7 @@ public:
 		bool jump = false;
 		bool attackL = false;
 		bool attackR = false;
+		bool switchLockOn = false;
 	};
 	struct PauseCommand {
 		CommonCommand common;

@@ -18,6 +18,10 @@ Pilot::Pilot(BaseMech::RefContext ref, RefContext pRef) {
 	// 機体の作成
 	mech_ = std::make_unique<PilotMech>(initParam_, ref, inputSys_);
 
+
+	// ひとまず胴体に紐づける処理
+	camera_->SetFollowTransform(mech_->GetPartsTransform(MechAnimation::TransType::Body));
+
 }
 
 void Pilot::Update() {
@@ -112,8 +116,12 @@ void Pilot::CameraControl() {
 	}
 
 	// ロックオン対象がいる場合
-	if (ILockOnTarget* target = mech_->GetLockOnSystem()->GetTarget()) {
-		camera_->SetLockOnTarget(target);
+	if (mech_->GetLockOnSystem()->GetIsLockOn()) {
+		if (ILockOnTarget* target = mech_->GetLockOnSystem()->GetTarget()) {
+			camera_->SetLockOnTarget(target);
+		}
+	} else {
+		camera_->SetLockOnTarget(nullptr);
 	}
 
 	// コマンド取得

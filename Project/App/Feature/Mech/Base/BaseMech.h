@@ -23,6 +23,8 @@
 #include "MechAnimation/Animator/MechAnimator.h"
 // 移動制御クラス
 #include "Feature/Mech/System/Move/MechMoveSystem.h"
+// 地形押し戻し、接地判定
+#include "Feature/Mech/System/Kinematic/MechKinematicSystem.h"
 // 回転制御クラス
 #include "Feature/Mech/System/RotControl/MechRotControlSystem.h"
 // コライダークラス
@@ -35,6 +37,7 @@ class DamageObjectManager;
 class DamageCollisionSystem;
 class GameEffectManager;
 class MechAnimationContainer;
+class CombatStageData;
 
 class BaseMech: public ILockOnTarget {
 public:
@@ -59,6 +62,7 @@ public:
 		GameEffectManager* gameEffectManager = nullptr;
 		DamageCollisionSystem* damageCollisionSystem = nullptr;
 		MechAnimationContainer* animationContainer = nullptr;
+		CombatStageData* stageData = nullptr;
 	};
 
 public:
@@ -93,6 +97,8 @@ public:
 	MechAnimator* GetAnimator();
 	// 移動制御クラス
 	MechMoveSystem* GetMoveSystem();
+	// 地形押し戻し、接地判定クラス
+	MechKinematicSystem* GetKinematicSystem();
 	// 回転制御クラス
 	MechRotControlSystem* GetRotControlSystem();
 	// コライダー取得
@@ -117,6 +123,7 @@ public:
 	DamageCollisionSystem* GetDamageCollisionSystem();
 	GameEffectManager* GetGameEffectManager();
 	MechAnimationContainer* GetAnimationContainer();
+	CombatStageData* GetCombatStageData();
 
 protected:
 	// 初期化パラメータを受け取る
@@ -170,6 +177,8 @@ private:
 	std::unique_ptr<MechAnimator> animator_;
 	// 移動制御クラス
 	std::unique_ptr<MechMoveSystem> moveSystem_;
+	// 押し戻し、接地判定クラス
+	std::unique_ptr<MechKinematicSystem> kinematicSystem_;
 	// 回転制御クラス
 	std::unique_ptr<MechRotControlSystem> rotControlSystem_;
 	// コライダー
