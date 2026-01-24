@@ -33,6 +33,11 @@ void MechCollider::Update() {
 	// 右脚：上足〜膝、膝〜足
 	SetCapsule(7, MechAnimation::TransType::UpperLegRight, MechAnimation::TransType::LowerLegRight);
 	SetCapsule(8, MechAnimation::TransType::LowerLegRight, MechAnimation::TransType::FootRight);
+
+
+	// 衝突情報をリセット
+	hitInfoList_.clear();
+
 }
 
 void MechCollider::Draw() {
@@ -44,7 +49,15 @@ void MechCollider::Draw() {
 #endif
 }
 
-const std::array<MechCollider::Capsule, 9>& MechCollider::GetList() const {
+void MechCollider::AddHitInfo(const HitInfo& hitInfo) {
+	hitInfoList_.push_back(hitInfo);
+}
+
+const std::vector<MechCollider::HitInfo>& MechCollider::GetHitInfoList() const {
+	return hitInfoList_;
+}
+
+const std::array<MechCollider::Capsule, 9>& MechCollider::GetColliderList() const {
 	return colliders_;
 }
 

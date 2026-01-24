@@ -26,7 +26,8 @@ BaseLinearAttack::BaseLinearAttack(
 		.p1 = endPos_,
 		.radius = 1.0f
 	};
-	AddDamageCollider(capsule, initParam.tag);
+	DamageCollider::GameParam gParam = initParam.gParam;
+	AddDamageCollider(capsule, gParam);
 
 }
 

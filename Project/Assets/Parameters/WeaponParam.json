@@ -1,6 +1,10 @@
 {
   "Boss": {
     "LaserGun": {
+      "Damage": {
+        "type": "Int32",
+        "value": 50
+      },
       "FireOffset": {
         "type": "Vec3",
         "value": {
@@ -21,6 +25,10 @@
   },
   "Pilot": {
     "BeamCannon": {
+      "Damage": {
+        "type": "Int32",
+        "value": 100
+      },
       "FireOffset": {
         "type": "Vec3",
         "value": {
@@ -47,6 +55,10 @@
       }
     },
     "BeamMachineGun": {
+      "Damage": {
+        "type": "Int32",
+        "value": 5
+      },
       "FireOffset": {
         "type": "Vec3",
         "value": {

@@ -1,10 +1,12 @@
 #pragma once
 
 // C++
+#include <vector>
 #include <array>
 #include "Math/Types/AllMathTypes.h"
 
 #include "MechAnimation/MechAnimation.h"
+#include "Feature/Damage/Damage.h"
 
 // 前方宣言
 class BaseMech;
@@ -15,7 +17,8 @@ class BaseMech;
 class MechCollider {
 public:
 	struct HitInfo {
-		bool isHit = false;
+		int32_t damage = 0;
+		Damage::Power power;
 	};
 	struct Capsule {
 		Vector3 p0;
@@ -30,11 +33,15 @@ public:
 
 	void Draw();
 
-	const std::array<MechCollider::Capsule, 9>& GetList()const;
+	void AddHitInfo(const HitInfo& hitInfo);
+
+	const std::vector<HitInfo>& GetHitInfoList()const;
+	const std::array<MechCollider::Capsule, 9>& GetColliderList()const;
 
 private:
 	void SetCapsule(size_t idx, MechAnimation::TransType a, MechAnimation::TransType b);
 private:
+	std::vector<HitInfo> hitInfoList_;
 	std::array<Capsule, 9> colliders_;
 	BaseMech* mech_;
 };

@@ -54,6 +54,8 @@ void BossMechWeaponLaserGun::Attack() {
 	const float speed = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserGun","Speed" });
 	// 生存時間取得
 	const float life = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserGun","Life" });
+	// ダメージ取得
+	const int32_t damage = MAGISYSTEM::GetParameterValue<int32_t>({ "WeaponParam","Boss","LaserGun","Damage" });
 
 	// 攻撃作成、追加処理
 	if (auto atkM = mech_->GetDamageObjectManager()) {
@@ -63,7 +65,11 @@ void BossMechWeaponLaserGun::Attack() {
 		lParam.initParam_.dir = dir;
 		lParam.initParam_.speed = speed;
 		lParam.initParam_.life = life;
-		lParam.initParam_.tag = FriendlyTag::EnemySide;
+
+		lParam.initParam_.gParam.damage = damage;
+		lParam.initParam_.gParam.power = Damage::Power::Small;
+		lParam.initParam_.gParam.tag = FriendlyTag::EnemySide;
+
 		lParam.color = LaserEffect::Col::RED;
 
 		// レーザーを追加
