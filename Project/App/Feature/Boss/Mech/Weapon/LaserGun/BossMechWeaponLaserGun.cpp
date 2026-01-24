@@ -55,7 +55,7 @@ void BossMechWeaponLaserGun::Attack() {
 	// 生存時間取得
 	const float life = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserGun","Life" });
 	// ダメージ取得
-	const float damage = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserGun","Damage" });
+	const int32_t damage = MAGISYSTEM::GetParameterValue<int32_t>({ "WeaponParam","Boss","LaserGun","Damage" });
 
 	// 攻撃作成、追加処理
 	if (auto atkM = mech_->GetDamageObjectManager()) {
@@ -67,7 +67,7 @@ void BossMechWeaponLaserGun::Attack() {
 		lParam.initParam_.life = life;
 
 		lParam.initParam_.gParam.damage = damage;
-		lParam.initParam_.gParam.power = DamageCollider::Power::Small;
+		lParam.initParam_.gParam.power = Damage::Power::Small;
 		lParam.initParam_.gParam.tag = FriendlyTag::EnemySide;
 
 		lParam.color = LaserEffect::Col::RED;

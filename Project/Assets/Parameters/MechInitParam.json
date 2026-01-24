@@ -42,6 +42,10 @@
         }
       }
     },
+    "HP": {
+      "type": "Int32",
+      "value": 1000
+    },
     "HandLeft": {
       "ModelName": {
         "type": "String",

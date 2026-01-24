@@ -39,6 +39,7 @@ class MechAnimationContainer;
 class BaseMech: public ILockOnTarget {
 public:
 	struct InitParam {
+		int32_t hp = 0;
 		Vector3 position{};
 		FriendlyTag tag;
 		MechPartsHead::InitParam head;

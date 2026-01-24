@@ -6,6 +6,7 @@
 #include "Math/Types/AllMathTypes.h"
 #include "MAGIAssert/MAGIAssert.h"
 #include "GameCommon/GameCommon.h"
+#include "Feature/Damage/Damage.h"
 
 // メモ
 
@@ -19,13 +20,6 @@
 /// </summary>
 class DamageCollider {
 public:
-	// 攻撃の衝撃
-	enum class Power {
-		Large,
-		Mid,
-		Small
-	};
-
 	// 形状
 	struct Sphere {
 		Vector3 center;
@@ -44,8 +38,8 @@ public:
 
 	// ゲーム内で使うパラメータ
 	struct GameParam {
-		float damage = 0.0f;
-		Power power = Power::Small;
+		int32_t damage = 0;
+		Damage::Power power = Damage::Power::Small;
 		FriendlyTag tag;
 	};
 

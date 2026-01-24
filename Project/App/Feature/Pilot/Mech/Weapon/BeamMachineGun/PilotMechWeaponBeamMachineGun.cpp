@@ -56,7 +56,7 @@ void PilotMechWeaponBeamMachineGun::Attack() {
 	const float life = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamMachineGun","Life" });
 	const float speed = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamMachineGun","Speed" });
 	const float thickness = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamMachineGun","Thickness" });
-	const float damage = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Damage" });
+	const int32_t damage = MAGISYSTEM::GetParameterValue<int32_t>({ "WeaponParam","Pilot","BeamMachineGun","Damage" });
 
 	// 攻撃作成、追加処理
 	if (auto atkM = mech_->GetDamageObjectManager()) {
@@ -70,7 +70,7 @@ void PilotMechWeaponBeamMachineGun::Attack() {
 		param.initParam_.thickness = thickness;
 
 		param.initParam_.gParam.damage = damage;
-		param.initParam_.gParam.power = DamageCollider::Power::Small;
+		param.initParam_.gParam.power = Damage::Power::Small;
 		param.initParam_.gParam.tag = FriendlyTag::PlayerSide;
 
 		// 参照ポインタ構造体を作成

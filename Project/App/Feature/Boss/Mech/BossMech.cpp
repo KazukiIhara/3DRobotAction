@@ -21,6 +21,7 @@ using namespace Magi;
 
 BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pilotMech) :
 	BaseMech(param, ref) {
+
 	// プレイヤー機体の参照ポインタを受け取る
 	pilotMech_ = pilotMech;
 
@@ -34,8 +35,12 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 	// 武器をマップに追加
 	AddWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
 
-	// ステータスを初期化
-	status_ = std::unique_ptr<BossMechStatus>();
+	{
+		// ステータスを初期化
+		BossMechStatus::InitParam sInitParam{};
+		sInitParam.hp = param.hp;
+		status_ = std::make_unique<BossMechStatus>(sInitParam, this);
+	}
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<BossMechStateIdle>();
@@ -53,6 +58,9 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	// パイロット機体をターゲットにセット
 	const Vector3 pilotCenter = GetPilotMech()->GetCenterPos();
 	SetTargetWorldPos(pilotCenter);
+
+	// ステータスの更新
+	status_->Update();
 
 	// バリアの更新
 	barrier_->Update();
@@ -123,6 +131,11 @@ void BossMech::ShowDebugWindow() {
 		ImGui::SameLine();
 		const std::string state = StateToString(currentState_.first);
 		ImGui::Text(state.c_str());
+		// HP表示
+		ImGui::Text("HP: ");
+		ImGui::SameLine();
+		int32_t hp = status_->GetHP();
+		ImGui::Text("%u", hp);
 	}
 
 	ImGui::SeparatorText("LookAtFlag");

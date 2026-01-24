@@ -21,18 +21,18 @@
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 
-void CombatSceneStatePause::Enter(CombatSceneControl::ContextRef ref) {
+void CombatSceneStatePause::Enter([[maybe_unused]] CombatSceneControl::ContextRef ref) {
 
 }
 
-void CombatSceneStatePause::Update(CombatSceneControl::ContextRef ref) {
+void CombatSceneStatePause::Update([[maybe_unused]] CombatSceneControl::ContextRef ref) {
 
 }
 
-void CombatSceneStatePause::Draw(CombatSceneControl::ContextRef ref) {
+void CombatSceneStatePause::Draw([[maybe_unused]] CombatSceneControl::ContextRef ref) {
 
 }
 
-void CombatSceneStatePause::Exit(CombatSceneControl::ContextRef ref) {
+void CombatSceneStatePause::Exit([[maybe_unused]] CombatSceneControl::ContextRef ref) {
 
 }

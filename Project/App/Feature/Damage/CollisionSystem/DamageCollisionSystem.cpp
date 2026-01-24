@@ -279,6 +279,8 @@ void DamageCollisionSystem::UpdateDamageColliders() {
 }
 
 void DamageCollisionSystem::CheckCollision() {
+
+	// 機体ごとの処理s
 	for (auto* mech : mechlist_) {
 		// null ガード
 		if (!mech) {
@@ -295,8 +297,9 @@ void DamageCollisionSystem::CheckCollision() {
 		}
 
 		// 機体カプセル配列取得
-		const auto& mechCapsules = mechCollider->GetList();
+		const auto& mechCapsules = mechCollider->GetColliderList();
 
+		// 機体のコライダーごとの処理
 		for (const auto& mCap : mechCapsules) {
 			// 無効カプセルスキップ
 			if (mCap.radius <= 0.0f) {
@@ -306,6 +309,7 @@ void DamageCollisionSystem::CheckCollision() {
 			// 機体カプセルを Damage 側 Param に変換
 			DamageCollider::Param mechParam = DamageCollider::Capsule{ mCap.p0, mCap.p1, mCap.radius };
 
+			// 攻撃コライダーごとの処理
 			for (auto& dmg : colliders_) {
 				// 生存のみ
 				if (!dmg->GetIsAlive()) {
@@ -317,7 +321,12 @@ void DamageCollisionSystem::CheckCollision() {
 					continue;
 				}
 
-				// プレイヤー機体の場合 ジャスト回避コライダーとの判定を取る
+				// このフレームで衝突している場合はスキップ
+				if (dmg->GetHitInfo().isHit_) {
+					continue;
+				}
+
+				// プレイヤー機体の場合 先にジャスト回避コライダーとの判定を取る
 				if (mechTag == FriendlyTag::PlayerSide) {
 					PilotMech* pm = dynamic_cast<PilotMech*>(mech);
 					if (pm) {
@@ -326,8 +335,10 @@ void DamageCollisionSystem::CheckCollision() {
 						DamageCollider::Param jdParam = DamageCollider::Sphere{ sphere.center,sphere.radius };
 
 						if (IsCollision(jdParam, dmg->GetParam())) {
-							// 衝突情報セット
+							// ジャストコライダーに衝突情報セット
 							jdC->SetIsHit(true);
+
+							// ダメージ側もセット
 							DamageCollider::HitInfo hit{};
 							dmg->SetHitInfo(hit);
 							continue;
@@ -335,8 +346,16 @@ void DamageCollisionSystem::CheckCollision() {
 					}
 				}
 
-				// 形状同士判定
+				// 攻撃コライダーと機体の判定
 				if (IsCollision(mechParam, dmg->GetParam())) {
+
+					// 機体に衝突情報をセット
+					MechCollider::HitInfo hitInfo{};
+					DamageCollider::GameParam gP = dmg->GetGameParam();
+					hitInfo.damage = gP.damage;
+					hitInfo.power = gP.power;
+					mechCollider->AddHitInfo(hitInfo);
+
 					// ダメージ側のみ衝突情報セット
 					DamageCollider::HitInfo hit{};
 					hit.isHit_ = true;

@@ -17,6 +17,17 @@ void Beam::Update() {
 	// 基底クラスの更新
 	BaseProjectileAttack::Update();
 
+
+	if (auto collider = GetDamageCollider()) {
+		if (collider->GetHitInfo().isHit_) {
+			// ヒット時エフェクトを出す
+
+
+			// 生存フラグを消す
+			isAlive_ = false;
+		}
+	}
+
 }
 
 void Beam::Draw() {
