@@ -31,6 +31,10 @@ void PilotMechStateIdle::Update(PilotMech* mech) {
 	// 移動入力でMoveに遷移
 	if (commandPair.first) {
 		auto command = commandPair.second;
+		// 右手武器で攻撃
+		if (command.attackR) {
+			mech->GetWeapon("BeamMachineGun")->Attack();
+		}
 		if (command.dodge) {
 			mech->ChangeState(PilotMech::State::Dodge);
 			return;

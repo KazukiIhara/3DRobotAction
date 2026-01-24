@@ -3,15 +3,13 @@
 // 基底クラス
 #include "Feature/Damage/Object/ProjectileAttack/Base/BaseProjectileAttack.h"
 
-#include "Structs/Primitive3DStruct.h"
-
 // エフェクトマネージャ
 class GameEffectManager;
 
 /// <summary>
-/// ビームキャノン
+/// エネルギーっぽい弾
 /// </summary>
-class BeamCannon:public BaseProjectileAttack {
+class Beam:public BaseProjectileAttack {
 public:
 	struct RefContext {
 		DamageCollisionSystem* damageCollisionSystem;
@@ -21,14 +19,14 @@ public:
 		BaseProjectileAttack::InitParam initParam_;
 	};
 public:
-	BeamCannon(const BeamCannon::InitParam& initParam, RefContext ref);
-	~BeamCannon()override = default;
+	Beam(const Beam::InitParam& initParam, RefContext ref);
+	~Beam() = default;
 
 	void Update()override;
 	void Draw()override;
 	void Finalize()override;
 
-
 private:
 	GameEffectManager* effectManager_;
+
 };

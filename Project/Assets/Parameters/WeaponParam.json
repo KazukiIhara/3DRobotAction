@@ -45,6 +45,36 @@
         "type": "Float",
         "value": 0.5
       }
+    },
+    "BeamMachineGun": {
+      "FireOffset": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      "FireRateSec": {
+        "type": "Int32",
+        "value": 10
+      },
+      "Length": {
+        "type": "Float",
+        "value": 0.4000000059604645
+      },
+      "Life": {
+        "type": "Float",
+        "value": 4.0
+      },
+      "Speed": {
+        "type": "Float",
+        "value": 80.0
+      },
+      "Thickness": {
+        "type": "Float",
+        "value": 0.20000000298023224
+      }
     }
   }
 }
