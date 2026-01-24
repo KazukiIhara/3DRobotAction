@@ -9,6 +9,11 @@
 #include "Feature/GameInputSystem/GameInputSystem.h"
 
 //-------------------------------------------
+// シーンステート管理クラス
+//-------------------------------------------
+#include "Feature/SceneStateController/CombatSceneController/CombatSceneController.h"
+
+//-------------------------------------------
 // シーンオブジェクト
 //-------------------------------------------
 
@@ -49,10 +54,11 @@ private:
 private:
 	// 入力システム
 	std::unique_ptr<GameInputSystem> inputSys_;
+	// シーン管理クラス
+	std::unique_ptr<CombatSceneController> sceneController_;
 
 	// シーンカメラの参照ポインタ
 	TPSCamera3D* camera_;
-
 	// パイロット
 	std::unique_ptr<Pilot> pilot_;
 	// ボス
