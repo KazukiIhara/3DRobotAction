@@ -27,7 +27,8 @@ BaseProjectileAttack::BaseProjectileAttack(
 		.p1 = worldPos - dir_ * length_,
 		.radius = thickness_
 	};
-	AddDamageCollider(capsule, initParam.tag);
+	DamageCollider::GameParam gParam = initParam.gParam;
+	AddDamageCollider(capsule, gParam);
 
 }
 

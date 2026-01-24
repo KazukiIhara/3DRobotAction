@@ -313,7 +313,7 @@ void DamageCollisionSystem::CheckCollision() {
 				}
 
 				// 同じタグならスキップ
-				if (mechTag == dmg->GetTag()) {
+				if (mechTag == dmg->GetGameParam().tag) {
 					continue;
 				}
 

@@ -7,11 +7,25 @@
 #include "MAGIAssert/MAGIAssert.h"
 #include "GameCommon/GameCommon.h"
 
+// メモ
+
+/*
+	ParamはどちらかというとShapeだった
+	直感的ではないが、今変更するのはコストなので、今後余裕があったら名称をただす
+*/
+
 /// <summary>
 /// ダメージコライダー
 /// </summary>
 class DamageCollider {
 public:
+	// 攻撃の衝撃
+	enum class Power {
+		Large,
+		Mid,
+		Small
+	};
+
 	// 形状
 	struct Sphere {
 		Vector3 center;
@@ -28,6 +42,13 @@ public:
 		float radius;
 	};
 
+	// ゲーム内で使うパラメータ
+	struct GameParam {
+		float damage = 0.0f;
+		Power power = Power::Small;
+		FriendlyTag tag;
+	};
+
 	// 衝突情報
 	struct HitInfo {
 		bool isHit_ = false;
@@ -39,7 +60,7 @@ public:
 		Capsule
 	>;
 public:
-	DamageCollider(Param param, FriendlyTag tag);
+	DamageCollider(Param param, const GameParam& gParam);
 	~DamageCollider() = default;
 
 	void Update();
@@ -65,8 +86,8 @@ public:
 	// 生存フラグを取得
 	bool GetIsAlive()const;
 
-	// 識別タグを取得
-	FriendlyTag GetTag()const;
+	// ゲームで使うパラメータを取得
+	GameParam GetGameParam()const;
 
 private:
 	// パラメータ
@@ -75,8 +96,8 @@ private:
 	// 衝突情報
 	HitInfo hitInfo_{};
 
-	// 識別タグ
-	FriendlyTag tag_;
+	// ゲーム内で使うパラメータ
+	GameParam gParam_{};
 
 	// 生存フラグ
 	bool isAlive_ = true;

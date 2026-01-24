@@ -89,13 +89,16 @@ void MechMoveSystem::ApplyRotationInertia() {
 	// 角度差を求める
 	float dot = Dot(preDir_, dir_);
 	// 角度差が大きい場合速度を0にする
-	if (dot < -0.5f) {
+	if (dot < 0.0f) {
 		speed_ = 0.0f;
 	}
 
+	const float clampedDot = -(dot + 1.0f) * 0.5f;
+	const float targetSec = std::max(5.0f, clampedDot * 15.0f);
+
 	// 方向を正規化
 	dir_ = Normalize(dir_);
-	const float t = CalExpT(dt, 4.0f, 1.0f);
+	const float t = CalExpT(dt, targetSec, 1.0f);
 	// 移動方向を補間
 	dir_ = Lerp(preDir_, dir_, t);
 }

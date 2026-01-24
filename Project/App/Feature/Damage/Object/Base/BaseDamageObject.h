@@ -27,7 +27,7 @@ public:
 	virtual void Draw() = 0;
 	virtual void Finalize();
 
-	void AddDamageCollider(DamageCollider::Param param, FriendlyTag tag);
+	void AddDamageCollider(DamageCollider::Param param, const DamageCollider::GameParam& tag);
 	DamageCollider* GetDamageCollider();
 	DamageCollisionSystem* GetCollisionSystem();
 	bool GetIsAlive()const;

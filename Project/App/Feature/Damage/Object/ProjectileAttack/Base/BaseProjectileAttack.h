@@ -15,7 +15,7 @@ public:
 		float length = 0.0f;
 		float speed = 0.0f;
 		float life = 0.0f;
-		FriendlyTag tag;
+		DamageCollider::GameParam gParam;
 	};
 public:
 	BaseProjectileAttack(

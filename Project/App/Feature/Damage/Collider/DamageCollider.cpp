@@ -4,9 +4,9 @@
 
 using namespace Magi;
 
-DamageCollider::DamageCollider(Param param, FriendlyTag tag) {
+DamageCollider::DamageCollider(Param param, const GameParam&  gParam) {
 	param_ = std::move(param);
-	tag_ = tag;
+	gParam_ = gParam;
 }
 
 void DamageCollider::Update() {
@@ -17,18 +17,18 @@ void DamageCollider::DebugDraw() {
 
 	Vector4 color{};
 
-	if (tag_ == FriendlyTag::PlayerSide) {
+	if (gParam_.tag == FriendlyTag::PlayerSide) {
 		color = Color::Blue;
 	} else {
 		color = Color::Red;
 	}
-	
+
 	std::visit([&](const auto& shape) {
 		using T = std::decay_t<decltype(shape)>;
 
 		// Sphere
 		if constexpr (std::is_same_v<T, Sphere>) {
-			MAGISYSTEM::DrawLineSphere(shape.center, shape.radius, { 1,1,1,1 }, 16);
+			MAGISYSTEM::DrawLineSphere(shape.center, shape.radius, color, 16);
 		}
 		// OBB
 		else if constexpr (std::is_same_v<T, OBB>) {
@@ -37,11 +37,11 @@ void DamageCollider::DebugDraw() {
 		// Capsule
 		else if constexpr (std::is_same_v<T, Capsule>) {
 			// 端点球を描く
-			MAGISYSTEM::DrawLineSphere(shape.p0, shape.radius, { 1,1,1,1 }, 16);
-			MAGISYSTEM::DrawLineSphere(shape.p1, shape.radius, { 1,1,1,1 }, 16);
+			MAGISYSTEM::DrawLineSphere(shape.p0, shape.radius, color, 16);
+			MAGISYSTEM::DrawLineSphere(shape.p1, shape.radius, color, 16);
 
-			// 側面の目安として線を引く（簡易）
-			MAGISYSTEM::DrawLine3D(shape.p0, shape.p1, { 1,1,1,1 });
+			// 側面の目安として線を引く
+			MAGISYSTEM::DrawLine3D(shape.p0, shape.p1, color);
 		}
 		}, param_);
 }
@@ -65,6 +65,7 @@ bool DamageCollider::GetIsAlive()const {
 	return isAlive_;
 }
 
-FriendlyTag DamageCollider::GetTag() const {
-	return tag_;
+DamageCollider::GameParam DamageCollider::GetGameParam() const {
+	return gParam_;
 }
+

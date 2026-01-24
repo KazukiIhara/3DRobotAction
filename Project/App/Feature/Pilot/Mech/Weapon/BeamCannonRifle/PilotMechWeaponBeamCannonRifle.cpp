@@ -47,6 +47,7 @@ void PilotMechWeaponBeamCannonRifle::Attack() {
 	const float life = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Life" });
 	const float speed = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Speed" });
 	const float thickness = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Thickness" });
+	const float damage = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Pilot","BeamCannon","Damage" });
 
 	// 攻撃作成、追加処理
 	if (auto atkM = mech_->GetDamageObjectManager()) {
@@ -59,7 +60,9 @@ void PilotMechWeaponBeamCannonRifle::Attack() {
 		param.initParam_.speed = speed;
 		param.initParam_.thickness = thickness;
 
-		param.initParam_.tag = FriendlyTag::PlayerSide;
+		param.initParam_.gParam.damage = damage;
+		param.initParam_.gParam.power = DamageCollider::Power::Large;
+		param.initParam_.gParam.tag = FriendlyTag::PlayerSide;
 
 		// 参照ポインタ構造体を作成
 		BeamCannon::RefContext ref{

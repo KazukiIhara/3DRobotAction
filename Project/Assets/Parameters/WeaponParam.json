@@ -1,6 +1,10 @@
 {
   "Boss": {
     "LaserGun": {
+      "Damage": {
+        "type": "Float",
+        "value": 50.0
+      },
       "FireOffset": {
         "type": "Vec3",
         "value": {
@@ -21,6 +25,10 @@
   },
   "Pilot": {
     "BeamCannon": {
+      "Damage": {
+        "type": "Float",
+        "value": 100.0
+      },
       "FireOffset": {
         "type": "Vec3",
         "value": {
@@ -47,6 +55,10 @@
       }
     },
     "BeamMachineGun": {
+      "Damage": {
+        "type": "Float",
+        "value": 5.0
+      },
       "FireOffset": {
         "type": "Vec3",
         "value": {

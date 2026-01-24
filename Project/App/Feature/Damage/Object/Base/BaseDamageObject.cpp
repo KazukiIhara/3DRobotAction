@@ -20,9 +20,9 @@ void BaseDamageObject::Finalize() {
 	transform_->SetIsAlive(false);
 }
 
-void BaseDamageObject::AddDamageCollider(DamageCollider::Param param, FriendlyTag tag) {
+void BaseDamageObject::AddDamageCollider(DamageCollider::Param param, const DamageCollider::GameParam& gParam) {
 	std::unique_ptr<DamageCollider> collider =
-		std::make_unique<DamageCollider>(param, tag);
+		std::make_unique<DamageCollider>(param, gParam);
 	collider_ = GetCollisionSystem()->AddCollider(std::move(collider));
 }
 

@@ -13,7 +13,8 @@ public:
 		Vector3 dir{};
 		float speed = 0.0f;
 		float life = 0.0f;
-		FriendlyTag tag;
+		float damage = 0.0f;
+		DamageCollider::GameParam gParam;
 	};
 public:
 	BaseLinearAttack(
