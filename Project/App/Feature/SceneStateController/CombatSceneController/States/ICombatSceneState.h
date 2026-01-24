@@ -8,8 +8,8 @@
 class ICombatSceneState {
 public:
 	virtual ~ICombatSceneState() = default;
-	virtual void Enter(CombatSceneControl::ContextRef ref) = 0;
-	virtual void Update(CombatSceneControl::ContextRef ref) = 0;
-	virtual void Draw(CombatSceneControl::ContextRef ref) = 0;
-	virtual void Exit(CombatSceneControl::ContextRef ref) = 0;
+	virtual void Enter(CombatSceneControl::StateContextRef ref) = 0;
+	virtual void Update(CombatSceneControl::StateContextRef ref) = 0;
+	virtual void Draw(CombatSceneControl::StateContextRef ref) = 0;
+	virtual void Exit(CombatSceneControl::StateContextRef ref) = 0;
 };

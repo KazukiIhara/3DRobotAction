@@ -114,6 +114,9 @@ void DevelopScene::Update() {
 	if (ImGui::Button("StartCombatScene")) {
 		sceneController_->Start(CombatSceneController::State::Start);
 	}
+	ImGui::Text("CurrentSceneState: ");
+	ImGui::SameLine();
+	ImGui::Text(sceneController_->GetCurrentStateStr().c_str());
 
 	ImGui::SeparatorText("Pilot");
 	if (ImGui::Button("PilotDebugDraw")) {
@@ -142,7 +145,12 @@ void DevelopScene::Update() {
 	inputSys_->Update();
 
 	// シーン管理クラス更新
-	sceneController_->Update();
+	const bool endRequest = sceneController_->Update();
+
+	// シーン終了
+	if (endRequest) {
+		ChangeScene("Develop");
+	}
 
 	// パイロットを更新
 	pilot_->Update();

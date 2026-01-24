@@ -14,6 +14,7 @@
 class CombatSceneController {
 public:
 	enum class State {
+		None,
 		Start,
 		Battle,
 		End,
@@ -24,20 +25,36 @@ public:
 	~CombatSceneController() = default;
 
 	void Start(CombatSceneController::State state);
-	void Update();
+	void End();
+
+	// 更新　戦闘シーンが終章したらFalseが返る
+	bool Update();
+
 	void Draw();
-	
+
 	void ChangeState(CombatSceneController::State state);
 
+	std::string GetCurrentStateStr();
+
+private:
 	// ステート取得
 	ICombatSceneState* GetState(CombatSceneController::State state);
+	// ステートに対応した文字列を取得
+	std::string GetStateStr(CombatSceneController::State state);
 
 private:
 	// ステートテーブル
 	std::unordered_map<CombatSceneController::State, std::unique_ptr<ICombatSceneState>> states_;
+
+	// ステートと文字を対応させたマップ
+	std::unordered_map<CombatSceneController::State, std::string> statesStrMap_;
+
 	// 現在のステート
-	std::pair<CombatSceneController::State, ICombatSceneState*> currentState_;
+	std::pair<CombatSceneController::State, ICombatSceneState*> currentState_{};
+
+	// シーンへの終了通知用フラグ
+	bool isEnd_ = false;
 
 	// 参照ポインタ構造体
-	CombatSceneControl::ContextRef ref_;
+	CombatSceneControl::StateContextRef ref_;
 };

@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "CombatSceneStateStart.h"
 
 //-------------------------------------------
@@ -21,21 +23,33 @@
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 
-void CombatSceneStateStart::Enter([[maybe_unused]] CombatSceneControl::ContextRef ref) {
-	// 一旦ここでカメラをプレイヤーに紐づける
-	auto pilotTransform = ref.pilot->GetMech()->GetPartsTransform(MechAnimation::TransType::Body);
-	ref.camera->SetFollowTransform(pilotTransform);
+#include "Feature/SceneStateController/CombatSceneController/CombatSceneController.h"
+
+#include "MAGI.h"
+
+using namespace Magi;
+
+void CombatSceneStateStart::Enter([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
+
+	timer_ = 1.0f;
+}
+
+void CombatSceneStateStart::Update([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
+
+
+
+
+	timer_ -= MAGISYSTEM::GetDeltaTime();
+	timer_ = std::max(0.0f, timer_);
+	if (timer_ <= 0.0f) {
+		ref.cbc->ChangeState(CombatSceneController::State::Battle);
+	}
+}
+
+void CombatSceneStateStart::Draw([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }
 
-void CombatSceneStateStart::Update([[maybe_unused]] CombatSceneControl::ContextRef ref) {
-
-}
-
-void CombatSceneStateStart::Draw([[maybe_unused]] CombatSceneControl::ContextRef ref) {
-
-}
-
-void CombatSceneStateStart::Exit([[maybe_unused]] CombatSceneControl::ContextRef ref) {
+void CombatSceneStateStart::Exit([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }

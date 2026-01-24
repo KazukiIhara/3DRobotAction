@@ -21,18 +21,24 @@
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 
-void CombatSceneStatePause::Enter([[maybe_unused]] CombatSceneControl::ContextRef ref) {
+#include "Feature/SceneStateController/CombatSceneController/CombatSceneController.h"
+
+#include "MAGI.h"
+
+using namespace Magi;
+
+void CombatSceneStatePause::Enter([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }
 
-void CombatSceneStatePause::Update([[maybe_unused]] CombatSceneControl::ContextRef ref) {
+void CombatSceneStatePause::Update([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }
 
-void CombatSceneStatePause::Draw([[maybe_unused]] CombatSceneControl::ContextRef ref) {
+void CombatSceneStatePause::Draw([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }
 
-void CombatSceneStatePause::Exit([[maybe_unused]] CombatSceneControl::ContextRef ref) {
+void CombatSceneStatePause::Exit([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }
