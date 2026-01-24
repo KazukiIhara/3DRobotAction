@@ -19,34 +19,9 @@ MechMoveSystem::MechMoveSystem(BaseMech* mech) {
 	velocity_ = dir_ * speed_;
 }
 
-void MechMoveSystem::CalSpeed() {
-	// dt取得
-	const float dt = MAGISYSTEM::GetDeltaTime();
-
-	// 移動速度を計算
-	speed_ += acc_ * dt;
-	speed_ = std::max(0.0f, speed_);
-
-	// 速度を補間
-	if (speed_ > maxSpeed_) {
-		const float t = CalExpT(dt, 1.0f, 1.0f);
-		speed_ = Lerp(speed_, maxSpeed_, t);
-	}
-
-}
-
-void MechMoveSystem::ApplyVelocity() {
-	// dt取得
-	const float dt = MAGISYSTEM::GetDeltaTime();
-
-	// 移動量計算
-	velocity_ = dir_ * speed_;
-
-	// このフレームの移動角度を保存
-	preDir_ = dir_;
-
-	// 機体を動かす
-	mech_->GetTransform()->AddTranslate(velocity_ * dt);
+void MechMoveSystem::Update() {
+	CalSpeed();
+	ApplyVelocity();
 }
 
 void MechMoveSystem::SetDir(const Vector3& dir) {
@@ -101,4 +76,34 @@ void MechMoveSystem::ApplyRotationInertia() {
 	const float t = CalExpT(dt, targetSec, 1.0f);
 	// 移動方向を補間
 	dir_ = Lerp(preDir_, dir_, t);
+}
+
+void MechMoveSystem::CalSpeed() {
+	// dt取得
+	const float dt = MAGISYSTEM::GetDeltaTime();
+
+	// 移動速度を計算
+	speed_ += acc_ * dt;
+	speed_ = std::max(0.0f, speed_);
+
+	// 速度を補間
+	if (speed_ > maxSpeed_) {
+		const float t = CalExpT(dt, 1.0f, 1.0f);
+		speed_ = Lerp(speed_, maxSpeed_, t);
+	}
+
+}
+
+void MechMoveSystem::ApplyVelocity() {
+	// dt取得
+	const float dt = MAGISYSTEM::GetDeltaTime();
+
+	// 移動量計算
+	velocity_ = dir_ * speed_;
+
+	// このフレームの移動角度を保存
+	preDir_ = dir_;
+
+	// 機体を動かす
+	mech_->GetTransform()->AddTranslate(velocity_ * dt);
 }

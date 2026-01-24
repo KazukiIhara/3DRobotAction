@@ -71,7 +71,8 @@ void DevelopScene::Initialize() {
 		damageObjectManager_.get(),
 		gameEffectManager_.get(),
 		damageCollisionSystem_.get(),
-		mechAnimationContainer_.get()
+		mechAnimationContainer_.get(),
+		stageData_.get()
 	};
 
 	// パイロット作成に必要な参照ポインタ配列

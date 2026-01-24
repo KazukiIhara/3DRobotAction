@@ -18,6 +18,8 @@ public:
 
 	ILockOnTarget* GetTarget();
 
+	bool GetIsLockOn() const;
+
 	// 
 	// 以下改修予定
 	// 
@@ -32,9 +34,13 @@ private:
 
 	// ロックオン対象を決定
 
-
+	// ロックオン切り替え
+	void SwitchLockOnFlag();
 
 private:
+	// ロックオン有効フラグ
+	bool isLockOn_ = false;
+
 	// ロックオン対象
 	ILockOnTarget* target_ = nullptr;
 

@@ -14,11 +14,7 @@ public:
 	MechMoveSystem(BaseMech* mech);
 	~MechMoveSystem() = default;
 
-	// 移動量を計算
-	void CalSpeed();
-
-	// 移動量を追加
-	void ApplyVelocity();
+	void Update();
 
 	void SetDir(const Vector3& dir);
 	void SetDirXZ(const Vector2& dirXZ);
@@ -32,7 +28,12 @@ public:
 
 	// 回転を補間でゆっくりにする
 	void ApplyRotationInertia();
+private:
+	// 移動量を計算
+	void CalSpeed();
 
+	// 移動量を追加
+	void ApplyVelocity();
 private:
 	Vector3 velocity_;
 	Vector3 dir_;
