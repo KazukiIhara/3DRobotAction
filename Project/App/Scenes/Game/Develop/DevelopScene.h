@@ -14,6 +14,12 @@
 #include "Feature/SceneStateController/CombatSceneController/CombatSceneController.h"
 
 //-------------------------------------------
+// ステージデータ
+//-------------------------------------------
+
+#include "Feature/CombatStage/Data/CombatStageData.h"
+
+//-------------------------------------------
 // シーンオブジェクト
 //-------------------------------------------
 
@@ -34,8 +40,13 @@
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
 
-#include "MechAnimation/Edit/MechAnimationEdit.h"
 #include "MechAnimation/Container/MechAnimationContainer.h"
+
+//-------------------------------------------
+// エディタークラス
+//-------------------------------------------
+#include "MechAnimation/Edit/MechAnimationEdit.h"
+#include "Feature/CombatStage/Editor/CombatStageEditor.h"
 
 /// <summary>
 /// 開発用シーン
@@ -56,6 +67,8 @@ private:
 	std::unique_ptr<GameInputSystem> inputSys_;
 	// シーン管理クラス
 	std::unique_ptr<CombatSceneController> sceneController_;
+	// ステージデータ
+	std::unique_ptr<CombatStageData> stageData_;
 
 	// シーンカメラの参照ポインタ
 	TPSCamera3D* camera_;
@@ -70,11 +83,13 @@ private:
 	std::unique_ptr<DamageCollisionSystem> damageCollisionSystem_;
 	// 攻撃オブジェクトマネージャ
 	std::unique_ptr<DamageObjectManager> damageObjectManager_;
+	// 機体アニメーションコンテナクラス
+	std::unique_ptr<MechAnimationContainer> mechAnimationContainer_;
 
 	// 機体アニメーション作成クラス
 	std::unique_ptr<MechAnimationEdit> mechAnimationEdit_;
-	// 機体アニメーションコンテナクラス
-	std::unique_ptr<MechAnimationContainer> mechAnimationContainer_;
+	// ステージ作成クラス
+	std::unique_ptr<CombatStageEditor> stageEditor_;
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};

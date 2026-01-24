@@ -37,6 +37,11 @@ void DevelopScene::Initialize() {
 	//===========================
 	inputSys_ = std::make_unique<GameInputSystem>();
 
+	//===========================
+	// ステージの初期化
+	//===========================
+
+	stageData_ = std::make_unique<CombatStageData>();
 
 	//===========================
 	// マネージャの初期化
@@ -50,8 +55,16 @@ void DevelopScene::Initialize() {
 	damageCollisionSystem_ = std::make_unique<DamageCollisionSystem>();
 	// 機体アニメーションコンテナクラス
 	mechAnimationContainer_ = std::make_unique<MechAnimationContainer>();
+
+
+	//===========================
+	// エディターの初期化
+	//===========================
+
 	// 機体アニメーション作成クラス
 	mechAnimationEdit_ = std::make_unique<MechAnimationEdit>(mechAnimationContainer_.get());
+	// ステージ作成クラス
+	stageEditor_ = std::make_unique<CombatStageEditor>(stageData_.get());
 
 	// 機体の作成に必要なシステムの参照ポインタ
 	BaseMech::RefContext ref{
@@ -111,6 +124,7 @@ void DevelopScene::Update() {
 	if (ImGui::Button("ResetScene")) {
 		ChangeScene("Develop");
 	}
+
 	if (ImGui::Button("StartCombatScene")) {
 		sceneController_->Start(CombatSceneController::State::Start);
 	}
@@ -122,12 +136,15 @@ void DevelopScene::Update() {
 	if (ImGui::Button("PilotDebugDraw")) {
 		pilot_->SwitchDebugDraw();
 	}
-
 	ImGui::SeparatorText("Boss");
 	if (ImGui::Button("BossDebugDraw")) {
 		boss_->SwitchDebugDraw();
 	}
 
+	ImGui::SeparatorText("Stage");
+	if (ImGui::Button("StageDebugDraw")) {
+		stageData_->SwitchShowImGui();
+	}
 
 	ImGui::End();
 
@@ -135,7 +152,7 @@ void DevelopScene::Update() {
 	mechAnimationEdit_->Update();
 
 	// ステージデータ作成クラス
-
+	stageEditor_->DrawImGui();
 #endif
 
 	// 平行光源をセット
@@ -170,7 +187,10 @@ void DevelopScene::Update() {
 }
 
 void DevelopScene::Draw() {
-	// シーン管理クラス更新
+	// ステージ描画
+	stageData_->Draw();
+
+	// シーン管理クラス描画
 	sceneController_->Draw();
 
 	// パイロットを更新
