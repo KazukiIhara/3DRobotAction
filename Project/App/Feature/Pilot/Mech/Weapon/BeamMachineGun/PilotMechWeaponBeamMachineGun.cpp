@@ -84,7 +84,7 @@ void PilotMechWeaponBeamMachineGun::Attack() {
 
 	// タイマーセット
 	const int32_t fireRateSec = MAGISYSTEM::GetParameterValue<int32_t>({ "WeaponParam","Pilot","BeamMachineGun","FireRateSec" });
-	const float coolTime = static_cast<float>(fireRateSec) / 60.0f;
+	const float coolTime = 1.0f / static_cast<float>(fireRateSec);
 	coolTimer_ = coolTime;
 
 }
