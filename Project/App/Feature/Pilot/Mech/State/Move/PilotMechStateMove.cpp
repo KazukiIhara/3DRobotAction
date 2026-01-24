@@ -24,6 +24,11 @@ void PilotMechStateMove::Update(PilotMech* mech) {
 	if (commandPair.first) {
 		auto command = commandPair.second;
 
+		// 右手武器で攻撃
+		if (command.attackR) {
+			mech->GetWeapon("BeamMachineGun")->Attack();
+		}
+
 		if (command.dodge) {
 			mech->ChangeState(PilotMech::State::Dodge);
 			return;
@@ -47,12 +52,6 @@ void PilotMechStateMove::Update(PilotMech* mech) {
 
 		// 回転に補正を掛け　急な角度の移動量を減速する
 		ms->ApplyRotationInertia();
-
-
-		// 右手武器で攻撃
-		if (command.attackR) {
-			mech->GetWeapon("BeamMachineGun")->Attack();
-		}
 	}
 
 }
