@@ -5,46 +5,73 @@
 #include <vector>
 
 #include "Feature/CombatStage/CombatStage.h"
+#include "Math/Types/Vector3.h"
+#include "Math/Types/Matrix4x4.h"
+
+class CombatStageEditor;
 
 /// <summary>
-/// ステージのデータ
+/// ステージのデータ（コライダー + モデル配置）
 /// </summary>
 class CombatStageData {
-public:
-	struct DebugFlag {
-		bool showImGui = false;
-		bool isDrawCollider = false;
-	};
 public:
 	CombatStageData();
 	~CombatStageData() = default;
 
 	void Draw();
 
-	// コライダー取得
 	const std::vector<CombatStage::AABB>& GetCollider() const;
-	// 編集用
 	std::vector<CombatStage::AABB>& GetColliderMutable();
 
-	// 追加
+	struct StageModelData {
+		// 管理名
+		std::string name;
+		// 描画モデル名
+		std::string modelName;
+		// 有効
+		bool isActive_ = true;
+
+		// TRS
+		Vector3 translate{ 0.0f,0.0f,0.0f };
+		Vector3 rotate{ 0.0f,0.0f,0.0f };
+		Vector3 scale{ 1.0f,1.0f,1.0f };
+
+		// 描画用ワールド行列
+		Matrix4x4 worldMatrix{};
+	};
+
+	const std::vector<StageModelData>& GetModels() const;
+	std::vector<StageModelData>& GetModelsMutable();
+
 	void AddCollider(const CombatStage::AABB& aabb);
-	// クリア
 	void ClearCollider();
 
-	// Json入出力
-	bool SaveColliderJson(const std::string& path) const;
-	bool LoadColliderJson(const std::string& path);
+	void AddModel(const StageModelData& model);
+	void ClearModels();
 
-	const DebugFlag& GetDebugFlag()const;
+	bool SaveJson(const std::string& path) const;
+	bool LoadJson(const std::string& path);
+
+	struct DebugFlag {
+		bool showImGui = false;
+		bool isDrawCollider = true;
+	};
+
+	const DebugFlag& GetDebugFlag() const;
 
 	void SwitchShowImGui();
+
 private:
 	void DrawImGui();
-
 	void SwitchIsDrawCollider();
+
+	void UpdateModelWorldMatrix(StageModelData& model);
+
 private:
-	// コライダーのリスト
 	std::vector<CombatStage::AABB> colliders_;
+	std::vector<StageModelData> models_;
 
 	DebugFlag debugFlag_{};
+
+	friend class CombatStageEditor;
 };

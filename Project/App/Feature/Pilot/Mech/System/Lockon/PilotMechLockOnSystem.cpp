@@ -20,14 +20,18 @@ void PilotMechLockOnSystem::Update() {
 	}
 
 	// ロックオン対象がいたらTargetWorldPositionに値を入れる
-	if (target_) {
+	if (target_ && isLockOn_) {
 		mech_->SetTargetWorldPos(target_->GetCenterPos());
+
+		// ロックオンフラグがオンなら機体のPitchをターゲットの方向に向ける (切りたい場合はステートで切る)
+		auto& flag = mech_->GetRotControlSystem()->GetLookAtFlag();
+		flag.mech.yaw = true;
+
 	} else {
 		// ない場合はカメラの向きからある程度先の場所をターゲットにしてセットする
 		// 一旦原点
 		mech_->SetTargetWorldPos(Vector3{});
 	}
-
 
 }
 

@@ -3,31 +3,39 @@
     {
       "active": true,
       "max": {
-        "x": -25.0,
-        "y": 3.0,
-        "z": 50.0
+        "x": 40.0,
+        "y": 0.0,
+        "z": 80.0
       },
       "min": {
-        "x": -30.0,
-        "y": 0.0,
-        "z": -50.0
+        "x": -40.0,
+        "y": -60.0,
+        "z": -80.0
       },
-      "name": "AABB_0"
-    },
-    {
-      "active": true,
-      "max": {
-        "x": 25.0,
-        "y": 0.0,
-        "z": 50.0
-      },
-      "min": {
-        "x": -25.0,
-        "y": -1.0,
-        "z": -50.0
-      },
-      "name": "AABB_1"
+      "name": "StageGround"
     }
   ],
-  "version": 1
+  "models": [
+    {
+      "active": true,
+      "modelName": "StageGround",
+      "name": "StageGround",
+      "rotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "translate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  ],
+  "version": 2
 }
