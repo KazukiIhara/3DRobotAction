@@ -6,10 +6,13 @@
 // JSON
 #include <nlohmann/json.hpp>
 
+// ImGui
+#include "imgui/imgui.h"
+
 #include "MAGI.h"
+#include "Math/Utility/MathUtility.h"
 
 using namespace Magi;
-
 using json = nlohmann::json;
 
 namespace {
@@ -30,15 +33,16 @@ namespace {
 }
 
 CombatStageData::CombatStageData() {
-
 }
 
 void CombatStageData::Draw() {
 
-#if defined(DEBUG)|(DEVELOP)
+#if defined(DEBUG) || defined(DEVELOP)
 	if (debugFlag_.showImGui) {
 		DrawImGui();
 	}
+
+	// コライダー描画
 	if (debugFlag_.isDrawCollider) {
 		for (auto& collider : colliders_) {
 			if (collider.isActive_) {
@@ -46,9 +50,19 @@ void CombatStageData::Draw() {
 			}
 		}
 	}
-#endif	
+#endif
 
+	// モデル描画（常に描画）
+	for (auto& m : models_) {
+		if (!m.isActive_) continue;
+		if (m.modelName.empty()) continue;
 
+		// 行列更新
+		UpdateModelWorldMatrix(m);
+
+		// 描画
+		MAGISYSTEM::DrawModel(m.modelName, m.worldMatrix);
+	}
 }
 
 const std::vector<CombatStage::AABB>& CombatStageData::GetCollider() const {
@@ -57,6 +71,14 @@ const std::vector<CombatStage::AABB>& CombatStageData::GetCollider() const {
 
 std::vector<CombatStage::AABB>& CombatStageData::GetColliderMutable() {
 	return colliders_;
+}
+
+const std::vector<CombatStageData::StageModelData>& CombatStageData::GetModels() const {
+	return models_;
+}
+
+std::vector<CombatStageData::StageModelData>& CombatStageData::GetModelsMutable() {
+	return models_;
 }
 
 void CombatStageData::AddCollider(const CombatStage::AABB& aabb) {
@@ -69,12 +91,30 @@ void CombatStageData::ClearCollider() {
 	colliders_.clear();
 }
 
-bool CombatStageData::SaveColliderJson(const std::string& path) const {
+void CombatStageData::AddModel(const StageModelData& model) {
+	// 追加
+	models_.push_back(model);
+	// 行列更新
+	UpdateModelWorldMatrix(models_.back());
+}
+
+void CombatStageData::ClearModels() {
+	// 全消し
+	models_.clear();
+}
+
+void CombatStageData::UpdateModelWorldMatrix(StageModelData& model) {
+	// ワールド行列更新
+	model.worldMatrix = MAGIMath::MakeAffineMatrix(model.scale, model.rotate, model.translate);
+}
+
+bool CombatStageData::SaveJson(const std::string& path) const {
 	json root{};
 	// バージョン
-	root["version"] = 1;
+	root["version"] = 2;
 
-	json arr = json::array();
+	// AABB
+	json aabbArr = json::array();
 	for (const auto& c : colliders_) {
 		json item{};
 		// 名前
@@ -84,9 +124,27 @@ bool CombatStageData::SaveColliderJson(const std::string& path) const {
 		// AABB
 		item["min"] = Vec3ToJson(c.min);
 		item["max"] = Vec3ToJson(c.max);
-		arr.push_back(item);
+		aabbArr.push_back(item);
 	}
-	root["aabbs"] = arr;
+	root["aabbs"] = aabbArr;
+
+	// Models
+	json modelArr = json::array();
+	for (const auto& m : models_) {
+		json item{};
+		// 管理名
+		item["name"] = m.name;
+		// モデル名
+		item["modelName"] = m.modelName;
+		// 有効
+		item["active"] = m.isActive_;
+		// TRS
+		item["translate"] = Vec3ToJson(m.translate);
+		item["rotate"] = Vec3ToJson(m.rotate);
+		item["scale"] = Vec3ToJson(m.scale);
+		modelArr.push_back(item);
+	}
+	root["models"] = modelArr;
 
 	std::ofstream ofs(path);
 	if (!ofs.is_open()) return false;
@@ -95,36 +153,67 @@ bool CombatStageData::SaveColliderJson(const std::string& path) const {
 	return true;
 }
 
-bool CombatStageData::LoadColliderJson(const std::string& path) {
+bool CombatStageData::LoadJson(const std::string& path) {
 	std::ifstream ifs(path);
 	if (!ifs.is_open()) return false;
 
 	json root{};
 	ifs >> root;
 
-	if (!root.contains("aabbs") || !root["aabbs"].is_array()) return false;
+	// AABB
+	std::vector<CombatStage::AABB> loadedAabbs{};
+	if (root.contains("aabbs") && root["aabbs"].is_array()) {
+		for (const auto& item : root["aabbs"]) {
+			CombatStage::AABB c{};
 
-	std::vector<CombatStage::AABB> loaded{};
-	for (const auto& item : root["aabbs"]) {
-		CombatStage::AABB c{};
+			// 名前
+			if (item.contains("name")) c.name = item["name"].get<std::string>();
+			// 有効
+			c.isActive_ = item.value("active", true);
 
-		// 名前
-		if (item.contains("name")) c.name = item["name"].get<std::string>();
-		// 有効
-		c.isActive_ = item.value("active", true);
+			// min/max
+			c.min = JsonToVec3(item.value("min", json{}), { 0.0f,0.0f,0.0f });
+			c.max = JsonToVec3(item.value("max", json{}), { 1.0f,1.0f,1.0f });
 
-		// min/max
-		c.min = JsonToVec3(item.value("min", json{}), { 0.0f,0.0f,0.0f });
-		c.max = JsonToVec3(item.value("max", json{}), { 1.0f,1.0f,1.0f });
-
-		loaded.push_back(c);
+			loadedAabbs.push_back(c);
+		}
 	}
 
-	colliders_ = std::move(loaded);
+	// Models
+	std::vector<StageModelData> loadedModels{};
+	if (root.contains("models") && root["models"].is_array()) {
+		for (const auto& item : root["models"]) {
+			StageModelData m{};
+
+			// 管理名
+			if (item.contains("name")) m.name = item["name"].get<std::string>();
+			// モデル名
+			if (item.contains("modelName")) m.modelName = item["modelName"].get<std::string>();
+					
+			// モデルをロード
+			MAGISYSTEM::LoadCreateModel(m.modelName);
+			
+			// 有効
+			m.isActive_ = item.value("active", true);
+
+			// TRS
+			m.translate = JsonToVec3(item.value("translate", json{}), { 0.0f,0.0f,0.0f });
+			m.rotate = JsonToVec3(item.value("rotate", json{}), { 0.0f,0.0f,0.0f });
+			m.scale = JsonToVec3(item.value("scale", json{}), { 1.0f,1.0f,1.0f });
+
+			// 行列更新
+			UpdateModelWorldMatrix(m);
+
+			loadedModels.push_back(m);
+		}
+	}
+
+	colliders_ = std::move(loadedAabbs);
+	models_ = std::move(loadedModels);
 	return true;
 }
 
-const CombatStageData::DebugFlag& CombatStageData::GetDebugFlag()const {
+const CombatStageData::DebugFlag& CombatStageData::GetDebugFlag() const {
 	return debugFlag_;
 }
 

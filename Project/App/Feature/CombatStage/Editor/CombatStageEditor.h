@@ -5,31 +5,53 @@
 
 class CombatStageData;
 
+/// <summary>
+/// ステージ編集（AABB + モデル配置）
+/// </summary>
 class CombatStageEditor {
 public:
 	explicit CombatStageEditor(CombatStageData* stageData);
 	~CombatStageEditor() = default;
 
-	// ImGui描画
 	void DrawImGui();
 
-	// パス設定
 	void SetPath(const std::string& path);
 
 private:
-	void DrawToolbar();
-	void DrawList();
-	void DrawInspector();
+	enum class EditMode {
+		Collider,
+		Model,
+	};
 
+	void DrawToolbar();
+	void DrawModeSwitch();
+
+	// Collider
+	void DrawListCollider();
+	void DrawInspectorCollider();
 	void AddAABB();
-	void Duplicate();
-	void Remove();
+	void DuplicateAABB();
+	void RemoveAABB();
+
+	// Model
+	void DrawListModel();
+	void DrawInspectorModel();
+	void AddModel();
+	void DuplicateModel();
+	void RemoveModel();
 
 private:
 	CombatStageData* stageData_ = nullptr;
 
-	int selected_ = -1;
+	EditMode mode_ = EditMode::Collider;
+
+	int selectedCollider_ = -1;
+	int selectedModel_ = -1;
 
 	std::string path_{ "Assets/StageData/CombatStage.json" };
 	char pathBuf_[512]{};
+
+	// 追加用入力
+	char newModelNameBuf_[256]{};
+	char newModelModelNameBuf_[256]{};
 };

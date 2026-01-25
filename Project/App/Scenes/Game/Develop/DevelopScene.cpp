@@ -44,7 +44,7 @@ void DevelopScene::Initialize() {
 	stageData_ = std::make_unique<CombatStageData>();
 
 	// ステージデータをロード
-	stageData_->LoadColliderJson("Assets/StageData/CombatStage.json");
+	stageData_->LoadJson("Assets/StageData/CombatStage.json");
 
 	//===========================
 	// マネージャの初期化
