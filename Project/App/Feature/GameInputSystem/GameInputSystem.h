@@ -30,6 +30,7 @@ public:
 		CommonCommand common;
 		bool dodge = false;
 		bool jump = false;
+		bool jumpHold = false;
 		bool attackL = false;
 		bool attackR = false;
 		bool switchLockOn = false;

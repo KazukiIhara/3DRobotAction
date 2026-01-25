@@ -47,6 +47,9 @@ PilotMech::PilotMech(const InitParam& param, const BaseMech::RefContext& ref, Ga
 	// ロックオンシステム
 	lockOnSystem_ = std::make_unique<PilotMechLockOnSystem>(this);
 
+	// 上下移動システム
+	verticalMoveSystem_ = std::make_unique<PilotMechVerticalMoveSystem>(this);
+
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<PilotMechStateIdle>();
 	states_[State::Move] = std::make_unique<PilotMechStateMove>();
@@ -74,8 +77,14 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 		state->Update(this);
 	}
 
+	// 上下移動クラス更新
+	verticalMoveSystem_->PreUpdate();
+
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
+
+	// 上下移動クラス　機体の移動量確定後の処理
+	verticalMoveSystem_->PostUpdate();
 
 	// コライダー更新
 	justDodgeCollider_->Update();
@@ -111,6 +120,10 @@ PilotMechJustDodgeCollider* PilotMech::GetJustDodgeCollider() {
 
 PilotMechLockOnSystem* PilotMech::GetLockOnSystem() {
 	return lockOnSystem_.get();
+}
+
+PilotMechVerticalMoveSystem* PilotMech::GetVerticalMoveSystem() {
+	return verticalMoveSystem_.get();
 }
 
 GameInputSystem* PilotMech::GetInputSys() {

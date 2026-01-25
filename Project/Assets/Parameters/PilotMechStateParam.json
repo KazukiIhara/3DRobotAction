@@ -44,7 +44,7 @@
     },
     "MaxSpeed": {
       "type": "Float",
-      "value": 20.0
+      "value": 30.0
     }
   }
 }

@@ -21,7 +21,7 @@ using namespace Magi;
 BossMechWeaponLaserGun::BossMechWeaponLaserGun(BossMech* mech) :
 	BaseBossMechWeapon(mech) {
 
-	MAGISYSTEM::LoadCreateModel("BossMechWeaponLaserGun");
+	MAGISYSTEM::LoadCreateModel("BossMechLaserGun");
 
 	// 発射位置オフセットを設定
 	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "WeaponParam","Boss","LaserGun","FireOffset" });
@@ -40,7 +40,7 @@ void BossMechWeaponLaserGun::Update() {
 }
 
 void BossMechWeaponLaserGun::Draw() {
-	MAGISYSTEM::DrawModel("BossMechWeaponLaserGun", transform_->GetWorldMatrix(), mat_);
+	MAGISYSTEM::DrawModel("BossMechLaserGun", transform_->GetWorldMatrix(), mat_);
 }
 
 void BossMechWeaponLaserGun::Attack() {
