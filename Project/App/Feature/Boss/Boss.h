@@ -40,6 +40,7 @@ public:
 
 	Flag GetFlag()const;
 
+
 	void SwitchDebugDraw();
 	void SwitchAIActive();
 	void SwitchIsPause();
@@ -54,6 +55,5 @@ private:
 
 	// フラグ構造体
 	Flag flag_;
-
 
 };
