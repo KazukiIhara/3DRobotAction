@@ -73,9 +73,10 @@ void MechMoveSystem::ApplyRotationInertia() {
 
 	// 角度差を求める
 	float dot = Dot(preDir_, dir_);
-	// 角度差が大きい場合速度を0にする
-	if (dot < 0.0f) {
-		speed_ = 0.0f;
+	float expT = CalExpT(dt, 0.1f, 1.0f);
+	// 角度差が大きい場合減速する
+	if (dot < -0.5f) {
+		speed_ = Lerp(speed_, 0.0f, expT);
 	}
 
 	const float clampedDot = -(dot + 1.0f) * 0.5f;
