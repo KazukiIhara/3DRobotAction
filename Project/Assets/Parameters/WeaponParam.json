@@ -54,7 +54,7 @@
         "value": 0.5
       }
     },
-    "BeamMachineGun": {
+    "MachineGun": {
       "Damage": {
         "type": "Int32",
         "value": 5

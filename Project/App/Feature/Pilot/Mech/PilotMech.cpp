@@ -17,7 +17,7 @@
 
 // 武器
 #include "Feature/Pilot/Mech/Weapon/BeamCannonRifle/PilotMechWeaponBeamCannonRifle.h"
-#include "Feature/Pilot/Mech/Weapon/BeamMachineGun/PilotMechWeaponBeamMachineGun.h"
+#include "Feature/Pilot/Mech/Weapon/MachineGun/PilotMechWeaponMachineGun.h"
 
 using namespace Magi;
 
@@ -38,8 +38,8 @@ PilotMech::PilotMech(const InitParam& param, const BaseMech::RefContext& ref, Ga
 	// 武器をマップに追加
 	// ビームキャノン
 	AddWeapon("BeamCannonRifle", std::make_unique<PilotMechWeaponBeamCannonRifle>(this));
-	// ビームマシンガン
-	AddWeapon("BeamMachineGun", std::make_unique<PilotMechWeaponBeamMachineGun>(this));
+	// マシンガン
+	AddWeapon("MachineGun", std::make_unique<PilotMechWeaponMachineGun>(this));
 
 	// ジャスト回避コライダー
 	justDodgeCollider_ = std::make_unique<PilotMechJustDodgeCollider>(this);
