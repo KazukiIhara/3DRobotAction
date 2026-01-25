@@ -9,6 +9,8 @@
 #include "Feature/Pilot/Mech/JustDodgeCollider/PilotMechJustDodgeCollider.h"
 // ロックオンシステム
 #include "Feature/Pilot/Mech/System/LockOn/PilotMechLockOnSystem.h"
+// 上下移動システム
+#include "Feature/Pilot/Mech/System/VerticalMove/PilotMechVerticalMoveSystem.h"
 
 // 前方宣言
 class GameInputSystem;
@@ -47,6 +49,8 @@ public:
 	PilotMechJustDodgeCollider* GetJustDodgeCollider();
 	// ロックオンシステムを取得
 	PilotMechLockOnSystem* GetLockOnSystem();
+	// 上下移動システムを取得
+	PilotMechVerticalMoveSystem* GetVerticalMoveSystem();
 
 	// インプットシステムを取得
 	GameInputSystem* GetInputSys();
@@ -80,6 +84,9 @@ private:
 
 	// ロックオンシステム
 	std::unique_ptr<PilotMechLockOnSystem> lockOnSystem_;
+
+	// 上下移動システム
+	std::unique_ptr<PilotMechVerticalMoveSystem> verticalMoveSystem_;
 
 	// 入力システムの参照ポインタ
 	GameInputSystem* inputSys_ = nullptr;

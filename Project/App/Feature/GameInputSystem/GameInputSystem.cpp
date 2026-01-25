@@ -5,10 +5,15 @@
 using namespace Magi;
 
 GameInputSystem::GameInputSystem() {
-
+	pilotCommand_.first = false;
+	pilotCommand_.second = {};
 }
 
 void GameInputSystem::Update() {
+	// コマンドリセット
+	pilotCommand_.first = false;
+	pilotCommand_.second = {};
+
 	// プレイヤー操作コマンド更新
 	UpdatePilotCommand();
 
@@ -29,10 +34,14 @@ void GameInputSystem::UpdatePilotCommand() {
 
 		pC.dodge = MAGISYSTEM::TriggerButton(0, ButtonR);
 
+		pC.jump = MAGISYSTEM::TriggerButton(0, ButtonL);
+		pC.jumpHold = MAGISYSTEM::HoldButton(0, ButtonL);
+
 		pC.attackL = MAGISYSTEM::GetLeftTrigger(0);
 		pC.attackR = MAGISYSTEM::GetRightTrigger(0);
 
 		pC.switchLockOn = MAGISYSTEM::TriggerButton(0, ButtonRightStick);
+
 	}
 
 }

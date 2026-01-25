@@ -14,7 +14,8 @@ MechMoveSystem::MechMoveSystem(BaseMech* mech) {
 	preDir_ = dir_;
 	acc_ = 0.0f;
 	speed_ = 0.0f;
-	maxSpeed_ = 10.0f;
+	maxSpeed_ = 0.0f;
+	verticalSpeed_ = 0.0f;
 
 	velocity_ = dir_ * speed_;
 }
@@ -55,6 +56,15 @@ const Vector3& MechMoveSystem::GetDir() const {
 
 const Vector3& MechMoveSystem::GetVelocity() const {
 	return velocity_;
+}
+
+void MechMoveSystem::SetVerticalSpeed(float vertical) {
+	// 垂直速度
+	verticalSpeed_ = vertical;
+}
+
+float MechMoveSystem::GetVerticalSpeed() const {
+	return verticalSpeed_;
 }
 
 void MechMoveSystem::ApplyRotationInertia() {
@@ -98,8 +108,11 @@ void MechMoveSystem::ApplyVelocity() {
 	// dt取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
-	// 移動量計算
+	// 水平速度
 	velocity_ = dir_ * speed_;
+
+	// 垂直速度を合成
+	velocity_.y += verticalSpeed_;
 
 	// このフレームの移動角度を保存
 	preDir_ = dir_;

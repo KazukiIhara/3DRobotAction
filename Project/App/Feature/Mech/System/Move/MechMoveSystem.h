@@ -26,6 +26,9 @@ public:
 	const Vector3& GetDir()const;
 	const Vector3& GetVelocity()const;
 
+	void SetVerticalSpeed(float vertical);
+	float GetVerticalSpeed() const;
+
 	// 回転を補間でゆっくりにする
 	void ApplyRotationInertia();
 private:
@@ -41,6 +44,8 @@ private:
 	float acc_;
 	float speed_;
 	float maxSpeed_;
+
+	float verticalSpeed_;
 
 	BaseMech* mech_;
 };

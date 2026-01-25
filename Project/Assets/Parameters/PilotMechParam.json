@@ -22,5 +22,27 @@
         "z": 0.0
       }
     }
+  },
+  "VerticalMoveSystem": {
+    "BoostAccel": {
+      "type": "Float",
+      "value": 30.0
+    },
+    "Gravity": {
+      "type": "Float",
+      "value": 25.0
+    },
+    "JumpFirstSpeed": {
+      "type": "Float",
+      "value": 12.0
+    },
+    "MaxFallSpeed": {
+      "type": "Float",
+      "value": 35.0
+    },
+    "MaxUpSpeed": {
+      "type": "Float",
+      "value": 18.0
+    }
   }
 }
