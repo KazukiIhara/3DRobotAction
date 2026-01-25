@@ -45,6 +45,8 @@ void CombatSceneStateBattle::Update([[maybe_unused]] CombatSceneControl::StateCo
 		ref.cbc->ChangeState(CombatSceneController::State::End);
 	}
 
+
+
 }
 
 void CombatSceneStateBattle::Draw([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
