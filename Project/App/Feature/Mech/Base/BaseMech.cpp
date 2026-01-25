@@ -98,20 +98,25 @@ void BaseMech::DebugDraw() {
 	// デバッグウィンドウ描画処理
 	ShowDebugWindow();
 
-	// パーツデバッグ描画
-	if (debugFlag_.isDebugDraw) {
+	if (debugFlag_.isDrawPartsDebug) {
 		// 各パーツのデバッグ描画
 		for (auto& part : parts_) {
 			part->DebugDraw();
 		}
+	}
+	if (debugFlag_.isDrawWeaponDebug) {
 		// 武器のデバッグ描画
 		for (auto& w : weapons_) {
 			w.second->DebugDraw();
 		}
+	}
+	if (debugFlag_.isDrawKinematicCollider) {
 		// 地形用当たり判定描画
 		if (kinematicSystem_) {
 			kinematicSystem_->Draw();
 		}
+	}
+	if (debugFlag_.isDrawMechCollider) {
 		// コライダー描画
 		if (collider_) {
 			collider_->Draw();
@@ -324,15 +329,32 @@ void BaseMech::ShowDebugFlagUI() {
 		if (ImGui::Button("StopUpdate")) {
 			SwitchStopUpdate();
 		}
-		// パーツのデバッグ描画切り替え
-		if (ImGui::Button("ShowPartsDebug")) {
-			SwitchShowPartsTransform();
-		}
 		// パーツ編集モード切り替え
 		if (ImGui::Button("EditPartsTrans")) {
 			SwitchEditPartsTransform();
 		}
 	}
+
+	ImGui::SeparatorText("DebugDraw");
+	{
+		// 機体コライダー描画切り替え
+		if (ImGui::Button("DrawMechCollider")) {
+			SwitchShowMechCollider();
+		}
+		// 地形コライダー描画切り替え
+		if (ImGui::Button("DrawKinematicCollider")) {
+			SwitchShowKinematicCollider();
+		}
+		// 武器デバッグ描画切り替え
+		if (ImGui::Button("DrawWeaponDebug")) {
+			SwitchShowWeaponDebug();
+		}
+		// パーツデバッグ描画切り替え
+		if (ImGui::Button("DrawPartsDebug")) {
+			SwitchShowPartsDebug();
+		}
+	}
+
 }
 
 void BaseMech::CreateParts(const InitParam& param) {
@@ -402,7 +424,7 @@ void BaseMech::BuildPartsTransformArray() {
 	}
 }
 
-void BaseMech::SwitchShowPartsTransform() {
+void BaseMech::SwitchIsDebugDraw() {
 	// 表示フラグ反転
 	debugFlag_.isDebugDraw = !debugFlag_.isDebugDraw;
 }
@@ -414,4 +436,24 @@ void BaseMech::SwitchEditPartsTransform() {
 
 void BaseMech::SwitchStopUpdate() {
 	debugFlag_.stopUpdate = !debugFlag_.stopUpdate;
+}
+
+void BaseMech::SwitchShowMechCollider() {
+	// 機体コライダー描画フラグ反転
+	debugFlag_.isDrawMechCollider = !debugFlag_.isDrawMechCollider;
+}
+
+void BaseMech::SwitchShowKinematicCollider() {
+	// 地形コライダー描画フラグ反転
+	debugFlag_.isDrawKinematicCollider = !debugFlag_.isDrawKinematicCollider;
+}
+
+void BaseMech::SwitchShowWeaponDebug() {
+	// 武器デバッグ描画フラグ反転
+	debugFlag_.isDrawWeaponDebug = !debugFlag_.isDrawWeaponDebug;
+}
+
+void BaseMech::SwitchShowPartsDebug() {
+	// パーツデバッグ描画フラグ反転
+	debugFlag_.isDrawPartsDebug = !debugFlag_.isDrawPartsDebug;
 }

@@ -53,6 +53,12 @@ public:
 	};
 	struct DebugFlag {
 		bool isDebugDraw = false;
+
+		bool isDrawMechCollider = false;
+		bool isDrawKinematicCollider = false;
+		bool isDrawWeaponDebug = false;
+		bool isDrawPartsDebug = false;
+
 		bool editPartsTransform = false;
 		bool stopUpdate = false;
 	};
@@ -143,10 +149,16 @@ private:
 	void BuildPartsTransformArray();
 
 	// デバッグフラグ切り替え
-	void SwitchShowPartsTransform();
+	void SwitchDebugDrawFlagImGui();
+
+	void SwitchIsDebugDraw();
 	void SwitchEditPartsTransform();
 	void SwitchStopUpdate();
 
+	void SwitchShowMechCollider();
+	void SwitchShowKinematicCollider();
+	void SwitchShowWeaponDebug();
+	void SwitchShowPartsDebug();
 private:
 	// トランスフォーム
 	Transform3D* transform_ = nullptr;

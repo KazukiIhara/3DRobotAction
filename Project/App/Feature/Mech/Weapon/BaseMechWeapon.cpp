@@ -9,11 +9,15 @@ BaseMechWeapon::BaseMechWeapon(BaseMech* mech) {
 	mech_ = mech;
 
 	// 武器トランスフォームを作成
-	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>();
+	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(
+		Vector3(0.5f, 0.5f, 0.5f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f)
+	);
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
 	// 攻撃発射場所トランスフォームを作成
-	std::unique_ptr<Transform3D> fireTrans = std::make_unique<Transform3D>();
+	std::unique_ptr<Transform3D> fireTrans = std::make_unique<Transform3D>(
+		Vector3(0.3f, 0.3f, 0.3f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f)
+	);
 	fireTransform_ = MAGISYSTEM::AddTransform3D(std::move(fireTrans));
 
 	// 親子付け
