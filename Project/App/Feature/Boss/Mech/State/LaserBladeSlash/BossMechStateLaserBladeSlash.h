@@ -2,6 +2,10 @@
 
 #include "Feature/Boss/Mech/State/BossMechBaseState.h"
 
+#include <memory>
+
+#include "Feature/Boss/Mech/State/PhaseSys/Runner/BossMechStatePhaseRunner.h"
+
 // 実装メモ
 
 /*
@@ -13,19 +17,14 @@
 /// </summary>
 class BossMechStateLaserBladeSlash:public BossMechBaseState {
 public:
-	enum class Phase {
-		Approach,
-		Attack1,
-		Attack2,
-		EndLag,
-	};
-public:
 	~BossMechStateLaserBladeSlash() = default;
 	void Enter(BossMech* mech)override;
 	void Update(BossMech* mech)override;
 	void Exit(BossMech* mech)override;
+private:
+	// Phase生成登録
+	void SetupPhases();
 
 private:
-	// タイマー
-	float timer_ = 0.0f;
+	std::unique_ptr<BossMechStatePhaseRunner> runner_;
 };

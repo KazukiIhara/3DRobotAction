@@ -59,6 +59,10 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	const Vector3 pilotCenter = GetPilotMech()->GetCenterPos();
 	SetTargetWorldPos(pilotCenter);
 
+	// 基本的に機体をターゲットに向ける　向けたくない場合はステートで個別に切る
+	auto& lookFlag = GetRotControlSystem()->GetLookAtFlag();
+	lookFlag.mech.yaw = true;
+
 	// ステータスの更新
 	status_->Update();
 

@@ -8,7 +8,7 @@
 using namespace Magi;
 
 void BossMechStateIdle::Enter([[maybe_unused]] BossMech* mech) {
-	mech->GetAnimator()->PlayAnimation("Boss_Idle",1.0f,1.0f)
+	mech->GetAnimator()->PlayAnimation("Boss_Idle", 1.0f, 1.0f);
 }
 
 void BossMechStateIdle::Update([[maybe_unused]] BossMech* mech) {
