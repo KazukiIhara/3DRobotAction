@@ -3,41 +3,59 @@
 // C++
 #include <string>
 
-#include "MechAnimation/MechAnimation.h"
-
 // Forward
-class BaseMech;
-class Transform3D;
 class MechAnimationContainer;
+class BaseMech;
+
+#include "MechAnimation/Container/MechAnimationContainer.h"
+#include "Math/Utility/MathUtility.h"
+
+// easing
+#include "Includes/Easing/Easing.h"
 
 /// <summary>
-/// 機体アニメーション再生クラス
+/// 機体アニメーションクラス
 /// </summary>
 class MechAnimator {
 public:
 	MechAnimator(MechAnimationContainer* container, BaseMech* mech);
 	~MechAnimator() = default;
 
-	// アニメーション適用
-	void ApplyAnimation(const std::string& name, float t, float blendT = 0.0f);
+	// name と t からその時点の姿勢を適用
+	void ApplyAnimation(const std::string& name, float t);
+
+	// アニメーション再生開始
+	void PlayAnimation(const std::string& name, float durationSec, float blendSec, EasingType easing);
+
+	// 再生停止
+	void StopAnimation();
+
+	// 再生更新
+	void Update(float dt);
+
+	// 再生中か
+	bool IsPlaying() const {
+		return isPlaying_;
+	}
 
 private:
-	// 現在姿勢を保存
 	MechAnimation::Pose CaptureCurrentPose() const;
-
-	// Poseを適用
 	void ApplyPose(const MechAnimation::Pose& pose);
-
-	// クリップ内補間Poseを取得
 	MechAnimation::Pose SampleClipPose(const MechAnimation::Clip& clip, float t) const;
 
 private:
 	MechAnimationContainer* container_ = nullptr;
 	BaseMech* mech_ = nullptr;
 
-	// 補間用の開始姿勢
-	MechAnimation::Pose blendFromPose_{};
+	// 再生状態
+	bool isPlaying_ = false;
+	float playTimeSec_ = 0.0f;
+	float durationSec_ = 0.0f;
+	float blendSec_ = 0.0f;
+	EasingType easing_ = EasingType::Linear;
 
-	// 再生中クリップ名
 	std::string playingClipName_;
+
+	// ブレンド開始姿勢
+	MechAnimation::Pose blendFromPose_{};
 };

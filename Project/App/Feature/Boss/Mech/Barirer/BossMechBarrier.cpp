@@ -15,6 +15,7 @@ BossMechBarrier::BossMechBarrier(BossMech* mech) {
 	const float hp = MAGISYSTEM::GetParameterValue<float>({ "BossMechParam","Barrier","HP" });
 	// 設定
 	transform_ = MAGISYSTEM::AddTransform3D();
+	
 	// 胴体に親子付け
 	transform_->SetParent(mech->GetPartsTransform(MechAnimation::TransType::Body), false);
 
@@ -26,7 +27,7 @@ BossMechBarrier::BossMechBarrier(BossMech* mech) {
 
 	// パラメータ設定
 	status_.hp = hp;
-	status_.isActive_ = true;
+	status_.isActive_ = false;
 
 	// コライダーを設定
 	collider_.radius = radius;
@@ -54,7 +55,7 @@ void BossMechBarrier::Update() {
 
 void BossMechBarrier::Draw() {
 	if (status_.isActive_) {
-		MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), data_, mat_);
+		 MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), data_, mat_);
 	}
 }
 

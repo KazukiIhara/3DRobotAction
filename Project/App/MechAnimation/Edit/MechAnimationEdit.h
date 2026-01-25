@@ -2,10 +2,11 @@
 
 #include <string>
 
+#include "MechAnimation/MechAnimation.h"
+#include "Includes/Easing/Easing.h"
+
 class BaseMech;
 class MechAnimationContainer;
-
-#include "MechAnimation/MechAnimation.h"
 
 /// <summary>
 /// 機体アニメーション作成クラス
@@ -75,4 +76,7 @@ private:
 
 	// ブレンド時間
 	float lerpTimeSec_ = 0.0f;
+
+	// イージング
+	EasingType easingType_ = EasingType::Linear;
 };

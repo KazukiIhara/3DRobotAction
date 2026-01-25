@@ -135,24 +135,66 @@ void MechAnimationEdit::ShowWindow() {
 		lerpTimeSec_ = ClampMin0(lerpTimeSec_);
 		ImGui::DragFloat("Lerp (sec)", &lerpTimeSec_, 0.02f, 0.0f, 1000.0f, "%.2f");
 
+		// イージング設定
+		{
+			static const char* easingNames[] = {
+				"Linear",
+				"EaseInSine","EaseOutSine","EaseInOutSine",
+				"EaseInQuad","EaseOutQuad","EaseInOutQuad",
+				"EaseInCubic","EaseOutCubic","EaseInOutCubic",
+				"EaseInQuart","EaseOutQuart","EaseInOutQuart",
+				"EaseInQuint","EaseOutQuint","EaseInOutQuint",
+				"EaseInExpo","EaseOutExpo","EaseInOutExpo",
+				"EaseInCirc","EaseOutCirc","EaseInOutCirc",
+				"EaseInBack","EaseOutBack","EaseInOutBack",
+				"EaseInElastic","EaseOutElastic","EaseInOutElastic",
+				"EaseInBounce","EaseOutBounce","EaseInOutBounce",
+			};
+
+			int easingIndex = static_cast<int>(easingType_);
+			if (ImGui::Combo("Easing", &easingIndex, easingNames, IM_ARRAYSIZE(easingNames))) {
+				easingType_ = static_cast<EasingType>(easingIndex);
+			}
+		}
+
 		// 再生操作
 		if (ImGui::Button("Play")) {
-			if (!selectedClipName_.empty()) {
-				isPlaying_ = true;
-				playTimeSec_ = 0.0f; // t=0から開始
+			if (!selectedClipName_.empty() && mech_) {
+				MechAnimator* animator = mech_->GetAnimator();
+				if (animator) {
+					isPlaying_ = true;
+					playTimeSec_ = 0.0f;
+					// Animatorで再生
+					animator->PlayAnimation(selectedClipName_, playDurationSec_, lerpTimeSec_, easingType_);
+				}
 			}
 		}
 		ImGui::SameLine();
+
 		if (ImGui::Button("Stop")) {
 			isPlaying_ = false;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Reset")) {
-			playTimeSec_ = 0.0f;
-			if (!selectedClipName_.empty()) {
-				ApplyAtNormalizedTime(0.0f); // t=0を適用
+
+			if (mech_) {
+				MechAnimator* animator = mech_->GetAnimator();
+				if (animator) {
+					animator->StopAnimation();
+				}
 			}
 		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Reset")) {
+			playTimeSec_ = 0.0f;
+
+			if (!selectedClipName_.empty() && mech_) {
+				MechAnimator* animator = mech_->GetAnimator();
+				if (animator) {
+					animator->StopAnimation();
+					animator->ApplyAnimation(selectedClipName_, 0.0f);
+				}
+			}
+		}
+
 
 		// 再生状況
 		{
@@ -238,25 +280,21 @@ void MechAnimationEdit::UpdatePlayback() {
 		return;
 	}
 
-	// 秒数0なら即終了（t=1適用）
-	if (playDurationSec_ <= 0.0f) {
-		ApplyAtNormalizedTime(1.0f);
+	MechAnimator* animator = mech_->GetAnimator();
+	if (!animator) {
 		isPlaying_ = false;
 		return;
 	}
 
-	// 経過時間加算
+	// 時間表示用（Editor側）
 	const float dt = ImGui::GetIO().DeltaTime;
 	playTimeSec_ += dt;
 
-	// 正規化時間
-	const float t = std::clamp(playTimeSec_ / playDurationSec_, 0.0f, 1.0f);
+	// 再生更新（Animator側）
+	animator->Update(dt);
 
-	// t適用
-	ApplyAtNormalizedTime(t);
-
-	// 終了
-	if (t >= 1.0f) {
+	// 終了判定（Animator側に合わせる）
+	if (!animator->IsPlaying()) {
 		isPlaying_ = false;
 	}
 }
@@ -270,8 +308,8 @@ void MechAnimationEdit::ApplyAtNormalizedTime(float t) {
 		return;
 	}
 
-	// クリップ再生（Animator側でt=0時の姿勢保存＆ブレンド開始）
-	animator->ApplyAnimation(selectedClipName_, t, lerpTimeSec_);
+	// ここは「単にその時点を適用」
+	animator->ApplyAnimation(selectedClipName_, t);
 }
 
 void MechAnimationEdit::DrawRotate(BaseMech* mech, int typeValue, const char* label) {
@@ -340,7 +378,7 @@ MechAnimation::Pose MechAnimationEdit::CaptureCurrentPose() const {
 			// 現在回転を取得
 			pose.rotations[i] = trans->GetQuaternion();
 		} else {
-			// 未取得はidentity
+			// 未取得はIdentity
 			pose.rotations[i] = identity;
 		}
 	}
@@ -463,7 +501,6 @@ void MechAnimationEdit::ApplyPoseToMech(const MechAnimation::Pose& pose) {
 		}
 	}
 }
-
 
 void MechAnimationEdit::ShowPoseList() {
 	ImGui::SeparatorText("Pose List");
