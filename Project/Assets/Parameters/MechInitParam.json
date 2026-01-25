@@ -237,7 +237,7 @@
     "FootLeft": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechFootLeft"
+        "value": "PilotMechFoot"
       },
       "Translate": {
         "type": "Vec3",
@@ -251,7 +251,7 @@
     "FootRight": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechFootRight"
+        "value": "PilotMechFoot"
       },
       "Translate": {
         "type": "Vec3",
@@ -265,7 +265,7 @@
     "HandLeft": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechHandLeft"
+        "value": "PilotMechHand"
       },
       "Translate": {
         "type": "Vec3",
@@ -279,7 +279,7 @@
     "HandRight": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechHandRight"
+        "value": "PilotMechHand"
       },
       "Translate": {
         "type": "Vec3",
@@ -315,7 +315,7 @@
     "LowerArmLeft": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechLowerArmLeft"
+        "value": "PilotMechLowerArm"
       },
       "Translate": {
         "type": "Vec3",
@@ -329,7 +329,7 @@
     "LowerArmRight": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechLowerArmRight"
+        "value": "PilotMechLowerArm"
       },
       "Translate": {
         "type": "Vec3",
@@ -343,7 +343,7 @@
     "LowerLegLeft": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechLowerLegLeft"
+        "value": "PilotMechLowerLeg"
       },
       "Translate": {
         "type": "Vec3",
@@ -357,7 +357,7 @@
     "LowerLegRight": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechLowerLegRight"
+        "value": "PilotMechLowerLeg"
       },
       "Translate": {
         "type": "Vec3",
@@ -371,7 +371,7 @@
     "UpperArmLeft": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechUpperArmLeft"
+        "value": "PilotMechUpperArm"
       },
       "Translate": {
         "type": "Vec3",
@@ -385,7 +385,7 @@
     "UpperArmRight": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechUpperArmRight"
+        "value": "PilotMechUpperArm"
       },
       "Translate": {
         "type": "Vec3",
@@ -399,7 +399,7 @@
     "UpperLegLeft": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechUpperLegLeft"
+        "value": "PilotMechUpperLeg"
       },
       "Translate": {
         "type": "Vec3",
@@ -413,7 +413,7 @@
     "UpperLegRight": {
       "ModelName": {
         "type": "String",
-        "value": "PilotMechUpperLegRight"
+        "value": "PilotMechUpperLeg"
       },
       "Translate": {
         "type": "Vec3",
