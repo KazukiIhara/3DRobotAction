@@ -34,19 +34,17 @@ void CombatSceneStateBattle::Enter([[maybe_unused]] CombatSceneControl::StateCon
 	auto pilotTransform = ref.pilot->GetMech()->GetPartsTransform(MechAnimation::TransType::Body);
 	ref.camera->SetFollowTransform(pilotTransform);
 
-	timer_ = 1.0f;
 }
 
 void CombatSceneStateBattle::Update([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
-
-
-
-	timer_ -= MAGISYSTEM::GetDeltaTime();
-	timer_ = std::max(0.0f, timer_);
-	if (timer_ <= 0.0f) {
+	// ボスのHPが0になったら終了
+	const int32_t bossHP = ref.boss->GetMech()->GetStatus()->GetHP();
+	if (bossHP <= 0) {
+		// 終了
 		ref.cbc->ChangeState(CombatSceneController::State::End);
 	}
+
 }
 
 void CombatSceneStateBattle::Draw([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
