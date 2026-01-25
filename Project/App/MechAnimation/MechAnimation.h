@@ -35,6 +35,13 @@ namespace MechAnimation {
 	};
 	constexpr size_t kJointCount = static_cast<size_t>(TransType::Count);
 
+	// ループタイプ
+	enum class LoopType {
+		None,
+		Restart,
+		PingPong,
+	};
+
 	/// <summary>
 	/// 1フレーム分の関節回転（FK）
 	/// </summary>

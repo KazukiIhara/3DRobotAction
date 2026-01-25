@@ -118,7 +118,7 @@ void JustDodgeEffect::Update() {
 	// 形状
 	const Vector3 planeScaleStart = MAGISYSTEM::GetParameterValue<Vector3>({ "EffectParam","JustDodge","PlaneScaleStart" });
 	const Vector3 planeScaleEnd = MAGISYSTEM::GetParameterValue<Vector3>({ "EffectParam","JustDodge","PlaneScaleEnd" });
-	const Vector3 planeScale = SimpleAnimation<Vector3>(planeScaleStart, planeScaleEnd, EasingType::EaseInOutCubic, true, LoopType::PingPong).GetValue(t * 2.0f);
+	const Vector3 planeScale = SimpleAnimation<Vector3>(planeScaleStart, planeScaleEnd, EasingType::EaseInOutCubic, true, SimpleAnimation<Vector3>::LoopType::PingPong).GetValue(t * 2.0f);
 	planeScale_ = planeScale;
 }
 

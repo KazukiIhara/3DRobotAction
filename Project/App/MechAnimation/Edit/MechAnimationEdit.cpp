@@ -55,6 +55,34 @@ bool MechAnimationEdit::AddAnimationClip(const std::string& name, const MechAnim
 	return container_->AddClip(name, clip, overwrite);
 }
 
+void MechAnimationEdit::DeleteSelectedClip() {
+	if (!container_) {
+		return;
+	}
+	if (selectedClipName_.empty()) {
+		return;
+	}
+
+	// 再生停止
+	isPlaying_ = false;
+	playTimeSec_ = 0.0f;
+
+	if (mech_) {
+		MechAnimator* animator = mech_->GetAnimator();
+		if (animator) {
+			animator->StopAnimation();
+		}
+	}
+
+	// 削除
+	container_->RemoveClip(selectedClipName_);
+
+	// 選択状態リセット
+	selectedClipName_.clear();
+	selectedClipIndex_ = -1;
+	selectedPoseIndex_ = -1;
+}
+
 void MechAnimationEdit::Update() {
 	if (!mech_) {
 		return;
@@ -94,6 +122,11 @@ void MechAnimationEdit::ShowWindow() {
 				MechAnimation::Clip clip{};
 				AddAnimationClip(std::string(clipName_), clip, overwrite_);
 			}
+		}
+
+		// クリップ削除
+		if (ImGui::Button("Delete Clip")) {
+			DeleteSelectedClip();
 		}
 
 		// クリップ一覧
@@ -286,14 +319,14 @@ void MechAnimationEdit::UpdatePlayback() {
 		return;
 	}
 
-	// 時間表示用（Editor側）
+	// 時間表示用
 	const float dt = ImGui::GetIO().DeltaTime;
 	playTimeSec_ += dt;
 
-	// 再生更新（Animator側）
-	animator->Update(dt);
+	// 再生更新
+	animator->Update();
 
-	// 終了判定（Animator側に合わせる）
+	// 終了判定
 	if (!animator->IsPlaying()) {
 		isPlaying_ = false;
 	}

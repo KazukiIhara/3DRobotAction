@@ -21,7 +21,8 @@ public:
 	void SetBaseMech(BaseMech* mech);
 
 	bool AddAnimationClip(const std::string& name, const MechAnimation::Clip& clip, bool overwrite);
-
+	
+	void DeleteSelectedClip();
 private:
 	void ShowWindow();
 

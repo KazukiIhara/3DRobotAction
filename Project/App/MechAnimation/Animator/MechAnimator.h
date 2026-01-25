@@ -25,13 +25,18 @@ public:
 	void ApplyAnimation(const std::string& name, float t);
 
 	// アニメーション再生開始
-	void PlayAnimation(const std::string& name, float durationSec, float blendSec, EasingType easing);
-
+	void PlayAnimation(
+		const std::string& name,
+		float durationSec,
+		float blendSec,
+		EasingType easing = EasingType::Linear,
+		MechAnimation::LoopType loopType = MechAnimation::LoopType::None
+	);
 	// 再生停止
 	void StopAnimation();
 
 	// 再生更新
-	void Update(float dt);
+	void Update();
 
 	// 再生中か
 	bool IsPlaying() const {
@@ -58,4 +63,8 @@ private:
 
 	// ブレンド開始姿勢
 	MechAnimation::Pose blendFromPose_{};
+
+	MechAnimation::LoopType loopType_ = MechAnimation::LoopType::None;
+	bool pingPongForward_ = true;
+
 };

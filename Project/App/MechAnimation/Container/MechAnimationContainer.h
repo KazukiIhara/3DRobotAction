@@ -16,9 +16,8 @@ public:
 	MechAnimationContainer();
 	~MechAnimationContainer();
 
-	// クリップを追加（overwrite=trueで上書き）
+	// クリップを追加
 	bool AddClip(const std::string& name, const MechAnimation::Clip& clip, bool overwrite = false);
-
 	// 指定名のクリップを削除
 	bool RemoveClip(const std::string& name);
 

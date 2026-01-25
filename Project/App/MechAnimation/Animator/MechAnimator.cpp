@@ -9,6 +9,10 @@
 #include "Feature/Mech/Base/BaseMech.h"
 #include "3D/Transform3D/Transform3D.h"
 
+#include "MAGI.h"
+
+using namespace Magi;
+
 using namespace MAGIMath;
 
 MechAnimator::MechAnimator(MechAnimationContainer* container, BaseMech* mech) {
@@ -34,7 +38,13 @@ void MechAnimator::ApplyAnimation(const std::string& name, float t) {
 	ApplyPose(pose);
 }
 
-void MechAnimator::PlayAnimation(const std::string& name, float durationSec, float blendSec, EasingType easing) {
+void MechAnimator::PlayAnimation(
+	const std::string& name,
+	float durationSec,
+	float blendSec,
+	EasingType easing,
+	MechAnimation::LoopType loopType
+) {
 	if (!container_ || !mech_) {
 		return;
 	}
@@ -44,22 +54,20 @@ void MechAnimator::PlayAnimation(const std::string& name, float durationSec, flo
 		return;
 	}
 
-	// 再生情報を保存
 	playingClipName_ = name;
 	durationSec_ = std::max(0.0f, durationSec);
 	blendSec_ = std::max(0.0f, blendSec);
 	easing_ = easing;
+	loopType_ = loopType;
 
-	// 再生開始姿勢を保存
 	blendFromPose_ = CaptureCurrentPose();
 
-	// 再生開始
 	playTimeSec_ = 0.0f;
 	isPlaying_ = true;
+	pingPongForward_ = true;
 
-	// duration=0なら即終端適用
 	if (durationSec_ <= 0.0f) {
-		Update(0.0f);
+		Update();
 		isPlaying_ = false;
 	}
 }
@@ -68,7 +76,10 @@ void MechAnimator::StopAnimation() {
 	isPlaying_ = false;
 }
 
-void MechAnimator::Update(float dt) {
+void MechAnimator::Update() {
+
+	const float dt = MAGISYSTEM::GetDeltaTime();
+
 	if (!isPlaying_) {
 		return;
 	}
@@ -88,10 +99,63 @@ void MechAnimator::Update(float dt) {
 	// 経過時間
 	playTimeSec_ += std::max(0.0f, dt);
 
-	// 正規化時間
-	const float t = (durationSec_ <= 0.0f)
-		? 1.0f
-		: std::clamp(playTimeSec_ / durationSec_, 0.0f, 1.0f);
+	// 正規化時間（まずは生の比率を作る）
+	float t = 1.0f;
+
+	// duration がある場合のみ計算
+	if (durationSec_ > 0.0f) {
+		t = playTimeSec_ / durationSec_;
+	}
+
+	// ループ処理
+	switch (loopType_) {
+		case MechAnimation::LoopType::None: {
+			t = std::clamp(t, 0.0f, 1.0f);
+			break;
+		}
+
+		case MechAnimation::LoopType::Restart: {
+			// duration=0 の場合は常に終端
+			if (durationSec_ <= 0.0f) {
+				t = 1.0f;
+				break;
+			}
+
+			// 1周したら先頭へ
+			if (t >= 1.0f) {
+				playTimeSec_ = std::fmod(playTimeSec_, durationSec_);
+				t = playTimeSec_ / durationSec_;
+			}
+
+			t = std::clamp(t, 0.0f, 1.0f);
+			break;
+		}
+
+		case MechAnimation::LoopType::PingPong: {
+			// duration=0 の場合は常に終端
+			if (durationSec_ <= 0.0f) {
+				t = 1.0f;
+				break;
+			}
+
+			// 端で反転
+			if (t >= 1.0f) {
+				playTimeSec_ = durationSec_;
+				pingPongForward_ = false;
+			} else if (t <= 0.0f && !pingPongForward_) {
+				playTimeSec_ = 0.0f;
+				pingPongForward_ = true;
+			}
+
+			t = std::clamp(t, 0.0f, 1.0f);
+
+			// 逆向きなら 1->0 に変換
+			if (!pingPongForward_) {
+				t = 1.0f - t;
+			}
+			break;
+		}
+	}
 
 	// イージング適用
 	const float easedT = std::clamp(Easing::Apply(easing_, t), 0.0f, 1.0f);
@@ -100,9 +164,13 @@ void MechAnimator::Update(float dt) {
 	const MechAnimation::Pose targetPose = SampleClipPose(*clip, easedT);
 
 	// ブレンド率（開始姿勢→ターゲット）
-	const float alpha = (blendSec_ <= 0.0f)
-		? 1.0f
-		: std::clamp(playTimeSec_ / blendSec_, 0.0f, 1.0f);
+	float alpha = 1.0f;
+
+	// ブレンド秒がある場合のみ計算
+	if (blendSec_ > 0.0f) {
+		alpha = playTimeSec_ / blendSec_;
+		alpha = std::clamp(alpha, 0.0f, 1.0f);
+	}
 
 	MechAnimation::Pose outPose{};
 	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
@@ -114,7 +182,7 @@ void MechAnimator::Update(float dt) {
 	ApplyPose(outPose);
 
 	// 終了
-	if (t >= 1.0f) {
+	if (loopType_ == MechAnimation::LoopType::None && t >= 1.0f) {
 		isPlaying_ = false;
 	}
 }
