@@ -59,10 +59,10 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 		return;
 	}
 
-	// 速度処理
+	// 移動処理
 	{
 		auto ms = mech->GetMoveSystem();
-		const float t = CalExpT(dt, time, 0.5f);
+		const float t = CalExpT(dt, time, 1.0f);
 		// 通常移動の最大速度まで補間
 		const float maxMoveSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
 		const float currentSpeed = ms->GetSpeed();
