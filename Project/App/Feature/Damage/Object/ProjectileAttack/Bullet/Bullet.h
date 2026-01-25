@@ -7,9 +7,9 @@
 class GameEffectManager;
 
 /// <summary>
-/// エネルギーっぽい弾
+/// 実弾
 /// </summary>
-class Beam:public BaseProjectileAttack {
+class Bullet:public BaseProjectileAttack {
 public:
 	struct RefContext {
 		DamageCollisionSystem* damageCollisionSystem;
@@ -19,8 +19,8 @@ public:
 		BaseProjectileAttack::InitParam initParam_;
 	};
 public:
-	Beam(const Beam::InitParam& initParam, RefContext ref);
-	~Beam() = default;
+	Bullet(const Bullet::InitParam& initParam, RefContext ref);
+	~Bullet() = default;
 
 	void Update()override;
 	void Draw()override;

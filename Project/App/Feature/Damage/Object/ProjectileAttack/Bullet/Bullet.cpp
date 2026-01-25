@@ -1,10 +1,10 @@
-#include "Beam.h"
+#include "Bullet.h"
 
 #include "MAGI.h"
 
 using namespace Magi;
 
-Beam::Beam(const Beam::InitParam& initParam, RefContext ref) :
+Bullet::Bullet(const Bullet::InitParam& initParam, RefContext ref) :
 	BaseProjectileAttack(initParam.initParam_, ref.damageCollisionSystem) {
 
 	effectManager_ = ref.effectManager;
@@ -13,7 +13,7 @@ Beam::Beam(const Beam::InitParam& initParam, RefContext ref) :
 	transform_->SetScale(Vector3(0.3f, 0.3f, 0.3f));
 }
 
-void Beam::Update() {
+void Bullet::Update() {
 	// 基底クラスの更新
 	BaseProjectileAttack::Update();
 
@@ -30,12 +30,12 @@ void Beam::Update() {
 
 }
 
-void Beam::Draw() {
+void Bullet::Draw() {
 	// ひとまず仮表示
 	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix());
 
 }
 
-void Beam::Finalize() {
+void Bullet::Finalize() {
 	BaseProjectileAttack::Finalize();
 }

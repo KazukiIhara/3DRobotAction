@@ -21,6 +21,7 @@ using namespace Magi;
 BossMechWeaponLaserGun::BossMechWeaponLaserGun(BossMech* mech) :
 	BaseBossMechWeapon(mech) {
 
+	// モデルロード
 	MAGISYSTEM::LoadCreateModel("BossMechLaserGun");
 
 	// 発射位置オフセットを設定

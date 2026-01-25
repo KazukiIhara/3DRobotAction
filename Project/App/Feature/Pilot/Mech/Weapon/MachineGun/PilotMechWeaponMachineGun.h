@@ -7,12 +7,12 @@
 #include "Structs/ModelStruct.h"
 
 /// <summary>
-/// パイロット機体のビームマシンガン
+/// パイロット機体のマシンガン
 /// </summary>
-class PilotMechWeaponBeamMachineGun:public BasePilotMechWeapon {
+class PilotMechWeaponMachineGun:public BasePilotMechWeapon {
 public:
-	PilotMechWeaponBeamMachineGun(PilotMech* mech);
-	~PilotMechWeaponBeamMachineGun() = default;
+	PilotMechWeaponMachineGun(PilotMech* mech);
+	~PilotMechWeaponMachineGun() = default;
 
 	void Update()override;
 	void Draw()override;

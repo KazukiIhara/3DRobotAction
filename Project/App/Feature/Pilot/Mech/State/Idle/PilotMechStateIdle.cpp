@@ -33,7 +33,7 @@ void PilotMechStateIdle::Update(PilotMech* mech) {
 		auto command = commandPair.second;
 		// 右手武器で攻撃
 		if (command.attackR) {
-			mech->GetWeapon("BeamMachineGun")->Attack();
+			mech->GetWeapon("MachineGun")->Attack();
 		}
 		if (command.dodge) {
 			mech->ChangeState(PilotMech::State::Dodge);
