@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <algorithm>
+#include <unordered_set>
 
 // JSON（nlohmann）
 #include <nlohmann/json.hpp>
@@ -107,18 +108,18 @@ namespace {
 
 	// Clip -> json
 	json ClipToJson(const std::string& name, const MechAnimation::Clip& clip) {
-	json j;
-	j["version"] = 1;
-	j["name"] = name;
-	j["jointCount"] = static_cast<int>(MechAnimation::kJointCount);
+		json j;
+		j["version"] = 1;
+		j["name"] = name;
+		j["jointCount"] = static_cast<int>(MechAnimation::kJointCount);
 
-	j["frames"] = json::array();
-	for (const auto& pose : clip.frames) {
-		j["frames"].push_back(PoseToJson(pose));
+		j["frames"] = json::array();
+		for (const auto& pose : clip.frames) {
+			j["frames"].push_back(PoseToJson(pose));
+		}
+
+		return j;
 	}
-
-	return j;
-}
 
 	// json -> Clip
 	bool JsonToClip(const json& j, MechAnimation::Clip& outClip) {
@@ -232,19 +233,45 @@ bool MechAnimationContainer::SaveAllClips() const {
 		return false;
 	}
 
-	// 全クリップを書き出し
+	// 期待するファイル名セットを作る
+	std::unordered_set<std::string> expectedFiles;
+	expectedFiles.reserve(clips_.size());
+
+	for (const auto& kv : clips_) {
+		const std::string safeName = SanitizeFileName(kv.first);
+		expectedFiles.insert(safeName + ".json");
+	}
+
+	// 余っているjsonを削除
+	for (const auto& entry : fs::directory_iterator(dirPath)) {
+		if (!entry.is_regular_file()) {
+			continue;
+		}
+
+		const fs::path p = entry.path();
+		if (p.extension() != ".json") {
+			continue;
+		}
+
+		const std::string fileName = p.filename().string();
+		if (expectedFiles.find(fileName) == expectedFiles.end()) {
+			fs::remove(p, ec); // 存在しないクリップのファイルを消す
+			if (ec) {
+				return false;
+			}
+		}
+	}
+
+	// 残っている分だけ書き出し
 	for (const auto& kv : clips_) {
 		const std::string& name = kv.first;
 		const MechAnimation::Clip& clip = kv.second;
 
-		// ファイル名を安全化
 		const std::string safeName = SanitizeFileName(name);
 		const fs::path filePath = dirPath / (safeName + ".json");
 
-		// json生成
 		const json j = ClipToJson(name, clip);
 
-		// 書き出し
 		std::ofstream ofs(filePath, std::ios::out | std::ios::trunc);
 		if (!ofs) {
 			return false;

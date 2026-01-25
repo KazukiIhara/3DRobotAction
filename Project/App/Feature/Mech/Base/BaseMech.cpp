@@ -68,6 +68,11 @@ void BaseMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 		kinematicSystem_->Update();
 	}
 
+	// アニメーター更新
+	if (animator_) {
+		animator_->Update();
+	}
+
 	// 機体の回転を更新
 	if (rotControlSystem_) {
 		rotControlSystem_->Update();

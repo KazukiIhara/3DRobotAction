@@ -148,14 +148,18 @@ const Quaternion& Transform3D::GetQuaternion()const {
 }
 
 const Matrix4x4& Transform3D::GetWorldMatrix() {
-	// 正確な行列を返すために一旦更新
-	Update();
+	// 正確な行列を返すために一旦更新　親がいる場合は更新順が狂うため禁止
+	if (!parent_) {
+		Update();
+	}
 	return worldMatrix_;
 }
 
 const Vector3& Transform3D::GetWorldPosition() {
-	// 正確な座標を返すために一旦更新
-	Update();
+	// 正確な座標を返すために一旦更新 親がいる場合は更新順が狂うため禁止
+	if (!parent_) {
+		Update();
+	}
 	return worldPosition_;
 }
 
