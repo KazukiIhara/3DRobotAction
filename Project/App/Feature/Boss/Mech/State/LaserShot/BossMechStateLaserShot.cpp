@@ -136,9 +136,6 @@ namespace {
 }
 
 void BossMechStateLaserShot::SetupPhases() {
-	if (!runner_) {
-		return;
-	}
 
 	// Phase登録
 	runner_->RegisterFactory("StartUp", []() { return std::make_unique<PhaseStartUp>(); });
@@ -161,14 +158,6 @@ void BossMechStateLaserShot::Enter(BossMech* mech) {
 }
 
 void BossMechStateLaserShot::Update(BossMech* mech) {
-	if (!runner_) {
-		return;
-	}
-
-	// 機体をターゲットに向ける
-	auto& lookFlag = mech->GetRotControlSystem()->GetLookAtFlag();
-	lookFlag.mech.yaw = true;
-
 	// Phase更新
 	runner_->Update(mech);
 
@@ -179,9 +168,6 @@ void BossMechStateLaserShot::Update(BossMech* mech) {
 }
 
 void BossMechStateLaserShot::Exit(BossMech* mech) {
-	if (!runner_) {
-		return;
-	}
 
 	// Runner停止
 	runner_->Stop(mech);
