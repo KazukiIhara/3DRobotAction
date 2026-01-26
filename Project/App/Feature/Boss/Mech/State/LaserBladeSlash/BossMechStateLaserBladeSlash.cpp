@@ -16,9 +16,14 @@ using namespace Magi;
 // フェーズクラス
 namespace {
 
+	/// <summary>
+	/// 攻撃準備
+	/// </summary>
 	class StartUp final: public IBossMechStatePhase {
 	public:
-		void Enter([[maybe_unused]] BossMech* mech) override {}
+		void Enter([[maybe_unused]] BossMech* mech) override {
+			
+		}
 
 		void Update([[maybe_unused]] BossMech* mech) override {}
 

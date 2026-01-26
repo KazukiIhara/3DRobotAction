@@ -1338,7 +1338,6 @@ void MAGISYSTEM::DeleteAll() {
 	ClearGameObject3D();
 	ClearRenderer3D();
 	ClearCamera3D();
-	ClearCamera2D();
 }
 
 Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
