@@ -32,22 +32,6 @@ namespace {
 		bool end_ = false;
 	};
 
-	class Approach final: public IBossMechStatePhase {
-	public:
-		void Enter([[maybe_unused]] BossMech* mech) override {}
-
-		void Update([[maybe_unused]] BossMech* mech) override {}
-
-		void Exit([[maybe_unused]] BossMech* mech) override {}
-
-		bool EndRequest() override {
-			return end_;
-		}
-
-	private:
-		bool end_ = false;
-	};
-
 	class Attack1 final: public IBossMechStatePhase {
 	public:
 		void Enter([[maybe_unused]] BossMech* mech) override {}
