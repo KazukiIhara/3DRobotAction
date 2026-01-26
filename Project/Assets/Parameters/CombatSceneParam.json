@@ -29,11 +29,11 @@
       },
       "EndAlpha": {
         "type": "Float",
-        "value": 0.3
+        "value": 0.30000001192092896
       },
       "StartAlpha": {
         "type": "Float",
-        "value": 0.05
+        "value": 0.05000000074505806
       },
       "Time": {
         "type": "Float",

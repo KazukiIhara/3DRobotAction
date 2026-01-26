@@ -343,6 +343,21 @@ void Transform3D::SetRotate(const Vector3& rotate) {
 	isChanged_ = true;
 }
 
+void Transform3D::SetRotateX(float x) {
+	inputRadians_.x = x;
+	isChanged_ = true;
+}
+
+void Transform3D::SetRotateY(float y) {
+	inputRadians_.y = y;
+	isChanged_ = true;
+}
+
+void Transform3D::SetRotateZ(float z) {
+	inputRadians_.z = z;
+	isChanged_ = true;
+}
+
 void Transform3D::SetTranslate(const Vector3& translate) {
 	translate_ = translate;
 	isChanged_ = true;

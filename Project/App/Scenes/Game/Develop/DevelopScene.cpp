@@ -150,6 +150,11 @@ void DevelopScene::Update() {
 		stageData_->SwitchShowImGui();
 	}
 
+	ImGui::SeparatorText("CollisionSystem");
+	if (ImGui::Button("DamageCollisionDraw")) {
+		damageCollisionSystem_->SwitchIsDebugDraw();
+	}
+
 	ImGui::End();
 
 	// 機体アニメーション作成クラス
@@ -222,9 +227,12 @@ void DevelopScene::LoadResource() {
 	MAGISYSTEM::LoadTexture("white.png");
 	MAGISYSTEM::LoadTexture("gradation.png");
 	MAGISYSTEM::LoadTexture("dodgeEffect.png");
+	MAGISYSTEM::LoadTexture("Circle.png");
 	MAGISYSTEM::LoadTexture("Circle2.png");
 	MAGISYSTEM::LoadTexture("electric_0.png");
 	MAGISYSTEM::LoadTexture("lensFlare.png");
 	MAGISYSTEM::LoadTexture("gradationToon.png");
 
+
+	MAGISYSTEM::LoadTexture("YellowBullet.png");
 }

@@ -62,3 +62,23 @@ void BaseProjectileAttack::Draw() {
 void BaseProjectileAttack::Finalize() {
 	BaseDamageObject::Finalize();
 }
+
+Vector3 BaseProjectileAttack::GetDir() const {
+	return dir_;
+}
+
+float BaseProjectileAttack::GetThickness() const {
+	return thickness_;
+}
+
+float BaseProjectileAttack::GetLength() const {
+	return length_;
+}
+
+float BaseProjectileAttack::GetSpeed() const {
+	return speed_;
+}
+
+float BaseProjectileAttack::GetLife() const {
+	return life_;
+}

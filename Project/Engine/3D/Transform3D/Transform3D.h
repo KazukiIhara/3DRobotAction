@@ -64,6 +64,9 @@ public:
 	void SetScaleY(float y);
 	void SetScaleZ(float z);
 	void SetRotate(const Vector3& rotate);
+	void SetRotateX(float x);
+	void SetRotateY(float y);
+	void SetRotateZ(float z);
 	void SetTranslate(const Vector3& translate);
 	void SetTranslateX(float x);
 	void SetTranslateY(float y);

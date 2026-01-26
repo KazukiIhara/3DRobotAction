@@ -28,6 +28,12 @@ public:
 	virtual void Draw()override;
 	virtual void Finalize()override;
 
+	Vector3 GetDir()const;
+	float GetThickness()const;
+	float GetLength()const;
+	float GetSpeed()const;
+	float GetLife()const;
+
 private:
 	Vector3 dir_;
 	float thickness_;
