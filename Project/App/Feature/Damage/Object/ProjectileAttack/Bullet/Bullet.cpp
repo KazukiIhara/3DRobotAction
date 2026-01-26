@@ -26,7 +26,7 @@ Bullet::Bullet(const Bullet::InitParam& initParam, RefContext ref) :
 	bulletPlaneMat_.blendMode = BlendMode::Add;
 	bulletPlaneMat_.textureName = "YellowBullet.png";
 
-	effectScale_ = { 1.0f,1.0f,1.0f };
+	effectScale_ = { 0.8f,0.8f,1.0f };
 	effectMat_.baseColor = Color::Gold;
 	effectMat_.blendMode = BlendMode::Add;
 	effectMat_.textureName = "Circle.png";
