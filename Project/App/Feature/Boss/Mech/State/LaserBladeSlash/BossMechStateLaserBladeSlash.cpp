@@ -22,10 +22,27 @@ namespace {
 	class StartUp final: public IBossMechStatePhase {
 	public:
 		void Enter([[maybe_unused]] BossMech* mech) override {
-			
+			// タイマー初期化
+			const float time = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserBladeSlash","TimeStartUp" });
+			timer_ = time;
+
+			mech->GetAnimator()->PlayAnimation("BossLaserBladeSlash_StartUp", time, 0.1f, EasingType::EaseInOutCubic);
+			end_ = false;
 		}
 
-		void Update([[maybe_unused]] BossMech* mech) override {}
+		void Update([[maybe_unused]] BossMech* mech) override {
+			// dt取得
+			const float dt = MAGISYSTEM::GetDeltaTime();
+
+			// タイマー更新
+			timer_ -= dt;
+			timer_ = std::max(0.0f, timer_);
+
+			// 終了判定
+			if (timer_ == 0.0f) {
+				end_ = true;
+			}
+		}
 
 		void Exit([[maybe_unused]] BossMech* mech) override {}
 
@@ -34,14 +51,34 @@ namespace {
 		}
 
 	private:
+		float timer_ = 0.0f;
 		bool end_ = false;
 	};
 
 	class Attack1 final: public IBossMechStatePhase {
 	public:
-		void Enter([[maybe_unused]] BossMech* mech) override {}
+		void Enter([[maybe_unused]] BossMech* mech) override {
+			// タイマー初期化
+			const float time = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserBladeSlash","TimeAttack1" });
+			timer_ = time;
 
-		void Update([[maybe_unused]] BossMech* mech) override {}
+			mech->GetAnimator()->PlayAnimation("BossLaserBladeSlash_Attack1", time, 0.1f, EasingType::EaseInOutCubic);
+			end_ = false;
+		}
+
+		void Update([[maybe_unused]] BossMech* mech) override {
+			// dt取得
+			const float dt = MAGISYSTEM::GetDeltaTime();
+
+			// タイマー更新
+			timer_ -= dt;
+			timer_ = std::max(0.0f, timer_);
+
+			// 終了判定
+			if (timer_ == 0.0f) {
+				end_ = true;
+			}
+		}
 
 		void Exit([[maybe_unused]] BossMech* mech) override {}
 
@@ -50,14 +87,34 @@ namespace {
 		}
 
 	private:
+		float timer_ = 0.0f;
 		bool end_ = false;
 	};
 
 	class Attack2 final: public IBossMechStatePhase {
 	public:
-		void Enter([[maybe_unused]] BossMech* mech) override {}
+		void Enter([[maybe_unused]] BossMech* mech) override {
+			// タイマー初期化
+			const float time = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserBladeSlash","TimeAttack2" });
+			timer_ = time;
 
-		void Update([[maybe_unused]] BossMech* mech) override {}
+			mech->GetAnimator()->PlayAnimation("BossLaserBladeSlash_Attack2", time, 0.1f, EasingType::EaseInOutCubic);
+			end_ = false;
+		}
+
+		void Update([[maybe_unused]] BossMech* mech) override {
+			// dt取得
+			const float dt = MAGISYSTEM::GetDeltaTime();
+
+			// タイマー更新
+			timer_ -= dt;
+			timer_ = std::max(0.0f, timer_);
+
+			// 終了判定
+			if (timer_ == 0.0f) {
+				end_ = true;
+			}
+		}
 
 		void Exit([[maybe_unused]] BossMech* mech) override {}
 
@@ -66,14 +123,33 @@ namespace {
 		}
 
 	private:
+		float timer_ = 0.0f;
 		bool end_ = false;
 	};
 
 	class EndLag final: public IBossMechStatePhase {
 	public:
-		void Enter([[maybe_unused]] BossMech* mech) override {}
+		void Enter([[maybe_unused]] BossMech* mech) override {
+			// タイマー初期化
+			const float time = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserBladeSlash","TimeEndLag" });
+			timer_ = time;
+			end_ = false;
 
-		void Update([[maybe_unused]] BossMech* mech) override {}
+		}
+
+		void Update([[maybe_unused]] BossMech* mech) override {
+			// dt取得
+			const float dt = MAGISYSTEM::GetDeltaTime();
+
+			// タイマー更新
+			timer_ -= dt;
+			timer_ = std::max(0.0f, timer_);
+
+			// 終了判定
+			if (timer_ == 0.0f) {
+				end_ = true;
+			}
+		}
 
 		void Exit([[maybe_unused]] BossMech* mech) override {}
 
@@ -82,6 +158,7 @@ namespace {
 		}
 
 	private:
+		float timer_ = 0.0f;
 		bool end_ = false;
 	};
 

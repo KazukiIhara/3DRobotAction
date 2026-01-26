@@ -15,7 +15,7 @@
       },
       "Life": {
         "type": "Float",
-        "value": 0.5
+        "value": 10.0
       },
       "Speed": {
         "type": "Float",

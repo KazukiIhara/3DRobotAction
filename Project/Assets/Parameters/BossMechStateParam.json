@@ -2,19 +2,19 @@
   "LaserBladeSlash": {
     "TimeAttack1": {
       "type": "Float",
-      "value": 0.0
+      "value": 0.30000001192092896
     },
     "TimeAttack2": {
       "type": "Float",
-      "value": 0.0
+      "value": 0.4000000059604645
     },
     "TimeEndLag": {
       "type": "Float",
-      "value": 0.0
+      "value": 1.0
     },
     "TimeStartUp": {
       "type": "Float",
-      "value": 0.0
+      "value": 0.5
     }
   },
   "LaserShot": {

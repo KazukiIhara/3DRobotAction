@@ -23,7 +23,8 @@ public:
 	// ステート
 	enum class State {
 		Idle,
-		LaserShot
+		LaserShot,
+		LaserBladeSlash,
 	};
 public:
 	BossMech(const InitParam& param, const RefContext& ref, PilotMech* pilotMech);

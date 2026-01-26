@@ -24,7 +24,7 @@ namespace {
 			const float timeStartUp = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserShot","TimeStartUp" });
 			timer_ = timeStartUp;
 
-			mech->GetAnimator()->PlayAnimation("BossLaserShot_StartUp", timeStartUp, 0.0f, EasingType::EaseOutCubic);
+			mech->GetAnimator()->PlayAnimation("BossLaserShot_StartUp", timeStartUp, 0.0f, EasingType::EaseInOutCubic);
 			end_ = false;
 		}
 
@@ -52,7 +52,6 @@ namespace {
 
 	private:
 		float timer_ = 0.0f;
-		float time_ = 1.0f;
 		bool end_ = false;
 	};
 
@@ -65,7 +64,7 @@ namespace {
 		void Enter(BossMech* mech) override {
 			const float timeShot = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserShot","TimeShot" });
 			timer_ = timeShot;
-			mech->GetAnimator()->PlayAnimation("BossLaserShot_Shot", timeShot, 0.1f, EasingType::EaseOutCubic);
+			mech->GetAnimator()->PlayAnimation("BossLaserShot_Shot", timeShot, 0.1f, EasingType::EaseInOutCubic);
 		}
 
 		void Update([[maybe_unused]] BossMech* mech) override {
@@ -103,6 +102,7 @@ namespace {
 		void Enter([[maybe_unused]] BossMech* mech) override {
 			// タイマー初期化
 			const float timeEndLag = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserShot","TimeEndLag" });
+			mech->GetAnimator()->PlayAnimation("BossLaserShot_EndLag", timeEndLag, 0.1f, EasingType::EaseInOutCubic);
 			timer_ = timeEndLag;
 			end_ = false;
 
