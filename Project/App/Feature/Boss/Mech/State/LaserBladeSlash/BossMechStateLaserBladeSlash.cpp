@@ -63,6 +63,10 @@ namespace {
 			timer_ = time;
 
 			mech->GetAnimator()->PlayAnimation("BossLaserBladeSlash_Attack1", time, 0.1f, EasingType::EaseInOutCubic);
+
+			// 攻撃オブジェクト追加
+			mech->GetWeapon("LaserBlade")->Attack(Damage::Power::Mid);
+
 			end_ = false;
 		}
 
@@ -99,6 +103,8 @@ namespace {
 			timer_ = time;
 
 			mech->GetAnimator()->PlayAnimation("BossLaserBladeSlash_Attack2", time, 0.1f, EasingType::EaseInOutCubic);
+
+			mech->GetWeapon("LaserBlade")->Attack(Damage::Power::Large);
 			end_ = false;
 		}
 

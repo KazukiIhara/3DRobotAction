@@ -20,7 +20,7 @@ public:
 	void Update()override;
 	void Draw()override;
 
-	void Attack()override;
+	void Attack(Damage::Power power)override;
 private:
 	ModelMaterial mat_;
 };

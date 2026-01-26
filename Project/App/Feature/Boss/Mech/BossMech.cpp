@@ -14,6 +14,7 @@
 
 // 武器クラス
 #include "Feature/Boss/Mech/Weapon/LaserGun/BossMechWeaponLaserGun.h"
+#include "Feature/Boss/Mech/Weapon/LaserBlade/BossMechWeaponLaserBlade.h"
 
 // プレイヤー機体
 #include "Feature/Pilot/Mech/PilotMech.h"
@@ -35,6 +36,9 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 
 	// 武器をマップに追加
 	AddWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
+
+	// 武器をマップに追加
+	AddWeapon("LaserBlade", std::make_unique<BossMechWeaponLaserBlade>(this));
 
 	{
 		// ステータスを初期化

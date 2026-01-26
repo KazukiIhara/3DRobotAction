@@ -48,7 +48,7 @@ void PilotMechWeaponMachineGun::Draw() {
 	MAGISYSTEM::DrawModel("PilotMechMachineGun", transform_->GetWorldMatrix(), mat_);
 }
 
-void PilotMechWeaponMachineGun::Attack() {
+void PilotMechWeaponMachineGun::Attack([[maybe_unused]] Damage::Power power) {
 
 	if (coolTimer_ > 0.0f) {
 		return;
@@ -91,7 +91,7 @@ void PilotMechWeaponMachineGun::Attack() {
 
 	}
 
-	// タイマーセット
+	// 発射レートのタイマー
 	const int32_t fireRateSec = MAGISYSTEM::GetParameterValue<int32_t>({ "WeaponParam","Pilot","MachineGun","FireRateSec" });
 	const float coolTime = 1.0f / static_cast<float>(fireRateSec);
 	coolTimer_ = coolTime;

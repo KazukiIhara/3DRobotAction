@@ -44,7 +44,7 @@ void BossMechWeaponLaserGun::Draw() {
 	MAGISYSTEM::DrawModel("BossMechLaserGun", transform_->GetWorldMatrix(), mat_);
 }
 
-void BossMechWeaponLaserGun::Attack() {
+void BossMechWeaponLaserGun::Attack([[maybe_unused]] Damage::Power power) {
 	// 発射座標
 	const Vector3 shotPos = fireTransform_->GetWorldPosition();
 	// プレイヤーの座標を取得

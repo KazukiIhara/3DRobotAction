@@ -1,5 +1,27 @@
 {
   "Boss": {
+    "LaserBlade": {
+      "Damage": {
+        "type": "Int32",
+        "value": 100
+      },
+      "FireOffset": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -3.0,
+          "z": -0.4000000059604645
+        }
+      },
+      "Life": {
+        "type": "Float",
+        "value": 0.5
+      },
+      "Radius": {
+        "type": "Float",
+        "value": 2.0
+      }
+    },
     "LaserGun": {
       "Damage": {
         "type": "Int32",
@@ -15,7 +37,7 @@
       },
       "Life": {
         "type": "Float",
-        "value": 10.0
+        "value": 1.0
       },
       "Speed": {
         "type": "Float",

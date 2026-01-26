@@ -84,4 +84,9 @@ void BeamCannon::Draw() {
 
 void BeamCannon::Finalize() {
 	BaseProjectileAttack::Finalize();
+	transParent_->SetIsAlive(false);
+
+	for (size_t i = 0; i < 4; i++) {
+		trans_[i]->SetIsAlive(false);
+	}
 }

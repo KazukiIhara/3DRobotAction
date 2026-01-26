@@ -6,7 +6,7 @@
 /// <summary>
 /// 発射物の攻撃基底クラス
 /// </summary>
-class BaseProjectileAttack:public BaseDamageObject {
+class BaseProjectileAttack :public BaseDamageObject {
 public:
 	struct InitParam {
 		Vector3 emitPos{};
