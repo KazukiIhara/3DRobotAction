@@ -19,7 +19,7 @@ PilotMechWeaponBeamCannonRifle::PilotMechWeaponBeamCannonRifle(PilotMech* mech) 
 	BasePilotMechWeapon(mech) {
 
 	// モデルをロード
-
+	MAGISYSTEM::LoadCreateModel("PilotMechBeamCannonRifle");
 
 	// オフセットの設定
 	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "WeaponParam","Pilot","BeamCannon","FireOffset" });
@@ -35,7 +35,7 @@ void PilotMechWeaponBeamCannonRifle::Update() {
 }
 
 void PilotMechWeaponBeamCannonRifle::Draw() {
-
+	MAGISYSTEM::DrawModel("PilotMechBeamCannonRifle", transform_->GetWorldMatrix(), mat_);
 }
 
 void PilotMechWeaponBeamCannonRifle::Attack() {
