@@ -64,16 +64,6 @@ void PilotMechStateJustDodge::Update([[maybe_unused]] PilotMech* mech) {
 	// デルタタイムに倍率を書ける
 	MAGISYSTEM::SetDeltaTimeMultiplier(deltaMul);
 
-	// 速度補間
-	{
-		auto ms = mech->GetMoveSystem();
-		const float speedT = CalExpT(dt, time, 1.0f);
-		// 通常移動の最大速度まで補間
-		const float maxMoveSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
-		const float currentSpeed = ms->GetSpeed();
-		const float speed = Lerp(currentSpeed, maxMoveSpeed, speedT);
-		ms->SetSpeed(speed);
-	}
 
 	// タイマー更新(生デルタタイムを使う)
 	timer_ -= MAGISYSTEM::GetRawDeltaTime();

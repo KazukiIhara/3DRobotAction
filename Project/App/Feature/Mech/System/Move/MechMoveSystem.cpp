@@ -99,7 +99,7 @@ void MechMoveSystem::CalSpeed() {
 
 	// 速度を補間
 	if (speed_ > maxSpeed_) {
-		const float t = CalExpT(dt, 1.0f, 1.0f);
+		const float t = CalExpT(dt, 2.0f, 1.0f);
 		speed_ = Lerp(speed_, maxSpeed_, t);
 	}
 

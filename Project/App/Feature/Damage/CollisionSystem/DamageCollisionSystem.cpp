@@ -238,8 +238,10 @@ void DamageCollisionSystem::Update() {
 
 void DamageCollisionSystem::Draw() {
 #if defined(DEBUG) || defined(DEVELOP)
-	for (auto& c : colliders_) {
-		c->DebugDraw();
+	if (isDebugDraw_) {
+		for (auto& c : colliders_) {
+			c->DebugDraw();
+		}
 	}
 #endif
 }
@@ -256,6 +258,14 @@ DamageCollider* DamageCollisionSystem::AddCollider(std::unique_ptr<DamageCollide
 void DamageCollisionSystem::Clear() {
 	mechlist_.clear();
 	colliders_.clear();
+}
+
+void DamageCollisionSystem::SwitchIsDebugDraw() {
+	isDebugDraw_ = !isDebugDraw_;
+}
+
+bool& DamageCollisionSystem::GetIsDebugDraw() {
+	return isDebugDraw_;
 }
 
 void DamageCollisionSystem::RemoveDeadColliders() {

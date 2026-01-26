@@ -26,6 +26,10 @@ public:
 
 	void Clear();
 
+	void SwitchIsDebugDraw();
+
+	bool& GetIsDebugDraw();
+
 private:
 	void RemoveDeadColliders();
 	void UpdateDamageColliders();
@@ -44,4 +48,5 @@ private:
 	std::vector<BaseMech*> mechlist_;
 	std::vector<std::unique_ptr<DamageCollider>> colliders_;
 
+	bool isDebugDraw_ = false;
 };
