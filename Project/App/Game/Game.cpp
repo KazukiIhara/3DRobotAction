@@ -29,5 +29,5 @@ void Game::Initialize() {
 	sceneManager_->AddScene<DevelopScene>("Develop");
 
 	// 最初のシーンを設定
-	sceneManager_->ChangeScene("Develop");
+	sceneManager_->StartScene("Develop");
 }

@@ -31,7 +31,7 @@ namespace Magi {
 	private:
 		// カメラコンテナ
 		std::map<std::string, std::unique_ptr<Camera2D>> cameras2D_;
-
+		
 		// 現在使用中のカメラ
 		Camera2D* currentCamera_ = nullptr;
 	};

@@ -16,6 +16,8 @@ Camera2DManager::~Camera2DManager() {
 
 void Camera2DManager::Initialize() {
 	Clear();
+	Add(std::move(std::make_unique<Camera2D>("DefaultCamera")));
+	SetCurrentCamera("DefaultCamera");
 }
 
 void Camera2DManager::Update() {

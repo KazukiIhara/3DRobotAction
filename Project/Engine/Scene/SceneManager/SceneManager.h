@@ -9,6 +9,7 @@
 
 #include "BaseScene/BaseScene.h"
 #include "GameData/GameData.h"
+#include "FadeSystem/FadeSystem.h"
 
 namespace Magi {
 	class SceneManager {
@@ -34,6 +35,9 @@ namespace Magi {
 				};
 		}
 
+		// 最初のシーン
+		void StartScene(const std::string& sceneName);
+		
 		// シーン変更
 		void ChangeScene(const std::string& sceneName);
 
@@ -54,5 +58,16 @@ namespace Magi {
 		// 共有データ
 		std::unique_ptr<GameData> data_;
 
+
+		// フェード
+		FadeSystem fade_;
+
+		// 遷移状態
+		bool isPendingSceneSwitch_ = false;
+		bool needsFadeInAfterSwitch_ = false;
+
+		// フェード時間
+		float fadeOutSec_ = 0.5f;
+		float fadeInSec_ = 0.5f;
 	};
 }
