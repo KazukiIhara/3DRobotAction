@@ -235,4 +235,5 @@ void DevelopScene::LoadResource() {
 
 
 	MAGISYSTEM::LoadTexture("YellowBullet.png");
+	MAGISYSTEM::LoadTexture("Laser2.png");
 }
