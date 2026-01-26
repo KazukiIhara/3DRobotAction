@@ -23,7 +23,7 @@ void Camera3DManager::Initialize() {
 	defaultCamera_->SetIsUnique(true);
 
 	// デフォルトカメラをセット
-	currentCamera_ = debugCamera_.get();
+	currentCamera_ = defaultCamera_.get();
 }
 
 void Camera3DManager::Update() {

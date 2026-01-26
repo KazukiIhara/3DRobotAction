@@ -112,13 +112,14 @@ void DevelopScene::Update() {
 #if defined(DEBUG)|(DEVELOP)
 	// デバッグ用途の処理
 	ImGui::Begin("DevelopUI");
-
+	if (ImGui::Button("Play")) {
+		ChangeScene("Title");
+	}
 	ImGui::SeparatorText("Scene");
 	if (ImGui::Button("ResetScene")) {
 		ChangeScene("Develop");
 	}
-
-	if (ImGui::Button("StartCombatScene")) {
+	if (ImGui::Button("StartCombat")) {
 		sceneController_->Start(CombatSceneController::State::Start);
 	}
 	ImGui::Text("CurrentSceneState: ");
