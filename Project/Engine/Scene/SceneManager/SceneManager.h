@@ -67,7 +67,7 @@ namespace Magi {
 		bool needsFadeInAfterSwitch_ = false;
 
 		// フェード時間
-		float fadeOutSec_ = 0.5f;
-		float fadeInSec_ = 0.5f;
+		float fadeOutSec_ = 1.0f;
+		float fadeInSec_ = 1.0f;
 	};
 }
