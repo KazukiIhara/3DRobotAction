@@ -2,6 +2,8 @@
 
 #include "MAGI.h"
 
+#include "Random/Random.h"
+
 using namespace Magi;
 
 Bullet::Bullet(const Bullet::InitParam& initParam, RefContext ref) :
@@ -23,10 +25,11 @@ Bullet::Bullet(const Bullet::InitParam& initParam, RefContext ref) :
 	bulletTrans_[0]->SetRotateX(-std::numbers::pi_v<float>*0.25f);
 	bulletTrans_[1]->SetRotateX(std::numbers::pi_v<float>*0.25f);
 
+	bulletTransParent_->SetScale(Vector3(0.5f, 0.5f, 1.0f));
+
 	bulletPlaneMat_.blendMode = BlendMode::Add;
 	bulletPlaneMat_.textureName = "YellowBullet.png";
 
-	effectScale_ = { 0.8f,0.8f,1.0f };
 	effectMat_.baseColor = Color::Gold;
 	effectMat_.blendMode = BlendMode::Add;
 	effectMat_.textureName = "Circle.png";
@@ -57,7 +60,8 @@ void Bullet::Draw() {
 	for (size_t i = 0; i < 2; i++) {
 		MAGISYSTEM::DrawPlane3D(bulletTrans_[i]->GetWorldMatrix(), bulletPlane_[i], bulletPlaneMat_);
 	}
-
+	float rand = Random::GenerateFloat(0.2f, 0.8f);
+	effectScale_ = { rand,rand,1.0f };
 	// 少しもわっとさせる
 	const Vector3 trans = bulletTransParent_->GetWorldPosition();
 	const Matrix4x4 wMat = MAGISYSTEM::GetCurrentCamera3D()->MakeBillBoardMat(trans, effectScale_);
