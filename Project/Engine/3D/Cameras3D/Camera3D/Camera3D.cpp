@@ -312,13 +312,13 @@ const CameraVector Camera3D::GetCameraVector() const {
 	return cameraVector_;
 }
 
-const Matrix4x4 Camera3D::MakeBillBoardMat(const Vector3& translate, const Vector3& scale) const {
+const Matrix4x4 Camera3D::MakeBillBoardMat(const Vector3& translate, float rollRad, const Vector3& scale) const {
 
 	Matrix4x4 billboard = MakeIdentityMatrix4x4();
 
 	// カメラ行列
 	const CameraVector camVec = GetCameraVector();
-	// ワールド行列を作成
+
 	// カメラの軸
 	Vector3 right = Normalize(camVec.right);
 	Vector3 up = Normalize(camVec.up);
@@ -327,10 +327,24 @@ const Matrix4x4 Camera3D::MakeBillBoardMat(const Vector3& translate, const Vecto
 	// Zを反転
 	forward = -forward;
 
-	// スケール設定
-	const float sx = scale.x;  // 横幅スケール
-	const float sy = scale.y;  // 縦幅スケール
-	const float sz = 1.0f;      // 奥行き
+	// roll 回転（ビルボードのZ軸＝forward周り）
+	{
+		const float c = std::cos(rollRad);
+		const float s = std::sin(rollRad);
+
+		// right を回す
+		const Vector3 r = right * c + up * s;
+		// up を回す
+		const Vector3 u = up * c - right * s;
+
+		right = r;
+		up = u;
+	}
+
+	// スケール
+	const float sx = scale.x;
+	const float sy = scale.y;
+	const float sz = 1.0f;
 
 	// X軸
 	billboard.m[0][0] = right.x * sx;

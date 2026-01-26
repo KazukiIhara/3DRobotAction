@@ -51,7 +51,6 @@ void PilotMechStateDodge::Enter(PilotMech* mech) {
 void PilotMechStateDodge::Update(PilotMech* mech) {
 	// デルタタイム更新
 	const float dt = MAGISYSTEM::GetDeltaTime();
-	const float time = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Dodge","Time" });
 
 	// ジャスト回避判定
 	if (mech->GetJustDodgeCollider()->GetIsHit()) {
@@ -60,7 +59,7 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 	}
 
 	// タイマー更新
-	timer_ -= MAGISYSTEM::GetDeltaTime();
+	timer_ -= dt;
 	timer_ = std::max(0.0f, timer_);
 	// タイマー終了で移動状態に遷移
 	if (timer_ == 0.0f) {

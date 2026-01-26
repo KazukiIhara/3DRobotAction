@@ -4,17 +4,6 @@
 using namespace Magi;
 
 void DevelopScene::Initialize() {
-	//-------------------------------------------------------
-	// シーンの必須設定(はよ基底クラスに移せや)
-	//-------------------------------------------------------
-
-	// 2Dカメラ作成
-	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");
-	// マネージャに追加
-	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D));
-	// カメラを設定
-	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
-
 	// 3Dカメラ作成
 	std::unique_ptr<TPSCamera3D> sceneCamera3D = std::make_unique<TPSCamera3D>("SceneCamera3D");
 	// マネージャに追加
@@ -123,13 +112,14 @@ void DevelopScene::Update() {
 #if defined(DEBUG)|(DEVELOP)
 	// デバッグ用途の処理
 	ImGui::Begin("DevelopUI");
-
+	if (ImGui::Button("Play")) {
+		ChangeScene("Title");
+	}
 	ImGui::SeparatorText("Scene");
 	if (ImGui::Button("ResetScene")) {
 		ChangeScene("Develop");
 	}
-
-	if (ImGui::Button("StartCombatScene")) {
+	if (ImGui::Button("StartCombat")) {
 		sceneController_->Start(CombatSceneController::State::Start);
 	}
 	ImGui::Text("CurrentSceneState: ");

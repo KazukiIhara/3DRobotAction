@@ -52,14 +52,8 @@ void BeamCannon::Update() {
 	// 基底クラスの更新
 	BaseProjectileAttack::Update();
 
-	const float dt = MAGISYSTEM::GetDeltaTime();
-
-	const float maxLength = MAGISYSTEM::GetParameterValue<float>({ "DamageObjectParam","BeamCannon","MaxLength" });
-	const float speed = GetSpeed();
-
-	transParent_->AddScaleZ(speed * dt * 0.5f);
-	float scale = std::min(maxLength, transParent_->GetScale().z);
-	transParent_->SetScaleZ(scale);
+	const float length = GetLength();
+	transParent_->SetScaleZ(length * 0.5f);
 
 	const Vector3 dir = GetDir();
 	const Quaternion q = DirectionToQuaternion_s(dir);

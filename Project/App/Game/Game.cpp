@@ -9,6 +9,11 @@
 // GameScene
 #include "Scenes/Game/Develop/DevelopScene.h"
 
+#include "Scenes/Game/Title/TitleScene.h"
+#include "Scenes/Game/Menu/MenuScene.h"
+#include "Scenes/Game/Combat/CombatScene.h"
+#include "Scenes/Game/Result/ResultScene.h"
+
 Game::~Game() {}
 
 /// <summary>
@@ -28,6 +33,20 @@ void Game::Initialize() {
 	// 開発シーン
 	sceneManager_->AddScene<DevelopScene>("Develop");
 
+	// タイトルシーン
+	sceneManager_->AddScene<TitleScene>("Title");
+	// メニューシーン
+	sceneManager_->AddScene<MenuScene>("Menu");
+	// 戦闘シーン
+	sceneManager_->AddScene<CombatScene>("Combat");
+	// リザルトシーン
+	sceneManager_->AddScene<ResultScene>("Result");
+
+#if defined(DEVELOP)|(DEBUG)
 	// 最初のシーンを設定
-	sceneManager_->ChangeScene("Develop");
+	sceneManager_->StartScene("Develop");
+	return;
+
+#endif
+	sceneManager_->StartScene("Title");
 }

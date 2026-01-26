@@ -129,7 +129,7 @@ void BaseMech::DebugDraw() {
 	}
 }
 
-void BaseMech::DebugUpdate(bool isShowDebugUI, const BaseMech::InitParam& param) {
+void BaseMech::DebugUpdate([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] const BaseMech::InitParam& param) {
 #if defined(DEBUG) || defined(DEVELOP)
 	if (isShowDebugUI) {
 		DebugDraw();
