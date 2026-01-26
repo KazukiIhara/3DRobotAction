@@ -69,7 +69,8 @@ public:
 	bool GetIsAlive()const;
 	const CameraVector GetCameraVector()const;
 
-	const Matrix4x4 MakeBillBoardMat(const Vector3& translate, const Vector3& scale = { 1.0f,1.0f,1.0f })const;
+	const Matrix4x4 MakeBillBoardMat(const Vector3& translate, float rollRad = 0.0f, const Vector3& scale = { 1.0f,1.0f,1.0f }) const;
+
 	float GetFovY()const;
 
 	void SetIsUseYawPitch(bool isUseYawPitch);

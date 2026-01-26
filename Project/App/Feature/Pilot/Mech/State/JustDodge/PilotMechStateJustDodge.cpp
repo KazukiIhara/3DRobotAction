@@ -37,9 +37,6 @@ void PilotMechStateJustDodge::Enter([[maybe_unused]] PilotMech* mech) {
 }
 
 void PilotMechStateJustDodge::Update([[maybe_unused]] PilotMech* mech) {
-	// デルタタイムを取得
-	const float dt = MAGISYSTEM::GetDeltaTime();
-
 	// 入力取得
 	auto commandPair = mech->GetInputSys()->GetPilotCommand();
 	// 移動入力なしでIdleに遷移
