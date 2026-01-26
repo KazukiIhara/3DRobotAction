@@ -33,6 +33,7 @@ Bullet::Bullet(const Bullet::InitParam& initParam, RefContext ref) :
 	effectMat_.baseColor = Color::Gold;
 	effectMat_.blendMode = BlendMode::Add;
 	effectMat_.textureName = "Circle.png";
+
 }
 
 void Bullet::Update() {

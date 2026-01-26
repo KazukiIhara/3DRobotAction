@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 // 基底クラス
 #include "Feature/Damage/Object/ProjectileAttack/Base/BaseProjectileAttack.h"
 
@@ -31,4 +33,9 @@ public:
 
 private:
 	GameEffectManager* effectManager_;
+
+	Transform3D* transParent_;
+	std::array<Transform3D*, 4> trans_;
+	MaterialData3D mat_;
+	MaterialData3D matBlue_;
 };

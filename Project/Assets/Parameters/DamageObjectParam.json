@@ -1,0 +1,16 @@
+{
+  "BeamCannon": {
+    "InnerThickness": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "MaxLength": {
+      "type": "Float",
+      "value": 30.0
+    },
+    "OuterThickness": {
+      "type": "Float",
+      "value": 1.5
+    }
+  }
+}

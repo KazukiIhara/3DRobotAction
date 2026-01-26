@@ -24,6 +24,11 @@ void PilotMechStateMove::Update(PilotMech* mech) {
 	if (commandPair.first) {
 		auto command = commandPair.second;
 
+		// 左手武器で攻撃
+		if (command.attackL) {
+			mech->GetWeapon("BeamCannonRifle")->Attack();
+		}
+
 		// 右手武器で攻撃
 		if (command.attackR) {
 			mech->GetWeapon("MachineGun")->Attack();
