@@ -339,7 +339,7 @@ void DamageCollisionSystem::CheckCollision() {
 				// プレイヤー機体の場合 先にジャスト回避コライダーとの判定を取る
 				if (mechTag == FriendlyTag::PlayerSide) {
 					PilotMech* pm = dynamic_cast<PilotMech*>(mech);
-					if (pm) {
+					if (pm && pm->GetCurrentState() == PilotMech::State::Dodge) {
 						auto jdC = pm->GetJustDodgeCollider();
 						PilotMechJustDodgeCollider::Sphere sphere = jdC->GetCollider();
 						DamageCollider::Param jdParam = DamageCollider::Sphere{ sphere.center,sphere.radius };
@@ -366,7 +366,7 @@ void DamageCollisionSystem::CheckCollision() {
 					hitInfo.power = gP.power;
 					mechCollider->AddHitInfo(hitInfo);
 
-					// ダメージ側のみ衝突情報セット
+					// ダメージ側衝突情報セット
 					DamageCollider::HitInfo hit{};
 					hit.isHit_ = true;
 					dmg->SetHitInfo(hit);

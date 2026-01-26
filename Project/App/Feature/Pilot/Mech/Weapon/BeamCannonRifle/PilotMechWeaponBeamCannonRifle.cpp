@@ -38,7 +38,7 @@ void PilotMechWeaponBeamCannonRifle::Draw() {
 	MAGISYSTEM::DrawModel("PilotMechBeamCannonRifle", transform_->GetWorldMatrix(), mat_);
 }
 
-void PilotMechWeaponBeamCannonRifle::Attack() {
+void PilotMechWeaponBeamCannonRifle::Attack([[maybe_unused]] Damage::Power power) {
 	// パラメータ
 	const Vector3 shotPos = fireTransform_->GetWorldPosition();
 	const Vector3 targetPos = mech_->GetTargetWorldPos();

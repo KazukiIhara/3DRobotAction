@@ -10,9 +10,11 @@
 // ステートクラス
 #include "Feature/Boss/Mech/State/Idle/BossMechStateIdle.h"
 #include "Feature/Boss/Mech/State/LaserShot/BossMechStateLaserShot.h"
+#include "Feature/Boss/Mech/State/LaserBladeSlash/BossMechStateLaserBladeSlash.h"
 
 // 武器クラス
 #include "Feature/Boss/Mech/Weapon/LaserGun/BossMechWeaponLaserGun.h"
+#include "Feature/Boss/Mech/Weapon/LaserBlade/BossMechWeaponLaserBlade.h"
 
 // プレイヤー機体
 #include "Feature/Pilot/Mech/PilotMech.h"
@@ -35,6 +37,9 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 	// 武器をマップに追加
 	AddWeapon("LaserGun", std::make_unique<BossMechWeaponLaserGun>(this));
 
+	// 武器をマップに追加
+	AddWeapon("LaserBlade", std::make_unique<BossMechWeaponLaserBlade>(this));
+
 	{
 		// ステータスを初期化
 		BossMechStatus::InitParam sInitParam{};
@@ -45,6 +50,7 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<BossMechStateIdle>();
 	states_[State::LaserShot] = std::make_unique<BossMechStateLaserShot>();
+	states_[State::LaserBladeSlash] = std::make_unique<BossMechStateLaserBladeSlash>();
 
 	// 最初のステートを設定
 	ChangeState(State::Idle);
@@ -119,6 +125,8 @@ const std::string BossMech::StateToString(BossMech::State state) {
 			return "Idle";
 		case BossMech::State::LaserShot:
 			return "LaserShot";
+		case BossMech::State::LaserBladeSlash:
+			return "LaserBladeSlash";
 		default:
 			return "Unknown";
 	}

@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Math/Types/AllMathTypes.h"
+#include "Feature/Damage/Damage.h"
 
 // 前方宣言
 class Transform3D;
@@ -23,12 +24,12 @@ class BaseMechWeapon {
 public:
 	BaseMechWeapon(BaseMech* mech);
 	virtual ~BaseMechWeapon() = default;
-	
+
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 	virtual void DebugDraw();
 
-	virtual void Attack() = 0;
+	virtual void Attack(Damage::Power power = Damage::Power::Small) = 0;
 
 	Transform3D* GetTransform();
 	const Vector3 GetFireWorldPos()const;
