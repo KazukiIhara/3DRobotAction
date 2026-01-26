@@ -219,6 +219,7 @@ void DevelopScene::Finalize() {
 
 void DevelopScene::LoadResource() {
 	// テクスチャ
+	MAGISYSTEM::LoadTexture("white.png");
 	MAGISYSTEM::LoadTexture("gradation.png");
 	MAGISYSTEM::LoadTexture("dodgeEffect.png");
 	MAGISYSTEM::LoadTexture("Circle2.png");
