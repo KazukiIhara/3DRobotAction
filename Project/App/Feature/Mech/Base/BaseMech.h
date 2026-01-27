@@ -25,6 +25,8 @@
 #include "Feature/Mech/System/Move/MechMoveSystem.h"
 // 地形押し戻し、接地判定
 #include "Feature/Mech/System/Kinematic/MechKinematicSystem.h"
+// 接地時簡易IK
+#include "Feature/Mech/System/LegLanding/MechLegLandingSystem.h"
 // 回転制御クラス
 #include "Feature/Mech/System/RotControl/MechRotControlSystem.h"
 // コライダークラス
@@ -148,9 +150,6 @@ private:
 	void BuildPartsList();
 	void BuildPartsTransformArray();
 
-	// デバッグフラグ切り替え
-	void SwitchDebugDrawFlagImGui();
-
 	void SwitchIsDebugDraw();
 	void SwitchEditPartsTransform();
 	void SwitchStopUpdate();
@@ -191,6 +190,8 @@ private:
 	std::unique_ptr<MechMoveSystem> moveSystem_;
 	// 押し戻し、接地判定クラス
 	std::unique_ptr<MechKinematicSystem> kinematicSystem_;
+	// 簡易IKクラス
+	std::unique_ptr<MechLegLandingSystem> legLandingSystem_;
 	// 回転制御クラス
 	std::unique_ptr<MechRotControlSystem> rotControlSystem_;
 	// コライダー

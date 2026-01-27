@@ -104,6 +104,11 @@ namespace {
 			const float timeEndLag = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserShot","TimeEndLag" });
 			mech->GetAnimator()->PlayAnimation("BossLaserShot_EndLag", timeEndLag, 0.1f, EasingType::EaseInOutCubic);
 			timer_ = timeEndLag;
+
+			// プレイヤーの方を向かない
+			auto& lookFlag = mech->GetRotControlSystem()->GetLookAtFlag();
+			lookFlag.mech.yaw = false;
+
 			end_ = false;
 
 		}
@@ -111,6 +116,10 @@ namespace {
 		void Update([[maybe_unused]] BossMech* mech) override {
 			// dt取得
 			const float dt = MAGISYSTEM::GetDeltaTime();
+
+			// プレイヤーの方を向かない
+			auto& lookFlag = mech->GetRotControlSystem()->GetLookAtFlag();
+			lookFlag.mech.yaw = false;
 
 			// タイマー更新
 			timer_ -= dt;

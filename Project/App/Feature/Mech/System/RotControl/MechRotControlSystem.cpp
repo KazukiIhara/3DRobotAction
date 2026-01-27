@@ -5,6 +5,9 @@
 #include "3D/Transform3D/Transform3D.h"
 #include "Feature/Mech/Base/BaseMech.h"
 
+#include "MAGI.h"
+
+using namespace Magi;
 using namespace MAGIMath;
 
 MechRotControlSystem::MechRotControlSystem(BaseMech* mech) {
@@ -34,9 +37,17 @@ void MechRotControlSystem::SetTurnToMoveDir(bool flag) {
 }
 
 void MechRotControlSystem::TurnToMoveDirection() {
+	if (lookAtFlag_.mech.yaw || lookAtFlag_.mech.pitch) {
+		return;
+	}
 	if (turnToMoveDir_) {
 		const Vector3 dir = mech_->GetMoveSystem()->GetDir();
-		const Quaternion targetQ = DirectionToQuaternionYaw_s(dir);
+		const float dt = MAGISYSTEM::GetDeltaTime();
+		const float expT = CalExpT(dt, 0.5f, 1.0f);
+		const Quaternion curQ = mech_->GetModelTransform()->GetQuaternion();
+		// クオータニオンを計算
+		const Quaternion targetQ = Slerp(curQ, DirectionToQuaternion_s(dir), expT);
+		// 値をぶち込む
 		mech_->GetModelTransform()->SetQuaternion(targetQ);
 	}
 }
@@ -53,20 +64,24 @@ void MechRotControlSystem::RotateMech() {
 	// 向きを計算
 	const Vector3 dir = targetCenter - mechCenter;
 
+	const float dt = MAGISYSTEM::GetDeltaTime();
+	const float expT = CalExpT(dt, 0.5f, 1.0f);
+	const Quaternion curQ = mech_->GetModelTransform()->GetQuaternion();
+
 	// 機体
 	if (lookAtFlag_.mech.yaw && lookAtFlag_.mech.pitch) {
 		// クオータニオンを計算
-		const Quaternion targetQ = DirectionToQuaternion_s(dir);
+		const Quaternion targetQ = Slerp(curQ, DirectionToQuaternion_s(dir), expT);
 		// ひとまず値をぶち込む
 		mech_->GetModelTransform()->SetQuaternion(targetQ);
 	} else if (lookAtFlag_.mech.yaw) {
 		// クオータニオンを計算
-		const Quaternion targetQ = DirectionToQuaternionYaw_s(dir);
+		const Quaternion targetQ = Slerp(curQ, DirectionToQuaternionYaw_s(dir), expT);
 		// ひとまず値をぶち込む
 		mech_->GetModelTransform()->SetQuaternion(targetQ);
 	} else if (lookAtFlag_.mech.pitch) {
 		// クオータニオンを計算
-		const Quaternion targetQ = DirectionToQuaternionPitch_s(dir);
+		const Quaternion targetQ = Slerp(curQ, DirectionToQuaternionPitch_s(dir), expT);
 		// ひとまず値をぶち込む
 		mech_->GetModelTransform()->SetQuaternion(targetQ);
 	}

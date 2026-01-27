@@ -10,15 +10,18 @@ Boss::Boss(BaseMech::RefContext ref, PilotMech* pilotMech) {
 
 	// 機体の作成
 	mech_ = std::make_unique<BossMech>(initParam_, ref, pilotMech);
+
 	// AIの作成
-
-
+	ai_ = std::make_unique<BossAI>(mech_.get());
 }
 
 void Boss::Update() {
 #if defined (DEBUG)|(DEVELOP)
 	LoadMechInitParam();
 #endif
+
+	// AI更新
+	ai_->Update(flag_.isAIActive, flag_.isPause);
 
 	// 機体の更新
 	mech_->Update(flag_.isDebugDraw, initParam_);
@@ -36,7 +39,7 @@ BossMech* Boss::GetMech() {
 
 void Boss::LoadMechInitParam() {
 
-	initParam_.hp = MAGISYSTEM::GetParameterValue<int32_t>({ "MechInitParam","Boss","HP"});
+	initParam_.hp = MAGISYSTEM::GetParameterValue<int32_t>({ "MechInitParam","Boss","HP" });
 
 	initParam_.head.modelName = MAGISYSTEM::GetParameterValue<std::string>({ "MechInitParam","Boss","Head","ModelName" });
 	initParam_.head.translate = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Boss","Head","Translate" });

@@ -26,19 +26,19 @@
   "VerticalMoveSystem": {
     "BoostAccel": {
       "type": "Float",
-      "value": 30.0
+      "value": 25.0
     },
     "Gravity": {
       "type": "Float",
-      "value": 25.0
+      "value": 35.0
     },
     "JumpFirstSpeed": {
       "type": "Float",
-      "value": 12.0
+      "value": 20.0
     },
     "MaxFallSpeed": {
       "type": "Float",
-      "value": 35.0
+      "value": 40.0
     },
     "MaxUpSpeed": {
       "type": "Float",

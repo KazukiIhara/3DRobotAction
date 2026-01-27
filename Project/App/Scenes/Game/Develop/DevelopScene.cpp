@@ -1,6 +1,5 @@
 #include "DevelopScene.h"
 
-
 using namespace Magi;
 
 void DevelopScene::Initialize() {
@@ -103,7 +102,7 @@ void DevelopScene::Initialize() {
 
 
 	// アニメーション作成クラスにボスをセット
-	mechAnimationEdit_->SetBaseMech(boss_->GetMech());
+	mechAnimationEdit_->SetBaseMech(pilot_->GetMech());
 
 }
 
@@ -127,14 +126,16 @@ void DevelopScene::Update() {
 	ImGui::Text(sceneController_->GetCurrentStateStr().c_str());
 
 	ImGui::SeparatorText("Pilot");
-	if (ImGui::Button("PilotDebugDraw")) {
+	if (ImGui::Button("PilotMechDebugDraw")) {
 		pilot_->SwitchDebugDraw();
 	}
 	ImGui::SeparatorText("Boss");
-	if (ImGui::Button("BossDebugDraw")) {
+	if (ImGui::Button("BossMechDebugDraw")) {
 		boss_->SwitchDebugDraw();
 	}
-
+	if (ImGui::Button("ActiveAI")) {
+		boss_->SwitchAIActive();
+	}
 	ImGui::SeparatorText("Stage");
 	if (ImGui::Button("StageDebugDraw")) {
 		stageData_->SwitchShowImGui();
@@ -146,6 +147,8 @@ void DevelopScene::Update() {
 	}
 
 	ImGui::End();
+
+
 
 	// 機体アニメーション作成クラス
 	mechAnimationEdit_->Update();

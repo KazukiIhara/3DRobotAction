@@ -45,8 +45,7 @@ void Game::Initialize() {
 #if defined(DEVELOP)|(DEBUG)
 	// 最初のシーンを設定
 	sceneManager_->StartScene("Develop");
-	return;
-
-#endif
+#else
 	sceneManager_->StartScene("Title");
+#endif
 }

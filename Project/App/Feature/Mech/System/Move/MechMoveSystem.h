@@ -29,6 +29,8 @@ public:
 	void SetVerticalSpeed(float vertical);
 	float GetVerticalSpeed() const;
 
+	void Reset();
+
 	// 回転を補間でゆっくりにする
 	void ApplyRotationInertia();
 private:

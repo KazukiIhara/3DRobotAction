@@ -108,6 +108,10 @@ PilotMech* BossMech::GetPilotMech() {
 	return pilotMech_;
 }
 
+BossMech::State BossMech::GetCurrentState()const{
+	return currentState_.first;
+}
+
 BossMechBaseState* BossMech::GetState(BossMech::State state) {
 	// ステートテーブルから検索
 	auto it = states_.find(state);

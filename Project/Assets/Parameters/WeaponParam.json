@@ -1,6 +1,14 @@
 {
   "Boss": {
     "LaserBlade": {
+      "BladeOffset": {
+        "type": "Vec3",
+        "value": {
+          "x": 0.0,
+          "y": -1.3700000047683716,
+          "z": -0.4000000059604645
+        }
+      },
       "Damage": {
         "type": "Int32",
         "value": 100
@@ -13,9 +21,43 @@
           "z": -0.4000000059604645
         }
       },
+      "InnerColor": {
+        "type": "Vec4",
+        "value": {
+          "w": 1.0,
+          "x": 1.0,
+          "y": 0.30000001192092896,
+          "z": 0.30000001192092896
+        }
+      },
+      "InnerLength": {
+        "type": "Float",
+        "value": 4.0
+      },
+      "InnerRadius": {
+        "type": "Float",
+        "value": 0.15000000596046448
+      },
       "Life": {
         "type": "Float",
         "value": 0.5
+      },
+      "OuterColor": {
+        "type": "Vec4",
+        "value": {
+          "w": 1.0,
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.20000000298023224
+        }
+      },
+      "OuterLength": {
+        "type": "Float",
+        "value": 4.0
+      },
+      "OuterRadius": {
+        "type": "Float",
+        "value": 0.20999999344348907
       },
       "Radius": {
         "type": "Float",

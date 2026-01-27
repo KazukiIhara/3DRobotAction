@@ -67,6 +67,15 @@ float MechMoveSystem::GetVerticalSpeed() const {
 	return verticalSpeed_;
 }
 
+void MechMoveSystem::Reset() {
+	dir_ = { 0.0f,0.0f,1.0f };
+	preDir_ = dir_;
+	acc_ = 0.0f;
+	speed_ = 0.0f;
+	maxSpeed_ = 0.0f;
+	verticalSpeed_ = 0.0f;
+}
+
 void MechMoveSystem::ApplyRotationInertia() {
 	// デルタタイム取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
