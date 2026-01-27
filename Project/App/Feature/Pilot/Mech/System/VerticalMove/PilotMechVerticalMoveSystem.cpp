@@ -32,7 +32,7 @@ void PilotMechVerticalMoveSystem::PreUpdate() {
 	const float gravity = MAGISYSTEM::GetParameterValue<float>({ "PilotMechParam","VerticalMoveSystem","Gravity" });
 	// ジャンプ開始時に与える上向き初速
 	const float jumpFirstSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechParam","VerticalMoveSystem","JumpFirstSpeed" });
-	// 長押し中に加える上向き加速度（スラスト）
+	// 長押し中に加える上向き加速度
 	const float boostAccel = MAGISYSTEM::GetParameterValue<float>({ "PilotMechParam","VerticalMoveSystem","BoostAccel" });
 	// 上昇速度の上限
 	const float maxUpSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechParam","VerticalMoveSystem","MaxUpSpeed" });
@@ -55,12 +55,13 @@ void PilotMechVerticalMoveSystem::PreUpdate() {
 		vy_ = jumpFirstSpeed;
 	}
 
-	// 押している間はいつでも上昇加速、離したら重力で落下
+	// 押している間はいつでも上昇加速
 	if (jumpHold) {
 		vy_ += boostAccel * dt;
-	} else {
-		vy_ -= gravity * dt;
-	}
+	} 
+
+	// 重力を掛ける
+	vy_ -= gravity * dt;
 
 	// 上昇・落下の速度を制限
 	vy_ = std::min(vy_, maxUpSpeed);

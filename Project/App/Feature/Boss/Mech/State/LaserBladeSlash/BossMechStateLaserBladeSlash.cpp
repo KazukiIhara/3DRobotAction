@@ -8,7 +8,7 @@
 #include "MAGI.h"
 
 #include "Feature/Boss/Mech/BossMech.h"
-
+#include "Feature/Boss/Mech/Weapon/LaserBlade/BossMechWeaponLaserBlade.h"
 #include "Feature/Boss/Mech/State/PhaseSys/IBossMechStatePhase.h"
 
 using namespace Magi;
@@ -27,12 +27,42 @@ namespace {
 			timer_ = time;
 
 			mech->GetAnimator()->PlayAnimation("BossLaserBladeSlash_StartUp", time, 0.1f, EasingType::EaseInOutCubic);
+
+			// ブレードの設定
+			auto blade = dynamic_cast<BossMechWeaponLaserBlade*>(mech->GetWeapon("LaserBlade"));
+			blade->SetBladeLength(0.0f);
+			const float innerRad = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserBlade","InnerRadius" });
+			const float outerRad = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserBlade","OuterRadius" });
+			blade->SetInnerRadius(innerRad);
+			blade->SetOuterRadius(outerRad);
+
+			// プレイヤーの位置に向かう処理
+			const Vector3 targetPos = mech->GetTargetWorldPos();
+			const Vector3 curPos = mech->GetCenterPos();
+			const Vector3 dir = targetPos - curPos;
+			const float len = Length(dir);
+			const Vector3 dirN = Normalize(dir);
+			auto ms = mech->GetMoveSystem();
+			ms->SetDir(dirN);
+			ms->SetSpeed(len);
+			ms->SetMaxSpeed(len);
 			end_ = false;
 		}
 
 		void Update([[maybe_unused]] BossMech* mech) override {
 			// dt取得
 			const float dt = MAGISYSTEM::GetDeltaTime();
+
+			const float time = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserBladeSlash","TimeStartUp" });
+
+			if (timer_ <= time * 0.5f) {
+				auto blade = dynamic_cast<BossMechWeaponLaserBlade*>(mech->GetWeapon("LaserBlade"));
+				const float curLen = blade->GetLength();
+				const float tarLen = MAGISYSTEM::GetParameterValue<float>({ "WeaponParam","Boss","LaserBlade","InnerLength" });
+				const float bladeT = CalExpT(dt, time * 0.5f, 1.0f);
+				const float len = Lerp(curLen, tarLen, bladeT);
+				blade->SetBladeLength(len);
+			}
 
 			// タイマー更新
 			timer_ -= dt;
@@ -44,7 +74,10 @@ namespace {
 			}
 		}
 
-		void Exit([[maybe_unused]] BossMech* mech) override {}
+		void Exit([[maybe_unused]] BossMech* mech) override {
+			auto ms = mech->GetMoveSystem();
+			ms->Reset();
+		}
 
 		bool EndRequest() override {
 			return end_;
@@ -84,7 +117,18 @@ namespace {
 			}
 		}
 
-		void Exit([[maybe_unused]] BossMech* mech) override {}
+		void Exit([[maybe_unused]] BossMech* mech) override {
+			// プレイヤーの位置に向かう処理
+			const Vector3 targetPos = mech->GetTargetWorldPos();
+			const Vector3 curPos = mech->GetCenterPos();
+			const Vector3 dir = targetPos - curPos;
+			const float len = Length(dir);
+			const Vector3 dirN = Normalize(dir);
+			auto ms = mech->GetMoveSystem();
+			ms->SetDir(dirN);
+			ms->SetSpeed(len);
+			ms->SetMaxSpeed(len);
+		}
 
 		bool EndRequest() override {
 			return end_;
@@ -122,7 +166,10 @@ namespace {
 			}
 		}
 
-		void Exit([[maybe_unused]] BossMech* mech) override {}
+		void Exit([[maybe_unused]] BossMech* mech) override {
+			auto ms = mech->GetMoveSystem();
+			ms->Reset();
+		}
 
 		bool EndRequest() override {
 			return end_;
@@ -146,6 +193,17 @@ namespace {
 		void Update([[maybe_unused]] BossMech* mech) override {
 			// dt取得
 			const float dt = MAGISYSTEM::GetDeltaTime();
+
+			const float time = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserBladeSlash","TimeEndLag" });
+
+			auto blade = dynamic_cast<BossMechWeaponLaserBlade*>(mech->GetWeapon("LaserBlade"));
+			const float curInnerRad = blade->GetInnerRad();
+			const float curOuterRad = blade->GetOuterRad();
+			const float bladeT = CalExpT(dt, time, 1.0f);
+			const float innerRad = Lerp(curInnerRad, 0.0f, bladeT);
+			const float outerRad = Lerp(curOuterRad, 0.0f, bladeT);
+			blade->SetInnerRadius(innerRad);
+			blade->SetOuterRadius(outerRad);
 
 			// タイマー更新
 			timer_ -= dt;

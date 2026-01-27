@@ -312,7 +312,7 @@ const CameraVector Camera3D::GetCameraVector() const {
 	return cameraVector_;
 }
 
-const Matrix4x4 Camera3D::MakeBillBoardMat(const Vector3& translate, float rollRad, const Vector3& scale) const {
+Matrix4x4 Camera3D::MakeBillboardMat(const Vector3& translate, float rollRad, const Vector3& scale) const {
 
 	Matrix4x4 billboard = MakeIdentityMatrix4x4();
 
@@ -359,6 +359,91 @@ const Matrix4x4 Camera3D::MakeBillBoardMat(const Vector3& translate, float rollR
 	billboard.m[1][3] = 0.0f;
 
 	// Z軸
+	billboard.m[2][0] = forward.x * sz;
+	billboard.m[2][1] = forward.y * sz;
+	billboard.m[2][2] = forward.z * sz;
+	billboard.m[2][3] = 0.0f;
+
+	// 平行移動
+	billboard.m[3][0] = translate.x;
+	billboard.m[3][1] = translate.y;
+	billboard.m[3][2] = translate.z;
+	billboard.m[3][3] = 1.0f;
+
+	return billboard;
+}
+
+Matrix4x4 Camera3D::MakeAxialBillboardMat(const Vector3& translate, const Vector3& axisForward, float rollRad, const Vector3& scale) const {
+	Matrix4x4 billboard = MakeIdentityMatrix4x4();
+
+	// カメラの軸
+	const CameraVector camVec = GetCameraVector();
+	Vector3 camForward = Normalize(camVec.forward);
+
+	// カメラforwardの向きを合わせる
+	camForward = -camForward;
+
+	// 軸をZ軸として固定
+	Vector3 forward = axisForward;
+	if (LengthSquared(forward) <= 1e-8f) {
+		forward = { 0.0f, 0.0f, 1.0f };
+	}
+	forward = Normalize(forward);
+
+	// rightは カメラ方向 x 軸で作る
+	Vector3 right = Cross(camForward, forward);
+
+	// ほぼ平行なら別軸で作り直す
+	if (LengthSquared(right) <= 1e-8f) {
+		Vector3 camUp = camVec.up;
+		if (LengthSquared(camUp) <= 1e-8f) {
+			camUp = { 0.0f, 1.0f, 0.0f };
+		}
+		camUp = Normalize(camUp);
+
+		right = Cross(camUp, forward);
+		if (LengthSquared(right) <= 1e-8f) {
+			right = Cross({ 1.0f, 0.0f, 0.0f }, forward);
+		}
+	}
+
+	right = Normalize(right);
+
+	// upは直交化
+	Vector3 up = Normalize(Cross(forward, right));
+
+	// roll回転
+	{
+		const float c = std::cos(rollRad);
+		const float s = std::sin(rollRad);
+
+		// rightを回す
+		const Vector3 r = right * c + up * s;
+		// upを回す
+		const Vector3 u = up * c - right * s;
+
+		right = r;
+		up = u;
+	}
+
+	// スケール
+	const float sx = scale.x;
+	const float sy = scale.y;
+	const float sz = 1.0f;
+
+	// X軸
+	billboard.m[0][0] = right.x * sx;
+	billboard.m[0][1] = right.y * sx;
+	billboard.m[0][2] = right.z * sx;
+	billboard.m[0][3] = 0.0f;
+
+	// Y軸
+	billboard.m[1][0] = up.x * sy;
+	billboard.m[1][1] = up.y * sy;
+	billboard.m[1][2] = up.z * sy;
+	billboard.m[1][3] = 0.0f;
+
+	// Z軸（固定軸）
 	billboard.m[2][0] = forward.x * sz;
 	billboard.m[2][1] = forward.y * sz;
 	billboard.m[2][2] = forward.z * sz;

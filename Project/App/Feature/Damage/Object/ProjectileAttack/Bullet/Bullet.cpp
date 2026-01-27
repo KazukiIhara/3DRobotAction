@@ -65,7 +65,7 @@ void Bullet::Draw() {
 	effectScale_ = { rand,rand,1.0f };
 	// 少しもわっとさせる
 	const Vector3 trans = bulletTransParent_->GetWorldPosition();
-	const Matrix4x4 wMat = MAGISYSTEM::GetCurrentCamera3D()->MakeBillBoardMat(trans, 0.0f, effectScale_);
+	const Matrix4x4 wMat = MAGISYSTEM::GetCurrentCamera3D()->MakeBillboardMat(trans, 0.0f, effectScale_);
 	MAGISYSTEM::DrawPlane3D(wMat, PlaneData3D{}, effectMat_);
 }
 

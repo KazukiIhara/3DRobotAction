@@ -126,8 +126,8 @@ void JustDodgeEffect::Draw() {
 
 	// カメラからビルボード行列作成
 	const Camera3D* currentCamera = MAGISYSTEM::GetCurrentCamera3D();
-	const Matrix4x4 ringWMat = currentCamera->MakeBillBoardMat(ringTrans_);
-	const Matrix4x4 planeWMat = currentCamera->MakeBillBoardMat(planeTrans_, 0.0f, planeScale_);
+	const Matrix4x4 ringWMat = currentCamera->MakeBillboardMat(ringTrans_);
+	const Matrix4x4 planeWMat = currentCamera->MakeBillboardMat(planeTrans_, 0.0f, planeScale_);
 
 	// リング描画
 	MAGISYSTEM::DrawRing3D(ringWMat, ringData_, ringMat_);

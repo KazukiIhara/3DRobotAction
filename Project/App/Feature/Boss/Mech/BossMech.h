@@ -43,6 +43,9 @@ public:
 	// パイロット機体の参照を取得
 	PilotMech* GetPilotMech();
 
+	// 現在のステートを取得
+	BossMech::State GetCurrentState()const;
+
 private:
 	// 対応するステートを取得
 	BossMechBaseState* GetState(BossMech::State state);

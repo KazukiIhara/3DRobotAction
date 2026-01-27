@@ -379,7 +379,7 @@ void Transform3D::SetTranslateZ(float z) {
 }
 
 void Transform3D::SetQuaternion(const Quaternion& rotate) {
-	rotate_ = rotate;
+	rotate_ = MAGIMath::Normalize(rotate);
 	isChanged_ = true;
 }
 

@@ -189,7 +189,7 @@ bool operator!=(const Quaternion& q1, const Quaternion& q2) {
 }
 
 bool operator==(const Quaternion& q1, const Quaternion& q2) {
-	return (q1.x == q2.x) || (q1.y == q2.y) || (q1.z == q2.z) || (q1.w == q2.w);
+	return (q1.x == q2.x) && (q1.y == q2.y) && (q1.z == q2.z) && (q1.w == q2.w);
 }
 
 Vector3 MAGIMath::MakeZeroVector3() {
@@ -345,9 +345,9 @@ Vector3 MAGIMath::Forward(const Vector3& rotate) {
 Vector3 MAGIMath::Forward(const Quaternion& q) {
 	return Normalize(Vector3{
 		2.0f * (q.x * q.z + q.w * q.y),
-		2.0f * (q.y * q.z - q.w * q.x),
+		2.0f * (q.y * q.z + q.w * q.x),
 		1.0f - 2.0f * (q.x * q.x + q.y * q.y)
-		});
+	});
 }
 
 Vector3 MAGIMath::Right(const Quaternion& q) {
@@ -847,32 +847,30 @@ Matrix4x4 MAGIMath::MakeAffineMatrix(const Vector3& scale, const Quaternion& rot
 
 void MAGIMath::DecomposeAffineMatrix(const Matrix4x4& matrix, Vector3& outScale, Quaternion& outRotation, Vector3& outTranslate) {
 	// 平行移動
-	outTranslate = Vector3(matrix.m[3][0], matrix.m[3][1], matrix.m[3][2]);
+	outTranslate = { matrix.m[3][0], matrix.m[3][1], matrix.m[3][2] };
 
-	// スケール抽出
-	outScale.x = Length(Vector3(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2]));
-	outScale.y = Length(Vector3(matrix.m[1][0], matrix.m[1][1], matrix.m[1][2]));
-	outScale.z = Length(Vector3(matrix.m[2][0], matrix.m[2][1], matrix.m[2][2]));
+	// 列ベクトル
+	Vector3 xAxis = { matrix.m[0][0], matrix.m[1][0], matrix.m[2][0] };
+	Vector3 yAxis = { matrix.m[0][1], matrix.m[1][1], matrix.m[2][1] };
+	Vector3 zAxis = { matrix.m[0][2], matrix.m[1][2], matrix.m[2][2] };
 
-	// スケーリング除去して回転行列を生成
-	Matrix3x3 rotMatrix;
+	// スケール
+	outScale.x = Length(xAxis);
+	outScale.y = Length(yAxis);
+	outScale.z = Length(zAxis);
 
-	// X軸
-	rotMatrix.m[0][0] = matrix.m[0][0] / outScale.x;
-	rotMatrix.m[0][1] = matrix.m[0][1] / outScale.x;
-	rotMatrix.m[0][2] = matrix.m[0][2] / outScale.x;
+	// スケール除去
+	xAxis = xAxis / outScale.x;
+	yAxis = yAxis / outScale.y;
+	zAxis = zAxis / outScale.z;
 
-	// Y軸
-	rotMatrix.m[1][0] = matrix.m[1][0] / outScale.y;
-	rotMatrix.m[1][1] = matrix.m[1][1] / outScale.y;
-	rotMatrix.m[1][2] = matrix.m[1][2] / outScale.y;
+	// 回転行列
+	Matrix3x3 rot{};
+	rot.m[0][0] = xAxis.x; rot.m[1][0] = xAxis.y; rot.m[2][0] = xAxis.z;
+	rot.m[0][1] = yAxis.x; rot.m[1][1] = yAxis.y; rot.m[2][1] = yAxis.z;
+	rot.m[0][2] = zAxis.x; rot.m[1][2] = zAxis.y; rot.m[2][2] = zAxis.z;
 
-	// Z軸
-	rotMatrix.m[2][0] = matrix.m[2][0] / outScale.z;
-	rotMatrix.m[2][1] = matrix.m[2][1] / outScale.z;
-	rotMatrix.m[2][2] = matrix.m[2][2] / outScale.z;
-
-	outRotation = MatrixToQuaternion(rotMatrix);
+	outRotation = MatrixToQuaternion(rot);
 }
 
 Quaternion MAGIMath::MatrixToQuaternion(const Matrix3x3& m) {

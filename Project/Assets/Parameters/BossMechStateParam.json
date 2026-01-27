@@ -6,7 +6,7 @@
     },
     "TimeAttack2": {
       "type": "Float",
-      "value": 0.4000000059604645
+      "value": 0.6000000238418579
     },
     "TimeEndLag": {
       "type": "Float",
@@ -14,7 +14,7 @@
     },
     "TimeStartUp": {
       "type": "Float",
-      "value": 0.5
+      "value": 0.6000000238418579
     }
   },
   "LaserShot": {

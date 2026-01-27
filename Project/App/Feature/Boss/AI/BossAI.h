@@ -1,38 +1,74 @@
 #pragma once
 
 // C++
-#include <memory>
-#include <unordered_map>
+#include <cstdint>
+#include <limits>
+#include <random>
 
-// 前方宣言
 class BossMech;
-class MechCore;
-class AttackCollisionManager;
 
-// 実装メモ
-
-/*
-	ボス機体のステートを状況に応じて変更させるクラス
-	最初は一定時間ごとにステートを乱数で変える実装
-	余裕があればUtilityAIなどを検討する
-*/
-
-/// <summary>
-/// ボスAIクラス
-/// </summary>
 class BossAI {
 public:
-	BossAI(BossMech* mech, MechCore* playerMech, AttackCollisionManager* collisionManager);
+	struct Param {
+		// 行動決定の更新間隔
+		float thinkIntervalSec = 0.20f;
+		// 行動を選んだ直後のクールダウン
+		float commitAfterSelectSec = 0.15f;
+		// 同点のときのランダム性
+		float randomJitter = 0.05f;
+
+		// 距離しきい値（例）
+		float nearDist = 12.0f;
+		float farDist = 35.0f;
+	};
+
+public:
+	explicit BossAI(BossMech* mech);
 	~BossAI() = default;
 
-	void Update();
+	void Update(bool isActive, bool isPause);
+	void SetParam(const Param& param);
 
 private:
-	// 機体の参照ポインタ
-	BossMech* mech_ = nullptr;
-	// プレイヤーの参照ポインタ
-	MechCore* player_ = nullptr;
-	// 攻撃判定マネージャのポインタ
-	AttackCollisionManager* attackCollisionManager_ = nullptr;
+	enum class Action {
+		Idle,
+		LaserShot,
+		LaserBladeSlash,
+	};
 
+	struct ActionScore {
+		Action action = Action::Idle;
+		float score = -std::numeric_limits<float>::infinity();
+	};
+
+private:
+	// 思考タイマー更新
+	bool UpdateThinkTimer();
+	// 行動候補の中から1つ選ぶ
+	Action SelectAction();
+
+	// 距離評価
+	float CalcDistanceToPilot() const;
+
+	// 各行動のスコア
+	float ScoreIdle(float dist) const;
+	float ScoreLaserShot(float dist) const;
+	float ScoreLaserBladeSlash(float dist) const;
+
+	// ステートへ反映
+	void ApplyAction(Action action);
+
+	// ランダム微調整
+	float Jitter();
+
+private:
+	BossMech* mech_ = nullptr;
+
+	Param param_{};
+
+	float thinkTimerSec_ = 0.0f;
+	float commitTimerSec_ = 0.0f;
+
+	std::mt19937 rng_{ 0x1234567u };
+	mutable std::uniform_real_distribution<float> dist01_{ 0.0f, 1.0f };
 };

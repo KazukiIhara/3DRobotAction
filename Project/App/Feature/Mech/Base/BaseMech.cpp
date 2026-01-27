@@ -38,6 +38,8 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 	moveSystem_ = std::make_unique<MechMoveSystem>(this);
 	// 地形押し戻し、接地判定クラス
 	kinematicSystem_ = std::make_unique<MechKinematicSystem>(this);
+	// 簡易IKシステム
+	legLandingSystem_ = std::make_unique<MechLegLandingSystem>(this);
 	// 回転制御クラス作成
 	rotControlSystem_ = std::make_unique<MechRotControlSystem>(this);
 	// コライダー作成
@@ -71,6 +73,11 @@ void BaseMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	// アニメーター更新
 	if (animator_) {
 		animator_->Update();
+	}
+
+	// 簡易IK更新
+	if (legLandingSystem_) {
+		legLandingSystem_->Update();
 	}
 
 	// 機体の回転を更新
