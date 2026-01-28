@@ -48,6 +48,10 @@ void CombatSceneStateEnd::Enter([[maybe_unused]] CombatSceneControl::StateContex
 }
 
 void CombatSceneStateEnd::Update([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
+
+	// プレイヤー操作の入力更新
+	ref.inputSys->UpdatePilotCommand();
+
 	// フェーズごとに更新
 	switch (phase_) {
 		case CombatSceneStateEnd::Phase::Flash:
@@ -87,7 +91,13 @@ void CombatSceneStateEnd::Draw([[maybe_unused]] CombatSceneControl::StateContext
 
 }
 
-void CombatSceneStateEnd::Exit([[maybe_unused]] CombatSceneControl::StateContextRef ref) {}
+void CombatSceneStateEnd::Exit([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
+	
+
+	// プレイヤーを待機状態に
+	ref.pilot->GetMech()->ChangeState(PilotMech::State::Idle);
+
+}
 
 void CombatSceneStateEnd::UpdateFlash(CombatSceneControl::StateContextRef ref) {
 	// デルタタイム倍率をセット

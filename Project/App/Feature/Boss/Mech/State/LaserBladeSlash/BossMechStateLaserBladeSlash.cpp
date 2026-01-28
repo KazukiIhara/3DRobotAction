@@ -1,6 +1,5 @@
 #include "BossMechStateLaserBladeSlash.h"
 
-
 #include <algorithm>
 #include <memory>
 #include <vector>
