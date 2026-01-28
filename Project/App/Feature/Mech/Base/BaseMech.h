@@ -43,6 +43,14 @@ class CombatStageData;
 
 class BaseMech: public ILockOnTarget {
 public:
+	enum class PartsType {
+		Head,
+		Body,
+		ArmR,
+		ArmL,
+		Leg
+	};
+
 	struct InitParam {
 		int32_t hp = 0;
 		Vector3 position{};
