@@ -107,6 +107,8 @@ public:
 	MechMoveSystem* GetMoveSystem();
 	// 地形押し戻し、接地判定クラス
 	MechKinematicSystem* GetKinematicSystem();
+	// 簡易接地IK取得
+	MechLegLandingSystem* GetLegLandingSystem();
 	// 回転制御クラス
 	MechRotControlSystem* GetRotControlSystem();
 	// コライダー取得

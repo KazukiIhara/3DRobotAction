@@ -30,6 +30,7 @@ void PilotMechStateJustDodge::Enter([[maybe_unused]] PilotMech* mech) {
 	// 加速量を0にする
 	auto ms = mech->GetMoveSystem();
 	ms->SetAcc(0.0f);
+
 	// 初速と最大速度をセット
 	ms->SetSpeed(firstSpeed);
 	ms->SetMaxSpeed(firstSpeed);

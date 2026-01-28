@@ -12,5 +12,6 @@ public:
 	void Enter(PilotMech* mech)override;
 	void Update(PilotMech* mech)override;
 	void Exit(PilotMech* mech)override;
-
+private:
+	bool preIsGround_ = false;
 };

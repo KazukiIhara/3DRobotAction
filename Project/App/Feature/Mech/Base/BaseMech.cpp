@@ -211,6 +211,10 @@ MechKinematicSystem* BaseMech::GetKinematicSystem() {
 	return kinematicSystem_.get();
 }
 
+MechLegLandingSystem* BaseMech::GetLegLandingSystem() {
+	return legLandingSystem_.get();
+}
+
 MechRotControlSystem* BaseMech::GetRotControlSystem() {
 	return rotControlSystem_.get();
 }
@@ -345,8 +349,22 @@ void BaseMech::ShowDebugFlagUI() {
 		if (ImGui::Button("EditPartsTrans")) {
 			SwitchEditPartsTransform();
 		}
+		// 簡易IK切り替えフラグ
+		if (ImGui::Button("SwitchEnbleLandingSys")) {
+			legLandingSystem_->SwitchDebugEnable();
+		}
 	}
 
+	ImGui::SeparatorText("Status");
+	{
+		ImGui::Text("IsLandingSysWorking: ");
+		ImGui::SameLine();
+		if (GetLegLandingSystem()->IsWorking()) {
+			ImGui::Text("True");
+		} else {
+			ImGui::Text("False");
+		}
+	}
 	ImGui::SeparatorText("DebugDraw");
 	{
 		// 機体コライダー描画切り替え
