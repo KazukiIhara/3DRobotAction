@@ -33,10 +33,6 @@ ModelDrawer::ModelDrawer(const ModelData& modelData) {
 
 }
 
-ModelDrawer::~ModelDrawer() {
-
-}
-
 void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 

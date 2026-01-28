@@ -83,6 +83,12 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
 
+	// 戦闘アニメーション制御システム
+
+
+	// 簡易IK、機体回転、コライダー更新
+	BaseMech::PreUpdate();
+
 	// 上下移動クラス　機体の移動量確定後の処理
 	verticalMoveSystem_->PostUpdate();
 

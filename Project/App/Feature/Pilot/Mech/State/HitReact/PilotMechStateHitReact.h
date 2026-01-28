@@ -4,14 +4,15 @@
 #include "Feature/Pilot/Mech/State/IPilotMechState.h"
 
 /// <summary>
-/// 移動ステート
+/// 中衝撃の攻撃を受けた時のリアクションステート
 /// </summary>
-class PilotMechStateMove:public IPilotMechState {
+class PilotMechStateHitReact:public IPilotMechState {
 public:
-	~PilotMechStateMove()override = default;
+	~PilotMechStateHitReact()override = default;
 	void Enter(PilotMech* mech)override;
 	void Update(PilotMech* mech)override;
 	void Exit(PilotMech* mech)override;
 private:
-	bool preIsGround_ = false;
+	float timer_ = 0.0f;
+
 };

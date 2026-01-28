@@ -15,9 +15,17 @@ void PilotMechStateMove::Enter(PilotMech* mech) {
 	auto ms = mech->GetMoveSystem();
 	const float maxSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
 	ms->SetMaxSpeed(maxSpeed);
+	mech->GetAnimator()->PlayAnimation("Pilot_Move", 1.0f, 0.5f);
 }
 
 void PilotMechStateMove::Update(PilotMech* mech) {
+	// 離陸時アニメーション処理
+	const bool isGround = mech->GetKinematicSystem()->IsGrounded();
+	if (preIsGround_ && !isGround) {
+		mech->GetAnimator()->PlayAnimation("Pilot_Move", 1.0f, 0.5f);
+	}
+	preIsGround_ = isGround;
+
 	// 入力取得
 	auto commandPair = mech->GetInputSys()->GetPilotCommand();
 	// 移動入力なしでIdleに遷移

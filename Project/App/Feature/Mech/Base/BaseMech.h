@@ -78,6 +78,7 @@ public:
 	virtual ~BaseMech() = default;
 
 	virtual void Update(bool isShowDebugUI, const BaseMech::InitParam& param);
+	void PreUpdate();
 	void Draw();
 	virtual void DebugDraw();
 	virtual void ShowDebugWindow() {};
@@ -107,6 +108,8 @@ public:
 	MechMoveSystem* GetMoveSystem();
 	// 地形押し戻し、接地判定クラス
 	MechKinematicSystem* GetKinematicSystem();
+	// 簡易接地IK取得
+	MechLegLandingSystem* GetLegLandingSystem();
 	// 回転制御クラス
 	MechRotControlSystem* GetRotControlSystem();
 	// コライダー取得

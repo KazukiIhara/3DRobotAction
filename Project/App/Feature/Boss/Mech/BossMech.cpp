@@ -81,6 +81,7 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	}
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
+	BaseMech::PreUpdate();
 }
 
 void BossMech::ChangeState(BossMech::State nextState) {
@@ -108,7 +109,7 @@ PilotMech* BossMech::GetPilotMech() {
 	return pilotMech_;
 }
 
-BossMech::State BossMech::GetCurrentState()const{
+BossMech::State BossMech::GetCurrentState()const {
 	return currentState_.first;
 }
 

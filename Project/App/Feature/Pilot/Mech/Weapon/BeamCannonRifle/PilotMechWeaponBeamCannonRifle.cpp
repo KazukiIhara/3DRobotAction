@@ -31,6 +31,10 @@ PilotMechWeaponBeamCannonRifle::PilotMechWeaponBeamCannonRifle(PilotMech* mech) 
 }
 
 void PilotMechWeaponBeamCannonRifle::Update() {
+	// オフセットの設定
+	const Vector3 fireOffset = MAGISYSTEM::GetParameterValue<Vector3>({ "WeaponParam","Pilot","BeamCannon","FireOffset" });
+	fireTransform_->SetTranslate(fireOffset);
+
 
 }
 

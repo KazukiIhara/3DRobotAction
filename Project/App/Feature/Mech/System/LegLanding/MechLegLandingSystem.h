@@ -18,6 +18,11 @@ public:
 	void Update();
 
 	void SetEnable(bool isEnable);
+	void SwitchEnable();
+
+	void SwitchDebugEnable();
+
+	bool IsWorking() const;
 
 private:
 	struct LegRef {
@@ -31,13 +36,16 @@ private:
 	LegRef GetLegRefRight() const;
 
 	void InitLeg(const LegRef& leg, float& outFootOffsetY, float& outUpperHeightY) const;
-	void UpdateLeg(const LegRef& leg,  float footOffsetY, float upperHeightY) const;
+	void UpdateLeg(const LegRef& leg, float footOffsetY, float upperHeightY);
 
 private:
 	BaseMech* mech_ = nullptr;
 
 	bool isEnable_ = true;
+	bool isEnableDebug_ = true;
 	bool isInitialized_ = false;
+
+	bool isWorking_ = false;
 
 	float footOffsetYL_ = 0.0f;
 	float footOffsetYR_ = 0.0f;
@@ -49,13 +57,13 @@ private:
 	float upperDropEps_ = 0.01f;
 
 	// 足先が基準より下がった判定の許容
-	float footEps_ = 0.005f;
+	float footEps_ = 0.0001f;
 
 	// 回転の強さ（m -> rad）
-	float gain_ = 6.0f;
+	float gain_ = 8.0f;
 
 	// 1/60秒でのの最大回転量
-	float maxStepRad_ = 1.0f;
+	float maxStepRad_ = 2.0f;
 
 	// Upper/Lower の配分
 	float upperWeight_ = 0.4f;

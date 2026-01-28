@@ -1,6 +1,7 @@
 #pragma once
 
 // C++
+#include <array>
 #include <string>
 
 // Forward
@@ -43,14 +44,32 @@ public:
 		return isPlaying_;
 	}
 
+	// 指定ジョイントのアニメ適用を切り替え
+	void SetJointAnimationEnabled(MechAnimation::TransType joint, bool enabled);
+
+	// 脚ジョイント一括のアニメ適用を切り替え
+	void SetLegAnimationEnabled(bool enabled);
+
+	// 接地時に脚アニメを自動無効化するか
+	void SetAutoDisableLegOnGround(bool enabled);
+
 private:
 	MechAnimation::Pose CaptureCurrentPose() const;
 	void ApplyPose(const MechAnimation::Pose& pose);
 	MechAnimation::Pose SampleClipPose(const MechAnimation::Clip& clip, float t) const;
 
+	// 指定ジョイントがアニメ適用対象か
+	bool IsJointAnimationEnabled(MechAnimation::TransType joint) const;
+
 private:
 	MechAnimationContainer* container_ = nullptr;
 	BaseMech* mech_ = nullptr;
+
+	// ジョイントごとのアニメ適用フラグ
+	std::array<bool, MechAnimation::kJointCount> jointAnimEnabled_{};
+
+	// 接地時に脚アニメを止める
+	bool autoDisableLegOnGround_ = true;
 
 	// 再生状態
 	bool isPlaying_ = false;

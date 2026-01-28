@@ -13,10 +13,17 @@ using namespace MAGIUtility;
 
 
 void PilotMechStateIdle::Enter([[maybe_unused]] PilotMech* mech) {
-
+	mech->GetAnimator()->PlayAnimation("Pilot_Idle", 1.0f, 0.5f);
 }
 
 void PilotMechStateIdle::Update(PilotMech* mech) {
+	// 離陸時アニメーション処理
+	const bool isGround = mech->GetKinematicSystem()->IsGrounded();
+	if (preIsGround_ && !isGround) {
+		mech->GetAnimator()->PlayAnimation("Pilot_Idle", 1.0f, 0.5f);
+	}
+	preIsGround_ = isGround;
+
 	// 摩擦による減速処理
 	const float acc = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Idle","Acc" });
 	const float maxSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Idle","MaxSpeed" });

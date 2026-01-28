@@ -8,6 +8,7 @@
 #include "MechAnimation/Container/MechAnimationContainer.h"
 #include "Feature/Mech/Base/BaseMech.h"
 #include "3D/Transform3D/Transform3D.h"
+#include "Feature/Mech/System/Kinematic/MechKinematicSystem.h"
 
 #include "MAGI.h"
 
@@ -18,6 +19,44 @@ using namespace MAGIMath;
 MechAnimator::MechAnimator(MechAnimationContainer* container, BaseMech* mech) {
 	container_ = container;
 	mech_ = mech;
+
+	// 全ジョイントをアニメ適用にする
+	jointAnimEnabled_.fill(true);
+}
+
+bool MechAnimator::IsJointAnimationEnabled(MechAnimation::TransType joint) const {
+	const size_t i = static_cast<size_t>(joint);
+	if (i >= MechAnimation::kJointCount) {
+		return true;
+	}
+	return jointAnimEnabled_[i];
+}
+
+void MechAnimator::SetJointAnimationEnabled(MechAnimation::TransType joint, bool enabled) {
+	const size_t i = static_cast<size_t>(joint);
+	if (i >= MechAnimation::kJointCount) {
+		return;
+	}
+
+	// 指定ジョイントのアニメ適用を切り替え
+	jointAnimEnabled_[i] = enabled;
+}
+
+void MechAnimator::SetLegAnimationEnabled(bool enabled) {
+	// 左脚
+	SetJointAnimationEnabled(MechAnimation::TransType::UpperLegLeft, enabled);
+	SetJointAnimationEnabled(MechAnimation::TransType::LowerLegLeft, enabled);
+	SetJointAnimationEnabled(MechAnimation::TransType::FootLeft, enabled);
+
+	// 右脚
+	SetJointAnimationEnabled(MechAnimation::TransType::UpperLegRight, enabled);
+	SetJointAnimationEnabled(MechAnimation::TransType::LowerLegRight, enabled);
+	SetJointAnimationEnabled(MechAnimation::TransType::FootRight, enabled);
+}
+
+void MechAnimator::SetAutoDisableLegOnGround(bool enabled) {
+	// 接地時に脚アニメを止めるか
+	autoDisableLegOnGround_ = enabled;
 }
 
 void MechAnimator::ApplyAnimation(const std::string& name, float t) {
@@ -60,6 +99,7 @@ void MechAnimator::PlayAnimation(
 	easing_ = easing;
 	loopType_ = loopType;
 
+	// 現在姿勢をブレンド開始姿勢として保持
 	blendFromPose_ = CaptureCurrentPose();
 
 	playTimeSec_ = 0.0f;
@@ -80,12 +120,21 @@ void MechAnimator::Update() {
 
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
+	// 接地中は脚アニメを止める
+	if (autoDisableLegOnGround_) {
+		MechKinematicSystem* kin = mech_->GetKinematicSystem();
+		if (kin) {
+			SetLegAnimationEnabled(!kin->IsGrounded());
+		}
+	}
+
 	if (!isPlaying_) {
 		return;
 	}
 	if (!container_ || !mech_) {
 		return;
 	}
+
 	if (playingClipName_.empty()) {
 		return;
 	}
@@ -174,6 +223,12 @@ void MechAnimator::Update() {
 
 	MechAnimation::Pose outPose{};
 	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
+		// 無効ジョイントは現姿勢を維持するため blendFromPose を使う
+		if (!IsJointAnimationEnabled(static_cast<MechAnimation::TransType>(i))) {
+			outPose.rotations[i] = blendFromPose_.rotations[i];
+			continue;
+		}
+
 		outPose.rotations[i] = Slerp(blendFromPose_.rotations[i], targetPose.rotations[i], alpha);
 	}
 	outPose.waistTranslate = Lerp(blendFromPose_.waistTranslate, targetPose.waistTranslate, alpha);
@@ -220,6 +275,11 @@ void MechAnimator::ApplyPose(const MechAnimation::Pose& pose) {
 
 	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
 		const auto type = static_cast<MechAnimation::TransType>(i);
+
+		// 無効ジョイントはアニメを書き込まない
+		if (!IsJointAnimationEnabled(type)) {
+			continue;
+		}
 
 		Transform3D* trans = mech_->GetPartsTransform(type);
 		if (!trans) {

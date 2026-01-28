@@ -40,6 +40,18 @@ void MechLegLandingSystem::SetEnable(bool isEnable) {
 	isEnable_ = isEnable;
 }
 
+void MechLegLandingSystem::SwitchEnable() {
+	isEnable_ = !isEnable_;
+}
+
+void MechLegLandingSystem::SwitchDebugEnable() {
+	isEnableDebug_ = !isEnableDebug_;
+}
+
+bool MechLegLandingSystem::IsWorking() const {
+	return isWorking_;
+}
+
 void MechLegLandingSystem::Initialize() {
 	if (!mech_) {
 		return;
@@ -56,12 +68,28 @@ void MechLegLandingSystem::Initialize() {
 }
 
 void MechLegLandingSystem::Update() {
+
+#if defined (DEBUG)|(DEVELOP)
+	if (!isEnableDebug_) {
+		return;
+	}
+#endif
+
+	// このフレームの結果をリセット
+	isWorking_ = false;
+
 	if (!isEnable_) {
 		return;
 	}
 	if (!mech_) {
 		return;
 	}
+
+	// 接地していないなら何もしない
+	if (!mech_->GetKinematicSystem()->IsGrounded()) {
+		return;
+	}
+
 	if (!isInitialized_) {
 		Initialize();
 	}
@@ -72,6 +100,7 @@ void MechLegLandingSystem::Update() {
 	UpdateLeg(legL, footOffsetYL_, upperHeightYL_);
 	UpdateLeg(legR, footOffsetYR_, upperHeightYR_);
 }
+
 
 MechLegLandingSystem::LegRef MechLegLandingSystem::GetLegRefLeft() const {
 	LegRef leg{};
@@ -107,7 +136,7 @@ void MechLegLandingSystem::InitLeg(const LegRef& leg, float& outFootOffsetY, flo
 	outUpperHeightY = leg.upper->GetWorldPosition().y - baseY;
 }
 
-void MechLegLandingSystem::UpdateLeg(const LegRef& leg, float footOffsetY, float upperHeightY) const {
+void MechLegLandingSystem::UpdateLeg(const LegRef& leg, float footOffsetY, float upperHeightY) {
 	if (!mech_) {
 		return;
 	}
@@ -143,6 +172,9 @@ void MechLegLandingSystem::UpdateLeg(const LegRef& leg, float footOffsetY, float
 	if (std::fabs(errorY) <= footEps_) {
 		return;
 	}
+
+	// このフレームで補正が動いた
+	isWorking_ = true;
 
 	// 60fps基準のパラメータを秒あたりへ変換
 	const float gainPerSec = gain_ * 60.0f;
