@@ -68,6 +68,7 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 
 	// 基本的に進行方向に機体を向ける 向けたくない場合はステートごとにこのフラグを切る
 	GetRotControlSystem()->SetTurnToMoveDir(true);
+	// 腰回転アニメーションを有効にする(切りたい場合はステートごとに切る)
 
 	// ロックオンシステム更新
 	lockOnSystem_->Update();

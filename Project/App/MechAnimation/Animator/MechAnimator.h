@@ -53,6 +53,11 @@ public:
 	// 接地時に脚アニメを自動無効化するか
 	void SetAutoDisableLegOnGround(bool enabled);
 
+	// Waist回転アニメ適用を切り替え
+	void SetWaistRotationAnimationEnabled(bool enabled);
+	// Waist回転アニメ適用が有効か
+	bool IsWaistRotationAnimationEnabled() const;
+
 private:
 	MechAnimation::Pose CaptureCurrentPose() const;
 	void ApplyPose(const MechAnimation::Pose& pose);
@@ -67,6 +72,9 @@ private:
 
 	// ジョイントごとのアニメ適用フラグ
 	std::array<bool, MechAnimation::kJointCount> jointAnimEnabled_{};
+
+	// Waist回転だけアニメ適用を切る
+	bool isWaistRotAnimEnabled_ = true;
 
 	// 接地時に脚アニメを止める
 	bool autoDisableLegOnGround_ = true;
