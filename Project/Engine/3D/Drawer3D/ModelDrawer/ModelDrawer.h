@@ -16,7 +16,7 @@
 class ModelDrawer {
 public:
 	ModelDrawer(const ModelData& modelData);
-	~ModelDrawer();
+	~ModelDrawer() = default;
 
 	void AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material);
 	void Update();
