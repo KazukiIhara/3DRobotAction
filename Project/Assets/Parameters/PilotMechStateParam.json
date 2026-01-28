@@ -37,6 +37,20 @@
       "value": 0.8999999761581421
     }
   },
+  "JustDodgeAttack": {
+    "Charge": {
+      "Time": {
+        "type": "Float",
+        "value": 1.0
+      }
+    },
+    "EndLag": {
+      "Time": {
+        "type": "Float",
+        "value": 0.5
+      }
+    }
+  },
   "Move": {
     "Acc": {
       "type": "Float",
