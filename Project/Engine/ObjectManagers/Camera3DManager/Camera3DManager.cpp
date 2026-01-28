@@ -21,8 +21,6 @@ void Camera3DManager::Initialize() {
 #endif
 	defaultCamera_ = std::make_unique<Camera3D>("DefaultCamera", false);
 	defaultCamera_->SetIsUnique(true);
-
-	// デフォルトカメラをセット
 	currentCamera_ = defaultCamera_.get();
 }
 
@@ -54,6 +52,8 @@ void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
 #endif
 	if (currentCamera_) {
 		currentCamera_->TransferCamera(rootParameterIndex);
+	} else {
+		defaultCamera_->TransferCamera(rootParameterIndex);
 	}
 }
 
@@ -66,6 +66,8 @@ void Camera3DManager::TransferCurrentCameraInverse(uint32_t rootParameterIndex) 
 #endif
 	if (currentCamera_) {
 		currentCamera_->TransferCameraInv(rootParameterIndex);
+	} else {
+		defaultCamera_->TransferCameraInv(rootParameterIndex);
 	}
 }
 
@@ -78,6 +80,8 @@ void Camera3DManager::TransferCurrentCameraFrustum(uint32_t rootParameterIndex) 
 #endif
 	if (currentCamera_) {
 		currentCamera_->TransferCameraFrustum(rootParameterIndex);
+	} else {
+		defaultCamera_->TransferCameraFrustum(rootParameterIndex);
 	}
 }
 
@@ -90,6 +94,8 @@ void Camera3DManager::TransferCurrentCameraVector(uint32_t rootParameterIndex) {
 #endif
 	if (currentCamera_) {
 		currentCamera_->TransferCameraVector(rootParameterIndex);
+	} else {
+		defaultCamera_->TransferCameraVector(rootParameterIndex);
 	}
 }
 

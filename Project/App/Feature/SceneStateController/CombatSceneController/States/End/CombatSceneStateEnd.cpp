@@ -41,7 +41,6 @@ void CombatSceneStateEnd::Enter([[maybe_unused]] CombatSceneControl::StateContex
 	// タイマーセット
 	timer_ = MAGISYSTEM::GetParameterValue<float>({ "CombatSceneParam","End","Flash","Time" });
 
-
 	// スプライト設定
 	flashSprite_.size = { WindowApp::kClientWidth,WindowApp::kClientHeight };
 	flashSpriteMat_.textureName = "white.png";
@@ -88,9 +87,7 @@ void CombatSceneStateEnd::Draw([[maybe_unused]] CombatSceneControl::StateContext
 
 }
 
-void CombatSceneStateEnd::Exit([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
-	MAGISYSTEM::SetDeltaTimeMultiplier(1.0f);
-}
+void CombatSceneStateEnd::Exit([[maybe_unused]] CombatSceneControl::StateContextRef ref) {}
 
 void CombatSceneStateEnd::UpdateFlash(CombatSceneControl::StateContextRef ref) {
 	// デルタタイム倍率をセット
@@ -113,7 +110,7 @@ void CombatSceneStateEnd::UpdateFlash(CombatSceneControl::StateContextRef ref) {
 	// 終了処理
 	if (timer_ <= 0.0f) {
 		phase_ = Phase::Destroy;
-
+		MAGISYSTEM::SetDeltaTimeMultiplier(1.0f);
 		// デストロイの初期化処理と初回更新　(時間がないとはいえなんてひどい設計なんだ...)
 		timer_ = MAGISYSTEM::GetParameterValue<float>({ "CombatSceneParam","End","Destroy","Time" });
 		UpdateDestroy(ref);

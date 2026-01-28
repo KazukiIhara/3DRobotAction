@@ -16,5 +16,9 @@ public:
 	void Draw() override;
 	void Finalize() override;
 private:
+	// DirectionalLight
+	DirectionalLight directionalLight_{};
 
+	SpriteData data_{};
+	MaterialData3D mat_{};
 };

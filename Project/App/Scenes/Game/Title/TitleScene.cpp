@@ -1,9 +1,29 @@
 #include "TitleScene.h"
 
-void TitleScene::Initialize() {}
+using namespace Magi;
 
-void TitleScene::Update() {}
+void TitleScene::Initialize() {
+	// テクスチャをロード
+	MAGISYSTEM::LoadTexture("white.png");
+	// サイズを設定
+	data_.size = { WindowApp::kClientWidth,WindowApp::kClientHeight };
+	// テクスチャを設定
+	mat_.textureName = "white.png";
+}
 
-void TitleScene::Draw() {}
+void TitleScene::Update() {
 
-void TitleScene::Finalize() {}
+	// 入力を受け取って戦闘シーンへ
+	if (MAGISYSTEM::TriggerButton(0, ButtonA)) {
+		ChangeScene("Combat");
+	}
+
+}
+
+void TitleScene::Draw() {
+
+}
+
+void TitleScene::Finalize() {
+
+}

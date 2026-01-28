@@ -141,7 +141,6 @@ float BossAI::ScoreLaserBladeSlash(float dist) const {
 }
 
 void BossAI::ApplyAction(Action action) {
-	// Idle中にしか呼ばれない想定
 	switch (action) {
 		case Action::Idle:
 			// そのまま待機

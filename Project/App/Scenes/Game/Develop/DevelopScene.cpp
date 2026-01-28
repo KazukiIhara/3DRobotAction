@@ -126,6 +126,9 @@ void DevelopScene::Update() {
 	ImGui::Text(sceneController_->GetCurrentStateStr().c_str());
 
 	ImGui::SeparatorText("Pilot");
+	if (ImGui::Button("SwitchPilotControl")) {
+		inputSys_->SwitchPilotControl();
+	}
 	if (ImGui::Button("PilotMechDebugDraw")) {
 		pilot_->SwitchDebugDraw();
 	}

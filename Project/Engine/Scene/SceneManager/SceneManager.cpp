@@ -56,6 +56,11 @@ void SceneManager::StartScene(const std::string& sceneName) {
 void SceneManager::ChangeScene(const std::string& sceneName) {
 	auto it = factory_.find(sceneName);
 	assert(it != factory_.end() && "No scene found with the given name");
+	
+	// 次シーンが既に入っている場合
+	if (nextScene_) {
+		return;
+	}
 
 	// 次シーン生成
 	nextScene_ = it->second();

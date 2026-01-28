@@ -14,13 +14,12 @@ void GameInputSystem::Update() {
 	pilotCommand_.first = false;
 	pilotCommand_.second = {};
 
-	// プレイヤー操作コマンド更新
-	UpdatePilotCommand();
+#if defined(DEVELOP)|(DEBUG)
+	if (isControlPilot_) {
+		UpdatePilotCommand();
+	}
+#endif
 
-}
-
-std::pair<bool, GameInputSystem::PilotCommand> GameInputSystem::GetPilotCommand() const {
-	return pilotCommand_;
 }
 
 void GameInputSystem::UpdatePilotCommand() {
@@ -44,4 +43,12 @@ void GameInputSystem::UpdatePilotCommand() {
 
 	}
 
+}
+
+std::pair<bool, GameInputSystem::PilotCommand> GameInputSystem::GetPilotCommand() const {
+	return pilotCommand_;
+}
+
+void GameInputSystem::SwitchPilotControl() {
+	isControlPilot_ = !isControlPilot_;
 }

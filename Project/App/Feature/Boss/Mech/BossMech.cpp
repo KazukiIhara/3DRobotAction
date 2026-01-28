@@ -9,6 +9,7 @@
 
 // ステートクラス
 #include "Feature/Boss/Mech/State/Idle/BossMechStateIdle.h"
+#include "Feature/Boss/Mech/State/Destroy/BossMechStateDestroy.h"
 #include "Feature/Boss/Mech/State/LaserShot/BossMechStateLaserShot.h"
 #include "Feature/Boss/Mech/State/LaserBladeSlash/BossMechStateLaserBladeSlash.h"
 
@@ -49,6 +50,7 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<BossMechStateIdle>();
+	states_[State::Destroy] = std::make_unique<BossMechStateDestroy>();
 	states_[State::LaserShot] = std::make_unique<BossMechStateLaserShot>();
 	states_[State::LaserBladeSlash] = std::make_unique<BossMechStateLaserBladeSlash>();
 
@@ -128,6 +130,8 @@ const std::string BossMech::StateToString(BossMech::State state) {
 	switch (state) {
 		case BossMech::State::Idle:
 			return "Idle";
+		case BossMech::State::Destroy:
+			return "Destroy";
 		case BossMech::State::LaserShot:
 			return "LaserShot";
 		case BossMech::State::LaserBladeSlash:

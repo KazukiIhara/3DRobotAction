@@ -85,6 +85,10 @@ Boss::Flag Boss::GetFlag() const {
 	return flag_;
 }
 
+void Boss::SetAIActive(bool active) {
+	flag_.isAIActive = active;
+}
+
 void Boss::SwitchDebugDraw() {
 	flag_.isDebugDraw = !flag_.isDebugDraw;
 }

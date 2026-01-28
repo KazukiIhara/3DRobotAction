@@ -45,12 +45,24 @@ public:
 	~GameInputSystem() = default;
 
 	void Update();
+	void UpdatePilotCommand();
 
 	std::pair<bool, PilotCommand> GetPilotCommand() const;
-private:
-	void UpdatePilotCommand();
+
+
+	// 
+	// デバッグ用
+	// 
+	void SwitchPilotControl();
+
 private:
 	// プレイヤー操作コマンド
 	std::pair<bool, PilotCommand> pilotCommand_;
+
+
+	// 
+	// デバッグ用
+	// 
+	bool isControlPilot_ = false;
 
 };

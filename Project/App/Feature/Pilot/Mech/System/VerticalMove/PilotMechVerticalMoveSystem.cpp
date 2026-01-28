@@ -42,23 +42,23 @@ void PilotMechVerticalMoveSystem::PreUpdate() {
 	const bool grounded = ks->IsGrounded();
 
 	auto commandPair = mech_->GetInputSys()->GetPilotCommand();
-	if (!commandPair.first) {
-		return;
+	if (commandPair.first) {
+		const auto& command = commandPair.second;
+
+		const bool jumpPressed = command.jump;
+		const bool jumpHold = command.jumpHold;
+
+		// 接地中に押した瞬間は初速を与える
+		if (grounded && jumpPressed) {
+			vy_ = jumpFirstSpeed;
+		}
+
+		// 押している間はいつでも上昇加速
+		if (jumpHold) {
+			vy_ += boostAccel * dt;
+		}
+
 	}
-	const auto& command = commandPair.second;
-
-	const bool jumpPressed = command.jump;
-	const bool jumpHold = command.jumpHold;
-
-	// 接地中に押した瞬間は初速を与える
-	if (grounded && jumpPressed) {
-		vy_ = jumpFirstSpeed;
-	}
-
-	// 押している間はいつでも上昇加速
-	if (jumpHold) {
-		vy_ += boostAccel * dt;
-	} 
 
 	// 重力を掛ける
 	vy_ -= gravity * dt;

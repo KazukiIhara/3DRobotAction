@@ -17,9 +17,9 @@ public:
 		// 同点のときのランダム性
 		float randomJitter = 0.05f;
 
-		// 距離しきい値（例）
-		float nearDist = 12.0f;
-		float farDist = 35.0f;
+		// 距離しきい値
+		float nearDist = 20.0f;
+		float farDist = 30.0f;
 	};
 
 public:

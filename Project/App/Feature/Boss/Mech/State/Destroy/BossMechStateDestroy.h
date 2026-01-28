@@ -12,9 +12,9 @@
 /// <summary>
 /// ボス機体破壊クラス
 /// </summary>
-class BossMechStateDestroyed:public BossMechBaseState {
+class BossMechStateDestroy:public BossMechBaseState {
 public:
-	~BossMechStateDestroyed() = default;
+	~BossMechStateDestroy() = default;
 	void Enter(BossMech* mech)override;
 	void Update(BossMech* mech)override;
 	void Exit(BossMech* mech)override;

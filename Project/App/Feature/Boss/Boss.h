@@ -41,6 +41,8 @@ public:
 	Flag GetFlag()const;
 
 
+	void SetAIActive(bool active);
+
 	void SwitchDebugDraw();
 	void SwitchAIActive();
 	void SwitchIsPause();

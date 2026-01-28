@@ -30,7 +30,6 @@
 using namespace Magi;
 
 void CombatSceneStateStart::Enter([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
-
 	timer_ = 1.0f;
 }
 

@@ -23,6 +23,7 @@ public:
 	// ステート
 	enum class State {
 		Idle,
+		Destroy,
 		LaserShot,
 		LaserBladeSlash,
 	};
