@@ -23,7 +23,7 @@ void PilotMechStateJustDodgeAttack::Enter([[maybe_unused]] PilotMech* mech) {
 	timer_ = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","JustDodgeAttack","Charge","Time" });
 
 	// 射撃までのアニメーションを再生
-
+	mech->GetAnimator()->PlayAnimation("Pilot_JustDodgeAttack_Charge", timer_, 0.2f, EasingType::EaseInOutCubic);
 
 	// 移動速度処理
 	auto ms = mech->GetMoveSystem();
@@ -62,7 +62,7 @@ void PilotMechStateJustDodgeAttack::UpdateChargeShot([[maybe_unused]] PilotMech*
 	// タイマー終了
 	if (timer_ <= 0.0f) {
 		// 攻撃
-		mech->GetWeapon("BeamCannon")->Attack();
+		mech->GetWeapon("BeamCannonRifle")->Attack();
 		// 硬直用タイマーセット
 		timer_ = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","JustDodgeAttack","EndLag","Time" });
 		// 硬直アニメーション再生

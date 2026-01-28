@@ -29,8 +29,15 @@ bool MechAnimator::IsJointAnimationEnabled(MechAnimation::TransType joint) const
 	if (i >= MechAnimation::kJointCount) {
 		return true;
 	}
+
+	// Waist回転は専用フラグも見る
+	if (joint == MechAnimation::TransType::Waist) {
+		return jointAnimEnabled_[i] && isWaistRotAnimEnabled_;
+	}
+
 	return jointAnimEnabled_[i];
 }
+
 
 void MechAnimator::SetJointAnimationEnabled(MechAnimation::TransType joint, bool enabled) {
 	const size_t i = static_cast<size_t>(joint);
@@ -57,6 +64,16 @@ void MechAnimator::SetLegAnimationEnabled(bool enabled) {
 void MechAnimator::SetAutoDisableLegOnGround(bool enabled) {
 	// 接地時に脚アニメを止めるか
 	autoDisableLegOnGround_ = enabled;
+}
+
+void MechAnimator::SetWaistRotationAnimationEnabled(bool enabled) {
+	// Waist回転アニメの有効/無効を切り替える
+	isWaistRotAnimEnabled_ = enabled;
+}
+
+bool MechAnimator::IsWaistRotationAnimationEnabled() const {
+	// Waist回転アニメが有効か返す
+	return isWaistRotAnimEnabled_;
 }
 
 void MechAnimator::ApplyAnimation(const std::string& name, float t) {

@@ -25,7 +25,7 @@
   },
   "PosSmooth": {
     "type": "Float",
-    "value": 10.0
+    "value": 15.0
   },
   "Shoulder": {
     "type": "Float",

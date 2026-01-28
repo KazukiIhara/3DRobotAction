@@ -24,6 +24,9 @@ void PilotMechStateJustDodge::Enter([[maybe_unused]] PilotMech* mech) {
 	std::unique_ptr<JustDodgeEffect> dodgeEffect = std::make_unique<JustDodgeEffect>(worldPos);
 	mech->GetGameEffectManager()->Add(std::move(dodgeEffect));
 
+	// ジャスト回避アニメーション再生
+	mech->GetAnimator()->PlayAnimation("Pilot_JustDodge", 0.2f, 0.0f, EasingType::EaseOutCubic);
+
 	// 初速
 	const float firstSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","JustDodge","FirstSpeed" });
 
