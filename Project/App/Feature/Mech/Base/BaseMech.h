@@ -78,6 +78,7 @@ public:
 	virtual ~BaseMech() = default;
 
 	virtual void Update(bool isShowDebugUI, const BaseMech::InitParam& param);
+	void PreUpdate();
 	void Draw();
 	virtual void DebugDraw();
 	virtual void ShowDebugWindow() {};

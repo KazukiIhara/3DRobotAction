@@ -75,6 +75,9 @@ void BaseMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 		animator_->Update();
 	}
 
+}
+
+void BaseMech::PreUpdate() {
 	// 簡易IK更新
 	if (legLandingSystem_) {
 		legLandingSystem_->Update();

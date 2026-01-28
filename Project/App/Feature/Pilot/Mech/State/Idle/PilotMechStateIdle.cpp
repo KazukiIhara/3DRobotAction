@@ -20,7 +20,7 @@ void PilotMechStateIdle::Update(PilotMech* mech) {
 	// 離陸時アニメーション処理
 	const bool isGround = mech->GetKinematicSystem()->IsGrounded();
 	if (preIsGround_ && !isGround) {
-		mech->GetAnimator()->PlayAnimation("Pilot_Move", 1.0f, 0.5f);
+		mech->GetAnimator()->PlayAnimation("Pilot_Idle", 1.0f, 0.5f);
 	}
 	preIsGround_ = isGround;
 
