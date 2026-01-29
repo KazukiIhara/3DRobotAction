@@ -58,6 +58,26 @@ public:
 	// Waist回転アニメ適用が有効か
 	bool IsWaistRotationAnimationEnabled() const;
 
+	// 頭回転アニメ適用を切り替え
+	void SetHeadRotationAnimationEnabled(bool enabled);
+	// 頭回転アニメ適用が有効か
+	bool IsHeadRotationAnimationEnabled() const;
+
+	// 体回転アニメ適用を切り替え
+	void SetBodyRotationAnimationEnabled(bool enabled);
+	// 体回転アニメ適用が有効か
+	bool IsBodyRotationAnimationEnabled() const;
+
+	// 左腕回転アニメ適用を切り替え
+	void SetLeftArmRotationAnimationEnabled(bool enabled);
+	// 左腕回転アニメ適用が有効か
+	bool IsLeftArmRotationAnimationEnabled() const;
+
+	// 右腕回転アニメ適用を切り替え
+	void SetRightArmRotationAnimationEnabled(bool enabled);
+	// 右腕回転アニメ適用が有効か
+	bool IsRightArmRotationAnimationEnabled() const;
+
 private:
 	MechAnimation::Pose CaptureCurrentPose() const;
 	void ApplyPose(const MechAnimation::Pose& pose);
@@ -75,6 +95,18 @@ private:
 
 	// Waist回転だけアニメ適用を切る
 	bool isWaistRotAnimEnabled_ = true;
+
+	// 頭回転だけアニメ適用を切る
+	bool isHeadRotAnimEnabled_ = true;
+
+	// 体回転だけアニメ適用を切る
+	bool isBodyRotAnimEnabled_ = true;
+
+	// 左腕回転だけアニメ適用を切る
+	bool isLeftArmRotAnimEnabled_ = true;
+
+	// 右腕回転だけアニメ適用を切る
+	bool isRightArmRotAnimEnabled_ = true;
 
 	// 接地時に脚アニメを止める
 	bool autoDisableLegOnGround_ = true;
