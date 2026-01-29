@@ -30,14 +30,46 @@ bool MechAnimator::IsJointAnimationEnabled(MechAnimation::TransType joint) const
 		return true;
 	}
 
-	// Waist回転は専用フラグも見る
-	if (joint == MechAnimation::TransType::Waist) {
-		return jointAnimEnabled_[i] && isWaistRotAnimEnabled_;
+	// ジョイント単位の無効を優先
+	if (!jointAnimEnabled_[i]) {
+		return false;
 	}
 
-	return jointAnimEnabled_[i];
-}
+	// Waist回転は専用フラグも見る
+	if (joint == MechAnimation::TransType::Waist) {
+		return isWaistRotAnimEnabled_;
+	}
 
+	// 頭回転は専用フラグも見る
+	if (joint == MechAnimation::TransType::Head) {
+		return isHeadRotAnimEnabled_;
+	}
+
+	// 体回転は専用フラグも見る
+	if (joint == MechAnimation::TransType::Body) {
+		return isBodyRotAnimEnabled_;
+	}
+
+	// 左腕回転は専用フラグも見る
+	if (
+		joint == MechAnimation::TransType::UpperArmLeft ||
+		joint == MechAnimation::TransType::LowerArmLeft ||
+		joint == MechAnimation::TransType::HandLeft
+		) {
+		return isLeftArmRotAnimEnabled_;
+	}
+
+	// 右腕回転は専用フラグも見る
+	if (
+		joint == MechAnimation::TransType::UpperArmRight ||
+		joint == MechAnimation::TransType::LowerArmRight ||
+		joint == MechAnimation::TransType::HandRight
+		) {
+		return isRightArmRotAnimEnabled_;
+	}
+
+	return true;
+}
 
 void MechAnimator::SetJointAnimationEnabled(MechAnimation::TransType joint, bool enabled) {
 	const size_t i = static_cast<size_t>(joint);
@@ -74,6 +106,46 @@ void MechAnimator::SetWaistRotationAnimationEnabled(bool enabled) {
 bool MechAnimator::IsWaistRotationAnimationEnabled() const {
 	// Waist回転アニメが有効か返す
 	return isWaistRotAnimEnabled_;
+}
+
+void MechAnimator::SetHeadRotationAnimationEnabled(bool enabled) {
+	// 頭回転アニメの有効/無効を切り替える
+	isHeadRotAnimEnabled_ = enabled;
+}
+
+bool MechAnimator::IsHeadRotationAnimationEnabled() const {
+	// 頭回転アニメが有効か返す
+	return isHeadRotAnimEnabled_;
+}
+
+void MechAnimator::SetBodyRotationAnimationEnabled(bool enabled) {
+	// 体回転アニメの有効/無効を切り替える
+	isBodyRotAnimEnabled_ = enabled;
+}
+
+bool MechAnimator::IsBodyRotationAnimationEnabled() const {
+	// 体回転アニメが有効か返す
+	return isBodyRotAnimEnabled_;
+}
+
+void MechAnimator::SetLeftArmRotationAnimationEnabled(bool enabled) {
+	// 左腕回転アニメの有効/無効を切り替える
+	isLeftArmRotAnimEnabled_ = enabled;
+}
+
+bool MechAnimator::IsLeftArmRotationAnimationEnabled() const {
+	// 左腕回転アニメが有効か返す
+	return isLeftArmRotAnimEnabled_;
+}
+
+void MechAnimator::SetRightArmRotationAnimationEnabled(bool enabled) {
+	// 右腕回転アニメの有効/無効を切り替える
+	isRightArmRotAnimEnabled_ = enabled;
+}
+
+bool MechAnimator::IsRightArmRotationAnimationEnabled() const {
+	// 右腕回転アニメが有効か返す
+	return isRightArmRotAnimEnabled_;
 }
 
 void MechAnimator::ApplyAnimation(const std::string& name, float t) {
