@@ -10,6 +10,9 @@
 
 #include "Feature/Boss/Mech/State/PhaseSys/IBossMechStatePhase.h"
 
+#include "Feature/Effect/BossAttackWarning/BossAttackWarningEffect.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
+
 using namespace Magi;
 
 namespace {
@@ -65,6 +68,9 @@ namespace {
 			const float timeShot = MAGISYSTEM::GetParameterValue<float>({ "BossMechStateParam","LaserShot","TimeShot" });
 			timer_ = timeShot;
 			mech->GetAnimator()->PlayAnimation("BossLaserShot_Shot", timeShot, 0.1f, EasingType::EaseInOutCubic);
+
+			const Vector3 headPos = mech->GetPartsTransform(MechAnimation::TransType::Head)->GetWorldPosition();
+			effect_ = mech->GetGameEffectManager()->Add(std::move(std::make_unique<BossAttackWarningEffect>(headPos, mech)));
 		}
 
 		void Update([[maybe_unused]] BossMech* mech) override {
@@ -92,6 +98,7 @@ namespace {
 	private:
 		float timer_ = 0.0f;
 		bool end_ = false;
+		BaseGameEffect* effect_ = nullptr;
 	};
 
 	/// <summary>
