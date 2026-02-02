@@ -118,9 +118,15 @@ void DevelopScene::Update() {
 	if (ImGui::Button("ResetScene")) {
 		ChangeScene("Develop");
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("EffectEditScene")) {
+		ChangeScene("EffectEdit");
+	}
+	ImGui::SameLine();
 	if (ImGui::Button("StartCombat")) {
 		sceneController_->Start(CombatSceneController::State::Start);
 	}
+
 	ImGui::Text("CurrentSceneState: ");
 	ImGui::SameLine();
 	ImGui::Text(sceneController_->GetCurrentStateStr().c_str());

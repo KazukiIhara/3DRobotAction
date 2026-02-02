@@ -3,6 +3,7 @@
 // Effects
 #include "Feature/Effect/JustDodgeEffect/JustDodgeEffect.h"
 #include "Feature/Effect/LaserEffect/LaserEffect.h"
+#include "Feature/Effect/BossAttackWarning/BossAttackWarningEffect.h"
 
 void EffectEditScene::Initialize() {
 	// 2Dカメラ作成
@@ -24,35 +25,11 @@ void EffectEditScene::Initialize() {
 }
 
 void EffectEditScene::Update() {
-	static Vector3 d;
 	ImGui::Begin("EffectEditScene");
-	ImGui::DragFloat3("Dir", &d.x, 0.01f);
 
 	if (ImGui::Button("Emit")) {
 		// 今実装するエフェクト
-		LaserEffect::InitParam param{};
-		param.emitPos = { 0.0f,0.0f,0.0f };
-		param.life = 0.5f;
-		param.dir = d;
-		std::unique_ptr<LaserEffect> effect = std::make_unique<LaserEffect>(param);
-		gameEffectManager_->Add(std::move(effect));
-	}
-	ImGui::End();
-
-	ImGui::Begin("Plane");
-	{
-		for (size_t i = 0; i < 4; i++) {
-			std::string n = std::to_string(i);
-			std::string s = "Plane0" + n;
-			ImGui::DragFloat3(s.c_str(), &planeData0_.verticesOffsets[i].x, 0.01f);
-		}
-	}
-	{
-		for (size_t i = 0; i < 4; i++) {
-			std::string n = std::to_string(i);
-			std::string s = "Plane1" + n;
-			ImGui::DragFloat3(s.c_str(), &planeData1_.verticesOffsets[i].x, 0.01f);
-		}
+		gameEffectManager_->Add(std::make_unique<BossAttackWarningEffect>(Vector3(0.0f, 0.0f, 0.0f), nullptr));
 	}
 	ImGui::End();
 
@@ -61,8 +38,6 @@ void EffectEditScene::Update() {
 }
 
 void EffectEditScene::Draw() {
-	MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData0_, MaterialData3D{});
-	MAGISYSTEM::DrawPlane3D(MakeIdentityMatrix4x4(), planeData1_, MaterialData3D{});
 	gameEffectManager_->Draw();
 }
 

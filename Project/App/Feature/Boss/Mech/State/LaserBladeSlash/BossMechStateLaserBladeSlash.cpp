@@ -10,6 +10,9 @@
 #include "Feature/Boss/Mech/Weapon/LaserBlade/BossMechWeaponLaserBlade.h"
 #include "Feature/Boss/Mech/State/PhaseSys/IBossMechStatePhase.h"
 
+#include "Feature/Effect/BossAttackWarning/BossAttackWarningEffect.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
+
 using namespace Magi;
 
 // フェーズクラス
@@ -45,6 +48,11 @@ namespace {
 			ms->SetDir(dirN);
 			ms->SetSpeed(len);
 			ms->SetMaxSpeed(len);
+
+			// 攻撃発生前エフェクト
+			const Vector3 headPos = mech->GetPartsTransform(MechAnimation::TransType::Head)->GetWorldPosition();
+			effect_ = mech->GetGameEffectManager()->Add(std::move(std::make_unique<BossAttackWarningEffect>(headPos, mech)));
+
 			end_ = false;
 		}
 
@@ -85,6 +93,7 @@ namespace {
 	private:
 		float timer_ = 0.0f;
 		bool end_ = false;
+		BaseGameEffect* effect_ = nullptr;
 	};
 
 	class Attack1 final: public IBossMechStatePhase {
@@ -98,6 +107,10 @@ namespace {
 
 			// 攻撃オブジェクト追加
 			mech->GetWeapon("LaserBlade")->Attack(Damage::Power::Mid);
+
+			// 攻撃発生前エフェクト
+			const Vector3 headPos = mech->GetPartsTransform(MechAnimation::TransType::Head)->GetWorldPosition();
+			effect_ = mech->GetGameEffectManager()->Add(std::move(std::make_unique<BossAttackWarningEffect>(headPos, mech)));
 
 			end_ = false;
 		}
@@ -136,6 +149,7 @@ namespace {
 	private:
 		float timer_ = 0.0f;
 		bool end_ = false;
+		BaseGameEffect* effect_ = nullptr;
 	};
 
 	class Attack2 final: public IBossMechStatePhase {
@@ -148,6 +162,8 @@ namespace {
 			mech->GetAnimator()->PlayAnimation("BossLaserBladeSlash_Attack2", time, 0.1f, EasingType::EaseInOutCubic);
 
 			mech->GetWeapon("LaserBlade")->Attack(Damage::Power::Large);
+
+
 			end_ = false;
 		}
 

@@ -8,7 +8,7 @@ enum class EasingType {
 
 	// Sine
 	EaseInSine, EaseOutSine, EaseInOutSine,
-	// Quad（旧 EaseIn/EaseOut/EaseInOut と同じ）
+	// Quad
 	EaseInQuad, EaseOutQuad, EaseInOutQuad,
 	// Cubic
 	EaseInCubic, EaseOutCubic, EaseInOutCubic,
