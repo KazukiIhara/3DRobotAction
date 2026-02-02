@@ -37,6 +37,9 @@ BossAttackWarningEffect::BossAttackWarningEffect(const Vector3& emitPos, BossMec
 	// タイム取得
 	timer_ = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","BossAttackWarning","Time" });
 
+	// サウンド再生
+	MAGISYSTEM::PlayWaveSound("BossAttackWarning.wav");
+
 }
 
 void BossAttackWarningEffect::Update() {
@@ -77,7 +80,7 @@ void BossAttackWarningEffect::Update() {
 	// アニメーション適用
 
 	// ワールド座標からスクリーン座標に変換
-	Vector2 screenPos;
+	Vector2 screenPos = { 0.0f,0.0f };
 	if (mech_) {
 		worldPos_ = mech_->GetPartsTransform(MechAnimation::TransType::Head)->GetWorldPosition();
 		screenPos = MAGIUtility::TransformWorldToScreen(worldPos_);

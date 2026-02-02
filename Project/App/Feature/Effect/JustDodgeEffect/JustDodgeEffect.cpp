@@ -79,6 +79,9 @@ JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos) :
 		MAGISYSTEM::EmitParticle(particleData);
 	}
 
+
+	// サウンド再生
+	MAGISYSTEM::PlayWaveSound("JustDodge.wav");
 }
 
 void JustDodgeEffect::Update() {
