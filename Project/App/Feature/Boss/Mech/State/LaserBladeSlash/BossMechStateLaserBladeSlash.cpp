@@ -108,10 +108,6 @@ namespace {
 			// 攻撃オブジェクト追加
 			mech->GetWeapon("LaserBlade")->Attack(Damage::Power::Mid);
 
-			// 攻撃発生前エフェクト
-			const Vector3 headPos = mech->GetPartsTransform(MechAnimation::TransType::Head)->GetWorldPosition();
-			effect_ = mech->GetGameEffectManager()->Add(std::move(std::make_unique<BossAttackWarningEffect>(headPos, mech)));
-
 			end_ = false;
 		}
 
@@ -140,6 +136,10 @@ namespace {
 			ms->SetDir(dirN);
 			ms->SetSpeed(len);
 			ms->SetMaxSpeed(len);
+
+			// 攻撃発生前エフェクト
+			const Vector3 headPos = mech->GetPartsTransform(MechAnimation::TransType::Head)->GetWorldPosition();
+			effect_ = mech->GetGameEffectManager()->Add(std::move(std::make_unique<BossAttackWarningEffect>(headPos, mech)));
 		}
 
 		bool EndRequest() override {

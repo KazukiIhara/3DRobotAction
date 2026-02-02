@@ -23,6 +23,9 @@ void Game::Initialize() {
 	// 規定システムの初期化
 	MAGISYSTEM::Initialize();
 
+	// サウンドのロード
+	LoadSound();
+
 	// シーンの追加
 	// サンプルシーン
 	sceneManager_->AddScene<SampleScene>("Sample");
@@ -48,4 +51,10 @@ void Game::Initialize() {
 #else
 	sceneManager_->StartScene("Title");
 #endif
+}
+
+void Game::LoadSound() {
+	MAGISYSTEM::LoadWaveSound("BossAttackWarning.wav");
+	MAGISYSTEM::LoadWaveSound("JustDodge.wav");
+	MAGISYSTEM::LoadWaveSound("JustDodge_Mid.wav");
 }
