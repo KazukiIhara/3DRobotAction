@@ -42,8 +42,11 @@ void DevelopScene::Initialize() {
 	gameEffectManager_ = std::make_unique<GameEffectManager>();
 	// 攻撃オブジェクトマネージャ
 	damageObjectManager_ = std::make_unique<DamageObjectManager>();
-	// コリジョンマネージャ
+	// コリジョンシステム
 	damageCollisionSystem_ = std::make_unique<DamageCollisionSystem>();
+	// ゲームUIマネージャ
+	gameUIManger_ = std::make_unique<GameUIManager>();
+
 	// 機体アニメーションコンテナクラス
 	mechAnimationContainer_ = std::make_unique<MechAnimationContainer>();
 
@@ -193,6 +196,9 @@ void DevelopScene::Update() {
 	// エフェクトマネージャ更新
 	gameEffectManager_->Update();
 
+	// ゲームUIマネージャ
+	gameUIManger_->Update();
+
 }
 
 void DevelopScene::Draw() {
@@ -217,6 +223,8 @@ void DevelopScene::Draw() {
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();
 
+	// ゲームUIマネージャ描画
+	gameUIManger_->Draw();
 }
 
 void DevelopScene::Finalize() {
