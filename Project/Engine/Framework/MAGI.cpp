@@ -57,7 +57,7 @@ std::unique_ptr<ShadowPipelineManager> MAGISYSTEM::shadowPipelineManager_ = null
 // AssetContainer
 // 
 std::unique_ptr<ParameterDataContainer> MAGISYSTEM::parameterDataContainer_ = nullptr;
-std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
+std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataContainer_ = nullptr;
 std::unique_ptr<PrimitiveShapeDataContainer> MAGISYSTEM::primitiveDataContainer_ = nullptr;
 std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
@@ -82,7 +82,7 @@ std::unique_ptr<LightManager> MAGISYSTEM::lightManager_ = nullptr;
 // Drawer
 // 
 std::unique_ptr<SpriteDrawer> MAGISYSTEM::spriteDrawer_ = nullptr;
-
+std::unique_ptr<FontDrawer> MAGISYSTEM::fontDrawer_ = nullptr;
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 std::unique_ptr<TriangleDrawer3D> MAGISYSTEM::triangleDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
@@ -151,6 +151,9 @@ void MAGISYSTEM::Initialize() {
 	// XInput
 	xInput_ = std::make_unique<MAGIXInput>(deltaTimer_.get());
 
+	// FontAtlas
+	fontAtlas_ = std::make_unique<FontAtlas>();
+
 	// DXGI
 	dxgi_ = std::make_unique<DXGI>();
 	// デバイスがDX12Ultimateに対応しているかどうかを取得
@@ -183,11 +186,11 @@ void MAGISYSTEM::Initialize() {
 	// ParameterDataContainer
 	parameterDataContainer_ = std::make_unique<ParameterDataContainer>();
 	// TextureDataContainer
-	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
+	textureDataContainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
 	// PrimitiveDataContainer
 	primitiveDataContainer_ = std::make_unique<PrimitiveShapeDataContainer>();
 	// ModelDataContainer
-	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
+	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataContainer_.get());
 	// AnimationDataContainer
 	animationDataContainer_ = std::make_unique<AnimationDataContainer>();
 	// SoundDataContainer
@@ -227,6 +230,8 @@ void MAGISYSTEM::Initialize() {
 
 	// SpriteDrawer
 	spriteDrawer_ = std::make_unique<SpriteDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera2DManager_.get());
+	// FontDrawer
+	fontDrawer_ = std::make_unique<FontDrawer>(spriteDrawer_.get(), fontAtlas_.get());
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// TriangleDrawer3D
@@ -275,19 +280,11 @@ void MAGISYSTEM::Initialize() {
 	// GUI
 	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get());
 
-	// FontAtlas
-	fontAtlas_ = std::make_unique<FontAtlas>();
-
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
 }
 
 void MAGISYSTEM::Finalize() {
-
-	// FontAtlas
-	if (fontAtlas_) {
-		fontAtlas_.reset();
-	}
 
 	// GUI
 	if (gui_) {
@@ -372,6 +369,11 @@ void MAGISYSTEM::Finalize() {
 	// LineDrawer3D
 	if (lineDrawer3D_) {
 		lineDrawer3D_.reset();
+	}
+
+	// FontDrawer
+	if (fontDrawer_) {
+		fontDrawer_.reset();
 	}
 
 	// SpriteDrawer
@@ -460,8 +462,8 @@ void MAGISYSTEM::Finalize() {
 	}
 
 	// TextureDataContainer
-	if (textureDataCantainer_) {
-		textureDataCantainer_.reset();
+	if (textureDataContainer_) {
+		textureDataContainer_.reset();
 	}
 
 	// ParameterDataContainer
@@ -522,6 +524,11 @@ void MAGISYSTEM::Finalize() {
 	// DXGI
 	if (dxgi_) {
 		dxgi_.reset();
+	}
+
+	// FontAtlas
+	if (fontAtlas_) {
+		fontAtlas_.reset();
 	}
 
 	// XInput
@@ -1012,6 +1019,48 @@ void MAGISYSTEM::StopPadVibration(int controllerID) {
 	xInput_->StopVibration(controllerID);
 }
 
+bool MAGISYSTEM::BuildAsciiAtlasPng(
+	const std::string& fontFilePath,
+	const std::string& outPngPath,
+	int32_t pixelSize,
+	int32_t cellSize,
+	int32_t padding
+) {
+
+	return fontAtlas_->BuildAsciiAtlasPng(
+		fontFilePath,
+		outPngPath,
+		pixelSize,
+		cellSize,
+		padding
+	);
+
+}
+
+const GlyphInfo* MAGISYSTEM::GetFontGlyph(char c) {
+	return fontAtlas_->GetGlyph(c);
+}
+
+int32_t MAGISYSTEM::GetFontAtlasWidth() {
+	return fontAtlas_->GetAtlasWidth();
+}
+
+int32_t MAGISYSTEM::GetFontAtlasHeight() {
+	return fontAtlas_->GetAtlasHeight();
+}
+
+int32_t MAGISYSTEM::GetFontPixelSize() {
+	return fontAtlas_->GetPixelSize();
+}
+
+bool MAGISYSTEM::SaveGlyphJson(const std::string& outJsonPath) {
+	return fontAtlas_->SaveGlyphJson(outJsonPath);
+}
+
+bool MAGISYSTEM::LoadGlyphJson(const std::string& outJsonPath) {
+	return fontAtlas_->LoadGlyphJson(outJsonPath);
+}
+
 ID3D12Device* MAGISYSTEM::GetDirectXDevice() {
 	return dxgi_->GetDevice();
 }
@@ -1268,34 +1317,34 @@ void MAGISYSTEM::AddParameterData(const std::vector<std::string>& dataPath, cons
 }
 
 uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
-	return textureDataCantainer_->Load(fileName, isFullPath);
+	return textureDataContainer_->Load(fileName, isFullPath);
 }
 
 void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
-	textureDataCantainer_->LoadNormalMap(filePath);
+	textureDataContainer_->LoadNormalMap(filePath);
 }
 
 std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
-	return textureDataCantainer_->GetTexture();
+	return textureDataContainer_->GetTexture();
 }
 
 const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& filePath) {
-	return textureDataCantainer_->GetMetaData(filePath);
+	return textureDataContainer_->GetMetaData(filePath);
 }
 
 const std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
-	return textureDataCantainer_->GetTextureContainer();
+	return textureDataContainer_->GetTextureContainer();
 }
 
 uint32_t MAGISYSTEM::GetTextureIndex(const std::string& textureName) {
-	const auto& textureMap = textureDataCantainer_->GetTexture();
+	const auto& textureMap = textureDataContainer_->GetTexture();
 	auto it = textureMap.find(textureName);
 	assert(it != textureMap.end() && "Texture name not found in textureMap");
 	return it->second.srvIndex;
 }
 
 uint32_t MAGISYSTEM::GetDefaultTextureIndex() {
-	return textureDataCantainer_->GetDefaultTextureIndex();
+	return textureDataContainer_->GetDefaultTextureIndex();
 }
 
 PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dType) {
@@ -1433,6 +1482,17 @@ void MAGISYSTEM::DrawSprite(const SpriteData& data, const SpriteMaterialData& ma
 	spriteDrawer_->AddSprite(data, material);
 }
 
+bool MAGISYSTEM::LoadFont(const std::string& atlasTextureName, const std::string& glyphJsonPath) {
+	return fontDrawer_->LoadFont(atlasTextureName, glyphJsonPath);
+}
+
+void MAGISYSTEM::DrawFont(const std::string& text, const Vector2& pos, const Vector4& color, float scale, float lineHeightScale) {
+	fontDrawer_->DrawFont(text, pos, color, scale, lineHeightScale);
+}
+
+void MAGISYSTEM::SetFontIsBack(bool isBack) {
+	fontDrawer_->SetBack(isBack);
+}
 
 void MAGISYSTEM::AddCamera2D(std::unique_ptr<Camera2D> newCamera2D) {
 	camera2DManager_->Add(std::move(newCamera2D));
@@ -1653,22 +1713,4 @@ void MAGISYSTEM::AddPlaneEffect(const PlaneEffectParam& param) {
 
 void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneClear) {
 	sceneDataImporter_->Import(sceneDataName, isSceneClear);
-}
-
-bool MAGISYSTEM::BuildAsciiAtlasPng(
-	const std::string& fontFilePath,
-	const std::string& outPngPath,
-	int32_t pixelSize,
-	int32_t cellSize,
-	int32_t padding
-) {
-
-	return fontAtlas_->BuildAsciiAtlasPng(
-		fontFilePath,
-		outPngPath,
-		pixelSize,
-		cellSize,
-		padding
-	);
-
 }

@@ -6,13 +6,15 @@
 #include <fstream>
 #include <cassert>
 #include <algorithm>
+#include <cstring>
 
 #include <wrl.h>
 
 #include "DirectXTex/DirectXTex.h"
 
-#define STB_TRUETYPE_STATIC
 #include "stb/stb_truetype.h"
+
+#include <nlohmann/json.hpp>
 
 using Microsoft::WRL::ComPtr;
 using namespace Magi;
@@ -33,6 +35,36 @@ namespace {
 		outData.resize(static_cast<size_t>(size));
 		ifs.seekg(0, std::ios::beg);
 		ifs.read(reinterpret_cast<char*>(outData.data()), size);
+
+		return true;
+	}
+
+	bool SaveTextFile(const std::string& path, const std::string& text) {
+		std::ofstream ofs(path, std::ios::binary);
+		if (!ofs) {
+			return false;
+		}
+
+		ofs.write(text.data(), static_cast<std::streamsize>(text.size()));
+		return true;
+	}
+
+	bool LoadTextFile(const std::string& path, std::string& outText) {
+		std::ifstream ifs(path, std::ios::binary);
+		if (!ifs) {
+			return false;
+		}
+
+		ifs.seekg(0, std::ios::end);
+		const std::streamoff size = ifs.tellg();
+		if (size <= 0) {
+			outText.clear();
+			return true;
+		}
+
+		outText.resize(static_cast<size_t>(size));
+		ifs.seekg(0, std::ios::beg);
+		ifs.read(outText.data(), size);
 
 		return true;
 	}
@@ -75,6 +107,53 @@ namespace {
 			}
 		}
 	}
+
+	nlohmann::json ToJson(const GlyphInfo& g) {
+		nlohmann::json j;
+
+		// グリフ情報
+		j["codepoint"] = g.codepoint;
+		j["x"] = g.x;
+		j["y"] = g.y;
+		j["w"] = g.w;
+		j["h"] = g.h;
+
+		// メトリクス
+		j["bearingX"] = g.bearingX;
+		j["bearingY"] = g.bearingY;
+		j["advance"] = g.advance;
+
+		return j;
+	}
+
+	bool FromJson(const nlohmann::json& j, GlyphInfo& out) {
+		if (!j.contains("codepoint")) return false;
+		if (!j.contains("x")) return false;
+		if (!j.contains("y")) return false;
+		if (!j.contains("w")) return false;
+		if (!j.contains("h")) return false;
+		if (!j.contains("bearingX")) return false;
+		if (!j.contains("bearingY")) return false;
+		if (!j.contains("advance")) return false;
+
+		// グリフ情報
+		out.codepoint = j.at("codepoint").get<int32_t>();
+		out.x = j.at("x").get<int32_t>();
+		out.y = j.at("y").get<int32_t>();
+		out.w = j.at("w").get<int32_t>();
+		out.h = j.at("h").get<int32_t>();
+
+		// メトリクス
+		out.bearingX = j.at("bearingX").get<int32_t>();
+		out.bearingY = j.at("bearingY").get<int32_t>();
+		out.advance = j.at("advance").get<int32_t>();
+
+		return true;
+	}
+}
+
+FontAtlas::FontAtlas() {
+
 }
 
 bool FontAtlas::BuildAsciiAtlasPng(
@@ -224,6 +303,84 @@ bool FontAtlas::BuildAsciiAtlasPng(
 	))) {
 		Clear();
 		return false;
+	}
+
+	return true;
+}
+
+bool FontAtlas::SaveGlyphJson(const std::string& outJsonPath) const {
+	nlohmann::json root;
+
+	// アトラス情報
+	root["atlasWidth"] = atlasWidth_;
+	root["atlasHeight"] = atlasHeight_;
+	root["pixelSize"] = pixelSize_;
+
+	nlohmann::json glyphArray = nlohmann::json::array();
+
+	std::vector<GlyphInfo> sorted;
+	sorted.reserve(glyphs_.size());
+
+	// glyphを配列化
+	for (const auto& kv : glyphs_) {
+		sorted.push_back(kv.second);
+	}
+
+	// codepointでソート
+	std::sort(sorted.begin(), sorted.end(), [](const GlyphInfo& a, const GlyphInfo& b) {
+		return a.codepoint < b.codepoint;
+	});
+
+	// JSON化
+	for (const auto& g : sorted) {
+		glyphArray.push_back(ToJson(g));
+	}
+
+	root["glyphs"] = glyphArray;
+
+	const std::string text = root.dump(2);
+	return SaveTextFile(outJsonPath, text);
+}
+
+bool FontAtlas::LoadGlyphJson(const std::string& jsonPath) {
+	Clear();
+
+	std::string text;
+	// JSON読み込み
+	if (!LoadTextFile(jsonPath, text)) {
+		return false;
+	}
+
+	nlohmann::json root;
+	// JSONパース
+	try {
+		root = nlohmann::json::parse(text);
+	} catch (...) {
+		return false;
+	}
+
+	// アトラス情報取得
+	if (!root.contains("atlasWidth")) return false;
+	if (!root.contains("atlasHeight")) return false;
+	if (!root.contains("pixelSize")) return false;
+	if (!root.contains("glyphs")) return false;
+
+	atlasWidth_ = root.at("atlasWidth").get<int32_t>();
+	atlasHeight_ = root.at("atlasHeight").get<int32_t>();
+	pixelSize_ = root.at("pixelSize").get<int32_t>();
+
+	const nlohmann::json& glyphArray = root.at("glyphs");
+	if (!glyphArray.is_array()) {
+		return false;
+	}
+
+	// glyph復元
+	for (const auto& item : glyphArray) {
+		GlyphInfo g{};
+		if (!FromJson(item, g)) {
+			return false;
+		}
+		glyphs_.emplace(g.codepoint, g);
 	}
 
 	return true;

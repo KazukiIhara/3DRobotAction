@@ -67,10 +67,20 @@ void Game::LoadFonts() {
 	const bool ok = MAGISYSTEM::BuildAsciiAtlasPng(
 		"Assets/Fonts/ttf/Roboto-Bold.ttf",
 		"Assets/Fonts/Roboto_Bold.png",
-		32,
-		64,
-		2
+		128,
+		256,
+		8
 	);
-
 	MAGIAssert::Assert(ok, "FontAtlas生成に失敗しました");
+
+	// フォント描画用データを書き出し
+	const bool saveOK = MAGISYSTEM::SaveGlyphJson("Assets/Fonts/Roboto_Bold.json");
+
+	MAGIAssert::Assert(saveOK, "FontAtlas生成に失敗しました");
+
+	// テクスチャロード
+	MAGISYSTEM::LoadTexture("Assets/Fonts/Roboto_Bold.png", true);
+
+	// フォント描画クラスでフォントを読み込み
+	MAGISYSTEM::LoadFont("Assets/Fonts/Roboto_Bold.png", "Assets/Fonts/Roboto_Bold.json");
 }

@@ -27,6 +27,9 @@ namespace Magi {
 	/// </summary>
 	class FontAtlas {
 	public:
+		FontAtlas();
+		~FontAtlas() = default;
+
 		bool BuildAsciiAtlasPng(
 			const std::string& fontFilePath,
 			const std::string& outPngPath,
@@ -40,6 +43,9 @@ namespace Magi {
 		int32_t GetAtlasWidth() const;
 		int32_t GetAtlasHeight() const;
 		int32_t GetPixelSize() const;
+
+		bool SaveGlyphJson(const std::string& outJsonPath) const;
+		bool LoadGlyphJson(const std::string& jsonPath);
 
 	private:
 		void Clear();

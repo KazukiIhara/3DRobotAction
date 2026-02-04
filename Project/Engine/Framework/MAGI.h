@@ -16,6 +16,11 @@
 #include "Input/MAGIXInput/MAGIXInput.h"
 
 // 
+// フォント読み込み
+// 
+#include "FontAtlas/FontAtlas.h"
+
+// 
 // DirectXBaseSystems
 // 
 #include "DirectX/DXGI/DXGI.h"
@@ -73,12 +78,11 @@
 #include "Camera3DManager/Camera3DManager.h"
 #include "LightManager/LightManager.h"
 
-
-
 // 
 // Drawer
 // 
 #include "2D/Drawer2D/SpriteDrawer/SpriteDrawer.h"
+#include "2D/Drawer2D/FontDrawer/FontDrawer.h"
 
 #include "3D/Drawer3D/PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
 #include "3D/Drawer3D/PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
@@ -127,11 +131,6 @@
 // 
 #include "ImGuiController/ImGuiController.h"
 #include "GUI/GUI.h"
-
-// 
-// フォント読み込み
-// 
-#include "FontAtlas/FontAtlas.h"
 
 /// <summary>
 /// フレームワーククラス
@@ -256,6 +255,27 @@ public: // エンジンの機能
 	static void StartPadVibration(int controllerID, float duration, float leftPower, float rightPower);
 	// 振動終了
 	static void StopPadVibration(int controllerID);
+
+#pragma endregion
+
+#pragma region FontAtlas
+	// フォントを読み込んでテクスチャを作成
+	static bool BuildAsciiAtlasPng(
+		const std::string& fontFilePath,
+		const std::string& outPngPath,
+		int32_t pixelSize,
+		int32_t cellSize,
+		int32_t padding
+	);
+
+	static const Magi::GlyphInfo* GetFontGlyph(char c);
+
+	static int32_t GetFontAtlasWidth();
+	static int32_t GetFontAtlasHeight();
+	static int32_t GetFontPixelSize();
+
+	static bool SaveGlyphJson(const std::string& outJsonPath);
+	static bool LoadGlyphJson(const std::string& outJsonPath);
 
 #pragma endregion
 
@@ -539,6 +559,16 @@ public: // エンジンの機能
 	static void DrawSprite(const SpriteData& data, const SpriteMaterialData& material);
 #pragma endregion
 
+#pragma region FontDrawer
+	// フォントを設定
+	static bool LoadFont(const std::string& atlasTextureName, const std::string& glyphJsonPath);
+	// フォント描画
+	static void DrawFont(const std::string& text, const Vector2& pos, const Vector4& color, float scale = 1.0f, float lineHeightScale = 1.0f);
+	// 背景フラグ
+	static void SetFontIsBack(bool isBack);
+
+#pragma endregion
+
 #pragma region LineDrawer3D
 	// ライン描画
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color);
@@ -684,18 +714,6 @@ public: // エンジンの機能
 
 #pragma endregion
 
-#pragma region FontAtlas
-	// フォントを読み込んでテクスチャを作成
-	static bool BuildAsciiAtlasPng(
-		const std::string& fontFilePath,
-		const std::string& outPngPath,
-		int32_t pixelSize,
-		int32_t cellSize,
-		int32_t padding
-	);
-
-#pragma endregion
-
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;
@@ -714,6 +732,11 @@ protected:
 	static std::unique_ptr<Magi::DeltaTimer> deltaTimer_;
 	static std::unique_ptr<Magi::MAGIDirectInput> directInput_;
 	static std::unique_ptr<Magi::MAGIXInput> xInput_;
+
+	// 
+	// フォント読み込み
+	//
+	static std::unique_ptr<Magi::FontAtlas> fontAtlas_;
 
 	// 
 	// DirectXBaseSystems
@@ -751,7 +774,7 @@ protected:
 	// AssetContainer
 	// 
 	static std::unique_ptr<Magi::ParameterDataContainer> parameterDataContainer_;
-	static std::unique_ptr<Magi::TextureDataContainer> textureDataCantainer_;
+	static std::unique_ptr<Magi::TextureDataContainer> textureDataContainer_;
 	static std::unique_ptr<Magi::PrimitiveShapeDataContainer> primitiveDataContainer_;
 	static std::unique_ptr<Magi::ModelDataContainer> modelDataContainer_;
 	static std::unique_ptr<Magi::AnimationDataContainer> animationDataContainer_;
@@ -776,6 +799,7 @@ protected:
 	// Drawer
 	// 
 	static std::unique_ptr<Magi::SpriteDrawer> spriteDrawer_;
+	static std::unique_ptr<Magi::FontDrawer> fontDrawer_;
 
 	static std::unique_ptr<Magi::LineDrawer3D> lineDrawer3D_;
 	static std::unique_ptr<Magi::TriangleDrawer3D> triangleDrawer3D_;
@@ -820,10 +844,5 @@ protected:
 	//
 	static std::unique_ptr<Magi::ImGuiController> imguiController_;
 	static std::unique_ptr<Magi::GUI> gui_;
-
-	// 
-	// フォント読み込み
-	//
-	static std::unique_ptr<Magi::FontAtlas> fontAtlas_;
 
 };

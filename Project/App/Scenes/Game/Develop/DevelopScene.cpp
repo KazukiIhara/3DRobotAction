@@ -157,8 +157,6 @@ void DevelopScene::Update() {
 
 	ImGui::End();
 
-
-
 	// 機体アニメーション作成クラス
 	mechAnimationEdit_->Update();
 
@@ -218,6 +216,9 @@ void DevelopScene::Draw() {
 
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();
+
+
+	MAGISYSTEM::DrawFont("AAABBBbbb gty", Vector2(0.0f, 100.0f), Color::White, 0.5f);
 }
 
 void DevelopScene::Finalize() {
