@@ -11,6 +11,8 @@
 
 #include "Feature/Effect/JustDodgeEffect/JustDodgeEffect.h"
 
+#include "Feature/Pilot/Mech/Weapon/MachineGun/PilotMechWeaponMachineGun.h"
+
 using namespace Magi;
 using namespace MAGIMath;
 using namespace MAGIUtility;
@@ -37,6 +39,11 @@ void PilotMechStateJustDodge::Enter([[maybe_unused]] PilotMech* mech) {
 	// 初速と最大速度をセット
 	ms->SetSpeed(firstSpeed);
 	ms->SetMaxSpeed(firstSpeed);
+
+	// マシンガンの残弾を回復
+	const int32_t reloadAmmoNum = MAGISYSTEM::GetParameterValue<int32_t>({ "PilotMechStateParam","JustDodge","ReloadAmmoNum" });
+	auto weapon = dynamic_cast<PilotMechWeaponMachineGun*>(mech->GetWeapon("MachineGun"));
+	weapon->AddAmmo(reloadAmmoNum);
 
 }
 

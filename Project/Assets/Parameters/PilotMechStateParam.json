@@ -32,6 +32,10 @@
       "type": "Float",
       "value": 40.0
     },
+    "ReloadAmmoNum": {
+      "type": "Int32",
+      "value": 30
+    },
     "Time": {
       "type": "Float",
       "value": 0.8999999761581421
