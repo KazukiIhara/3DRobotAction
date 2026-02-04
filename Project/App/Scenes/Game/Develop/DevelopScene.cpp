@@ -217,10 +217,6 @@ void DevelopScene::Draw() {
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();
 
-
-	MAGISYSTEM::DrawFont("AAABBBbbb gty", Vector2(0.0f, 100.0f), Color::White, 0.25f);
-
-	MAGISYSTEM::DrawFont("AAABBBbbb gty", Vector2(0.0f, 200.0f), Color::White, 1.0f);
 }
 
 void DevelopScene::Finalize() {
