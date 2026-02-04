@@ -63,13 +63,13 @@ void Game::LoadSound() {
 }
 
 void Game::LoadFonts() {
-	// フォント読み込み、テクスチャ作成s
+	// フォント読み込み、テクスチャ作成
 	const bool ok = MAGISYSTEM::BuildAsciiAtlasPng(
 		"Assets/Fonts/ttf/Roboto-Bold.ttf",
 		"Assets/Fonts/Roboto_Bold.png",
-		128,
 		256,
-		8
+		512,
+		16
 	);
 	MAGIAssert::Assert(ok, "FontAtlas生成に失敗しました");
 
