@@ -19,7 +19,10 @@ public:
 
 	void Attack(Damage::Power power)override;
 
+	void AddAmmo(int32_t ammo);
+
 private:
+	int32_t ammo_ = 0;
 	float coolTimer_ = 0.0f;
 
 	ModelMaterial mat_;

@@ -7,7 +7,7 @@
 /// </summary>
 class BaseGameUI {
 public:
-	BaseGameUI(const Vector2& pos);
+	BaseGameUI(const Vector2& pos = Vector2(0.0f, 0.0f));
 	virtual ~BaseGameUI() = default;
 
 	virtual void Update() = 0;

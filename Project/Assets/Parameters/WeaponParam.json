@@ -143,6 +143,10 @@
         "type": "Float",
         "value": 4.0
       },
+      "MaxAmmo": {
+        "type": "Int32",
+        "value": 30
+      },
       "Speed": {
         "type": "Float",
         "value": 80.0
