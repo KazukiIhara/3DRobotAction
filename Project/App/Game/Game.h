@@ -10,4 +10,5 @@ public:
 	void Initialize()override;
 private:
 	void LoadSound();
+	void LoadFonts();
 };

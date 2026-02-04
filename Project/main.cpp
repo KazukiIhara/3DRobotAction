@@ -20,6 +20,13 @@
 #pragma comment(lib, "xinput.lib")
 #pragma comment(lib,"xaudio2.lib")
 
+// Define
+#define STB_TRUETYPE_IMPLEMENTATION
+#include "stb_truetype.h"
+
+/// <summary>
+/// エントリーポイント
+/// </summary>
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 例外終了時処理

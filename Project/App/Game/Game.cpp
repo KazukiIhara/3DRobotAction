@@ -26,6 +26,9 @@ void Game::Initialize() {
 	// サウンドのロード
 	LoadSound();
 
+	// フォントのロード
+	LoadFonts();
+
 	// シーンの追加
 	// サンプルシーン
 	sceneManager_->AddScene<SampleScene>("Sample");
@@ -57,4 +60,17 @@ void Game::LoadSound() {
 	MAGISYSTEM::LoadWaveSound("BossAttackWarning.wav");
 	MAGISYSTEM::LoadWaveSound("JustDodge.wav");
 	MAGISYSTEM::LoadWaveSound("JustDodge_Mid.wav");
+}
+
+void Game::LoadFonts() {
+	// フォント読み込み、テクスチャ作成s
+	const bool ok = MAGISYSTEM::BuildAsciiAtlasPng(
+		"Assets/Fonts/ttf/Roboto-Bold.ttf",
+		"Assets/Fonts/Roboto_Bold.png",
+		32,
+		64,
+		2
+	);
+
+	MAGIAssert::Assert(ok, "FontAtlas生成に失敗しました");
 }

@@ -127,6 +127,12 @@ std::unique_ptr<SceneDataImporter> MAGISYSTEM::sceneDataImporter_ = nullptr;
 std::unique_ptr<ImGuiController> MAGISYSTEM::imguiController_ = nullptr;
 std::unique_ptr<GUI> MAGISYSTEM::gui_ = nullptr;
 
+// 
+// フォント読み込み
+// 
+std::unique_ptr<FontAtlas> MAGISYSTEM::fontAtlas_ = nullptr;
+
+
 void MAGISYSTEM::Initialize() {
 	// 開始ログ
 	Logger::Log("MAGISYSTEM Start\n");
@@ -269,11 +275,19 @@ void MAGISYSTEM::Initialize() {
 	// GUI
 	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get());
 
+	// FontAtlas
+	fontAtlas_ = std::make_unique<FontAtlas>();
+
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
 }
 
 void MAGISYSTEM::Finalize() {
+
+	// FontAtlas
+	if (fontAtlas_) {
+		fontAtlas_.reset();
+	}
 
 	// GUI
 	if (gui_) {
@@ -1639,4 +1653,22 @@ void MAGISYSTEM::AddPlaneEffect(const PlaneEffectParam& param) {
 
 void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneClear) {
 	sceneDataImporter_->Import(sceneDataName, isSceneClear);
+}
+
+bool MAGISYSTEM::BuildAsciiAtlasPng(
+	const std::string& fontFilePath,
+	const std::string& outPngPath,
+	int32_t pixelSize,
+	int32_t cellSize,
+	int32_t padding
+) {
+
+	return fontAtlas_->BuildAsciiAtlasPng(
+		fontFilePath,
+		outPngPath,
+		pixelSize,
+		cellSize,
+		padding
+	);
+
 }

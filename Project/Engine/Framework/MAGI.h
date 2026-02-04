@@ -128,6 +128,11 @@
 #include "ImGuiController/ImGuiController.h"
 #include "GUI/GUI.h"
 
+// 
+// フォント読み込み
+// 
+#include "FontAtlas/FontAtlas.h"
+
 /// <summary>
 /// フレームワーククラス
 /// </summary>
@@ -679,6 +684,18 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region FontAtlas
+	// フォントを読み込んでテクスチャを作成
+	static bool BuildAsciiAtlasPng(
+		const std::string& fontFilePath,
+		const std::string& outPngPath,
+		int32_t pixelSize,
+		int32_t cellSize,
+		int32_t padding
+	);
+
+#pragma endregion
+
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;
@@ -803,5 +820,10 @@ protected:
 	//
 	static std::unique_ptr<Magi::ImGuiController> imguiController_;
 	static std::unique_ptr<Magi::GUI> gui_;
+
+	// 
+	// フォント読み込み
+	//
+	static std::unique_ptr<Magi::FontAtlas> fontAtlas_;
 
 };
