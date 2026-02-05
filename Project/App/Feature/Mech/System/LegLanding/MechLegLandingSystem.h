@@ -43,7 +43,6 @@ private:
 
 	bool isEnable_ = true;
 	bool isEnableDebug_ = true;
-	bool isInitialized_ = false;
 
 	bool isWorking_ = false;
 
