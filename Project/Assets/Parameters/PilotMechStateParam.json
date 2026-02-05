@@ -9,6 +9,12 @@
       "value": 0.6000000238418579
     }
   },
+  "HitReact": {
+    "Time": {
+      "type": "Float",
+      "value": 1.0
+    }
+  },
   "Idle": {
     "Acc": {
       "type": "Float",

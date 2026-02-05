@@ -83,6 +83,9 @@ public:
 	// ゲームで使うパラメータを取得
 	GameParam GetGameParam()const;
 
+	// コライダーの中心を取得
+	Vector3 GetCenter();
+
 private:
 	// パラメータ
 	Param param_{};

@@ -19,6 +19,7 @@ public:
 	struct HitInfo {
 		int32_t damage = 0;
 		Damage::Power power;
+		Vector3 hitPos;
 	};
 	struct Capsule {
 		Vector3 p0;
