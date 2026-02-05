@@ -68,7 +68,7 @@ void BossMechWeaponLaserGun::Attack([[maybe_unused]] Damage::Power power) {
 		lParam.initParam_.life = life;
 
 		lParam.initParam_.gParam.damage = damage;
-		lParam.initParam_.gParam.power = Damage::Power::Small;
+		lParam.initParam_.gParam.power = Damage::Power::Large;
 		lParam.initParam_.gParam.tag = FriendlyTag::EnemySide;
 
 		lParam.color = LaserEffect::Col::RED;

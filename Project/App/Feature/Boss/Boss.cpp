@@ -39,8 +39,6 @@ BossMech* Boss::GetMech() {
 
 void Boss::LoadMechInitParam() {
 
-	initParam_.hp = MAGISYSTEM::GetParameterValue<int32_t>({ "MechInitParam","Boss","HP" });
-
 	initParam_.head.modelName = MAGISYSTEM::GetParameterValue<std::string>({ "MechInitParam","Boss","Head","ModelName" });
 	initParam_.head.translate = MAGISYSTEM::GetParameterValue<Vector3>({ "MechInitParam","Boss","Head","Translate" });
 

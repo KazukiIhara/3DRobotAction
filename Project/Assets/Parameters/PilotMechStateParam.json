@@ -61,6 +61,24 @@
       }
     }
   },
+  "KnockBack": {
+    "Acc": {
+      "type": "Float",
+      "value": 0.0
+    },
+    "ImpactDirY": {
+      "type": "Float",
+      "value": 0.20000000298023224
+    },
+    "ImpactSpeed": {
+      "type": "Float",
+      "value": 80.0
+    },
+    "Time": {
+      "type": "Float",
+      "value": 2.0
+    }
+  },
   "Move": {
     "Acc": {
       "type": "Float",

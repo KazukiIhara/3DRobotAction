@@ -6,7 +6,7 @@
 /// <summary>
 /// 中衝撃の攻撃を受けた時のリアクションステート
 /// </summary>
-class PilotMechStateHitReact:public IPilotMechState {
+class PilotMechStateHitReact :public IPilotMechState {
 public:
 	~PilotMechStateHitReact()override = default;
 	void Enter(PilotMech* mech)override;
