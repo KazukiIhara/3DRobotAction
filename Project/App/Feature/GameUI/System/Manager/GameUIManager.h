@@ -18,6 +18,7 @@ public:
 
 	void Update();
 	void Draw();
+	void Clear();
 
 private:
 	void DeleteGarbage();

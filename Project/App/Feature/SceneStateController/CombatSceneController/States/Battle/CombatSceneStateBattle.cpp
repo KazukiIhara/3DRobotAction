@@ -22,9 +22,17 @@
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
+#include "Feature/GameUI/System/Manager/GameUIManager.h"
 
+//-------------------------------------------
+// UI
+//-------------------------------------------
+#include "Feature/GameUI/LockOnUI/LockOnUI.h"
+
+// シーンコントローラ
 #include "Feature/SceneStateController/CombatSceneController/CombatSceneController.h"
 
+// フレームワーク
 #include "MAGI.h"
 
 using namespace Magi;
@@ -40,6 +48,9 @@ void CombatSceneStateBattle::Enter([[maybe_unused]] CombatSceneControl::StateCon
 
 	// ボスAI起動
 	ref.boss->SetAIActive(true);
+
+	// UI生成
+	ref.gameUIMgr->Add(std::move(std::make_unique<LockOnUI>(ref.boss->GetMech())));
 
 }
 

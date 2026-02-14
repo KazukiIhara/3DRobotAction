@@ -2,6 +2,9 @@
 
 #include "Feature/SceneStateController/CombatSceneController/States/ICombatSceneState.h"
 
+/// <summary>
+/// 戦闘フェーズ
+/// </summary>
 class CombatSceneStateBattle: public ICombatSceneState {
 public:
 	~CombatSceneStateBattle()override = default;

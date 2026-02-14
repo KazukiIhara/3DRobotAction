@@ -7,6 +7,7 @@ class Boss;
 class GameEffectManager;
 class DamageCollisionSystem;
 class DamageObjectManager;
+class GameUIManager;
 class CombatSceneController;
 
 namespace CombatSceneControl {
@@ -18,6 +19,7 @@ namespace CombatSceneControl {
 		GameEffectManager* effectMgr;
 		DamageCollisionSystem* collisionSys;
 		DamageObjectManager* damageObjMgr;
+		GameUIManager* gameUIMgr;
 	};
 
 	struct StateContextRef {
@@ -28,6 +30,7 @@ namespace CombatSceneControl {
 		GameEffectManager* effectMgr;
 		DamageCollisionSystem* collisionSys;
 		DamageObjectManager* damageObjMgr;
+		GameUIManager* gameUIMgr;
 		CombatSceneController* cbc;
 	};
 }
