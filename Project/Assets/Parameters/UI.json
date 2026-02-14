@@ -1,0 +1,17 @@
+{
+  "LockOn": {
+    "InnerRotSpeed": {
+      "type": "Float",
+      "value": 1.0
+    }
+  },
+  "WeaponUI": {
+    "Pos": {
+      "type": "Vec2",
+      "value": {
+        "x": 1400.0,
+        "y": 700.0
+      }
+    }
+  }
+}

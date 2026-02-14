@@ -17,6 +17,8 @@ public:
 	void Draw()override;
 
 private:
+	float innerRot_ = 0.0f;
+
 	ILockOnTarget* target_;
 
 	SpriteData inner_;

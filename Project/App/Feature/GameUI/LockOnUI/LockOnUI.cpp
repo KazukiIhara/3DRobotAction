@@ -10,6 +10,9 @@ using namespace MAGIUtility;
 LockOnUI::LockOnUI(ILockOnTarget* target) {
 	target_ = target;
 
+	// パラメータ作成
+	MAGISYSTEM::AddParameterData({ "UI","LockOn","InnerRotSpeed" }, Magi::ParamType::Float);
+
 	// テクスチャロード
 	MAGISYSTEM::LoadTexture("InnerLock.png");
 	MAGISYSTEM::LoadTexture("OuterLock.png");
@@ -24,9 +27,20 @@ LockOnUI::LockOnUI(ILockOnTarget* target) {
 }
 
 void LockOnUI::Update() {
+	// デルタタイムを取得
+	const float dt = MAGISYSTEM::GetDeltaTime();
+
 	// ターゲットのワールド座標を変換
 	const Vector3 wPos = target_->GetCenterPos();
 	screenPos_ = TransformWorldToScreen(wPos);
+
+	// インナーUIを回転
+	const float innerRotSpeed = MAGISYSTEM::GetParameterValue<float>({ "UI","LockOn","InnerRotSpeed" });
+	innerRot_ += innerRotSpeed * dt;
+	if (innerRot_ >= std::numbers::pi_v<float>*2.0f) {
+		innerRot_ = 0.0f;
+	}
+	inner_.rotate = innerRot_;
 
 	// UIの座標を設定
 	inner_.position = screenPos_;

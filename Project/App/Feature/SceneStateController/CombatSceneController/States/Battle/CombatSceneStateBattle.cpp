@@ -27,7 +27,13 @@
 //-------------------------------------------
 // UI
 //-------------------------------------------
+
+// ロックオン
 #include "Feature/GameUI/LockOnUI/LockOnUI.h"
+
+// 武器UI
+#include "Feature/GameUI/WeaponUI/WeaponUI.h"
+
 
 // シーンコントローラ
 #include "Feature/SceneStateController/CombatSceneController/CombatSceneController.h"
@@ -50,7 +56,11 @@ void CombatSceneStateBattle::Enter([[maybe_unused]] CombatSceneControl::StateCon
 	ref.boss->SetAIActive(true);
 
 	// UI生成
+
+	// ロックオンUI
 	ref.gameUIMgr->Add(std::move(std::make_unique<LockOnUI>(ref.boss->GetMech())));
+	// 武器UI
+	ref.gameUIMgr->Add(std::move(std::make_unique<WeaponUI>()));
 
 }
 
