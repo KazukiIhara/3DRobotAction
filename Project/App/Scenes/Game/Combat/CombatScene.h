@@ -36,9 +36,9 @@
 // シーンに配置するマネージャ
 //-------------------------------------------
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
-
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
+#include "Feature/GameUI/System/Manager/GameUIManager.h"
 
 #include "MechAnimation/Container/MechAnimationContainer.h"
 
@@ -81,6 +81,9 @@ private:
 	std::unique_ptr<DamageCollisionSystem> damageCollisionSystem_;
 	// 攻撃オブジェクトマネージャ
 	std::unique_ptr<DamageObjectManager> damageObjectManager_;
+	// UIマネージャ
+	std::unique_ptr<GameUIManager> gameUIManger_;
+
 	// 機体アニメーションコンテナクラス
 	std::unique_ptr<MechAnimationContainer> mechAnimationContainer_;
 

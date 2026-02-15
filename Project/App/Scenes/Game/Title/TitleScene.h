@@ -3,6 +3,7 @@
 // フレームワーク
 #include "MAGI.h"
 
+
 /// <summary>
 /// タイトルシーン
 /// </summary>
@@ -20,5 +21,13 @@ private:
 	DirectionalLight directionalLight_{};
 
 	SpriteData data_{};
-	MaterialData3D mat_{};
+	SpriteMaterialData mat_{};
+
+	SpriteData uiData_;
+	SpriteMaterialData uiMat_;
+
+	SpriteData uiEffectData_;
+	SpriteMaterialData uiEffectMat_;
+
+	float t_ = 0.0f;
 };

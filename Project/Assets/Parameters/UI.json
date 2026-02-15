@@ -58,5 +58,36 @@
         "y": 850.0
       }
     }
+  },
+  "Title": {
+    "AlphaEffectEnd": {
+      "type": "Float",
+      "value": 0.0
+    },
+    "AlphaEffectStart": {
+      "type": "Float",
+      "value": 0.5
+    },
+    "PressAnyButton": {
+      "type": "Vec2",
+      "value": {
+        "x": 960.0,
+        "y": 900.0
+      }
+    },
+    "SizeEffectEnd": {
+      "type": "Vec2",
+      "value": {
+        "x": 600.0,
+        "y": 80.0
+      }
+    },
+    "SizeEffectStart": {
+      "type": "Vec2",
+      "value": {
+        "x": 491.0,
+        "y": 60.0
+      }
+    }
   }
 }
