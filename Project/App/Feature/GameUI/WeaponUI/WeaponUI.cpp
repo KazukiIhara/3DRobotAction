@@ -8,6 +8,19 @@ WeaponUI::WeaponUI() {
 
 	// テクスチャのロード
 	MAGISYSTEM::LoadTexture("WeaponUI.png");
+	MAGISYSTEM::LoadTexture("CannonRifleUI.png");
+	MAGISYSTEM::LoadTexture("MachineGunUI.png");
+
+	MAGISYSTEM::LoadTexture("LT.png");
+	MAGISYSTEM::LoadTexture("RT.png");
+	MAGISYSTEM::LoadTexture("LB.png");
+	MAGISYSTEM::LoadTexture("RB.png");
+
+	MAGISYSTEM::LoadTexture("LBEnable.png");
+	MAGISYSTEM::LoadTexture("RBEnable.png");
+	MAGISYSTEM::LoadTexture("LTEnable.png");
+	MAGISYSTEM::LoadTexture("RTEnable.png");
+
 
 	// パラメータ取得
 	screenPos_ = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","WeaponUI","Pos" });
