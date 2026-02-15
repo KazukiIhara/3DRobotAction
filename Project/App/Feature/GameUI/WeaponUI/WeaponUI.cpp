@@ -4,10 +4,14 @@
 
 WeaponUI::WeaponUI() {
 	// パラメータの追加
-	MAGISYSTEM::AddParameterData({ "UI","WeaponUI","Pos" }, Magi::ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "UI","CannonRifle","Pos" }, Magi::ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "UI","MachineGun","Pos" }, Magi::ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "UI","LT","Pos" }, Magi::ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "UI","RT","Pos" }, Magi::ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "UI","LB","Pos" }, Magi::ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "UI","RB","Pos" }, Magi::ParamType::Vec2);
 
 	// テクスチャのロード
-	MAGISYSTEM::LoadTexture("WeaponUI.png");
 	MAGISYSTEM::LoadTexture("CannonRifleUI.png");
 	MAGISYSTEM::LoadTexture("MachineGunUI.png");
 
@@ -23,19 +27,43 @@ WeaponUI::WeaponUI() {
 
 
 	// パラメータ取得
-	screenPos_ = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","WeaponUI","Pos" });
-	data_.position = screenPos_;
+	cannonRifle_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","CannonRifle","Pos" });
+	machineGun_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","MachineGun","Pos" });
+	lt_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LT","Pos" });
+	rt_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RT","Pos" });
+	lb_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LB","Pos" });
+	rb_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RB","Pos" });
 
 	// マテリアル設定
-	mat_.textureName = "WeaponUI.png";
+	cannonRifleMat_.textureName = "CannonRifleUI.png";
+	machineGunMat_.textureName = "MachineGunUI.png";
+
+	ltMat_.textureName = "LT.png";
+	rtMat_.textureName = "RT.png";
+	lbMat_.textureName = "LB.png";
+	rbMat_.textureName = "RB.png";
 
 }
 
 void WeaponUI::Update() {
-	screenPos_ = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","WeaponUI","Pos" });
-	data_.position = screenPos_;
+	cannonRifle_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","CannonRifle","Pos" });
+	machineGun_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","MachineGun","Pos" });
+	lt_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LT","Pos" });
+	rt_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RT","Pos" });
+	lb_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LB","Pos" });
+	rb_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RB","Pos" });
+
+
+	// ボタンテクスチャ切り替え
+
 }
 
 void WeaponUI::Draw() {
-	MAGISYSTEM::DrawSprite(data_, mat_);
+	MAGISYSTEM::DrawSprite(cannonRifle_, cannonRifleMat_);
+	MAGISYSTEM::DrawSprite(machineGun_, machineGunMat_);
+
+	MAGISYSTEM::DrawSprite(lt_, ltMat_);
+	MAGISYSTEM::DrawSprite(rt_, rtMat_);
+	MAGISYSTEM::DrawSprite(lb_, lbMat_);
+	MAGISYSTEM::DrawSprite(rb_, rbMat_);
 }

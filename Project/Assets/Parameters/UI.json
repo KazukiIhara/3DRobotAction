@@ -1,16 +1,61 @@
 {
+  "CannonRifle": {
+    "Pos": {
+      "type": "Vec2",
+      "value": {
+        "x": 1450.0,
+        "y": 700.0
+      }
+    }
+  },
+  "LB": {
+    "Pos": {
+      "type": "Vec2",
+      "value": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    }
+  },
+  "LT": {
+    "Pos": {
+      "type": "Vec2",
+      "value": {
+        "x": 1350.0,
+        "y": 700.0
+      }
+    }
+  },
   "LockOn": {
     "InnerRotSpeed": {
       "type": "Float",
       "value": 1.0
     }
   },
-  "WeaponUI": {
+  "MachineGun": {
     "Pos": {
       "type": "Vec2",
       "value": {
-        "x": 1400.0,
-        "y": 700.0
+        "x": 1450.0,
+        "y": 850.0
+      }
+    }
+  },
+  "RB": {
+    "Pos": {
+      "type": "Vec2",
+      "value": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    }
+  },
+  "RT": {
+    "Pos": {
+      "type": "Vec2",
+      "value": {
+        "x": 1350.0,
+        "y": 850.0
       }
     }
   }
