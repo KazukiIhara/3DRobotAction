@@ -41,12 +41,8 @@ BossMech::BossMech(const InitParam& param, const RefContext& ref, PilotMech* pil
 	// 武器をマップに追加
 	AddWeapon("LaserBlade", std::make_unique<BossMechWeaponLaserBlade>(this));
 
-	{
-		// ステータスを初期化
-		BossMechStatus::InitParam sInitParam{};
-		sInitParam.hp = param.hp;
-		status_ = std::make_unique<BossMechStatus>(sInitParam, this);
-	}
+	// ステータス初期化
+	status_ = std::make_unique<BossMechStatus>(this);
 
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<BossMechStateIdle>();
@@ -128,16 +124,16 @@ BossMechBaseState* BossMech::GetState(BossMech::State state) {
 
 const std::string BossMech::StateToString(BossMech::State state) {
 	switch (state) {
-		case BossMech::State::Idle:
-			return "Idle";
-		case BossMech::State::Destroy:
-			return "Destroy";
-		case BossMech::State::LaserShot:
-			return "LaserShot";
-		case BossMech::State::LaserBladeSlash:
-			return "LaserBladeSlash";
-		default:
-			return "Unknown";
+	case BossMech::State::Idle:
+		return "Idle";
+	case BossMech::State::Destroy:
+		return "Destroy";
+	case BossMech::State::LaserShot:
+		return "LaserShot";
+	case BossMech::State::LaserBladeSlash:
+		return "LaserBladeSlash";
+	default:
+		return "Unknown";
 	}
 }
 

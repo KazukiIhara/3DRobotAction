@@ -29,6 +29,10 @@ void MechMoveSystem::SetDir(const Vector3& dir) {
 	dir_ = dir;
 }
 
+void MechMoveSystem::SetDirY(float dirY) {
+	dir_.y = dirY;
+}
+
 void MechMoveSystem::SetDirXZ(const Vector2& dirXZ) {
 	dir_.x = dirXZ.x;
 	dir_.z = dirXZ.y;
@@ -84,7 +88,7 @@ void MechMoveSystem::ApplyRotationInertia() {
 	float dot = Dot(preDir_, dir_);
 	float expT = CalExpT(dt, 0.1f, 1.0f);
 	// 角度差が大きい場合減速する
-	if (dot < -0.5f) {
+	if (dot < -0.1f) {
 		speed_ = Lerp(speed_, 0.0f, expT);
 	}
 
@@ -119,7 +123,7 @@ void MechMoveSystem::ApplyVelocity() {
 	const float dt = MAGISYSTEM::GetDeltaTime();
 
 	// 水平速度
-	velocity_ = dir_ * speed_;
+	velocity_ = Normalize(dir_) * speed_;
 
 	// 垂直速度を合成
 	velocity_.y += verticalSpeed_;

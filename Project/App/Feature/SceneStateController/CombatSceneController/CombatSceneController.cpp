@@ -20,7 +20,7 @@
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 #include "Feature/Damage/Object/Manager/DamageObjectManager.h"
 #include "Feature/Damage/CollisionSystem/DamageCollisionSystem.h"
-
+#include "Feature/GameUI/System/Manager/GameUIManager.h"
 
 // シーンステート
 #include "Feature/SceneStateController/CombatSceneController/States/Start/CombatSceneStateStart.h"
@@ -42,6 +42,7 @@ CombatSceneController::CombatSceneController(ContextRef ref) {
 		ref.effectMgr,
 		ref.collisionSys,
 		ref.damageObjMgr,
+		ref.gameUIMgr,
 		this
 	};
 

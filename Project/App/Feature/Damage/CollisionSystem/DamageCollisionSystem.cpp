@@ -358,12 +358,14 @@ void DamageCollisionSystem::CheckCollision() {
 
 				// 攻撃コライダーと機体の判定
 				if (IsCollision(mechParam, dmg->GetParam())) {
-
+					// 攻撃側の情報を取得
+					
 					// 機体に衝突情報をセット
 					MechCollider::HitInfo hitInfo{};
 					DamageCollider::GameParam gP = dmg->GetGameParam();
 					hitInfo.damage = gP.damage;
 					hitInfo.power = gP.power;
+					hitInfo.hitPos = dmg->GetCenter();
 					mechCollider->AddHitInfo(hitInfo);
 
 					// ダメージ側衝突情報セット

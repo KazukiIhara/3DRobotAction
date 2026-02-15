@@ -14,6 +14,8 @@
 #include "Feature/Pilot/Mech/State/Dodge/PilotMechStateDodge.h"
 #include "Feature/Pilot/Mech/State/JustDodge/PilotMechStateJustDodge.h"
 #include "Feature/Pilot/Mech/State/JustDodgeAttack/PilotMechStateJustDodgeAttack.h"
+#include "Feature/Pilot/Mech/State/HitReact/PilotMechStateHitReact.h"
+#include "Feature/Pilot/Mech/State/KnockBack/PilotMechStateKnockBack.h"
 
 // 武器
 #include "Feature/Pilot/Mech/Weapon/BeamCannonRifle/PilotMechWeaponBeamCannonRifle.h"
@@ -50,12 +52,17 @@ PilotMech::PilotMech(const InitParam& param, const BaseMech::RefContext& ref, Ga
 	// 上下移動システム
 	verticalMoveSystem_ = std::make_unique<PilotMechVerticalMoveSystem>(this);
 
+	// ステータス
+	status_ = std::make_unique<PilotMechStatus>(this);
+
 	// ステートテーブル作成
 	states_[State::Idle] = std::make_unique<PilotMechStateIdle>();
 	states_[State::Move] = std::make_unique<PilotMechStateMove>();
 	states_[State::Dodge] = std::make_unique<PilotMechStateDodge>();
 	states_[State::JustDodge] = std::make_unique<PilotMechStateJustDodge>();
 	states_[State::JustDodgeAttack] = std::make_unique<PilotMechStateJustDodgeAttack>();
+	states_[State::HitReact] = std::make_unique<PilotMechStateHitReact>();
+	states_[State::KnockBack] = std::make_unique<PilotMechStateKnockBack>();
 
 	// 最初のステートを設定
 	ChangeState(State::Idle);
@@ -72,6 +79,9 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 
 	// ロックオンシステム更新
 	lockOnSystem_->Update();
+
+	// ステータス更新
+	status_->Update();
 
 	// ステート更新
 	if (auto& state = currentState_.second) {
@@ -131,6 +141,10 @@ PilotMechLockOnSystem* PilotMech::GetLockOnSystem() {
 
 PilotMechVerticalMoveSystem* PilotMech::GetVerticalMoveSystem() {
 	return verticalMoveSystem_.get();
+}
+
+PilotMechStatus* PilotMech::GetStatus() {
+	return status_.get();
 }
 
 GameInputSystem* PilotMech::GetInputSys() {

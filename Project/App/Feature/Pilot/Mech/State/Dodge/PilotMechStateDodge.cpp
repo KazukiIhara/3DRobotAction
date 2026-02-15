@@ -20,8 +20,9 @@ void PilotMechStateDodge::Enter(PilotMech* mech) {
 	// ステートのタイマーセット
 	timer_ = time;
 
-	// 加速量を0にする
+	// 移動システムを取得
 	auto ms = mech->GetMoveSystem();
+	// 加速量を0にする
 	ms->SetAcc(0.0f);
 	// 初速と最大速度をセット
 	ms->SetSpeed(firstSpeed);

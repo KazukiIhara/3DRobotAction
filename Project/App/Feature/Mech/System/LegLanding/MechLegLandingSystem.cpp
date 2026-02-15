@@ -34,6 +34,7 @@ namespace {
 
 MechLegLandingSystem::MechLegLandingSystem(BaseMech* mech) {
 	mech_ = mech;
+	Initialize();
 }
 
 void MechLegLandingSystem::SetEnable(bool isEnable) {
@@ -63,8 +64,6 @@ void MechLegLandingSystem::Initialize() {
 	// 初期値記録
 	InitLeg(legL, footOffsetYL_, upperHeightYL_);
 	InitLeg(legR, footOffsetYR_, upperHeightYR_);
-
-	isInitialized_ = true;
 }
 
 void MechLegLandingSystem::Update() {
@@ -88,10 +87,6 @@ void MechLegLandingSystem::Update() {
 	// 接地していないなら何もしない
 	if (!mech_->GetKinematicSystem()->IsGrounded()) {
 		return;
-	}
-
-	if (!isInitialized_) {
-		Initialize();
 	}
 
 	const LegRef legL = GetLegRefLeft();
@@ -196,7 +191,7 @@ void MechLegLandingSystem::UpdateLeg(const LegRef& leg, float footOffsetY, float
 	leg.upper->AddRotate({ -delta * upperWeight_, 0.0f, 0.0f });
 	leg.lower->AddRotate({ delta * lowerWeight_, 0.0f, 0.0f });
 
-	// Foot のワールド回転を modelTransform と一致させる
+	// Foot のワールド回転を Waist と一致させる
 	Transform3D* model = mech_->GetModelTransform();
 	Transform3D* footParent = leg.foot->GetParent();
 	if (model && footParent) {

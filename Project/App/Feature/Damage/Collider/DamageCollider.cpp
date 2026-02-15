@@ -4,7 +4,7 @@
 
 using namespace Magi;
 
-DamageCollider::DamageCollider(Param param, const GameParam&  gParam) {
+DamageCollider::DamageCollider(Param param, const GameParam& gParam) {
 	param_ = std::move(param);
 	gParam_ = gParam;
 }
@@ -69,3 +69,18 @@ DamageCollider::GameParam DamageCollider::GetGameParam() const {
 	return gParam_;
 }
 
+Vector3 DamageCollider::GetCenter() {
+	// 形状ごとに中心を返す
+	return std::visit([](const auto& shape) -> Vector3 {
+
+		// Sphere / OBB は center をそのまま返す
+		// Capsule は端点の中点を中心とする
+		using ShapeT = std::decay_t<decltype(shape)>;
+		if constexpr (std::is_same_v<ShapeT, Capsule>) {
+			return (shape.p0 + shape.p1) * 0.5f;
+		} else {
+			return shape.center;
+		}
+
+		}, param_);
+}

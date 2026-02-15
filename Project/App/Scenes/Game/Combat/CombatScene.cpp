@@ -43,6 +43,9 @@ void CombatScene::Initialize() {
 	damageObjectManager_ = std::make_unique<DamageObjectManager>();
 	// コリジョンマネージャ
 	damageCollisionSystem_ = std::make_unique<DamageCollisionSystem>();
+	// ゲームUIマネージャ
+	gameUIManger_ = std::make_unique<GameUIManager>();
+
 	// 機体アニメーションコンテナクラス
 	mechAnimationContainer_ = std::make_unique<MechAnimationContainer>();
 
@@ -91,6 +94,7 @@ void CombatScene::Initialize() {
 		gameEffectManager_.get(),
 		damageCollisionSystem_.get(),
 		damageObjectManager_.get(),
+		gameUIManger_.get()
 	};
 	sceneController_ = std::make_unique<CombatSceneController>(cscRef);
 
@@ -129,6 +133,9 @@ void CombatScene::Update() {
 	// エフェクトマネージャ更新
 	gameEffectManager_->Update();
 
+	// ゲームUIマネージャ
+	gameUIManger_->Update();
+
 }
 
 void CombatScene::Draw() {
@@ -152,6 +159,9 @@ void CombatScene::Draw() {
 
 	// エフェクトマネージャ描画
 	gameEffectManager_->Draw();
+
+	// ゲームUIマネージャ描画
+	gameUIManger_->Draw();
 }
 
 void CombatScene::Finalize() {

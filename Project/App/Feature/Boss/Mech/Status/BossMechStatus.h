@@ -1,7 +1,9 @@
 #pragma once
 
+// C++
 #include <cstdint>
 
+// ボス機体
 class BossMech;
 
 /// <summary>
@@ -9,11 +11,11 @@ class BossMech;
 /// </summary>
 class BossMechStatus {
 public:
-	struct InitParam {
+	struct Param {
 		int32_t hp;
 	};
 public:
-	BossMechStatus(const BossMechStatus::InitParam& initPram, BossMech* mech);
+	BossMechStatus(BossMech* mech);
 	~BossMechStatus() = default;
 
 	void Update();
@@ -21,6 +23,6 @@ public:
 private:
 	void Damage(int32_t damage);
 private:
-	int32_t hp_ = 0;
+	Param param_;
 	BossMech* mech_ = nullptr;
 };

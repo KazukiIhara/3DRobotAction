@@ -33,6 +33,10 @@ void GameUIManager::Draw() {
 	}
 }
 
+void GameUIManager::Clear() {
+	uis_.clear();
+}
+
 void GameUIManager::DeleteGarbage() {
 	uis_.erase(
 		std::remove_if(uis_.begin(), uis_.end(),

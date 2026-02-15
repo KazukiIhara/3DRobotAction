@@ -2,7 +2,6 @@
 
 // 機体基底クラス
 #include "Feature/Mech/Base/BaseMech.h"
-
 // ステート基底クラス
 #include "Feature/Pilot/Mech/State/IPilotMechState.h"
 // ジャスト回避コライダー
@@ -11,6 +10,8 @@
 #include "Feature/Pilot/Mech/System/LockOn/PilotMechLockOnSystem.h"
 // 上下移動システム
 #include "Feature/Pilot/Mech/System/VerticalMove/PilotMechVerticalMoveSystem.h"
+// ステータスクラス
+#include "Feature/Pilot/Mech/Status/PilotMechStatus.h"
 
 // 前方宣言
 class GameInputSystem;
@@ -24,7 +25,7 @@ class BossMech;
 /// <summary>
 /// パイロット機体クラス
 /// </summary>
-class PilotMech:public BaseMech {
+class PilotMech :public BaseMech {
 public:
 	enum class State {
 		Idle,
@@ -32,6 +33,8 @@ public:
 		Dodge,
 		JustDodge,
 		JustDodgeAttack,
+		HitReact,
+		KnockBack
 	};
 public:
 	PilotMech(const InitParam& param, const BaseMech::RefContext& ref, GameInputSystem* InputSys);
@@ -51,6 +54,8 @@ public:
 	PilotMechLockOnSystem* GetLockOnSystem();
 	// 上下移動システムを取得
 	PilotMechVerticalMoveSystem* GetVerticalMoveSystem();
+	// ステータスクラスを取得s
+	PilotMechStatus* GetStatus();
 
 	// インプットシステムを取得
 	GameInputSystem* GetInputSys();
@@ -87,6 +92,9 @@ private:
 
 	// 上下移動システム
 	std::unique_ptr<PilotMechVerticalMoveSystem> verticalMoveSystem_;
+
+	// ステータスクラス
+	std::unique_ptr<PilotMechStatus> status_;
 
 	// 入力システムの参照ポインタ
 	GameInputSystem* inputSys_ = nullptr;

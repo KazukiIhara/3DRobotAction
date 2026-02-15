@@ -100,6 +100,7 @@ void DevelopScene::Initialize() {
 		gameEffectManager_.get(),
 		damageCollisionSystem_.get(),
 		damageObjectManager_.get(),
+		gameUIManger_.get()
 	};
 	sceneController_ = std::make_unique<CombatSceneController>(cscRef);
 

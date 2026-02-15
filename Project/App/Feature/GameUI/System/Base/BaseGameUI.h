@@ -13,11 +13,12 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
+	Vector2 GetScreenPos()const;
 	void SetScreenPos(const Vector2& screenPos);
 
 	bool IsAlive()const;
 
-private:
+protected:
 	Vector2 screenPos_{};
 	bool isAlive_ = true;
 };

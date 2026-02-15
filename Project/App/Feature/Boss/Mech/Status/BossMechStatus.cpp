@@ -4,12 +4,15 @@
 
 #include "Feature/Boss/Mech/BossMech.h"
 
+#include "MAGI.h"
 
-BossMechStatus::BossMechStatus(const BossMechStatus::InitParam& initPram,BossMech* mech) {
+using namespace Magi;
+
+BossMechStatus::BossMechStatus(BossMech* mech) {
 	mech_ = mech;
 
-	hp_ = initPram.hp;
-
+	// パラメータセット
+	param_.hp = MAGISYSTEM::GetParameterValue<int32_t>({ "MechInitParam","Boss","HP" });
 }
 
 void BossMechStatus::Update() {
@@ -24,11 +27,11 @@ void BossMechStatus::Update() {
 }
 
 int32_t BossMechStatus::GetHP() const {
-	return hp_;
+	return param_.hp;
 }
 
 void BossMechStatus::Damage(int32_t damage) {
-	hp_ -= damage;
-	hp_ = std::max(0, hp_);
+	param_.hp -= damage;
+	param_.hp = std::max(0, param_.hp);
 }
 
