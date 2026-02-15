@@ -1,8 +1,16 @@
 #include "WeaponUI.h"
 
 #include "MAGI.h"
+#include "MAGIUitility/MAGIUtility.h"
 
-WeaponUI::WeaponUI() {
+#include "Feature/Pilot/Mech/PilotMech.h"
+
+using namespace MAGIUtility;
+
+WeaponUI::WeaponUI(PilotMech* pilotMech) {
+
+	pilotMech_ = pilotMech;
+
 	// パラメータの追加
 	MAGISYSTEM::AddParameterData({ "UI","CannonRifle","Pos" }, Magi::ParamType::Vec2);
 	MAGISYSTEM::AddParameterData({ "UI","MachineGun","Pos" }, Magi::ParamType::Vec2);
@@ -53,6 +61,8 @@ void WeaponUI::Update() {
 	lb_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LB","Pos" });
 	rb_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RB","Pos" });
 
+	const Vector3 pilotWPos = pilotMech_->GetCenterPos();
+	const Vector2 pilotScreenPos = TransformWorldToScreen(pilotWPos);
 
 	// ボタンテクスチャ切り替え
 

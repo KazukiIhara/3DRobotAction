@@ -60,7 +60,7 @@ void CombatSceneStateBattle::Enter([[maybe_unused]] CombatSceneControl::StateCon
 	// ロックオンUI
 	ref.gameUIMgr->Add(std::move(std::make_unique<LockOnUI>(ref.boss->GetMech())));
 	// 武器UI
-	ref.gameUIMgr->Add(std::move(std::make_unique<WeaponUI>()));
+	ref.gameUIMgr->Add(std::move(std::make_unique<WeaponUI>(ref.pilot->GetMech())));
 
 }
 

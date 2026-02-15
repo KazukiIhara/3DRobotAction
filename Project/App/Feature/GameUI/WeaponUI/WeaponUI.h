@@ -10,7 +10,7 @@ class PilotMech;
 /// </summary>
 class WeaponUI: public BaseGameUI {
 public:
-	WeaponUI();
+	WeaponUI(PilotMech* pilotMech);
 	~WeaponUI()override = default;
 
 	void Update()override;
@@ -36,4 +36,6 @@ private:
 
 	SpriteData lb_;
 	SpriteMaterialData lbMat_;
+
+
 };
