@@ -37,5 +37,10 @@ private:
 	SpriteData lb_;
 	SpriteMaterialData lbMat_;
 
+	SpriteData jump_;
+	SpriteMaterialData jumpMat_;
+
+	SpriteData dodge_;
+	SpriteMaterialData dodgeMat_;
 
 };
