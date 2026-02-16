@@ -116,3 +116,7 @@ void PilotMechWeaponMachineGun::AddAmmo(int32_t ammo) {
 	const int32_t maxAmmo = MAGISYSTEM::GetParameterValue<int32_t>({ "WeaponParam","Pilot","MachineGun","MaxAmmo" });
 	ammo_ = std::max(ammo_, maxAmmo);
 }
+
+int32_t PilotMechWeaponMachineGun::GetAmmo() const {
+	return ammo_;
+}

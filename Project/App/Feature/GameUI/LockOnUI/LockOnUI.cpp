@@ -16,6 +16,7 @@ LockOnUI::LockOnUI(ILockOnTarget* target) {
 	// テクスチャロード
 	MAGISYSTEM::LoadTexture("InnerLock.png");
 	MAGISYSTEM::LoadTexture("OuterLock.png");
+	MAGISYSTEM::LoadTexture("BossStatusUI.png");
 
 	// マテリアルの設定
 	innerMat_.textureName = "InnerLock.png";
@@ -23,6 +24,9 @@ LockOnUI::LockOnUI(ILockOnTarget* target) {
 
 	outerMat_.textureName = "OuterLock.png";
 	outerMat_.anchorPoint = { 0.5f,0.5f };
+
+	bossStatusMat_.textureName = "BossStatusUI.png";
+	bossStatusMat_.anchorPoint = { 0.0f,1.0f };
 
 }
 
@@ -45,10 +49,11 @@ void LockOnUI::Update() {
 	// UIの座標を設定
 	inner_.position = screenPos_;
 	outer_.position = screenPos_;
-
+	bossStatus_.position = screenPos_;
 }
 
 void LockOnUI::Draw() {
 	MAGISYSTEM::DrawSprite(inner_, innerMat_);
 	MAGISYSTEM::DrawSprite(outer_, outerMat_);
+	MAGISYSTEM::DrawSprite(bossStatus_, bossStatusMat_);
 }

@@ -21,6 +21,8 @@ public:
 
 	void AddAmmo(int32_t ammo);
 
+	int32_t GetAmmo()const;
+
 private:
 	int32_t ammo_ = 0;
 	float coolTimer_ = 0.0f;
