@@ -4,6 +4,7 @@
 #include "MAGIUitility/MAGIUtility.h"
 
 #include "Feature/ILockOnTarget/ILockOnTarget.h"
+#include "Feature/Boss/Mech/BossMech.h"
 
 using namespace MAGIUtility;
 
@@ -12,11 +13,14 @@ LockOnUI::LockOnUI(ILockOnTarget* target) {
 
 	// パラメータ作成
 	MAGISYSTEM::AddParameterData({ "UI","LockOn","InnerRotSpeed" }, Magi::ParamType::Float);
+	MAGISYSTEM::AddParameterData({ "UI","LockOn","BossHPPos" }, Magi::ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "UI","LockOn","BossHPSize" }, Magi::ParamType::Vec2);
 
 	// テクスチャロード
 	MAGISYSTEM::LoadTexture("InnerLock.png");
 	MAGISYSTEM::LoadTexture("OuterLock.png");
 	MAGISYSTEM::LoadTexture("BossStatusUI.png");
+	MAGISYSTEM::LoadTexture("white.png");
 
 	// マテリアルの設定
 	innerMat_.textureName = "InnerLock.png";
@@ -27,6 +31,10 @@ LockOnUI::LockOnUI(ILockOnTarget* target) {
 
 	bossStatusMat_.textureName = "BossStatusUI.png";
 	bossStatusMat_.anchorPoint = { 0.0f,1.0f };
+
+	bossHpMat_.textureName = "white.png";
+	bossHpMat_.anchorPoint = { 0.0f,0.5f };
+	bossHpMat_.color = Color::Red;
 
 }
 
@@ -50,10 +58,25 @@ void LockOnUI::Update() {
 	inner_.position = screenPos_;
 	outer_.position = screenPos_;
 	bossStatus_.position = screenPos_;
+
+
+	// ボスのHPバーの処理
+	bossHp_.position = screenPos_ + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LockOn","BossHPPos" });
+	bossHp_.size = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LockOn","BossHPSize" });
+
+
+	const int32_t hp = dynamic_cast<BossMech*>(target_)->GetStatus()->GetHP();
+	const int32_t maxHp = dynamic_cast<BossMech*>(target_)->GetStatus()->GetMaxHP();
+	const float hpRate = static_cast<float>(hp) / static_cast<float>(maxHp);
+
+	const float maxLength = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LockOn","BossHPSize" }).x;
+	bossHp_.size.x = maxLength * hpRate;
+
 }
 
 void LockOnUI::Draw() {
 	MAGISYSTEM::DrawSprite(inner_, innerMat_);
 	MAGISYSTEM::DrawSprite(outer_, outerMat_);
 	MAGISYSTEM::DrawSprite(bossStatus_, bossStatusMat_);
+	MAGISYSTEM::DrawSprite(bossHp_, bossHpMat_);
 }

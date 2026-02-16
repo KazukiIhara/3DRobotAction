@@ -13,6 +13,7 @@ BossMechStatus::BossMechStatus(BossMech* mech) {
 
 	// パラメータセット
 	param_.hp = MAGISYSTEM::GetParameterValue<int32_t>({ "MechInitParam","Boss","HP" });
+	maxHp_ = param_.hp;
 }
 
 void BossMechStatus::Update() {
@@ -28,6 +29,10 @@ void BossMechStatus::Update() {
 
 int32_t BossMechStatus::GetHP() const {
 	return param_.hp;
+}
+
+int32_t BossMechStatus::GetMaxHP() const {
+	return maxHp_;
 }
 
 void BossMechStatus::Damage(int32_t damage) {

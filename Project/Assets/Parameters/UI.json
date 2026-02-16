@@ -58,6 +58,20 @@
     }
   },
   "LockOn": {
+    "BossHPPos": {
+      "type": "Vec2",
+      "value": {
+        "x": 139.0,
+        "y": -98.0
+      }
+    },
+    "BossHPSize": {
+      "type": "Vec2",
+      "value": {
+        "x": 150.0,
+        "y": 13.0
+      }
+    },
     "InnerRotSpeed": {
       "type": "Float",
       "value": 1.0

@@ -20,9 +20,12 @@ public:
 
 	void Update();
 	int32_t GetHP() const;
+	int32_t GetMaxHP()const;
+
 private:
 	void Damage(int32_t damage);
 private:
+	int32_t maxHp_;
 	Param param_;
 	BossMech* mech_ = nullptr;
 };

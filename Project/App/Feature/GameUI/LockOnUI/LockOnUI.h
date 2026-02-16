@@ -27,7 +27,9 @@ private:
 	SpriteData outer_;
 	SpriteMaterialData outerMat_;
 	
-
 	SpriteData bossStatus_;
 	SpriteMaterialData bossStatusMat_;
+	
+	SpriteData bossHp_;
+	SpriteMaterialData bossHpMat_;
 };
