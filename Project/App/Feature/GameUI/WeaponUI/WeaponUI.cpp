@@ -24,6 +24,9 @@ WeaponUI::WeaponUI(PilotMech* pilotMech) {
 	MAGISYSTEM::AddParameterData({ "UI","LB","Pos" }, Magi::ParamType::Vec2);
 	MAGISYSTEM::AddParameterData({ "UI","RB","Pos" }, Magi::ParamType::Vec2);
 
+	MAGISYSTEM::AddParameterData({ "UI","Ammo","Pos" }, Magi::ParamType::Vec2);
+	MAGISYSTEM::AddParameterData({ "UI","Ammo","Size" }, Magi::ParamType::Float);
+
 	// テクスチャのロード
 	MAGISYSTEM::LoadTexture("CannonRifleUI.png");
 	MAGISYSTEM::LoadTexture("MachineGunUI.png");
@@ -58,6 +61,9 @@ WeaponUI::WeaponUI(PilotMech* pilotMech) {
 	jump_.position = pilotScreenPos + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Jump","Pos" });
 	dodge_.position = pilotScreenPos + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Dodge","Pos" });
 
+	ammoPos_ = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Ammo","Pos" });
+	ammoSize_ = MAGISYSTEM::GetParameterValue<float>({ "UI","Ammo","Size" });
+
 	// マテリアル設定
 	cannonRifleMat_.textureName = "CannonRifleUI.png";
 	machineGunMat_.textureName = "MachineGunUI.png";
@@ -84,6 +90,8 @@ void WeaponUI::Update() {
 	lt_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LT","Pos" });
 	rt_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RT","Pos" });
 
+	ammoPos_ = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Ammo","Pos" });
+	ammoSize_ = MAGISYSTEM::GetParameterValue<float>({ "UI","Ammo","Size" });
 
 	// パイロットのスクリーン座標を取得
 	const Vector3 pilotWPos = pilotMech_->GetCenterPos();
@@ -155,11 +163,12 @@ void WeaponUI::Draw() {
 	MAGISYSTEM::DrawSprite(lb_, lbMat_);
 	MAGISYSTEM::DrawSprite(rb_, rbMat_);
 
-
 	MAGISYSTEM::DrawSprite(cannonRifle_, cannonRifleMat_);
 	MAGISYSTEM::DrawSprite(machineGun_, machineGunMat_);
 
 	MAGISYSTEM::DrawSprite(lt_, ltMat_);
 	MAGISYSTEM::DrawSprite(rt_, rtMat_);
 
+	const int32_t mgAmmo = dynamic_cast<PilotMechWeaponMachineGun*>(pilotMech_->GetWeapon("MachineGun"))->GetAmmo();
+	MAGISYSTEM::DrawFont(std::to_string(mgAmmo) + "/30", ammoPos_, Color::White, ammoSize_);
 }

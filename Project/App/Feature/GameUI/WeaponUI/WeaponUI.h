@@ -43,4 +43,6 @@ private:
 	SpriteData dodge_;
 	SpriteMaterialData dodgeMat_;
 
+	Vector2 ammoPos_;
+	float ammoSize_;
 };

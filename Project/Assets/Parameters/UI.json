@@ -1,4 +1,17 @@
 {
+  "Ammo": {
+    "Pos": {
+      "type": "Vec2",
+      "value": {
+        "x": 1600.0,
+        "y": 960.0
+      }
+    },
+    "Size": {
+      "type": "Float",
+      "value": 0.30000001192092896
+    }
+  },
   "CannonRifle": {
     "Pos": {
       "type": "Vec2",

@@ -76,7 +76,7 @@
     },
     "Time": {
       "type": "Float",
-      "value": 2.0
+      "value": 1.0
     }
   },
   "Move": {

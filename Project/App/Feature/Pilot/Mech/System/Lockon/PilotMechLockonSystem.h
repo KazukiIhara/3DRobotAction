@@ -39,7 +39,7 @@ private:
 
 private:
 	// ロックオン有効フラグ
-	bool isLockOn_ = false;
+	bool isLockOn_ = true;
 
 	// ロックオン対象
 	ILockOnTarget* target_ = nullptr;
