@@ -43,7 +43,7 @@ void TitleScene::Update() {
 
 	// デルタタイム取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
-	t_ += dt;
+	t_ += dt * 0.7f;
 	if (t_ >= 1.0f) {
 		t_ = 0.0f;
 	}
