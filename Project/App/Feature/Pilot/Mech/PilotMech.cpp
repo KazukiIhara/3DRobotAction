@@ -52,6 +52,9 @@ PilotMech::PilotMech(const InitParam& param, const BaseMech::RefContext& ref, Ga
 	// 上下移動システム
 	verticalMoveSystem_ = std::make_unique<PilotMechVerticalMoveSystem>(this);
 
+	// アクション管理システム
+	combatActSystem_ = std::make_unique<PilotMechCombatActionSystem>(this);
+
 	// ステータス
 	status_ = std::make_unique<PilotMechStatus>(this);
 
@@ -94,14 +97,16 @@ void PilotMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] con
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
 
-	// 戦闘アニメーション制御システム
-
+	// アクション管理システム更新
+	combatActSystem_->Update();
 
 	// 簡易IK、機体回転、コライダー更新
 	BaseMech::PreUpdate();
 
 	// 上下移動クラス　機体の移動量確定後の処理
 	verticalMoveSystem_->PostUpdate();
+
+
 
 	// コライダー更新
 	justDodgeCollider_->Update();
@@ -143,6 +148,10 @@ PilotMechVerticalMoveSystem* PilotMech::GetVerticalMoveSystem() {
 	return verticalMoveSystem_.get();
 }
 
+PilotMechCombatActionSystem* PilotMech::GetCombatActionSystem() {
+	return combatActSystem_.get();
+}
+
 PilotMechStatus* PilotMech::GetStatus() {
 	return status_.get();
 }
@@ -168,16 +177,16 @@ IPilotMechState* PilotMech::GetState(PilotMech::State state) {
 
 const std::string PilotMech::StateToString(PilotMech::State state) {
 	switch (state) {
-		case PilotMech::State::Idle:
-			return "Idle";
-		case PilotMech::State::Move:
-			return "Move";
-		case PilotMech::State::Dodge:
-			return "Dodge";
-		case PilotMech::State::JustDodge:
-			return "JustDodge";
-		default:
-			return "Unknown";
+	case PilotMech::State::Idle:
+		return "Idle";
+	case PilotMech::State::Move:
+		return "Move";
+	case PilotMech::State::Dodge:
+		return "Dodge";
+	case PilotMech::State::JustDodge:
+		return "JustDodge";
+	default:
+		return "Unknown";
 	}
 }
 

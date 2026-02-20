@@ -10,6 +10,8 @@
 #include "Feature/Pilot/Mech/System/LockOn/PilotMechLockOnSystem.h"
 // 上下移動システム
 #include "Feature/Pilot/Mech/System/VerticalMove/PilotMechVerticalMoveSystem.h"
+// 機体のアクション管理システム
+#include "Feature/Pilot/Mech/System/CombatAction/PilotMechCombatActionSystem.h"
 // ステータスクラス
 #include "Feature/Pilot/Mech/Status/PilotMechStatus.h"
 
@@ -54,6 +56,8 @@ public:
 	PilotMechLockOnSystem* GetLockOnSystem();
 	// 上下移動システムを取得
 	PilotMechVerticalMoveSystem* GetVerticalMoveSystem();
+	// アクション管理システムを取得
+	PilotMechCombatActionSystem* GetCombatActionSystem();
 	// ステータスクラスを取得s
 	PilotMechStatus* GetStatus();
 
@@ -92,6 +96,9 @@ private:
 
 	// 上下移動システム
 	std::unique_ptr<PilotMechVerticalMoveSystem> verticalMoveSystem_;
+
+	// アクション管理システム
+	std::unique_ptr<PilotMechCombatActionSystem> combatActSystem_;
 
 	// ステータスクラス
 	std::unique_ptr<PilotMechStatus> status_;

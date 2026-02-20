@@ -1,0 +1,14 @@
+{
+  "CombatAction": {
+    "MechSlope": {
+      "MaxSlope": {
+        "type": "Float",
+        "value": 0.15000000596046448
+      },
+      "MaxSlopeSpeed": {
+        "type": "Float",
+        "value": 20.0
+      }
+    }
+  }
+}
