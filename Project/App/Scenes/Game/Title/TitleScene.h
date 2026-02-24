@@ -23,6 +23,9 @@ private:
 	SpriteData data_{};
 	SpriteMaterialData mat_{};
 
+	SpriteData logo_{};
+	SpriteMaterialData logoMat_{};
+
 	SpriteData uiData_;
 	SpriteMaterialData uiMat_;
 

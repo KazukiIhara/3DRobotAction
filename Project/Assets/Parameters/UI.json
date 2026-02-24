@@ -111,7 +111,7 @@
     },
     "AlphaEffectStart": {
       "type": "Float",
-      "value": 0.5
+      "value": 0.20000000298023224
     },
     "PressAnyButton": {
       "type": "Vec2",
