@@ -9,6 +9,12 @@
         "type": "Float",
         "value": 20.0
       }
+    },
+    "RHAttack": {
+      "SetUpTime": {
+        "type": "Float",
+        "value": 0.0
+      }
     }
   }
 }

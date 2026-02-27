@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Math/Types/AllMathTypes.h"
+
 class PilotMech;
 
 // 実装メモ
@@ -31,14 +33,27 @@ private:
 	// 移動方向に応じて機体を傾ける処理
 	void MechSlopeUpdate();
 
+	// 右手武器攻撃可能フラグ
+	void SetEnableRightWeapon(bool e);
+
 	// 右手武器攻撃ステートを更新
 	void RightWeaponAttackStateUpdate();
+
+	void UpdateIdle();
+	void UpdateSetUp();
+	void UpdateAttack();
 
 private:
 	// 機体の参照ポインタ
 	PilotMech* mech_ = nullptr;
 
+	// 右手武器攻撃可能フラグ
+	bool enableRightWeapon_ = true;
+
 	// 右手武器攻撃ステート
 	RightWeaponAttackState rightWeaponAttackState_ = RightWeaponAttackState::Idle;
+
+	// 右手目標角度
+	Quaternion targetArmQ_;
 
 };

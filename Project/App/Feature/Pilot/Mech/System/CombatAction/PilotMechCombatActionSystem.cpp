@@ -14,10 +14,21 @@ PilotMechCombatActionSystem::PilotMechCombatActionSystem(PilotMech* mech) {
 
 	// パラメータ作成
 
+	// 
+	//  機体の傾き
+	// 
+
 	// 傾きの最大値
 	MAGISYSTEM::AddParameterData({ "PilotMech","CombatAction","MechSlope","MaxSlope" }, ParamType::Float);
 	// 最大の傾きになる速度
 	MAGISYSTEM::AddParameterData({ "PilotMech","CombatAction","MechSlope","MaxSlopeSpeed" }, ParamType::Float);
+
+	// 
+	// 攻撃アニメーション
+	// 
+
+	// SetUpの時間
+	MAGISYSTEM::AddParameterData({ "PilotMech","CombatAction","RHAttack","SetUpTime" }, ParamType::Float);
 
 }
 
@@ -71,8 +82,61 @@ void PilotMechCombatActionSystem::MechSlopeUpdate() {
 
 }
 
+void PilotMechCombatActionSystem::SetEnableRightWeapon(bool e) {
+	enableRightWeapon_ = e;
+}
+
 void PilotMechCombatActionSystem::RightWeaponAttackStateUpdate() {
+	// デルタタイム取得
+	const float dt = MAGISYSTEM::GetDeltaTime();
 
+	// ステートごとに目標の回転角を設定
+	switch (rightWeaponAttackState_) {
+	case PilotMechCombatActionSystem::RightWeaponAttackState::Idle:
+		UpdateIdle();
+		break;
+	case PilotMechCombatActionSystem::RightWeaponAttackState::SetUp:
+		UpdateSetUp();
+		break;
+	case PilotMechCombatActionSystem::RightWeaponAttackState::Attack:
+		UpdateAttack();
+		break;
+	}
 
+	UpdateSetUp();
+
+}
+
+void PilotMechCombatActionSystem::UpdateIdle() {
+
+}
+
+void PilotMechCombatActionSystem::UpdateSetUp() {
+	// SetUp時間
+	const float time = MAGISYSTEM::GetParameterValue<float>({ "PilotMech","CombatAction","RHAttack","SetUpTime" });
+
+	// ターゲット座標
+	const Vector3 targetPos = mech_->GetTargetWorldPos();
+
+	// 右上腕
+	auto* upperArm = mech_->GetPartsTransform(MechAnimation::TransType::UpperArmRight);
+
+	// 腕の支点（ワールド）
+	const Vector3 armPos = upperArm->GetWorldPosition();
+
+	// 目標方向（ワールド）
+	const Vector3 forward = MAGIMath::Normalize(targetPos - armPos);
+
+	const Quaternion worldQ = DirectionToQuaternion_s(forward);
+
+	const Quaternion targetQZ = Inverse(mech_->GetModelTransform()->GetQuaternion()) * worldQ;
+
+	const Quaternion targetQY = targetQZ * MakeFixForwardZToMinusY();
+
+	// 反映
+	upperArm->SetQuaternion(targetQY);
+}
+
+void PilotMechCombatActionSystem::UpdateAttack() {
 
 }

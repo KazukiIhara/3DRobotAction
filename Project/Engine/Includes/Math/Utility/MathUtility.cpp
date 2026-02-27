@@ -347,7 +347,7 @@ Vector3 MAGIMath::Forward(const Quaternion& q) {
 		2.0f * (q.x * q.z + q.w * q.y),
 		2.0f * (q.y * q.z + q.w * q.x),
 		1.0f - 2.0f * (q.x * q.x + q.y * q.y)
-	});
+		});
 }
 
 Vector3 MAGIMath::Right(const Quaternion& q) {
@@ -1145,6 +1145,13 @@ Quaternion MAGIMath::DirectionToQuaternionPitch_s(const Vector3& direction) {
 	return Normalize(qPitch);
 }
 
+Quaternion MAGIMath::MakeFixForwardZToMinusY() {
+	// +Z を -Y に回す（軸=-X, 角度=+90deg）
+	return MAGIMath::MakeRotateAxisAngleQuaternion(
+		{ -1.0f, 0.0f, 0.0f },
+		static_cast<float>(std::numbers::pi_v<float>) * 0.3f
+	);
+}
 
 Quaternion MAGIMath::Normalize(const Quaternion& quaternion) {
 	// ノルムを求める
