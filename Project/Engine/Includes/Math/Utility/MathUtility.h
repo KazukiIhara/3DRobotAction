@@ -302,6 +302,9 @@ namespace MAGIMath {
 	// 向きからクオータニオンPitch角を取得
 	Quaternion DirectionToQuaternionPitch_s(const Vector3& direction);
 
+	
+	Quaternion MakeFixForwardZToMinusY();
+
 	// 正規化したクオータニオンを返す
 	Quaternion Normalize(const Quaternion& quaternion);
 	// 逆クオータニオンを返す

@@ -1,0 +1,20 @@
+{
+  "CombatAction": {
+    "MechSlope": {
+      "MaxSlope": {
+        "type": "Float",
+        "value": 0.11999999731779099
+      },
+      "MaxSlopeSpeed": {
+        "type": "Float",
+        "value": 20.0
+      }
+    },
+    "RHAttack": {
+      "SetUpTime": {
+        "type": "Float",
+        "value": 0.4000000059604645
+      }
+    }
+  }
+}

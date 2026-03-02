@@ -36,6 +36,9 @@ public:
 	// 再生停止
 	void StopAnimation();
 
+	// 目標のポーズに近づける
+	void ApproachPose(const std::string& clipName, float reachSecond);
+
 	// 再生更新
 	void Update();
 

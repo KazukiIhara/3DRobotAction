@@ -53,7 +53,7 @@ private:
 	float upperHeightYR_ = 0.0f;
 
 	// 腰が落ちた判定の許容
-	float upperDropEps_ = 0.01f;
+	float upperDropEps_ = 0.001f;
 
 	// 足先が基準より下がった判定の許容
 	float footEps_ = 0.0001f;
@@ -62,7 +62,7 @@ private:
 	float gain_ = 8.0f;
 
 	// 1/60秒でのの最大回転量
-	float maxStepRad_ = 2.0f;
+	float maxStepRad_ = 4.0f;
 
 	// Upper/Lower の配分
 	float upperWeight_ = 0.4f;

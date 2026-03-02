@@ -17,12 +17,17 @@ void TitleScene::Initialize() {
 	// テクスチャをロード
 	MAGISYSTEM::LoadTexture("white.png");
 	MAGISYSTEM::LoadTexture("PressAnyButton.png");
+	MAGISYSTEM::LoadTexture("Title.png");
 
 	// サイズを設定
 	data_.size = { WindowApp::kClientWidth,WindowApp::kClientHeight };
 	// テクスチャを設定
 	mat_.textureName = "white.png";
 	mat_.color = Color::Black;
+
+	logo_.position = { WindowApp::kClientWidth * 0.5f,WindowApp::kClientHeight * 0.5f };
+	logoMat_.textureName = "Title.png";
+	logoMat_.anchorPoint = { 0.5f,0.5f };
 
 	// 座標設定
 	uiData_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Title","PressAnyButton" });
@@ -67,6 +72,7 @@ void TitleScene::Draw() {
 	MAGISYSTEM::DrawSprite(data_, mat_);
 	MAGISYSTEM::DrawSprite(uiData_, uiMat_);
 	MAGISYSTEM::DrawSprite(uiEffectData_, uiEffectMat_);
+	MAGISYSTEM::DrawSprite(logo_, logoMat_);
 }
 
 void TitleScene::Finalize() {

@@ -15,38 +15,31 @@ void PilotMechStateMove::Enter(PilotMech* mech) {
 	auto ms = mech->GetMoveSystem();
 	const float maxSpeed = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Move","MaxSpeed" });
 	ms->SetMaxSpeed(maxSpeed);
-	mech->GetAnimator()->PlayAnimation("Pilot_Move", 1.0f, 0.5f);
+	// アニメーション適用
+	mech->GetAnimator()->ApproachPose("Pilot_Move", 0.8f);
 }
 
 void PilotMechStateMove::Update(PilotMech* mech) {
-	// 離陸時アニメーション処理
-	const bool isGround = mech->GetKinematicSystem()->IsGrounded();
-	if (preIsGround_ && !isGround) {
-		mech->GetAnimator()->PlayAnimation("Pilot_Move", 1.0f, 0.5f);
-	}
-	preIsGround_ = isGround;
+	// アニメーション適用
+	mech->GetAnimator()->ApproachPose("Pilot_Move", 0.8f);
+	// 右手武器攻撃可能フラグをTrueにする
+	mech->GetCombatActionSystem()->SetEnableRightWeapon(true);
 
 	// 入力取得
 	auto commandPair = mech->GetInputSys()->GetPilotCommand();
 	// 移動入力なしでIdleに遷移
 	if (commandPair.first) {
 		auto command = commandPair.second;
-
-		// 右手武器で攻撃
-		if (command.attackR) {
-			mech->GetWeapon("MachineGun")->Attack();
-		}
-
+		// 回避
 		if (command.dodge) {
 			mech->ChangeState(PilotMech::State::Dodge);
 			return;
 		}
-
+		// スティック入力がなければ待機状態に遷移
 		if (!Length(command.common.StickL)) {
 			mech->ChangeState(PilotMech::State::Idle);
 			return;
 		}
-
 		// 移動処理
 		Camera3D* cuCamera = MAGISYSTEM::GetCurrentCamera3D();
 		const Vector2 dir = StickToMoveDirXZ(command.common.StickL, cuCamera->GetEye(), cuCamera->GetTarget());
