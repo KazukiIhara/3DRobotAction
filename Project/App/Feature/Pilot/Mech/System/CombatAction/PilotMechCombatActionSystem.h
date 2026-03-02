@@ -29,12 +29,12 @@ public:
 
 	void Update();
 
+	// 右手武器攻撃可能フラグ
+	void SetEnableRightWeapon(bool e);
 private:
 	// 移動方向に応じて機体を傾ける処理
 	void MechSlopeUpdate();
 
-	// 右手武器攻撃可能フラグ
-	void SetEnableRightWeapon(bool e);
 
 	// 右手武器攻撃ステートを更新
 	void RightWeaponAttackStateUpdate();
@@ -43,12 +43,17 @@ private:
 	void UpdateSetUp();
 	void UpdateAttack();
 
+	Quaternion CalTargetQuaternion();
+
 private:
 	// 機体の参照ポインタ
 	PilotMech* mech_ = nullptr;
 
+	// 右手武器攻撃セットアップタイマー
+	float setUpTimer_ = 0.0f;
+
 	// 右手武器攻撃可能フラグ
-	bool enableRightWeapon_ = true;
+	bool enableRightWeapon_ = false;
 
 	// 右手武器攻撃ステート
 	RightWeaponAttackState rightWeaponAttackState_ = RightWeaponAttackState::Idle;

@@ -205,6 +205,57 @@ void MechAnimator::StopAnimation() {
 	isPlaying_ = false;
 }
 
+void MechAnimator::ApproachPose(const std::string& clipName, float reachSecond) {
+	if (!container_ || !mech_) {
+		return;
+	}
+
+	// クリップ取得
+	const MechAnimation::Clip* clip = container_->GetClip(clipName);
+	if (!clip) {
+		return;
+	}
+
+	// 1フレーム専用
+	if (clip->frames.size() != 1) {
+		return;
+	}
+
+	// デルタタイム取得
+	const float dt = MAGISYSTEM::GetDeltaTime();
+
+	// 現在Pose取得
+	const MechAnimation::Pose currentPose = CaptureCurrentPose();
+
+	// ターゲットPose取得
+	const MechAnimation::Pose& targetPose = clip->frames[0];
+
+	// 指数補間係数
+	float expT = CalExpT(dt, reachSecond, 1.0f);
+
+	MechAnimation::Pose outPose{};
+
+	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
+
+		const auto type = static_cast<MechAnimation::TransType>(i);
+
+		// 無効ジョイントは動かさない
+		if (!IsJointAnimationEnabled(type)) {
+			outPose.rotations[i] = currentPose.rotations[i];
+			continue;
+		}
+
+		// 回転をターゲットへ近づける
+		outPose.rotations[i] = Slerp(currentPose.rotations[i], targetPose.rotations[i], expT);
+	}
+
+	// Waist位置をターゲットへ近づける
+	outPose.waistTranslate = Lerp(currentPose.waistTranslate, targetPose.waistTranslate, expT);
+
+	// 適用
+	ApplyPose(outPose);
+}
+
 void MechAnimator::Update() {
 
 	const float dt = MAGISYSTEM::GetDeltaTime();
@@ -247,52 +298,52 @@ void MechAnimator::Update() {
 
 	// ループ処理
 	switch (loopType_) {
-		case MechAnimation::LoopType::None: {
-			t = std::clamp(t, 0.0f, 1.0f);
+	case MechAnimation::LoopType::None: {
+		t = std::clamp(t, 0.0f, 1.0f);
+		break;
+	}
+
+	case MechAnimation::LoopType::Restart: {
+		// duration=0 の場合は常に終端
+		if (durationSec_ <= 0.0f) {
+			t = 1.0f;
 			break;
 		}
 
-		case MechAnimation::LoopType::Restart: {
-			// duration=0 の場合は常に終端
-			if (durationSec_ <= 0.0f) {
-				t = 1.0f;
-				break;
-			}
+		// 1周したら先頭へ
+		if (t >= 1.0f) {
+			playTimeSec_ = std::fmod(playTimeSec_, durationSec_);
+			t = playTimeSec_ / durationSec_;
+		}
 
-			// 1周したら先頭へ
-			if (t >= 1.0f) {
-				playTimeSec_ = std::fmod(playTimeSec_, durationSec_);
-				t = playTimeSec_ / durationSec_;
-			}
+		t = std::clamp(t, 0.0f, 1.0f);
+		break;
+	}
 
-			t = std::clamp(t, 0.0f, 1.0f);
+	case MechAnimation::LoopType::PingPong: {
+		// duration=0 の場合は常に終端
+		if (durationSec_ <= 0.0f) {
+			t = 1.0f;
 			break;
 		}
 
-		case MechAnimation::LoopType::PingPong: {
-			// duration=0 の場合は常に終端
-			if (durationSec_ <= 0.0f) {
-				t = 1.0f;
-				break;
-			}
-
-			// 端で反転
-			if (t >= 1.0f) {
-				playTimeSec_ = durationSec_;
-				pingPongForward_ = false;
-			} else if (t <= 0.0f && !pingPongForward_) {
-				playTimeSec_ = 0.0f;
-				pingPongForward_ = true;
-			}
-
-			t = std::clamp(t, 0.0f, 1.0f);
-
-			// 逆向きなら 1->0 に変換
-			if (!pingPongForward_) {
-				t = 1.0f - t;
-			}
-			break;
+		// 端で反転
+		if (t >= 1.0f) {
+			playTimeSec_ = durationSec_;
+			pingPongForward_ = false;
+		} else if (t <= 0.0f && !pingPongForward_) {
+			playTimeSec_ = 0.0f;
+			pingPongForward_ = true;
 		}
+
+		t = std::clamp(t, 0.0f, 1.0f);
+
+		// 逆向きなら 1->0 に変換
+		if (!pingPongForward_) {
+			t = 1.0f - t;
+		}
+		break;
+	}
 	}
 
 	// イージング適用

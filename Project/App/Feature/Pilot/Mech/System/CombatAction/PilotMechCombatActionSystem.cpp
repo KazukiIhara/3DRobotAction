@@ -36,8 +36,42 @@ void PilotMechCombatActionSystem::Update() {
 	// 速度による機体の傾き更新
 	MechSlopeUpdate();
 
+	// 攻撃入力不可ならスキップ
+	if (!enableRightWeapon_) {
+		setUpTimer_ = 0.0f;
+		rightWeaponAttackState_ = RightWeaponAttackState::Idle;
+		return;
+	}
+
+	// 攻撃入力処理
+	// 入力取得
+	auto commandPair = mech_->GetInputSys()->GetPilotCommand();
+	// 移動入力でMoveに遷移
+	if (commandPair.first) {
+		auto command = commandPair.second;
+		// 右手武器で攻撃
+		if (command.attackR) {
+			// 現在のステートごとに各ステートに遷移
+			if (rightWeaponAttackState_ == RightWeaponAttackState::Idle) {
+				rightWeaponAttackState_ = RightWeaponAttackState::SetUp;
+				mech_->GetAnimator()->SetRightArmRotationAnimationEnabled(false);
+			}
+		} else {
+			setUpTimer_ = 0.0f;
+			rightWeaponAttackState_ = RightWeaponAttackState::Idle;
+			mech_->GetAnimator()->SetRightArmRotationAnimationEnabled(true);
+		}
+	}
+
 	// 右手武器攻撃ステート更新
 	RightWeaponAttackStateUpdate();
+
+	// 次のフレーム用にフラグを初期化
+	enableRightWeapon_ = false;
+}
+
+void PilotMechCombatActionSystem::SetEnableRightWeapon(bool e) {
+	enableRightWeapon_ = e;
 }
 
 void PilotMechCombatActionSystem::MechSlopeUpdate() {
@@ -82,14 +116,7 @@ void PilotMechCombatActionSystem::MechSlopeUpdate() {
 
 }
 
-void PilotMechCombatActionSystem::SetEnableRightWeapon(bool e) {
-	enableRightWeapon_ = e;
-}
-
 void PilotMechCombatActionSystem::RightWeaponAttackStateUpdate() {
-	// デルタタイム取得
-	const float dt = MAGISYSTEM::GetDeltaTime();
-
 	// ステートごとに目標の回転角を設定
 	switch (rightWeaponAttackState_) {
 	case PilotMechCombatActionSystem::RightWeaponAttackState::Idle:
@@ -102,9 +129,6 @@ void PilotMechCombatActionSystem::RightWeaponAttackStateUpdate() {
 		UpdateAttack();
 		break;
 	}
-
-	UpdateSetUp();
-
 }
 
 void PilotMechCombatActionSystem::UpdateIdle() {
@@ -112,9 +136,44 @@ void PilotMechCombatActionSystem::UpdateIdle() {
 }
 
 void PilotMechCombatActionSystem::UpdateSetUp() {
+	// デルタタイムを取得
+	const float dt = MAGISYSTEM::GetDeltaTime();
+
 	// SetUp時間
 	const float time = MAGISYSTEM::GetParameterValue<float>({ "PilotMech","CombatAction","RHAttack","SetUpTime" });
 
+	// 右上腕
+	auto* upperArm = mech_->GetPartsTransform(MechAnimation::TransType::UpperArmRight);
+
+	// -Yを正面とした目標回転角
+	const Quaternion targetQY = CalTargetQuaternion();
+	// 補完
+	const float expT = CalExpT(dt, time, 1.0f);
+	const Quaternion targetQ = Slerp(upperArm->GetQuaternion(), targetQY, expT);
+
+	// 反映
+	upperArm->SetQuaternion(targetQ);
+
+	// 攻撃に遷移するためのタイマー処理
+	setUpTimer_ += dt;
+	if (setUpTimer_ >= time) {
+		rightWeaponAttackState_ = RightWeaponAttackState::Attack;
+	}
+}
+
+void PilotMechCombatActionSystem::UpdateAttack() {
+	// 右上腕
+	auto* upperArm = mech_->GetPartsTransform(MechAnimation::TransType::UpperArmRight);
+	// 目標回転角を計算
+	const Quaternion targetQ = CalTargetQuaternion();
+	// 反映
+	upperArm->SetQuaternion(targetQ);
+
+	// 攻撃
+	mech_->GetWeapon("MachineGun")->Attack();
+}
+
+Quaternion PilotMechCombatActionSystem::CalTargetQuaternion() {
 	// ターゲット座標
 	const Vector3 targetPos = mech_->GetTargetWorldPos();
 
@@ -123,20 +182,14 @@ void PilotMechCombatActionSystem::UpdateSetUp() {
 
 	// 腕の支点（ワールド）
 	const Vector3 armPos = upperArm->GetWorldPosition();
-
 	// 目標方向（ワールド）
 	const Vector3 forward = MAGIMath::Normalize(targetPos - armPos);
-
+	// 目標回転を求める
 	const Quaternion worldQ = DirectionToQuaternion_s(forward);
-
+	// モデル姿勢の逆回転で打ち消す
 	const Quaternion targetQZ = Inverse(mech_->GetModelTransform()->GetQuaternion()) * worldQ;
-
+	// -Yを正面とした目標回転角
 	const Quaternion targetQY = targetQZ * MakeFixForwardZToMinusY();
 
-	// 反映
-	upperArm->SetQuaternion(targetQY);
-}
-
-void PilotMechCombatActionSystem::UpdateAttack() {
-
+	return targetQY;
 }

@@ -13,16 +13,13 @@ using namespace MAGIUtility;
 
 
 void PilotMechStateIdle::Enter([[maybe_unused]] PilotMech* mech) {
-	mech->GetAnimator()->PlayAnimation("Pilot_Idle", 1.0f, 0.5f);
+	// アニメーション適用
+	mech->GetAnimator()->ApproachPose("Pilot_Idle", 0.8f);
 }
 
 void PilotMechStateIdle::Update(PilotMech* mech) {
-	// 離陸時アニメーション処理
-	const bool isGround = mech->GetKinematicSystem()->IsGrounded();
-	if (preIsGround_ && !isGround) {
-		mech->GetAnimator()->PlayAnimation("Pilot_Idle", 1.0f, 0.5f);
-	}
-	preIsGround_ = isGround;
+	// アニメーション適用
+	mech->GetAnimator()->ApproachPose("Pilot_Idle", 0.8f);
 
 	// 摩擦による減速処理
 	const float acc = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Idle","Acc" });
@@ -33,15 +30,14 @@ void PilotMechStateIdle::Update(PilotMech* mech) {
 	ms->SetAcc(acc);
 	ms->SetMaxSpeed(maxSpeed);
 
+	// 右手武器攻撃可能フラグをTrueにする
+	mech->GetCombatActionSystem()->SetEnableRightWeapon(true);
+
 	// 入力取得
 	auto commandPair = mech->GetInputSys()->GetPilotCommand();
 	// 移動入力でMoveに遷移
 	if (commandPair.first) {
 		auto command = commandPair.second;
-		// 右手武器で攻撃
-		if (command.attackR) {
-			mech->GetWeapon("MachineGun")->Attack();
-		}
 		if (command.dodge) {
 			mech->ChangeState(PilotMech::State::Dodge);
 			return;

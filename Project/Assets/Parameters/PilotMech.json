@@ -3,7 +3,7 @@
     "MechSlope": {
       "MaxSlope": {
         "type": "Float",
-        "value": 0.15000000596046448
+        "value": 0.11999999731779099
       },
       "MaxSlopeSpeed": {
         "type": "Float",
@@ -13,7 +13,7 @@
     "RHAttack": {
       "SetUpTime": {
         "type": "Float",
-        "value": 0.0
+        "value": 0.4000000059604645
       }
     }
   }
