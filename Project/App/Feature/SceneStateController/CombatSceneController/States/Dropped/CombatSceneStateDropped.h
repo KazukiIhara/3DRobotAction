@@ -29,7 +29,7 @@ public:
 private:
 	float timer_ = 0.0f;
 
-	SpriteData youDiedSprite_{};
-	SpriteMaterialData youDiedSpriteMat_{};
+	SpriteData sprite_{};
+	SpriteMaterialData spriteMat_{};
 
 };

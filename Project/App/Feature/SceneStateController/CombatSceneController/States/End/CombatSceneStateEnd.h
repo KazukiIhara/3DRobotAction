@@ -4,6 +4,9 @@
 
 #include "Structs/SpriteStruct.h"
 
+/// <summary>
+/// 戦闘シーン終了ステート(多分勝利ステートに変更する)
+/// </summary>
 class CombatSceneStateEnd: public ICombatSceneState {
 public:
 	enum class Phase {

@@ -55,7 +55,7 @@ namespace MAGIUtility {
 
 	Vector4 NormalizePlane(const Vector4& plane);
 
-	Vector2 TransformWorldToScreen(const Vector3& worldPos);
+	std::pair<bool, Vector2> MAGIUtility::TransformWorldToScreen(const Vector3& worldPos);
 
 	Vector2 StickToMoveDirXZ(
 		const Vector2& stick,

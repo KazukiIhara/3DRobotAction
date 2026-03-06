@@ -108,15 +108,27 @@ Vector4 MAGIUtility::NormalizePlane(const Vector4& plane) {
 	return plane / length;
 }
 
-Vector2 MAGIUtility::TransformWorldToScreen(const Vector3& worldPos) {
+std::pair<bool, Vector2> MAGIUtility::TransformWorldToScreen(const Vector3& worldPos) {
+	// VP行列取得
 	const Matrix4x4 vp = MAGISYSTEM::GetCurrentCamera3D()->GetViewProjectionMatrix();
+
+	// クリップ座標へ変換
 	const Vector4 clip = Transform(Vector4(worldPos.x, worldPos.y, worldPos.z, 1.0f), vp);
+
+	// カメラ裏側判定
+	if (clip.w <= 0.0f) {
+		return { false, Vector2() };
+	}
+
+	// NDC変換
 	const float invW = 1.0f / clip.w;
 	const Vector3 ndc{ clip.x * invW, clip.y * invW, clip.z * invW };
-	const float sx = (ndc.x + 1.f) * 0.5f * WindowApp::kClientWidth;
-	const float sy = (-ndc.y + 1.f) * 0.5f * WindowApp::kClientHeight;
 
-	return Vector2(sx, sy);
+	// スクリーン座標変換
+	const float sx = (ndc.x + 1.0f) * 0.5f * WindowApp::kClientWidth;
+	const float sy = (-ndc.y + 1.0f) * 0.5f * WindowApp::kClientHeight;
+
+	return { true, Vector2(sx, sy) };
 }
 
 Vector2 MAGIUtility::StickToMoveDirXZ(const Vector2& stick, const Vector3& cameraEye, const Vector3& cameraTarget) {

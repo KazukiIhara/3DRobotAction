@@ -17,6 +17,7 @@ public:
 		None,
 		Start,
 		Battle,
+		Dropped,
 		End,
 		Pause,
 	};

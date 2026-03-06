@@ -2,10 +2,23 @@
 
 #include "Feature/Pilot/Mech/PilotMech.h"
 
+#include "MAGI.h"
+
+using namespace Magi;
+
 PilotMechStatus::PilotMechStatus(PilotMech* mech) {
+	// パラメータ作成
+	MAGISYSTEM::AddParameterData({ "MechInitParam","Pilot","HP" }, ParamType::Int32);
+	MAGISYSTEM::AddParameterData({ "MechInitParam","Pilot","DroppedHeight" }, ParamType::Float);
+
 	mech_ = mech;
 
 	// パラメータセット
+	param_.hp = MAGISYSTEM::GetParameterValue<int32_t>({ "MechInitParam","Pilot","HP" });
+	param_.dropped = false;
+
+	maxHp_ = param_.hp;
+	droppedHeight_ = MAGISYSTEM::GetParameterValue<float>({ "MechInitParam","Pilot","DroppedHeight" });
 
 }
 
@@ -15,10 +28,25 @@ void PilotMechStatus::Update() {
 
 	// 被弾を処理する
 	ReactHitInfo();
+	// 落下したかどうかを判定する
+	JudgeDropped();
+
 }
 
 Vector3 PilotMechStatus::GetHitPos() const {
 	return hitPos_;
+}
+
+int32_t PilotMechStatus::GetHP() const {
+	return param_.hp;
+}
+
+int32_t PilotMechStatus::GetMaxHP() const {
+	return maxHp_;
+}
+
+bool PilotMechStatus::GetIsDropped() const {
+	return param_.dropped;
 }
 
 void PilotMechStatus::ReactHitInfo() {
@@ -65,4 +93,15 @@ void PilotMechStatus::ReactHitInfo() {
 	}
 
 
+}
+
+void PilotMechStatus::JudgeDropped() {
+	// パイロットの高さを取得して、一定値以下なら落下フラグを立てる
+	const float mechPosY = mech_->GetTransform()->GetWorldPosition().y;
+	if (mechPosY <= droppedHeight_) {
+		param_.dropped = true;
+	} else {
+		// いらなそうな処理だけど一応書いておく
+		param_.dropped = false;
+	}
 }
