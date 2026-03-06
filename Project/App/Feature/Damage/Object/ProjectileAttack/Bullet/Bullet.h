@@ -9,6 +9,9 @@
 
 #include "Structs/Primitive3DStruct.h"
 
+// 弾ヒット時エフェクト
+#include "Feature/Effect/MachineGunHit/MachineGunHitEffect.h"
+
 // エフェクトマネージャ
 class GameEffectManager;
 

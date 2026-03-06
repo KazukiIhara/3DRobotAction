@@ -18,8 +18,6 @@ class Transform3D;
 	ひとまずシリンダーを置いてみる
 */
 
-
-
 /// <summary>
 /// レーザー攻撃のエフェクト
 /// </summary>
