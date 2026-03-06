@@ -27,6 +27,7 @@
 #include "Feature/SceneStateController/CombatSceneController/States/Battle/CombatSceneStateBattle.h"
 #include "Feature/SceneStateController/CombatSceneController/States/End/CombatSceneStateEnd.h"
 #include "Feature/SceneStateController/CombatSceneController/States/Pause/CombatSceneStatePause.h"
+#include "Feature/SceneStateController/CombatSceneController/States/Dropped/CombatSceneStateDropped.h"
 
 #include "MAGIAssert/MAGIAssert.h"
 

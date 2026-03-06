@@ -115,7 +115,7 @@ void CombatScene::Update() {
 
 	// シーン終了
 	if (endRequest) {
-		ChangeScene("Title");
+		ChangeScene("Result");
 	}
 
 	// パイロットを更新
