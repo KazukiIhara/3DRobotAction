@@ -1,8 +1,10 @@
 #include "Bullet.h"
 
-#include "MAGI.h"
 
 #include "Random/Random.h"
+#include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
+
+#include "MAGI.h"
 
 using namespace Magi;
 
@@ -48,7 +50,10 @@ void Bullet::Update() {
 		if (collider->GetHitInfo().isHit_) {
 			// ヒット時エフェクトを出す
 
-
+			// 弾ヒット追加
+			std::unique_ptr<MachineGunHitEffect> hitEffect = std::make_unique<MachineGunHitEffect>(transform_->GetWorldPosition());
+			effectManager_->Add(std::move(hitEffect));
+			
 			// 生存フラグを消す
 			isAlive_ = false;
 		}
