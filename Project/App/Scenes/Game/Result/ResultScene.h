@@ -16,5 +16,7 @@ public:
 	void Draw() override;
 	void Finalize() override;
 private:
+	SpriteData data_{};
+	SpriteMaterialData mat_{};
 
 };
