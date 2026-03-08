@@ -53,13 +53,14 @@ WeaponUI::WeaponUI(PilotMech* pilotMech) {
 
 	// パイロットのスクリーン座標を取得
 	const Vector3 pilotWPos = pilotMech_->GetCenterPos();
-	const Vector2 pilotScreenPos = TransformWorldToScreen(pilotWPos);
 
-	lb_.position = pilotScreenPos + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LB","Pos" });
-	rb_.position = pilotScreenPos + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RB","Pos" });
+	auto pilotScreenPos = TransformWorldToScreen(pilotWPos);
 
-	jump_.position = pilotScreenPos + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Jump","Pos" });
-	dodge_.position = pilotScreenPos + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Dodge","Pos" });
+	lb_.position = pilotScreenPos.second + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LB","Pos" });
+	rb_.position = pilotScreenPos.second + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RB","Pos" });
+
+	jump_.position = pilotScreenPos.second + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Jump","Pos" });
+	dodge_.position = pilotScreenPos.second + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Dodge","Pos" });
 
 	ammoPos_ = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Ammo","Pos" });
 	ammoSize_ = MAGISYSTEM::GetParameterValue<float>({ "UI","Ammo","Size" });
@@ -95,7 +96,7 @@ void WeaponUI::Update() {
 
 	// パイロットのスクリーン座標を取得
 	const Vector3 pilotWPos = pilotMech_->GetCenterPos();
-	const Vector2 pilotScreenPos = TransformWorldToScreen(pilotWPos);
+	const Vector2 pilotScreenPos = TransformWorldToScreen(pilotWPos).second;
 
 	lb_.position = pilotScreenPos + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","LB","Pos" });
 	rb_.position = pilotScreenPos + MAGISYSTEM::GetParameterValue<Vector2>({ "UI","RB","Pos" });
@@ -116,43 +117,43 @@ void WeaponUI::Update() {
 	PilotMech::State cs = pilotMech_->GetCurrentState();
 	// ステートごとに切り替え
 	switch (cs) {
-	case PilotMech::State::Idle:
-		ltMat_.textureName = "LT.png";
-		lbMat_.textureName = "LBEnable.png";
-		rbMat_.textureName = "RBEnable.png";
-		break;
-	case PilotMech::State::Move:
-		ltMat_.textureName = "LT.png";
-		lbMat_.textureName = "LBEnable.png";
-		rbMat_.textureName = "RBEnable.png";
-		break;
-	case PilotMech::State::Dodge:
-		ltMat_.textureName = "LT.png";
-		lbMat_.textureName = "LBEnable.png";
-		rbMat_.textureName = "RB.png";
-		break;
-	case PilotMech::State::JustDodge:
-		ltMat_.textureName = "LTEnable.png";
-		lbMat_.textureName = "LBEnable.png";
-		rbMat_.textureName = "RB.png";
-		break;
-	case PilotMech::State::JustDodgeAttack:
-		ltMat_.textureName = "LT.png";
-		lbMat_.textureName = "LB.png";
-		rbMat_.textureName = "RB.png";
-		break;
-	case PilotMech::State::HitReact:
-		ltMat_.textureName = "LT.png";
-		lbMat_.textureName = "LB.png";
-		rbMat_.textureName = "RB.png";
-		break;
-	case PilotMech::State::KnockBack:
-		ltMat_.textureName = "LT.png";
-		lbMat_.textureName = "LB.png";
-		rbMat_.textureName = "RB.png";
-		break;
-	default:
-		break;
+		case PilotMech::State::Idle:
+			ltMat_.textureName = "LT.png";
+			lbMat_.textureName = "LBEnable.png";
+			rbMat_.textureName = "RBEnable.png";
+			break;
+		case PilotMech::State::Move:
+			ltMat_.textureName = "LT.png";
+			lbMat_.textureName = "LBEnable.png";
+			rbMat_.textureName = "RBEnable.png";
+			break;
+		case PilotMech::State::Dodge:
+			ltMat_.textureName = "LT.png";
+			lbMat_.textureName = "LBEnable.png";
+			rbMat_.textureName = "RB.png";
+			break;
+		case PilotMech::State::JustDodge:
+			ltMat_.textureName = "LTEnable.png";
+			lbMat_.textureName = "LBEnable.png";
+			rbMat_.textureName = "RB.png";
+			break;
+		case PilotMech::State::JustDodgeAttack:
+			ltMat_.textureName = "LT.png";
+			lbMat_.textureName = "LB.png";
+			rbMat_.textureName = "RB.png";
+			break;
+		case PilotMech::State::HitReact:
+			ltMat_.textureName = "LT.png";
+			lbMat_.textureName = "LB.png";
+			rbMat_.textureName = "RB.png";
+			break;
+		case PilotMech::State::KnockBack:
+			ltMat_.textureName = "LT.png";
+			lbMat_.textureName = "LB.png";
+			rbMat_.textureName = "RB.png";
+			break;
+		default:
+			break;
 	}
 }
 

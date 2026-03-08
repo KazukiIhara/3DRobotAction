@@ -23,6 +23,9 @@ void Game::Initialize() {
 	// 規定システムの初期化
 	MAGISYSTEM::Initialize();
 
+	// テクスチャのロード
+	LoadTexture();
+
 	// サウンドのロード
 	LoadSound();
 
@@ -54,6 +57,33 @@ void Game::Initialize() {
 #else
 	sceneManager_->StartScene("Title");
 #endif
+}
+
+void Game::LoadTexture() {
+	// テクスチャロード
+
+	MAGISYSTEM::LoadTexture("white.png");
+	MAGISYSTEM::LoadTexture("PressAnyButton.png");
+	MAGISYSTEM::LoadTexture("Title.png");
+
+	// ヒットエフェクト用
+	MAGISYSTEM::LoadTexture("gradationLine.png");
+	// 煙パーティクル用
+	MAGISYSTEM::LoadTexture("smoke.png");
+
+	// テクスチャ
+	MAGISYSTEM::LoadTexture("white.png");
+	MAGISYSTEM::LoadTexture("gradation.png");
+	MAGISYSTEM::LoadTexture("dodgeEffect.png");
+	MAGISYSTEM::LoadTexture("Circle.png");
+	MAGISYSTEM::LoadTexture("Circle2.png");
+	MAGISYSTEM::LoadTexture("electric_0.png");
+	MAGISYSTEM::LoadTexture("lensFlare.png");
+	MAGISYSTEM::LoadTexture("gradationToon.png");
+
+
+	MAGISYSTEM::LoadTexture("YellowBullet.png");
+	MAGISYSTEM::LoadTexture("Laser2.png");
 }
 
 void Game::LoadSound() {

@@ -19,6 +19,8 @@ public:
 private:
 	float innerRot_ = 0.0f;
 
+	bool drawFlag_ = false;
+
 	ILockOnTarget* target_;
 
 	SpriteData inner_;

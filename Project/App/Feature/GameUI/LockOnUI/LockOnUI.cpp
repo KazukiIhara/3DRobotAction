@@ -44,7 +44,10 @@ void LockOnUI::Update() {
 
 	// ターゲットのワールド座標を変換
 	const Vector3 wPos = target_->GetCenterPos();
-	screenPos_ = TransformWorldToScreen(wPos);
+
+	auto screenPos = TransformWorldToScreen(wPos);
+	drawFlag_ = screenPos.first;
+	screenPos_ = screenPos.second;
 
 	// インナーUIを回転
 	const float innerRotSpeed = MAGISYSTEM::GetParameterValue<float>({ "UI","LockOn","InnerRotSpeed" });
@@ -75,8 +78,10 @@ void LockOnUI::Update() {
 }
 
 void LockOnUI::Draw() {
-	MAGISYSTEM::DrawSprite(inner_, innerMat_);
-	MAGISYSTEM::DrawSprite(outer_, outerMat_);
-	MAGISYSTEM::DrawSprite(bossStatus_, bossStatusMat_);
-	MAGISYSTEM::DrawSprite(bossHp_, bossHpMat_);
+	if (drawFlag_) {
+		MAGISYSTEM::DrawSprite(inner_, innerMat_);
+		MAGISYSTEM::DrawSprite(outer_, outerMat_);
+		MAGISYSTEM::DrawSprite(bossStatus_, bossStatusMat_);
+		MAGISYSTEM::DrawSprite(bossHp_, bossHpMat_);
+	}
 }
