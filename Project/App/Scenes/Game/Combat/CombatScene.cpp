@@ -142,9 +142,6 @@ void CombatScene::Draw() {
 	// ステージ描画
 	stageData_->Draw();
 
-	// シーン管理クラス描画
-	sceneController_->Draw();
-
 	// パイロットを更新
 	pilot_->Draw();
 
@@ -162,6 +159,10 @@ void CombatScene::Draw() {
 
 	// ゲームUIマネージャ描画
 	gameUIManger_->Draw();
+
+	// シーン管理クラス描画
+	sceneController_->Draw();
+
 }
 
 void CombatScene::Finalize() {
