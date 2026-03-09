@@ -44,6 +44,7 @@ WeaponUI::WeaponUI(PilotMech* pilotMech) {
 	MAGISYSTEM::LoadTexture("LTEnable.png");
 	MAGISYSTEM::LoadTexture("RTEnable.png");
 
+	
 
 	// パラメータ取得
 	cannonRifle_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","CannonRifle","Pos" });
