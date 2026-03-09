@@ -5,6 +5,8 @@
 #include "Feature/Effect/LaserEffect/LaserEffect.h"
 #include "Feature/Effect/BossAttackWarning/BossAttackWarningEffect.h"
 #include "Feature/Effect/MachineGunHit/MachineGunHitEffect.h"
+#include "Feature/Effect/Explosion/ExplosionEffect.h"
+#include "Feature/Effect/BossDestroy/BossDestroyEffect.h"
 
 void EffectEditScene::Initialize() {
 	// 2Dカメラ作成
@@ -22,7 +24,6 @@ void EffectEditScene::Initialize() {
 	// エフェクトマネージャ初期化
 	gameEffectManager_ = std::make_unique<GameEffectManager>();
 
-
 }
 
 void EffectEditScene::Update() {
@@ -30,7 +31,7 @@ void EffectEditScene::Update() {
 
 	if (ImGui::Button("Emit")) {
 		// 今実装するエフェクト
-		gameEffectManager_->Add(std::make_unique<MachineGunHitEffect>(Vector3(0.0f, 0.0f, 0.0f)));
+		gameEffectManager_->Add(std::make_unique<BossDestroyEffect>(Vector3(0.0f, 0.0f, 0.0f),gameEffectManager_.get()));
 	}
 	ImGui::End();
 

@@ -92,7 +92,7 @@ void JustDodgeEffect::Update() {
 	time_ = std::max(0.0f, time_);
 
 	// タイマーが0になったら生存フラグを切る
-	if (time_ == 0.0f) {
+	if (time_ <= 0.0f) {
 		isAlive_ = false;
 		return;
 	}
