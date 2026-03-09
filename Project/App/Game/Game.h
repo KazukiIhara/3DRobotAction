@@ -9,6 +9,7 @@ public:
 	// 初期化
 	void Initialize()override;
 private:
+	void LoadTexture();
 	void LoadSound();
 	void LoadFonts();
 };

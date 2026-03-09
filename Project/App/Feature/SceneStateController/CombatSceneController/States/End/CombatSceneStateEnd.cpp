@@ -170,12 +170,9 @@ void CombatSceneStateEnd::DrawExplosion([[maybe_unused]] CombatSceneControl::Sta
 }
 
 void CombatSceneStateEnd::UpdateFinish(CombatSceneControl::StateContextRef ref) {
-
-
 	// 終了処理
 	if (timer_ <= 0.0f) {
-
-		// ステート終了処理
+		// 戦闘ステート終了
 		ref.cbc->End();
 	}
 }

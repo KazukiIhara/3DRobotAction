@@ -28,7 +28,7 @@ public:
 
 private:
 	float timer_ = 0.0f;
-
+	bool drawFlag_ = false;
 	std::array<SpriteData, 2> sprite_;
 	SpriteMaterialData mat_;
 

@@ -25,6 +25,7 @@
 // シーンステート
 #include "Feature/SceneStateController/CombatSceneController/States/Start/CombatSceneStateStart.h"
 #include "Feature/SceneStateController/CombatSceneController/States/Battle/CombatSceneStateBattle.h"
+#include "Feature/SceneStateController/CombatSceneController/States/Dropped/CombatSceneStateDropped.h"
 #include "Feature/SceneStateController/CombatSceneController/States/End/CombatSceneStateEnd.h"
 #include "Feature/SceneStateController/CombatSceneController/States/Pause/CombatSceneStatePause.h"
 
@@ -51,6 +52,7 @@ CombatSceneController::CombatSceneController(ContextRef ref) {
 
 	states_[State::Start] = std::make_unique<CombatSceneStateStart>();
 	states_[State::Battle] = std::make_unique<CombatSceneStateBattle>();
+	states_[State::Dropped] = std::make_unique<CombatSceneStateDropped>();
 	states_[State::End] = std::make_unique<CombatSceneStateEnd>();
 	states_[State::Pause] = std::make_unique<CombatSceneStatePause>();
 
@@ -58,6 +60,7 @@ CombatSceneController::CombatSceneController(ContextRef ref) {
 	statesStrMap_[State::None] = "None";
 	statesStrMap_[State::Start] = "Start";
 	statesStrMap_[State::Battle] = "Battle";
+	statesStrMap_[State::Dropped] = "Dropped";
 	statesStrMap_[State::End] = "End";
 	statesStrMap_[State::Pause] = "Pause";
 

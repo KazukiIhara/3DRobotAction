@@ -14,10 +14,6 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::AddParameterData({ "UI","Title","AlphaEffectStart" }, Magi::ParamType::Float);
 	MAGISYSTEM::AddParameterData({ "UI","Title","AlphaEffectEnd" }, Magi::ParamType::Float);
 
-	// テクスチャをロード
-	MAGISYSTEM::LoadTexture("white.png");
-	MAGISYSTEM::LoadTexture("PressAnyButton.png");
-	MAGISYSTEM::LoadTexture("Title.png");
 
 	// サイズを設定
 	data_.size = { WindowApp::kClientWidth,WindowApp::kClientHeight };

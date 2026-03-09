@@ -20,7 +20,7 @@ BossAttackWarningEffect::BossAttackWarningEffect(const Vector3& emitPos, BossMec
 
 	{
 		// ワールド座標からスクリーン座標に変換
-		const Vector2 screenPos = MAGIUtility::TransformWorldToScreen(worldPos_);
+		const Vector2 screenPos = MAGIUtility::TransformWorldToScreen(worldPos_).second;
 		// スプライトの設定
 		for (size_t i = 0; i < 2; i++) {
 			sprite_[i].position = screenPos;
@@ -83,7 +83,10 @@ void BossAttackWarningEffect::Update() {
 	Vector2 screenPos = { 0.0f,0.0f };
 	if (mech_) {
 		worldPos_ = mech_->GetPartsTransform(MechAnimation::TransType::Head)->GetWorldPosition();
-		screenPos = MAGIUtility::TransformWorldToScreen(worldPos_);
+		
+		auto screenPosPair = MAGIUtility::TransformWorldToScreen(worldPos_);
+		drawFlag_ = screenPosPair.first;
+		screenPos = screenPosPair.second;
 	}
 
 	for (size_t i = 0; i < 2; i++) {
@@ -98,7 +101,9 @@ void BossAttackWarningEffect::Update() {
 }
 
 void BossAttackWarningEffect::Draw() {
-	for (size_t i = 0; i < 2; i++) {
-		MAGISYSTEM::DrawSprite(sprite_[i], mat_);
+	if (drawFlag_) {
+		for (size_t i = 0; i < 2; i++) {
+			MAGISYSTEM::DrawSprite(sprite_[i], mat_);
+		}
 	}
 }

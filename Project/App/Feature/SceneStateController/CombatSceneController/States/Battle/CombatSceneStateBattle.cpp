@@ -65,16 +65,30 @@ void CombatSceneStateBattle::Enter([[maybe_unused]] CombatSceneControl::StateCon
 }
 
 void CombatSceneStateBattle::Update([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
+
+	// プレイヤーが落下死した場合は専用のステートに遷移
+	const bool isPlayerDrop = ref.pilot->GetMech()->GetStatus()->GetIsDropped();
+	if (isPlayerDrop) {
+		// 落下死
+		ref.cbc->ChangeState(CombatSceneController::State::Dropped);
+	}
+
+	// プレイヤーのHPが0になったら敗北
+	const int32_t playerHP = ref.pilot->GetMech()->GetStatus()->GetHP();
+	if (playerHP <= 0) {
+		// 敗北
+
+	}
+
 	// ボスのHPが0になったら終了
 	const int32_t bossHP = ref.boss->GetMech()->GetStatus()->GetHP();
 	if (bossHP <= 0) {
-		// 終了
+		// 勝利
 		ref.cbc->ChangeState(CombatSceneController::State::End);
 	}
 
 	// プレイヤー操作の入力更新
 	ref.inputSys->UpdatePilotCommand();
-
 
 	// 戦闘時のUI更新など
 

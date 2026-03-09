@@ -1,4 +1,10 @@
 {
+  "Dropped": {
+    "Time": {
+      "type": "Float",
+      "value": 2.0
+    }
+  },
   "End": {
     "Destroy": {
       "Time": {

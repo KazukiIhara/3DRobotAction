@@ -234,6 +234,10 @@
         }
       }
     },
+    "DroppedHeight": {
+      "type": "Float",
+      "value": -15.0
+    },
     "FootLeft": {
       "ModelName": {
         "type": "String",
@@ -261,6 +265,10 @@
           "z": 0.0
         }
       }
+    },
+    "HP": {
+      "type": "Int32",
+      "value": 0
     },
     "HandLeft": {
       "ModelName": {
