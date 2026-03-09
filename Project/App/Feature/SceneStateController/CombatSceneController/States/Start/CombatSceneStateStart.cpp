@@ -35,9 +35,6 @@ void CombatSceneStateStart::Enter([[maybe_unused]] CombatSceneControl::StateCont
 
 void CombatSceneStateStart::Update([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
-
-
-
 	timer_ -= MAGISYSTEM::GetDeltaTime();
 	timer_ = std::max(0.0f, timer_);
 	if (timer_ <= 0.0f) {

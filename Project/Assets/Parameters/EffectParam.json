@@ -43,6 +43,112 @@
       "value": 0.800000011920929
     }
   },
+  "BossDestroy": {
+    "ExplosionCountMax": {
+      "type": "Int32",
+      "value": 3
+    },
+    "ExplosionCountMin": {
+      "type": "Int32",
+      "value": 1
+    },
+    "ExplosionIntervalMax": {
+      "type": "Float",
+      "value": 0.10000000149011612
+    },
+    "ExplosionIntervalMin": {
+      "type": "Float",
+      "value": 0.05000000074505806
+    },
+    "ExplosionRadiusMax": {
+      "type": "Float",
+      "value": 2.0
+    },
+    "ExplosionRadiusMin": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "ExplosionYOffsetMax": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "ExplosionYOffsetMin": {
+      "type": "Float",
+      "value": -3.0
+    },
+    "Time": {
+      "type": "Float",
+      "value": 2.0
+    }
+  },
+  "Explosion": {
+    "ExplosionParticleColor": {
+      "type": "Vec4",
+      "value": {
+        "w": 1.0,
+        "x": 1.0,
+        "y": 0.20000000298023224,
+        "z": 0.0
+      }
+    },
+    "ExplosionParticleLife": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "ExplosionParticleNum": {
+      "type": "Int32",
+      "value": 100
+    },
+    "ExplosionParticlePosRadius": {
+      "type": "Float",
+      "value": 0.0
+    },
+    "ExplosionParticleSize": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "ExplosionParticleSpeedMax": {
+      "type": "Float",
+      "value": 1.5
+    },
+    "ExplosionParticleSpeedMin": {
+      "type": "Float",
+      "value": 0.0
+    },
+    "SmokeParticleColor": {
+      "type": "Vec4",
+      "value": {
+        "w": 1.0,
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      }
+    },
+    "SmokeParticleLife": {
+      "type": "Float",
+      "value": 2.0
+    },
+    "SmokeParticleNum": {
+      "type": "Int32",
+      "value": 50
+    },
+    "SmokeParticlePosRadius": {
+      "type": "Float",
+      "value": 0.0
+    },
+    "SmokeParticleSize": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "SmokeParticleSpeedMax": {
+      "type": "Float",
+      "value": 1.0
+    },
+    "SmokeParticleSpeedMin": {
+      "type": "Float",
+      "value": 0.0
+    }
+  },
   "JustDodge": {
     "EffectTime": {
       "type": "Float",

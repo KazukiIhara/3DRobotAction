@@ -73,13 +73,16 @@ void BossMech::Update([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]] cons
 	// バリアの更新
 	barrier_->Update();
 
+
 	// ステート更新
 	if (auto& state = currentState_.second) {
 		state->Update(this);
 	}
 	// 基底クラスの更新
 	BaseMech::Update(isShowDebugUI, param);
+
 	BaseMech::PreUpdate();
+
 }
 
 void BossMech::ChangeState(BossMech::State nextState) {
