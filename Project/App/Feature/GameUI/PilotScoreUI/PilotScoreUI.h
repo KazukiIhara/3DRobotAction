@@ -17,5 +17,14 @@ public:
 	void Draw()override;
 
 private:
+	PilotMech* mech_;
 
+	SpriteData text_;
+	SpriteMaterialData textMat_;
+	
+	SpriteData bar_;
+	SpriteMaterialData barMat_;
+
+	SpriteData gauge_;
+	SpriteMaterialData gaugeMat_;
 };

@@ -8,6 +8,11 @@
 using namespace MAGIUtility;
 
 PilotScoreUI::PilotScoreUI(PilotMech* pilotMech) {
+	mech_ = pilotMech;
+
+	// テクスチャのロード
+	
+
 }
 
 void PilotScoreUI::Update() {
