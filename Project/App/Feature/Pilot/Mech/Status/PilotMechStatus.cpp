@@ -49,6 +49,18 @@ bool PilotMechStatus::GetIsDropped() const {
 	return param_.dropped;
 }
 
+int32_t PilotMechStatus::GetJustDodgeStreak() const {
+	return param_.justDodgeStreak;
+}
+
+int32_t PilotMechStatus::GetJustDodgeScore() const {
+	return param_.justDodgeScore;
+}
+
+float PilotMechStatus::GetAttackMul() const {
+	return param_.attackMul;
+}
+
 void PilotMechStatus::ReactHitInfo() {
 	// 機体の現在ステートを取得
 	auto pMechState = mech_->GetCurrentState();

@@ -14,8 +14,16 @@ class PilotMech;
 class PilotMechStatus {
 public:
 	struct Param {
+		// 体力
 		int32_t hp;
+		// 落下死亡フラグ
 		bool dropped;
+		// 連続ジャスト回避回数
+		int32_t justDodgeStreak;
+		// ジャスト回避スコア	
+		int32_t justDodgeScore;
+		// 攻撃倍率
+		float attackMul;
 	};
 public:
 	PilotMechStatus(PilotMech* mech);
@@ -29,6 +37,12 @@ public:
 	int32_t GetMaxHP()const;
 
 	bool GetIsDropped()const;
+
+	int32_t GetJustDodgeStreak()const;
+
+	int32_t GetJustDodgeScore()const;
+
+	float GetAttackMul()const;
 
 private:
 	void ReactHitInfo();

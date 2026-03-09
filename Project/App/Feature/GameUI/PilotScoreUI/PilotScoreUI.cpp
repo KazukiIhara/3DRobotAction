@@ -16,7 +16,9 @@ PilotScoreUI::PilotScoreUI(PilotMech* pilotMech) {
 }
 
 void PilotScoreUI::Update() {
+
 }
 
 void PilotScoreUI::Draw() {
+
 }
