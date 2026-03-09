@@ -15,6 +15,7 @@ using namespace Magi;
 void BossMechStateDestroy::Enter([[maybe_unused]] BossMech* mech) {
 	auto ms = mech->GetMoveSystem();
 	ms->Reset();
+	mech->GetAnimator()->PlayAnimation("Boss_Destroy", 1.0f, 0.0f);
 }
 
 void BossMechStateDestroy::Update([[maybe_unused]] BossMech* mech) {

@@ -106,7 +106,7 @@ void DevelopScene::Initialize() {
 
 
 	// アニメーション作成クラスにボスをセット
-	mechAnimationEdit_->SetBaseMech(pilot_->GetMech());
+	mechAnimationEdit_->SetBaseMech(boss_->GetMech());
 
 }
 
