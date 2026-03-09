@@ -32,20 +32,18 @@ public:
 	void Update();
 
 	Vector3 GetHitPos()const;
-
 	int32_t GetHP()const;
 	int32_t GetMaxHP()const;
-
 	bool GetIsDropped()const;
-
 	int32_t GetJustDodgeStreak()const;
-
 	int32_t GetJustDodgeScore()const;
-
 	float GetAttackMul()const;
+
+	void AddJustDodgeStreak();
 
 private:
 	void ReactHitInfo();
+	void UpdateAttackMul();
 	void JudgeDropped();
 private:
 	Vector3 hitPos_;

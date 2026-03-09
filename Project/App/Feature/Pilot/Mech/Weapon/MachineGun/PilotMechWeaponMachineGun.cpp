@@ -85,7 +85,11 @@ void PilotMechWeaponMachineGun::Attack([[maybe_unused]] Damage::Power power) {
 		param.initParam_.speed = speed;
 		param.initParam_.thickness = thickness;
 
-		param.initParam_.gParam.damage = damage;
+		// パイロットスコアボーナスの分乗算する
+		PilotMech* pMech = dynamic_cast<PilotMech*>(mech_);
+		const float attackMul = pMech->GetStatus()->GetAttackMul();
+		const float damageF = damage * attackMul;
+		param.initParam_.gParam.damage = damageF;
 		param.initParam_.gParam.power = Damage::Power::Small;
 		param.initParam_.gParam.tag = FriendlyTag::PlayerSide;
 

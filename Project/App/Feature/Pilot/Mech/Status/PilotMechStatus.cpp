@@ -28,9 +28,10 @@ void PilotMechStatus::Update() {
 
 	// 被弾を処理する
 	ReactHitInfo();
+	// 攻撃倍率更新
+	UpdateAttackMul();
 	// 落下したかどうかを判定する
 	JudgeDropped();
-
 }
 
 Vector3 PilotMechStatus::GetHitPos() const {
@@ -59,6 +60,10 @@ int32_t PilotMechStatus::GetJustDodgeScore() const {
 
 float PilotMechStatus::GetAttackMul() const {
 	return param_.attackMul;
+}
+
+void PilotMechStatus::AddJustDodgeStreak() {
+	param_.justDodgeStreak++;
 }
 
 void PilotMechStatus::ReactHitInfo() {
@@ -102,8 +107,42 @@ void PilotMechStatus::ReactHitInfo() {
 
 			break;
 		}
+
+		// 被弾時処理
+
+		// ジャスト回避ストリークをリセット
+		param_.justDodgeStreak = 0;
+
 	}
 
+
+}
+
+void PilotMechStatus::UpdateAttackMul() {
+	// 100ごとにスコア上昇 
+	param_.justDodgeScore = std::min(400, param_.justDodgeScore);
+	// 0:D 1:C 2:B 3:A 4:S
+	const int32_t score = param_.justDodgeScore / 100;
+
+	switch (score) {
+	case 0:
+		param_.attackMul = 1.0f;
+		break;
+	case 1:
+		param_.attackMul = 1.25f;
+		break;
+	case 2:
+		param_.attackMul = 1.5f;
+		break;
+	case 3:
+		param_.attackMul = 1.75f;
+		break;
+	case 4:
+		param_.attackMul = 2.0f;
+		break;
+	default:
+		break;
+	}
 
 }
 

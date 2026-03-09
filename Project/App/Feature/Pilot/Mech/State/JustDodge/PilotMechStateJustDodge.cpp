@@ -42,6 +42,9 @@ void PilotMechStateJustDodge::Enter([[maybe_unused]] PilotMech* mech) {
 	auto weapon = dynamic_cast<PilotMechWeaponMachineGun*>(mech->GetWeapon("MachineGun"));
 	weapon->AddAmmo(reloadAmmoNum);
 
+	// 連続ジャスト回避回数を加算
+	mech->GetStatus()->AddJustDodgeStreak();
+
 }
 
 void PilotMechStateJustDodge::Update([[maybe_unused]] PilotMech* mech) {
