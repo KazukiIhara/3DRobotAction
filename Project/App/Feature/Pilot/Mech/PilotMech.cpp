@@ -195,10 +195,20 @@ void PilotMech::ShowDebugWindow() {
 	ImGui::SeparatorText("Parameter");
 	{
 		// 現在ステート表示
-		ImGui::Text("CurrentState :");
+		ImGui::Text("CurrentState: ");
 		ImGui::SameLine();
 		const std::string state = StateToString(currentState_.first);
 		ImGui::Text(state.c_str());
+
+		const float gauge = GetStatus()->GetJustDodgeGauge();
+		ImGui::Text("JustDodgeGauge: %f", gauge);
+
+		const int32_t score = GetStatus()->GetJustDodgeScore();
+		ImGui::Text("JustDodgeScore: %d", score);
+
+		const int32_t streak = GetStatus()->GetJustDodgeStreak();
+		ImGui::Text("JustDodgeStreak: %d", streak);
+
 	}
 
 	// デバッグフラグのUI

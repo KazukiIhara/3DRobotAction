@@ -20,8 +20,10 @@ public:
 		bool dropped;
 		// 連続ジャスト回避回数
 		int32_t justDodgeStreak;
-		// ジャスト回避スコア	
+		// ジャスト回避スコア
 		int32_t justDodgeScore;
+		// ジャスト回避ゲージ
+		float justDodgeGauge;
 		// 攻撃倍率
 		float attackMul;
 	};
@@ -37,13 +39,17 @@ public:
 	bool GetIsDropped()const;
 	int32_t GetJustDodgeStreak()const;
 	int32_t GetJustDodgeScore()const;
+	float GetJustDodgeGauge()const;
+
 	float GetAttackMul()const;
 
+	void AddJustDodgeScore();
 	void AddJustDodgeStreak();
+	void AddJustDodgeGauge();
 
 private:
 	void ReactHitInfo();
-	void UpdateAttackMul();
+	void UpdateDodgeScoreSystem();
 	void JudgeDropped();
 private:
 	Vector3 hitPos_;
