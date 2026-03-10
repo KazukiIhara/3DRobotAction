@@ -27,4 +27,6 @@ private:
 
 	SpriteData gauge_;
 	SpriteMaterialData gaugeMat_;
+
+	Vector2 attackMulPos_;
 };

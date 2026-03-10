@@ -16,6 +16,10 @@ PilotScoreUI::PilotScoreUI(PilotMech* pilotMech) {
 	MAGISYSTEM::AddParameterData({ "UI","PilotScore","Gauge","Pos" }, Magi::ParamType::Vec2);
 	MAGISYSTEM::AddParameterData({ "UI","PilotScore","Gauge","Size" }, Magi::ParamType::Vec2);
 
+
+	MAGISYSTEM::AddParameterData({ "UI","PilotScore","AttackMul","Pos" }, Magi::ParamType::Vec2);
+
+
 	// テクスチャのロード
 	MAGISYSTEM::LoadTexture("Default.png");
 	MAGISYSTEM::LoadTexture("Cool.png");
@@ -31,6 +35,7 @@ PilotScoreUI::PilotScoreUI(PilotMech* pilotMech) {
 	text_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","Text","Pos" });
 	bar_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","Bar","Pos" });
 	gauge_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","Gauge","Pos" });
+	attackMulPos_ = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","AttackMul","Pos" });
 
 	// Gaugeサイズ設定
 	gauge_.size = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","Gauge","Size" });
@@ -47,6 +52,8 @@ void PilotScoreUI::Update() {
 	text_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","Text","Pos" });
 	bar_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","Bar","Pos" });
 	gauge_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","Gauge","Pos" });
+
+	attackMulPos_ = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","AttackMul","Pos" });
 
 	// Gaugeサイズ設定
 	gauge_.size = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","PilotScore","Gauge","Size" });
@@ -80,6 +87,12 @@ void PilotScoreUI::Update() {
 }
 
 void PilotScoreUI::Draw() {
+	const float attackMul = mech_->GetStatus()->GetAttackMul();
+	std::ostringstream oss;
+	oss << std::fixed << std::setprecision(1) << attackMul;
+	const std::string s = oss.str();
+
+	MAGISYSTEM::DrawFont("Damage x" + s, attackMulPos_, Color::White, 0.2f);
 	MAGISYSTEM::DrawSprite(text_, textMat_);
 	MAGISYSTEM::DrawSprite(bar_, barMat_);
 	MAGISYSTEM::DrawSprite(gauge_, gaugeMat_);
