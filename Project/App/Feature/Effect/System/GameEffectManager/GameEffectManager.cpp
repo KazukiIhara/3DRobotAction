@@ -11,7 +11,7 @@ BaseGameEffect* GameEffectManager::Add(std::unique_ptr<BaseGameEffect> effect) {
 
 void GameEffectManager::Update() {
 	for (auto& effect : effects_) {
-		if (effect->IsAlive()) {
+		if (effect && effect->IsAlive()) {
 			effect->Update();
 		}
 	}
@@ -21,7 +21,7 @@ void GameEffectManager::Update() {
 
 void GameEffectManager::Draw() {
 	for (auto& effect : effects_) {
-		if (effect->IsAlive()) {
+		if (effect && effect->IsAlive()) {
 			effect->Draw();
 		}
 	}

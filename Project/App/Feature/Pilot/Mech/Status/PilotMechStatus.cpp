@@ -122,7 +122,7 @@ void PilotMechStatus::UpdateAttackMul() {
 	// 100ごとにスコア上昇 
 	param_.justDodgeScore = std::min(400, param_.justDodgeScore);
 	// 0:D 1:C 2:B 3:A 4:S
-	const int32_t score = param_.justDodgeScore / 100;
+	const int32_t score = param_.justDodgeStreak;
 
 	switch (score) {
 	case 0:

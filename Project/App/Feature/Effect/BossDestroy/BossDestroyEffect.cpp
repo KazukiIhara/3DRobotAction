@@ -152,7 +152,7 @@ void BossDestroyEffect::Update() {
 			explosionYOffsetMax);
 
 		// 爆発エフェクトを追加
-		gameEffectManager_->Add(std::make_unique<ExplosionEffect>(worldPos_ + offset));
+		gameEffectManager_->Add(std::move(std::make_unique<ExplosionEffect>(worldPos_ + offset)));
 	}
 
 	// 次の爆発タイマーを設定
