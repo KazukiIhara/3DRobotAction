@@ -9,19 +9,19 @@
     "Destroy": {
       "Time": {
         "type": "Float",
-        "value": 4.0
+        "value": 3.0
       }
     },
     "Explosion": {
       "Time": {
         "type": "Float",
-        "value": 1.0
+        "value": 0.0
       }
     },
     "Finish": {
       "Time": {
         "type": "Float",
-        "value": 5.0
+        "value": 0.0
       }
     },
     "Flash": {

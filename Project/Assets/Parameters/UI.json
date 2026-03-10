@@ -87,6 +87,15 @@
     }
   },
   "PilotScore": {
+    "AttackMul": {
+      "Pos": {
+        "type": "Vec2",
+        "value": {
+          "x": 1560.0,
+          "y": 420.0
+        }
+      }
+    },
     "Bar": {
       "Pos": {
         "type": "Vec2",
@@ -117,7 +126,7 @@
         "type": "Vec2",
         "value": {
           "x": 1560.0,
-          "y": 268.0
+          "y": 275.0
         }
       }
     }
