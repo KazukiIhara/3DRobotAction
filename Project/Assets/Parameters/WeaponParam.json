@@ -91,7 +91,7 @@
     "BeamCannon": {
       "Damage": {
         "type": "Int32",
-        "value": 100
+        "value": 200
       },
       "FireOffset": {
         "type": "Vec3",
