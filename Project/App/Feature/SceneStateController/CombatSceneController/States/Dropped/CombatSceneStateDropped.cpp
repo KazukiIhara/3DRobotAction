@@ -33,7 +33,7 @@
 using namespace Magi;
 
 
-void CombatSceneStateDropped::Enter(CombatSceneControl::StateContextRef ref) {
+void CombatSceneStateDropped::Enter([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 	// パラメータ作成
 	MAGISYSTEM::AddParameterData({ "CombatSceneParam","Dropped","Time" }, ParamType::Float);
 
@@ -47,7 +47,7 @@ void CombatSceneStateDropped::Enter(CombatSceneControl::StateContextRef ref) {
 	spriteMat_.textureName = "UnitDestroyed.png";
 }
 
-void CombatSceneStateDropped::Update(CombatSceneControl::StateContextRef ref) {
+void CombatSceneStateDropped::Update([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 	// デルタタイム取得
 	const float dt = MAGISYSTEM::GetDeltaTime();
 	// ステートタイマー更新
@@ -59,10 +59,10 @@ void CombatSceneStateDropped::Update(CombatSceneControl::StateContextRef ref) {
 
 }
 
-void CombatSceneStateDropped::Draw(CombatSceneControl::StateContextRef ref) {
+void CombatSceneStateDropped::Draw([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 	MAGISYSTEM::DrawSprite(sprite_, spriteMat_);
 }
 
-void CombatSceneStateDropped::Exit(CombatSceneControl::StateContextRef ref) {
+void CombatSceneStateDropped::Exit([[maybe_unused]] CombatSceneControl::StateContextRef ref) {
 
 }

@@ -45,6 +45,8 @@ void PilotMechStateJustDodge::Enter([[maybe_unused]] PilotMech* mech) {
 	// 連続ジャスト回避回数を加算
 	mech->GetStatus()->AddJustDodgeStreak();
 
+	// ジャスト回避ゲージを加算
+	mech->GetStatus()->AddJustDodgeGauge();
 }
 
 void PilotMechStateJustDodge::Update([[maybe_unused]] PilotMech* mech) {
