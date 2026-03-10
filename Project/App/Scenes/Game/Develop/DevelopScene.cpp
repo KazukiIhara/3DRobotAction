@@ -20,6 +20,10 @@ void DevelopScene::Initialize() {
 	// リソースロード
 	LoadResource();
 
+	// キューブマップテクスチャを設定
+	const int32_t skyBoxTex = MAGISYSTEM::GetTextureIndex("satara_night_no_lamps_4k.dds");
+	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTex);
+
 	//===========================
 	// 操作クラスの初期化
 	//===========================
@@ -234,6 +238,7 @@ void DevelopScene::Finalize() {
 
 void DevelopScene::LoadResource() {
 	// テクスチャ
+	MAGISYSTEM::LoadTexture("satara_night_no_lamps_4k.dds");
 	MAGISYSTEM::LoadTexture("white.png");
 	MAGISYSTEM::LoadTexture("gradation.png");
 	MAGISYSTEM::LoadTexture("dodgeEffect.png");
@@ -242,7 +247,6 @@ void DevelopScene::LoadResource() {
 	MAGISYSTEM::LoadTexture("electric_0.png");
 	MAGISYSTEM::LoadTexture("lensFlare.png");
 	MAGISYSTEM::LoadTexture("gradationToon.png");
-
 
 	MAGISYSTEM::LoadTexture("YellowBullet.png");
 	MAGISYSTEM::LoadTexture("Laser2.png");

@@ -86,6 +86,42 @@
       }
     }
   },
+  "PilotScore": {
+    "Bar": {
+      "Pos": {
+        "type": "Vec2",
+        "value": {
+          "x": 1560.0,
+          "y": 342.0
+        }
+      }
+    },
+    "Gauge": {
+      "Pos": {
+        "type": "Vec2",
+        "value": {
+          "x": 1560.0,
+          "y": 361.0
+        }
+      },
+      "Size": {
+        "type": "Vec2",
+        "value": {
+          "x": 262.0,
+          "y": 35.0
+        }
+      }
+    },
+    "Text": {
+      "Pos": {
+        "type": "Vec2",
+        "value": {
+          "x": 1560.0,
+          "y": 268.0
+        }
+      }
+    }
+  },
   "RB": {
     "Pos": {
       "type": "Vec2",
