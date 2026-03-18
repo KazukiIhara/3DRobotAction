@@ -1,5 +1,7 @@
 #include "SampleScene.h"
 
+using namespace MAGIUtility;
+
 void SampleScene::Initialize() {
 
 	//

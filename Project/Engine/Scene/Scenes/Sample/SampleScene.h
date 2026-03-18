@@ -12,8 +12,6 @@
 
 #include "Random/Random.h"
 
-using namespace MAGIUtility;
-
 enum class ParadinState {
 	Idle,
 	Walk,
