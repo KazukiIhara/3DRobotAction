@@ -16,6 +16,7 @@
 #include "MAGI.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 PilotMechWeaponMachineGun::PilotMechWeaponMachineGun(PilotMech* mech) :
 	BasePilotMechWeapon(mech) {

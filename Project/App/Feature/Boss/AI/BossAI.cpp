@@ -9,6 +9,7 @@
 #include "Feature/Pilot/Mech/PilotMech.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 BossAI::BossAI(BossMech* mech) {
 	mech_ = mech;

@@ -159,6 +159,7 @@ namespace MAGIMath {
 	// 線形補完
 	Vector4 Lerp(const Vector4& v1, const Vector4& v2, float t);
 
+
 	// 指数補完係数を計算
 	float CalExpT(float dt, float secondsToArrive, float reachRate);
 
@@ -302,7 +303,7 @@ namespace MAGIMath {
 	// 向きからクオータニオンPitch角を取得
 	Quaternion DirectionToQuaternionPitch_s(const Vector3& direction);
 
-	
+
 	Quaternion MakeFixForwardZToMinusY();
 
 	// 正規化したクオータニオンを返す

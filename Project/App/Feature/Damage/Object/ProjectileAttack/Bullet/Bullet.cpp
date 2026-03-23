@@ -7,6 +7,7 @@
 #include "MAGI.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 Bullet::Bullet(const Bullet::InitParam& initParam, RefContext ref) :
 	BaseProjectileAttack(initParam.initParam_, ref.damageCollisionSystem) {

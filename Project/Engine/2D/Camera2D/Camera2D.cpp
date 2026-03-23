@@ -3,6 +3,7 @@
 #include "Framework/MAGI.h"
 
 using namespace MAGIMath;
+using namespace Magi;
 
 Camera2D::Camera2D(const std::string& name) {
 	name_ = name;

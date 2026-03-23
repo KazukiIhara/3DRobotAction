@@ -6,6 +6,7 @@
 #include "MAGI.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 MechMoveSystem::MechMoveSystem(BaseMech* mech) {
 	mech_ = mech;

@@ -6,6 +6,7 @@
 #include "MAGI.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 PilotMechLockOnSystem::PilotMechLockOnSystem(PilotMech* mech) {
 	mech_ = mech;

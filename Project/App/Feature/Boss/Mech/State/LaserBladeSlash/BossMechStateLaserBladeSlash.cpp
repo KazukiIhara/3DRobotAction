@@ -14,6 +14,7 @@
 #include "Feature/Effect/System/GameEffectManager/GameEffectManager.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 // フェーズクラス
 namespace {

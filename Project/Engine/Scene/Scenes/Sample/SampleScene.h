@@ -33,7 +33,7 @@ public:
 private:
 	// カメラ
 	Camera3D* mainCamera_;
-	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
+	std::unique_ptr<Magi::Camera2D> sceneCamera2D_ = nullptr;
 
 
 	// 

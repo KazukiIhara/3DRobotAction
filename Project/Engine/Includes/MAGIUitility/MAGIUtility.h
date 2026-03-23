@@ -14,21 +14,20 @@
 #include "Structs/ColorStruct.h"
 #include "Structs/Primitive3DStruct.h"
 
-using namespace MAGIMath;
 
 namespace {
 
 	Vector3 ProjectOnPlane(const Vector3& v, const Vector3& planeN) {
 		// v - n * dot(v,n)
-		return v - planeN * Dot(v, planeN);
+		return v - planeN * MAGIMath::Dot(v, planeN);
 	}
 
 	Vector3 SafeNormalize3(const Vector3& v) {
-		const float lsq = LengthSquared(v);
+		const float lsq = MAGIMath::LengthSquared(v);
 		if (lsq <= 1.0e-8f) {
 			return { 0.0f, 0.0f, 0.0f };
 		}
-		return Normalize(v);
+		return MAGIMath::Normalize(v);
 	}
 
 }

@@ -7,6 +7,7 @@
 #include "Random/Random.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 JustDodgeEffect::JustDodgeEffect(const Vector3& emitPos) :
 	BaseGameEffect(emitPos) {

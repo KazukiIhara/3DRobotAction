@@ -1,5 +1,7 @@
 #include "CombatScene.h"
 
+using namespace MAGIMath;
+
 void CombatScene::Initialize() {
 	// 3Dカメラ作成
 	std::unique_ptr<TPSCamera3D> sceneCamera3D = std::make_unique<TPSCamera3D>("SceneCamera3D");
