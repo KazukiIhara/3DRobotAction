@@ -8,6 +8,7 @@
 #include "Framework/MAGI.h"
 #include "Math/Utility/MathUtility.h"
 
+using namespace Magi;
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
