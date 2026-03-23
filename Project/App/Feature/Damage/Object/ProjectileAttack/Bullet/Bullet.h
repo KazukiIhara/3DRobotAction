@@ -38,8 +38,8 @@ public:
 private:
 	GameEffectManager* effectManager_;
 
-	Transform3D* bulletTransParent_;
-	std::array<Transform3D*, 2> bulletTrans_;
+	Magi::Transform3D* bulletTransParent_;
+	std::array<Magi::Transform3D*, 2> bulletTrans_;
 	std::array<PlaneData3D, 2> bulletPlane_;
 	MaterialData3D bulletPlaneMat_;
 

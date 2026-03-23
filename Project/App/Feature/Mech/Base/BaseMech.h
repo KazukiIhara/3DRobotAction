@@ -92,8 +92,8 @@ public:
 	void DebugUpdate(bool isShowDebugUI, const BaseMech::InitParam& param);
 
 	// トランスフォームを取得
-	Transform3D* GetTransform();
-	Transform3D* GetModelTransform();
+	Magi::Transform3D* GetTransform();
+	Magi::Transform3D* GetModelTransform();
 
 	// 標準パーツアクセッサ
 	MechPartsHead* GetHead();
@@ -103,7 +103,7 @@ public:
 	MechPartsLeg* GetLeg();
 
 	// 関節トランスフォーム取得
-	Transform3D* GetPartsTransform(MechAnimation::TransType type);
+	Magi::Transform3D* GetPartsTransform(MechAnimation::TransType type);
 	// 中心座標取得
 	Vector3 GetCenterPos()override;
 	// 武器
@@ -170,9 +170,9 @@ private:
 	void SwitchShowPartsDebug();
 private:
 	// トランスフォーム
-	Transform3D* transform_ = nullptr;
+	Magi::Transform3D* transform_ = nullptr;
 	// モデル描画トランスフォーム
-	Transform3D* modelTransform_ = nullptr;
+	Magi::Transform3D* modelTransform_ = nullptr;
 	// 有効タグ
 	FriendlyTag tag_;
 	// ターゲット座標
@@ -189,7 +189,7 @@ private:
 	std::vector<IMechParts*> parts_;
 
 	// 関節トランスフォームのリスト
-	std::array<Transform3D*, static_cast<size_t>(MechAnimation::TransType::Count)> partsTrans_{};
+	std::array<Magi::Transform3D*, static_cast<size_t>(MechAnimation::TransType::Count)> partsTrans_{};
 
 	// 武器
 	std::unordered_map<std::string, std::unique_ptr<BaseMechWeapon>> weapons_;

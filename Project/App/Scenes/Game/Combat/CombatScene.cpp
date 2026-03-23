@@ -1,15 +1,16 @@
 #include "CombatScene.h"
 
+using namespace Magi;
 using namespace MAGIMath;
 
 void CombatScene::Initialize() {
 	// 3Dカメラ作成
-	std::unique_ptr<TPSCamera3D> sceneCamera3D = std::make_unique<TPSCamera3D>("SceneCamera3D");
+	std::unique_ptr<Magi::TPSCamera3D> sceneCamera3D = std::make_unique<Magi::TPSCamera3D>("SceneCamera3D");
 	// マネージャに追加
-	Camera3D* camera = MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D));
+	Magi::Camera3D* camera = MAGISYSTEM::AddCamera3D(std::move(sceneCamera3D));
 
 	// TPSカメラにキャスト
-	camera_ = dynamic_cast<TPSCamera3D*>(camera);
+	camera_ = dynamic_cast<Magi::TPSCamera3D*>(camera);
 	// 現在のカメラに設定
 	camera_->ApplyCurrent();
 

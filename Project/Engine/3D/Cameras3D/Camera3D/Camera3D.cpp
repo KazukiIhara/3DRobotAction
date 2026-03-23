@@ -8,7 +8,7 @@
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
-Camera3D::Camera3D(const std::string& name, bool isUseYawPitch) {
+Magi::Camera3D::Camera3D(const std::string& name, bool isUseYawPitch) {
 	name_ = name;
 	isUseYawPitch_ = isUseYawPitch;
 
@@ -31,7 +31,7 @@ Camera3D::Camera3D(const std::string& name, bool isUseYawPitch) {
 
 }
 
-Camera3D::Camera3D(const std::string& name, const Vector3& eye, float yaw, float pitch) {
+Magi::Camera3D::Camera3D(const std::string& name, const Vector3& eye, float yaw, float pitch) {
 	name_ = name;
 	isUseYawPitch_ = true;
 
@@ -54,7 +54,7 @@ Camera3D::Camera3D(const std::string& name, const Vector3& eye, float yaw, float
 	MapCameraData();
 }
 
-Camera3D::Camera3D(const std::string& name, const Vector3& eye, const Vector3& target) {
+Magi::Camera3D::Camera3D(const std::string& name, const Vector3& eye, const Vector3& target) {
 	name_ = name;
 	isUseYawPitch_ = false;
 
@@ -71,15 +71,15 @@ Camera3D::Camera3D(const std::string& name, const Vector3& eye, const Vector3& t
 	MapCameraData();
 }
 
-Camera3D::~Camera3D() {
+Magi::Camera3D::~Camera3D() {
 
 }
 
-void Camera3D::Update() {
+void Magi::Camera3D::Update() {
 
 }
 
-void Camera3D::UpdateData() {
+void Magi::Camera3D::UpdateData() {
 	// ヨーピッチ使用フラグがオン、かつアニメーション状態じゃなければ
 	if (isUseYawPitch_ && !isAnimatedTarget_) {
 		// yaw/pitch から target を再生成
@@ -106,45 +106,45 @@ void Camera3D::UpdateData() {
 	UpdateCameraData();
 }
 
-void Camera3D::ApplyCurrent() {
+void Magi::Camera3D::ApplyCurrent() {
 	MAGISYSTEM::SetCurrentCamera3D(this);
 }
 
-void Camera3D::AddEyeControlPoint(const Vector3& eye) {
+void Magi::Camera3D::AddEyeControlPoint(const Vector3& eye) {
 	eyeControlPoints_.push_back(eye);
 }
 
-void Camera3D::AddTargetControlPoint(const Vector3& target) {
+void Magi::Camera3D::AddTargetControlPoint(const Vector3& target) {
 	targetControlPoints_.push_back(target);
 }
 
-void Camera3D::SetEyeControlPoints(const std::vector<Vector3>& eyeCps) {
+void Magi::Camera3D::SetEyeControlPoints(const std::vector<Vector3>& eyeCps) {
 	eyeControlPoints_ = eyeCps;
 }
 
-void Camera3D::SetTargetControlPoints(const std::vector<Vector3>& targetCps) {
+void Magi::Camera3D::SetTargetControlPoints(const std::vector<Vector3>& targetCps) {
 	targetControlPoints_ = targetCps;
 }
 
-void Camera3D::StartEyeAnimation() {
+void Magi::Camera3D::StartEyeAnimation() {
 	isAnimatedEye_ = true;
 	animationEyeT_ = 0.0f;
 }
 
-void Camera3D::StartTargetAnimation() {
+void Magi::Camera3D::StartTargetAnimation() {
 	isAnimatedTarget_ = true;
 	animationTargetT_ = 0.0f;
 }
 
-void Camera3D::StopEyeAnimation() {
+void Magi::Camera3D::StopEyeAnimation() {
 	isAnimatedEye_ = false;
 }
 
-void Camera3D::StopTargetAnimation() {
+void Magi::Camera3D::StopTargetAnimation() {
 	isAnimatedTarget_ = false;
 }
 
-void Camera3D::PlayAnimation() {
+void Magi::Camera3D::PlayAnimation() {
 	if (isAnimatedEye_ && !eyeControlPoints_.empty()) {
 		// 目線を補間
 		eye_ = CatmullRomSpline(eyeControlPoints_, animationEyeT_ / animationEyeTime_);
@@ -168,14 +168,14 @@ void Camera3D::PlayAnimation() {
 	}
 }
 
-void Camera3D::Shake(float duration, const Vector3& intensity) {
+void Magi::Camera3D::Shake(float duration, const Vector3& intensity) {
 	shakeTime_ = duration;
 	shakeDuration_ = duration;
 	shakeIntensity_ = intensity;
 	shakeCumulative_ = { 0.0f,0.0f,0.0f };
 }
 
-void Camera3D::ApplyShake() {
+void Magi::Camera3D::ApplyShake() {
 	if (shakeDuration_ > 0) {
 		float multiplyer = shakeDuration_ / shakeTime_;
 		// ランダムなシェイクオフセットを生成
@@ -201,7 +201,7 @@ void Camera3D::ApplyShake() {
 	}
 }
 
-void Camera3D::DrawFrustum() {
+void Magi::Camera3D::DrawFrustum() {
 	// NDC空間の8頂点（Z: [0=Near, 1=Far]、左手系）
 	const Vector3 ndcCorners[8] =
 	{
@@ -260,59 +260,59 @@ void Camera3D::DrawFrustum() {
 	MAGISYSTEM::DrawLine3D(worldCorners[3], worldCorners[7], color);
 }
 
-void Camera3D::TransferCamera(uint32_t rootParameterIndex) {
+void Magi::Camera3D::TransferCamera(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraResource_->GetGPUVirtualAddress());
 }
 
-void Camera3D::TransferCameraInv(uint32_t rootParameterIndex) {
+void Magi::Camera3D::TransferCameraInv(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraInvResource_->GetGPUVirtualAddress());
 }
 
-void Camera3D::TransferCameraFrustum(uint32_t rootParameterIndex) {
+void Magi::Camera3D::TransferCameraFrustum(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, frustumResource_->GetGPUVirtualAddress());
 }
 
-void Camera3D::TransferCameraVector(uint32_t rootParameterIndex) {
+void Magi::Camera3D::TransferCameraVector(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, vectorResource_->GetGPUVirtualAddress());
 }
 
-const std::string& Camera3D::GetName()const {
+const std::string& Magi::Camera3D::GetName()const {
 	return name_;
 }
 
-Matrix4x4 Camera3D::GetViewProjectionMatrix() const {
+Matrix4x4 Magi::Camera3D::GetViewProjectionMatrix() const {
 	return viewProjectionMatrix_;
 }
 
-float Camera3D::GetFarClipRange() const {
+float Magi::Camera3D::GetFarClipRange() const {
 	return farClipRange_;
 }
 
-float Camera3D::GetYaw() const {
+float Magi::Camera3D::GetYaw() const {
 	return yaw_;
 }
 
-float Camera3D::GetPitch() const {
+float Magi::Camera3D::GetPitch() const {
 	return pitch_;
 }
 
-const Vector3& Camera3D::GetEye() const {
+const Vector3& Magi::Camera3D::GetEye() const {
 	return eye_;
 }
 
-const Vector3& Camera3D::GetTarget() const {
+const Vector3& Magi::Camera3D::GetTarget() const {
 	return target_;
 }
 
-bool Camera3D::GetIsAlive()const {
+bool Magi::Camera3D::GetIsAlive()const {
 	return isAlive_;
 }
 
-const CameraVector Camera3D::GetCameraVector() const {
+const CameraVector Magi::Camera3D::GetCameraVector() const {
 	return cameraVector_;
 }
 
-Matrix4x4 Camera3D::MakeBillboardMat(const Vector3& translate, float rollRad, const Vector3& scale) const {
+Matrix4x4 Magi::Camera3D::MakeBillboardMat(const Vector3& translate, float rollRad, const Vector3& scale) const {
 
 	Matrix4x4 billboard = MakeIdentityMatrix4x4();
 
@@ -373,7 +373,7 @@ Matrix4x4 Camera3D::MakeBillboardMat(const Vector3& translate, float rollRad, co
 	return billboard;
 }
 
-Matrix4x4 Camera3D::MakeAxialBillboardMat(const Vector3& translate, const Vector3& axisForward, float rollRad, const Vector3& scale) const {
+Matrix4x4 Magi::Camera3D::MakeAxialBillboardMat(const Vector3& translate, const Vector3& axisForward, float rollRad, const Vector3& scale) const {
 	Matrix4x4 billboard = MakeIdentityMatrix4x4();
 
 	// カメラの軸
@@ -458,39 +458,39 @@ Matrix4x4 Camera3D::MakeAxialBillboardMat(const Vector3& translate, const Vector
 	return billboard;
 }
 
-float Camera3D::GetFovY() const {
+float Magi::Camera3D::GetFovY() const {
 	return fovY_ / (std::numbers::pi_v<float> / 180.0f);
 }
 
-void Camera3D::SetEye(const Vector3& eye) {
+void Magi::Camera3D::SetEye(const Vector3& eye) {
 	eye_ = eye;
 }
 
-void Camera3D::SetTarget(const Vector3& target) {
+void Magi::Camera3D::SetTarget(const Vector3& target) {
 	target_ = target;
 }
 
-void Camera3D::SetYaw(float yaw) {
+void Magi::Camera3D::SetYaw(float yaw) {
 	yaw_ = yaw;
 }
 
-void Camera3D::SetPitch(float pitch) {
+void Magi::Camera3D::SetPitch(float pitch) {
 	pitch_ = pitch;
 }
 
-void Camera3D::SetIsAlive(bool isAlive) {
+void Magi::Camera3D::SetIsAlive(bool isAlive) {
 	isAlive_ = isAlive;
 }
 
-void Camera3D::SetIsUnique(bool isUnique) {
+void Magi::Camera3D::SetIsUnique(bool isUnique) {
 	isUnique_ = isUnique;
 }
 
-void Camera3D::SetFovY(float fovY) {
+void Magi::Camera3D::SetFovY(float fovY) {
 	fovY_ = fovY * (std::numbers::pi_v<float> / 180.0f);
 }
 
-void Camera3D::MakeFrustumPlane() {
+void Magi::Camera3D::MakeFrustumPlane() {
 	const Matrix4x4& m = viewProjectionMatrix_;
 
 	// 各平面の抽出（行ベクトル形式）
@@ -532,14 +532,14 @@ void Camera3D::MakeFrustumPlane() {
 
 }
 
-void Camera3D::CreateCameraResource() {
+void Magi::Camera3D::CreateCameraResource() {
 	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DForGPU));
 	cameraInvResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DInverseForGPU));
 	frustumResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DFrustumForGPU));
 	vectorResource_ = MAGISYSTEM::CreateBufferResource(sizeof(CameraVector));
 }
 
-void Camera3D::MapCameraData() {
+void Magi::Camera3D::MapCameraData() {
 	cameraData_ = nullptr;
 	cameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
 
@@ -555,7 +555,7 @@ void Camera3D::MapCameraData() {
 	UpdateCameraData();
 }
 
-void Camera3D::UpdateCameraData() {
+void Magi::Camera3D::UpdateCameraData() {
 	cameraData_->worldPosition = eye_;
 	cameraData_->viewProjection = viewProjectionMatrix_;
 
@@ -574,6 +574,6 @@ void Camera3D::UpdateCameraData() {
 	vectorData_->forward = forward_;
 }
 
-void Camera3D::SetIsUseYawPitch(bool isUseYawPitch) {
+void Magi::Camera3D::SetIsUseYawPitch(bool isUseYawPitch) {
 	isUseYawPitch_ = isUseYawPitch;
 }

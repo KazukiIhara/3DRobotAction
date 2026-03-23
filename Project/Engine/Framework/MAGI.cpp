@@ -1514,15 +1514,15 @@ void MAGISYSTEM::ClearCamera2D() {
 	camera2DManager_->Clear();
 }
 
-Camera3D* MAGISYSTEM::AddCamera3D(std::unique_ptr<Camera3D> newCamera3D) {
+Magi::Camera3D* MAGISYSTEM::AddCamera3D(std::unique_ptr<Magi::Camera3D> newCamera3D) {
 	return camera3DManager_->Add(std::move(newCamera3D));
 }
 
-void MAGISYSTEM::SetCurrentCamera3D(Camera3D* newCamera3D) {
+void MAGISYSTEM::SetCurrentCamera3D(Magi::Camera3D* newCamera3D) {
 	camera3DManager_->SetCurrentCamera(newCamera3D);
 }
 
-Camera3D* MAGISYSTEM::GetCurrentCamera3D() {
+Magi::Camera3D* MAGISYSTEM::GetCurrentCamera3D() {
 	return camera3DManager_->GetCurrentCamera();
 }
 

@@ -75,6 +75,6 @@ void MechPartsArm::SetInitTranslate(const InitParam& param) {
 	handTrans_->SetTranslate(param.handTranslate);
 }
 
-Transform3D* MechPartsArm::GetUpperTransform() { return upperTrans_; }
-Transform3D* MechPartsArm::GetLowerTransform() { return lowerTrans_; }
-Transform3D* MechPartsArm::GetHandTransform() { return handTrans_; }
+Magi::Transform3D* MechPartsArm::GetUpperTransform() { return upperTrans_; }
+Magi::Transform3D* MechPartsArm::GetLowerTransform() { return lowerTrans_; }
+Magi::Transform3D* MechPartsArm::GetHandTransform() { return handTrans_; }

@@ -1,7 +1,6 @@
 #pragma once
 
 class GameInputSystem;
-class TPSCamera3D;
 class Pilot;
 class Boss;
 class GameEffectManager;
@@ -10,10 +9,14 @@ class DamageObjectManager;
 class GameUIManager;
 class CombatSceneController;
 
+namespace Magi {
+	class TPSCamera3D;
+}
+
 namespace CombatSceneControl {
 	struct ContextRef {
 		GameInputSystem* inputSys;
-		TPSCamera3D* camera;
+		Magi::TPSCamera3D* camera;
 		Pilot* pilot;
 		Boss* boss;
 		GameEffectManager* effectMgr;
@@ -24,7 +27,7 @@ namespace CombatSceneControl {
 
 	struct StateContextRef {
 		GameInputSystem* inputSys;
-		TPSCamera3D* camera;
+		Magi::TPSCamera3D* camera;
 		Pilot* pilot;
 		Boss* boss;
 		GameEffectManager* effectMgr;

@@ -69,7 +69,7 @@ private:
 	std::unique_ptr<CombatStageData> stageData_;
 
 	// シーンカメラの参照ポインタ
-	TPSCamera3D* camera_;
+	Magi::TPSCamera3D* camera_;
 	// パイロット
 	std::unique_ptr<Pilot> pilot_;
 	// ボス

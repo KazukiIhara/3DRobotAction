@@ -15,7 +15,7 @@ BaseMech::BaseMech(const InitParam& param, const RefContext& ref) {
 	ref_ = ref;
 
 	// ルートトランスフォーム
-	std::unique_ptr<Transform3D> trans = std::make_unique<Transform3D>(param.position);
+	std::unique_ptr<Magi::Transform3D> trans = std::make_unique<Magi::Transform3D>(param.position);
 	transform_ = MAGISYSTEM::AddTransform3D(std::move(trans));
 
 	// 描画用トランスフォーム
@@ -155,11 +155,11 @@ void BaseMech::DebugUpdate([[maybe_unused]] bool isShowDebugUI, [[maybe_unused]]
 #endif
 }
 
-Transform3D* BaseMech::GetTransform() {
+Magi::Transform3D* BaseMech::GetTransform() {
 	return transform_;
 }
 
-Transform3D* BaseMech::GetModelTransform() {
+Magi::Transform3D* BaseMech::GetModelTransform() {
 	return modelTransform_;
 }
 
@@ -179,7 +179,7 @@ MechPartsLeg* BaseMech::GetLeg() {
 	return leg_.get();
 }
 
-Transform3D* BaseMech::GetPartsTransform(MechAnimation::TransType type) {
+Magi::Transform3D* BaseMech::GetPartsTransform(MechAnimation::TransType type) {
 	const size_t index = static_cast<size_t>(type);
 	if (index >= partsTrans_.size()) {
 		return nullptr;

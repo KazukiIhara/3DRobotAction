@@ -6,14 +6,14 @@
 /// <summary>
 /// 三人称カメラ
 /// </summary>
-class ThirdPersonCamera :public Camera3D {
+class ThirdPersonCamera :public Magi::Camera3D {
 public:
 	ThirdPersonCamera(const std::string& name);
 	~ThirdPersonCamera() = default;
 
 	void Update()override;
 
-	void SetTargetTransform(Transform3D* target);
+	void SetTargetTransform(Magi::Transform3D* target);
 
 private:
 	void ApplyInput(float dt);
@@ -23,9 +23,9 @@ private:
 
 private:
 	// 追従対象のトランスフォーム
-	Transform3D* followTargetTransform_ = nullptr;
+	Magi::Transform3D* followTargetTransform_ = nullptr;
 	// ロックオン対象のトランスフォーム
-	Transform3D* lockonTargetTransform_ = nullptr;
+	Magi::Transform3D* lockonTargetTransform_ = nullptr;
 
 	// 累積用変数
 	float pYaw_ = 0.0f;

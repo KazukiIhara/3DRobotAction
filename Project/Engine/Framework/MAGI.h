@@ -488,27 +488,27 @@ public: // エンジンの機能
 
 #pragma region TransformComponent
 	// トランスフォーム追加
-	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
+	static Magi::Transform3D* AddTransform3D(std::unique_ptr<Magi::Transform3D> transform);
 	// トランスフォーム追加(簡単版)
-	static Transform3D* AddTransform3D(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
-	static Transform3D* AddTransform3D(const Vector3& translate);
-	static Transform3D* AddTransform3D();
+	static Magi::Transform3D* AddTransform3D(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+	static Magi::Transform3D* AddTransform3D(const Vector3& translate);
+	static Magi::Transform3D* AddTransform3D();
 	// トランスフォーム全削除
 	static void ClearTransform3D();
 #pragma endregion
 
 #pragma region Renderer3DComponent
 	// モデルのレンダラー追加
-	static std::weak_ptr<ModelRenderer> AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer);
+	static std::weak_ptr<Magi::ModelRenderer> AddRenderer3D(std::shared_ptr<Magi::ModelRenderer> modelRenderer);
 	// モデルレンダラーを全削除
 	static void ClearRenderer3D();
 #pragma endregion
 
 #pragma region GameObject3DManager
 	// ゲームオブジェクト3Dを追加
-	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap = true);
+	static std::weak_ptr<Magi::GameObject3D> AddGameObject3D(std::shared_ptr<Magi::GameObject3D> gameObjec3D, bool insertMap = true);
 	// ゲームオブジェクト3Dを検索して取得
-	static std::weak_ptr<GameObject3D> FindGameObject3D(const std::string& objectName);
+	static std::weak_ptr<Magi::GameObject3D> FindGameObject3D(const std::string& objectName);
 	// ゲームオブジェクトを全削除
 	static void ClearGameObject3D();
 #pragma endregion
@@ -528,11 +528,11 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// 3Dカメラの追加
-	static Camera3D* AddCamera3D(std::unique_ptr<Camera3D> newCamera3D);
+	static Magi::Camera3D* AddCamera3D(std::unique_ptr<Magi::Camera3D> newCamera3D);
 	// 使用する3Dカメラのセット
-	static void SetCurrentCamera3D(Camera3D* camera3D);
+	static void SetCurrentCamera3D(Magi::Camera3D* camera3D);
 	// 使用している3Dカメラの取得
-	static Camera3D* GetCurrentCamera3D();
+	static Magi::Camera3D* GetCurrentCamera3D();
 	// 3Dカメラの転送
 	static void TransferCamera3D(uint32_t rootParameterIndex);
 	// Frustumの転送

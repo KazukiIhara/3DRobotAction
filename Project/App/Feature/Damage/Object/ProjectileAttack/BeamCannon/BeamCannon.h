@@ -34,8 +34,8 @@ public:
 private:
 	GameEffectManager* effectManager_;
 
-	Transform3D* transParent_;
-	std::array<Transform3D*, 4> trans_;
+	Magi::Transform3D* transParent_;
+	std::array<Magi::Transform3D*, 4> trans_;
 	MaterialData3D mat_;
 	MaterialData3D matBlue_;
 };

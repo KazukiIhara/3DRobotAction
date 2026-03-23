@@ -122,12 +122,12 @@ void MechPartsLeg::SetInitTranslate(const InitParam& param) {
 	footTransRight_->SetTranslate(param.footTranslateRight);
 }
 
-Transform3D* MechPartsLeg::GetWaistTransform() { return waistTrans_; }
+Magi::Transform3D* MechPartsLeg::GetWaistTransform() { return waistTrans_; }
 
-Transform3D* MechPartsLeg::GetUpperTransformLeft() { return upperTransLeft_; }
-Transform3D* MechPartsLeg::GetLowerTransformLeft() { return lowerTransLeft_; }
-Transform3D* MechPartsLeg::GetFootTransformLeft() { return footTransLeft_; }
+Magi::Transform3D* MechPartsLeg::GetUpperTransformLeft() { return upperTransLeft_; }
+Magi::Transform3D* MechPartsLeg::GetLowerTransformLeft() { return lowerTransLeft_; }
+Magi::Transform3D* MechPartsLeg::GetFootTransformLeft() { return footTransLeft_; }
 
-Transform3D* MechPartsLeg::GetUpperTransformRight() { return upperTransRight_; }
-Transform3D* MechPartsLeg::GetLowerTransformRight() { return lowerTransRight_; }
-Transform3D* MechPartsLeg::GetFootTransformRight() { return footTransRight_; }
+Magi::Transform3D* MechPartsLeg::GetUpperTransformRight() { return upperTransRight_; }
+Magi::Transform3D* MechPartsLeg::GetLowerTransformRight() { return lowerTransRight_; }
+Magi::Transform3D* MechPartsLeg::GetFootTransformRight() { return footTransRight_; }

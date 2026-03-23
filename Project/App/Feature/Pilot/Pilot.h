@@ -11,7 +11,10 @@ class DamageObjectManager;
 class GameEffectManager;
 class MechAnimationContainer;
 class GameInputSystem;
-class TPSCamera3D;
+
+namespace Magi {
+	class TPSCamera3D;
+}
 
 // 実装メモ
 /*
@@ -30,7 +33,7 @@ public:
 		bool isDebugDraw = false;
 	};
 	struct RefContext {
-		TPSCamera3D* camera;
+		Magi::TPSCamera3D* camera;
 		GameInputSystem* inputSys;
 	};
 public:
@@ -60,7 +63,7 @@ private:
 	PilotMech::InitParam initParam_;
 
 	// カメラの参照ポインタ
-	TPSCamera3D* camera_ = nullptr;
+	Magi::TPSCamera3D* camera_ = nullptr;
 	// インプットシステムの参照ポインタ
 	GameInputSystem* inputSys_ = nullptr;
 

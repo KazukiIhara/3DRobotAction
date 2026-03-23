@@ -23,7 +23,7 @@ public:
 private:
 	ModelMaterial mat_;
 	// ブレードの根本
-	Transform3D* bladeEmit_;
+	Magi::Transform3D* bladeEmit_;
 
 	CylinderData3D inner_;
 	CylinderData3D outer_;

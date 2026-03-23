@@ -101,7 +101,7 @@ struct PlaneEffectParam {
 /// </summary>
 struct PlaneEffect {
 	PlaneEffectParam param;						// エフェクトのパラメータ
-	Transform3D* currentTrans;					// 現在のトランスフォーム
+	Magi::Transform3D* currentTrans;					// 現在のトランスフォーム
 	MaterialData3D currentMaterial;				// 現在のマテリアル
 	PlaneData3D currentShape;					// 現在の形状データ
 	float currentTime = 0.0f;					// アニメーションの経過時間

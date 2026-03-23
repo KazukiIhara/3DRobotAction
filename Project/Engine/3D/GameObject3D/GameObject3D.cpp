@@ -5,6 +5,8 @@
 #include "framework/MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
+using namespace Magi;
+
 GameObject3D::GameObject3D(const std::string& name, const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	name_ = name;
 	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(scale, rotate, translate);

@@ -6,8 +6,11 @@
 #include "Feature/Damage/Damage.h"
 
 // 前方宣言
-class Transform3D;
 class BaseMech;
+
+namespace Magi {
+	class Transform3D;
+}
 
 // 実装メモ
 /*
@@ -31,12 +34,12 @@ public:
 
 	virtual void Attack(Damage::Power power = Damage::Power::Small) = 0;
 
-	Transform3D* GetTransform();
+	Magi::Transform3D* GetTransform();
 	const Vector3 GetFireWorldPos()const;
 
 protected:
-	Transform3D* transform_ = nullptr;
-	Transform3D* fireTransform_ = nullptr;
+	Magi::Transform3D* transform_ = nullptr;
+	Magi::Transform3D* fireTransform_ = nullptr;
 
 	BaseMech* mech_ = nullptr;
 };

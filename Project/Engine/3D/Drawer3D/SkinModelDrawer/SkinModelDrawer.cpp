@@ -33,29 +33,29 @@ SkinModelDrawer::SkinModelDrawer(const ModelData& modelData) {
 	}
 
 	// スケルトンを作成
-	skeleton_ = std::make_unique<Skeleton>(modelData.rootNode);
+	skeleton_ = std::make_unique<Magi::Skeleton>(modelData.rootNode);
 
 	// palette用のリソースを確保
-	paletteResource_ = MAGISYSTEM::CreateBufferResource(sizeof(WellForGPU) * skeleton_->joints.size());
+	paletteResource_ = MAGISYSTEM::CreateBufferResource(sizeof(WellForGPU) *skeleton_->GetJoints().size());
 	WellForGPU* mappedPalette = nullptr;
 	paletteResource_->Map(0, nullptr, reinterpret_cast<void**>(&mappedPalette));
-	mappedPalette_ = { mappedPalette,skeleton_->joints.size() };
+	mappedPalette_ = { mappedPalette,skeleton_->GetJoints().size()};
 
 	// srvのインデックスを割り当て
 	paletteSrvIndex_ = MAGISYSTEM::SrvUavAllocate();
 
 	// srvを作成
-	MAGISYSTEM::CreateSrvStructuredBuffer(paletteSrvIndex_, paletteResource_.Get(), UINT(skeleton_->joints.size()), sizeof(WellForGPU));
+	MAGISYSTEM::CreateSrvStructuredBuffer(paletteSrvIndex_, paletteResource_.Get(), UINT(skeleton_->GetJoints().size()), sizeof(WellForGPU));
 
 	// InverseBindPoseMatrixの保存領域を作成
-	inverseBindPoseMatrices_.resize(skeleton_->joints.size());
-	for (size_t i = 0; i < skeleton_->joints.size(); i++) {
+	inverseBindPoseMatrices_.resize(skeleton_->GetJoints().size());
+	for (size_t i = 0; i < skeleton_->GetJoints().size(); i++) {
 		inverseBindPoseMatrices_[i] = MakeIdentityMatrix4x4();
 	}
 
 	for (const auto& jointWeight : modelData.skinClusterData) {
-		auto it = skeleton_->jointMap.find(jointWeight.first);
-		if (it == skeleton_->jointMap.end()) {
+		auto it = skeleton_->GetJointMap().find(jointWeight.first);
+		if (it == skeleton_->GetJointMap().end()) {
 			continue;
 		}
 		inverseBindPoseMatrices_[(*it).second] = jointWeight.second.inverseBindPoseMatrix;
@@ -65,8 +65,8 @@ SkinModelDrawer::SkinModelDrawer(const ModelData& modelData) {
 	// Jointの数ループ
 	for (const auto& [jointName, jointWeightData] : modelData.skinClusterData) {
 		// このループのジョイント
-		auto it = skeleton_->jointMap.find(jointName);
-		if (it == skeleton_->jointMap.end()) {
+		auto it = skeleton_->GetJointMap().find(jointName);
+		if (it == skeleton_->GetJointMap().end()) {
 			continue;
 		}
 
@@ -138,11 +138,11 @@ void SkinModelDrawer::Update() {
 	skeleton_->Update();
 
 	// スキンパレットの更新
-	for (size_t jointIndex = 0; jointIndex < skeleton_->joints.size(); ++jointIndex) {
+	for (size_t jointIndex = 0; jointIndex < skeleton_->GetJoints().size(); ++jointIndex) {
 		assert(jointIndex < inverseBindPoseMatrices_.size());
 
 		mappedPalette_[jointIndex].skeletonSpaceMatrix =
-			inverseBindPoseMatrices_[jointIndex] * skeleton_->joints[jointIndex].skeletonSpaceMatrix;
+			inverseBindPoseMatrices_[jointIndex] * skeleton_->GetJoints()[jointIndex].skeletonSpaceMatrix;
 
 		mappedPalette_[jointIndex].skeletonSpaceInverseTransposeMatrix =
 			Transpose(Inverse(mappedPalette_[jointIndex].skeletonSpaceMatrix));
@@ -207,22 +207,22 @@ void SkinModelDrawer::DrawShadow(BlendMode mode) {
 
 bool SkinModelDrawer::ApplyAnimation(const AnimationData& animation, float animationTime) {
 	if (animationTime == 0.0f) {
-		lerpJoints_ = skeleton_->joints;
+		lerpJoints_ = skeleton_->GetJoints();
 	}
 
-	for (uint32_t i = 0; i < skeleton_->joints.size(); i++) {
+	for (uint32_t i = 0; i < skeleton_->GetJoints().size(); i++) {
 
-		if (auto it = animation.nodeAnimations.find(skeleton_->joints[i].name); it != animation.nodeAnimations.end()) {
+		if (auto it = animation.nodeAnimations.find(skeleton_->GetJoints()[i].name); it != animation.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
-			skeleton_->joints[i].transform.translate = CalculateValue(rootNodeAnimation.translate, animationTime);
-			skeleton_->joints[i].transform.rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
-			skeleton_->joints[i].transform.scale = CalculateValue(rootNodeAnimation.scale, animationTime);
+			skeleton_->GetJoints()[i].transform.translate = CalculateValue(rootNodeAnimation.translate, animationTime);
+			skeleton_->GetJoints()[i].transform.rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
+			skeleton_->GetJoints()[i].transform.scale = CalculateValue(rootNodeAnimation.scale, animationTime);
 
 
 			if (animationTime <= animationLerpTime_) {
-				skeleton_->joints[i].transform.translate = Lerp(lerpJoints_[i].transform.translate, skeleton_->joints[i].transform.translate, animationTime / animationLerpTime_);
-				skeleton_->joints[i].transform.rotate = Slerp(lerpJoints_[i].transform.rotate, skeleton_->joints[i].transform.rotate, animationTime / animationLerpTime_);
-				skeleton_->joints[i].transform.scale = Lerp(lerpJoints_[i].transform.scale, skeleton_->joints[i].transform.scale, animationTime / animationLerpTime_);
+				skeleton_->GetJoints()[i].transform.translate = Lerp(lerpJoints_[i].transform.translate, skeleton_->GetJoints()[i].transform.translate, animationTime / animationLerpTime_);
+				skeleton_->GetJoints()[i].transform.rotate = Slerp(lerpJoints_[i].transform.rotate, skeleton_->GetJoints()[i].transform.rotate, animationTime / animationLerpTime_);
+				skeleton_->GetJoints()[i].transform.scale = Lerp(lerpJoints_[i].transform.scale, skeleton_->GetJoints()[i].transform.scale, animationTime / animationLerpTime_);
 			}
 		}
 	}
@@ -233,21 +233,21 @@ bool SkinModelDrawer::ApplyAnimation(const AnimationData& animation, float anima
 
 bool SkinModelDrawer::ApplyAnimationLoop(const AnimationData& animation, float animationTime) {
 	if (animationTime == 0.0f) {
-		lerpJoints_ = skeleton_->joints;
+		lerpJoints_ = skeleton_->GetJoints();
 	}
 
-	for (uint32_t i = 0; i < skeleton_->joints.size(); i++) {
+	for (uint32_t i = 0; i <skeleton_->GetJoints().size(); i++) {
 
-		if (auto it = animation.nodeAnimations.find(skeleton_->joints[i].name); it != animation.nodeAnimations.end()) {
+		if (auto it = animation.nodeAnimations.find(skeleton_->GetJoints()[i].name); it != animation.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
-			skeleton_->joints[i].transform.translate = CalculateLoopValue(rootNodeAnimation.translate, animationTime);
-			skeleton_->joints[i].transform.rotate = CalculateLoopValue(rootNodeAnimation.rotate, animationTime);
-			skeleton_->joints[i].transform.scale = CalculateLoopValue(rootNodeAnimation.scale, animationTime);
+			skeleton_->GetJoints()[i].transform.translate = CalculateLoopValue(rootNodeAnimation.translate, animationTime);
+			skeleton_->GetJoints()[i].transform.rotate = CalculateLoopValue(rootNodeAnimation.rotate, animationTime);
+			skeleton_->GetJoints()[i].transform.scale = CalculateLoopValue(rootNodeAnimation.scale, animationTime);
 
 			if (animationTime <= animationLerpTime_) {
-				skeleton_->joints[i].transform.translate = Lerp(lerpJoints_[i].transform.translate, skeleton_->joints[i].transform.translate, animationTime / animationLerpTime_);
-				skeleton_->joints[i].transform.rotate = Slerp(lerpJoints_[i].transform.rotate, skeleton_->joints[i].transform.rotate, animationTime / animationLerpTime_);
-				skeleton_->joints[i].transform.scale = Lerp(lerpJoints_[i].transform.scale, skeleton_->joints[i].transform.scale, animationTime / animationLerpTime_);
+				skeleton_->GetJoints()[i].transform.translate = Lerp(lerpJoints_[i].transform.translate, skeleton_->GetJoints()[i].transform.translate, animationTime / animationLerpTime_);
+				skeleton_->GetJoints()[i].transform.rotate = Slerp(lerpJoints_[i].transform.rotate, skeleton_->GetJoints()[i].transform.rotate, animationTime / animationLerpTime_);
+				skeleton_->GetJoints()[i].transform.scale = Lerp(lerpJoints_[i].transform.scale, skeleton_->GetJoints()[i].transform.scale, animationTime / animationLerpTime_);
 			}
 		}
 	}

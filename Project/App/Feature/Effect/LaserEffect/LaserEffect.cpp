@@ -19,7 +19,7 @@ LaserEffect::LaserEffect(const InitParam& initParam) :
 	laserEndPos_ = initParam.emitPos;
 
 	// 親トランスフォーム初期化
-	std::unique_ptr<Transform3D> parentTrans = std::make_unique<Transform3D>(initParam.emitPos);
+	std::unique_ptr<Magi::Transform3D> parentTrans = std::make_unique<Magi::Transform3D>(initParam.emitPos);
 	laserParent_ = MAGISYSTEM::AddTransform3D(std::move(parentTrans));
 
 	// 板ポリ初期データ取得
@@ -31,7 +31,7 @@ LaserEffect::LaserEffect(const InitParam& initParam) :
 
 	// 板ポリ初期化
 	for (size_t i = 0; i < 2; i++) {
-		std::unique_ptr<Transform3D> planeTrans = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), planeInitRotate[i], planeInitTranslate);
+		std::unique_ptr<Magi::Transform3D> planeTrans = std::make_unique<Magi::Transform3D>(Vector3(1.0f, 1.0f, 1.0f), planeInitRotate[i], planeInitTranslate);
 		planeTrans_[i] = MAGISYSTEM::AddTransform3D(std::move(planeTrans));
 		planeMat_.uvRotate = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","Laser","PlaneUVRotate" });
 		planeTrans_[i]->SetParent(laserParent_, false);

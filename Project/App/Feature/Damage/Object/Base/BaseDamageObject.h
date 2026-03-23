@@ -5,8 +5,11 @@
 #include "Feature/Damage/Collider/DamageCollider.h"
 
 // 前方宣言
-class Transform3D;
 class DamageCollisionSystem;
+
+namespace Magi {
+	class Transform3D;
+}
 
 // 実装メモ
 /*
@@ -34,7 +37,7 @@ public:
 
 protected:
 	// トランスフォーム
-	Transform3D* transform_ = nullptr;
+	Magi::Transform3D* transform_ = nullptr;
 	// 生存フラグ
 	bool isAlive_ = true;
 

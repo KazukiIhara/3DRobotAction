@@ -45,7 +45,7 @@ public:
 	const Collider& GetCollider();
 
 private:
-	Transform3D* transform_;
+	Magi::Transform3D* transform_;
 	SphereData3D data_;
 	MaterialData3D mat_;
 

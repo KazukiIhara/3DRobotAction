@@ -1,5 +1,6 @@
 #include "Skeleton.h"
 
+using namespace Magi;
 using namespace MAGIMath;
 
 Skeleton::Skeleton(const Node& rootNode) {
@@ -9,22 +10,34 @@ Skeleton::Skeleton(const Node& rootNode) {
 Skeleton::~Skeleton() {}
 
 void Skeleton::Update() {
-	for (Joint& joint : joints) {
+	for (Joint& joint : joints_) {
 		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
 		if (joint.parent) {
-			joint.skeletonSpaceMatrix = joint.localMatrix * joints[*joint.parent].skeletonSpaceMatrix;
+			joint.skeletonSpaceMatrix = joint.localMatrix * joints_[*joint.parent].skeletonSpaceMatrix;
 		} else {
 			joint.skeletonSpaceMatrix = joint.localMatrix;
 		}
 	}
 }
 
+int32_t Magi::Skeleton::GetRoot() const {
+	return root_;
+}
+
+std::map<std::string, int32_t> Magi::Skeleton::GetJointMap() const {
+	return jointMap_;
+}
+
+std::vector<Joint> Magi::Skeleton::GetJoints() const {
+	return joints_;
+}
+
 void Skeleton::Initialize(const Node& rootNode) {
 	// ジョイントを作成
-	root = CreateJoint(rootNode, {});
+	root_ = CreateJoint(rootNode, {});
 	// ジョイントマップを埋める
-	for (const Joint& joint : joints) {
-		jointMap.emplace(joint.name, joint.index);
+	for (const Joint& joint : joints_) {
+		jointMap_.emplace(joint.name, joint.index);
 	}
 
 	Update();
@@ -36,12 +49,12 @@ int32_t Skeleton::CreateJoint(const Node& node, const std::optional<int32_t>& pa
 	joint.localMatrix = node.localMatrix;
 	joint.skeletonSpaceMatrix = MakeIdentityMatrix4x4();
 	joint.transform = node.transform;
-	joint.index = int32_t(joints.size());
+	joint.index = int32_t(joints_.size());
 	joint.parent = parent;
-	joints.push_back(joint);
+	joints_.push_back(joint);
 	for (const Node& child : node.children) {
 		int32_t childIndex = CreateJoint(child, joint.index);
-		joints[joint.index].children.push_back(childIndex);
+		joints_[joint.index].children.push_back(childIndex);
 	}
 	return joint.index;
 }

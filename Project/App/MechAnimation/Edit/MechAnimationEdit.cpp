@@ -12,6 +12,8 @@
 // 再生側
 #include "MechAnimation/Animator/MechAnimator.h"
 
+using namespace Magi;
+
 namespace {
 	// Rad <-> Deg 変換係数
 	constexpr float kRadToDeg = 180.0f / std::numbers::pi_v<float>;
@@ -350,7 +352,7 @@ void MechAnimationEdit::DrawRotate(BaseMech* mech, int typeValue, const char* la
 	const auto type = static_cast<MechAnimation::TransType>(typeValue);
 
 	// 対応トランスフォーム取得
-	Transform3D* trans = mech->GetPartsTransform(type);
+	Magi::Transform3D* trans = mech->GetPartsTransform(type);
 	if (!trans) {
 		return;
 	}
@@ -371,7 +373,7 @@ void MechAnimationEdit::DrawTranslate(BaseMech* mech, int typeValue, const char*
 	const auto type = static_cast<MechAnimation::TransType>(typeValue);
 
 	// 対応トランスフォーム取得
-	Transform3D* trans = mech->GetPartsTransform(type);
+	Magi::Transform3D* trans = mech->GetPartsTransform(type);
 	if (!trans) {
 		return;
 	}
@@ -406,7 +408,7 @@ MechAnimation::Pose MechAnimationEdit::CaptureCurrentPose() const {
 			continue;
 		}
 
-		Transform3D* trans = mech_->GetPartsTransform(type);
+		Magi::Transform3D* trans = mech_->GetPartsTransform(type);
 		if (trans) {
 			// 現在回転を取得
 			pose.rotations[i] = trans->GetQuaternion();
@@ -418,7 +420,7 @@ MechAnimation::Pose MechAnimationEdit::CaptureCurrentPose() const {
 
 	// Waistの位置を保存
 	if (mech_) {
-		Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
+		Magi::Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
 		if (waist) {
 			pose.waistTranslate = waist->GetTranslate(); // 現在位置
 		}
@@ -517,7 +519,7 @@ void MechAnimationEdit::ApplyPoseToMech(const MechAnimation::Pose& pose) {
 		// 対応トランスフォーム取得
 		const auto type = static_cast<MechAnimation::TransType>(i);
 
-		Transform3D* trans = mech_->GetPartsTransform(type);
+		Magi::Transform3D* trans = mech_->GetPartsTransform(type);
 		if (!trans) {
 			continue;
 		}
@@ -528,7 +530,7 @@ void MechAnimationEdit::ApplyPoseToMech(const MechAnimation::Pose& pose) {
 
 	// Waistの位置反映
 	{
-		Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
+		Magi::Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
 		if (waist) {
 			waist->SetTranslate(pose.waistTranslate); // 位置反映
 		}

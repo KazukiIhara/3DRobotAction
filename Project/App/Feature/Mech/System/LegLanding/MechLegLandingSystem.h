@@ -4,7 +4,10 @@
 
 // Forward
 class BaseMech;
-class Transform3D;
+
+namespace Magi {
+	class Transform3D;
+}
 
 /// <summary>
 /// 接地時に足の沈み込みを抑える簡易システム
@@ -26,9 +29,9 @@ public:
 
 private:
 	struct LegRef {
-		Transform3D* upper = nullptr;
-		Transform3D* lower = nullptr;
-		Transform3D* foot = nullptr;
+		Magi::Transform3D* upper = nullptr;
+		Magi::Transform3D* lower = nullptr;
+		Magi::Transform3D* foot = nullptr;
 	};
 
 private:

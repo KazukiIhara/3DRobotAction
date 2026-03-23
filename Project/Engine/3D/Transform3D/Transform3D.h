@@ -3,138 +3,140 @@
 // 数学ヘッダ
 #include "Math/Utility/MathUtility.h"
 
-/// <summary>
-/// 3D空間トランスフォーム
-/// </summary>
-class Transform3D {
-public:
-	Transform3D(
-		const Vector3& scale,
-		const Vector3& rotate,
-		const Vector3& translate
-	);
+namespace Magi {
+	/// <summary>
+	/// 3D空間トランスフォーム
+	/// </summary>
+	class Transform3D {
+	public:
+		Transform3D(
+			const Vector3& scale,
+			const Vector3& rotate,
+			const Vector3& translate
+		);
 
-	Transform3D(
-		const Vector3& scale,
-		const Quaternion& rotate,
-		const Vector3& translate
-	);
+		Transform3D(
+			const Vector3& scale,
+			const Quaternion& rotate,
+			const Vector3& translate
+		);
 
-	explicit Transform3D(
-		const Vector3& translate = { 0.0f,0.0f,0.0f }
-	);
+		explicit Transform3D(
+			const Vector3& translate = { 0.0f,0.0f,0.0f }
+		);
 
-	~Transform3D() = default;
+		~Transform3D() = default;
 
-	void Initialize(
-		const Vector3& scale,
-		const Vector3& rotate,
-		const Vector3& translate
-	);
+		void Initialize(
+			const Vector3& scale,
+			const Vector3& rotate,
+			const Vector3& translate
+		);
 
-	void Initialize(
-		const Vector3& scale,
-		const Quaternion& rotate,
-		const Vector3& translate
-	);
+		void Initialize(
+			const Vector3& scale,
+			const Quaternion& rotate,
+			const Vector3& translate
+		);
 
-	void Initialize(
-		const Vector3& translate
-	);
+		void Initialize(
+			const Vector3& translate
+		);
 
-	void Update();
+		void Update();
 
-	void Finalize();
+		void Finalize();
 
-	//
-	// セッター
-	//
+		//
+		// セッター
+		//
 
-	// 親をセット
-	void SetParent(Transform3D* parent, bool keepWorld = true);
+		// 親をセット
+		void SetParent(Transform3D* parent, bool keepWorld = true);
 
-	// 親子付けを解除
-	void RemoveParent(bool keepWorld = true);
+		// 親子付けを解除
+		void RemoveParent(bool keepWorld = true);
 
-	void SetIsChange(bool isChange);
-	void SetIsAlive(bool isAlive);
+		void SetIsChange(bool isChange);
+		void SetIsAlive(bool isAlive);
 
-	void SetScale(const Vector3& scale);
-	void SetScaleX(float x);
-	void SetScaleY(float y);
-	void SetScaleZ(float z);
-	void SetRotate(const Vector3& rotate);
-	void SetRotateX(float x);
-	void SetRotateY(float y);
-	void SetRotateZ(float z);
-	void SetTranslate(const Vector3& translate);
-	void SetTranslateX(float x);
-	void SetTranslateY(float y);
-	void SetTranslateZ(float z);
-	void SetQuaternion(const Quaternion& rotate);
+		void SetScale(const Vector3& scale);
+		void SetScaleX(float x);
+		void SetScaleY(float y);
+		void SetScaleZ(float z);
+		void SetRotate(const Vector3& rotate);
+		void SetRotateX(float x);
+		void SetRotateY(float y);
+		void SetRotateZ(float z);
+		void SetTranslate(const Vector3& translate);
+		void SetTranslateX(float x);
+		void SetTranslateY(float y);
+		void SetTranslateZ(float z);
+		void SetQuaternion(const Quaternion& rotate);
 
-	void AddScale(const Vector3& scale);
-	void AddScaleZ(float z);
-	void AddRotate(const Vector3& rotate);
-	void AddTranslate(const Vector3& translate);
-	void AddQuaternion(const Quaternion& deltaQ);
+		void AddScale(const Vector3& scale);
+		void AddScaleZ(float z);
+		void AddRotate(const Vector3& rotate);
+		void AddTranslate(const Vector3& translate);
+		void AddQuaternion(const Quaternion& deltaQ);
 
-	//
-	// ゲッター
-	//
+		//
+		// ゲッター
+		//
 
-	[[nodiscard]] Transform3D* GetParent()const;
+		[[nodiscard]] Transform3D* GetParent()const;
 
-	[[nodiscard]] const bool& GetIsChanged()const;
-	[[nodiscard]] const bool& GetIsAlive()const;
+		[[nodiscard]] const bool& GetIsChanged()const;
+		[[nodiscard]] const bool& GetIsAlive()const;
 
-	[[nodiscard]] const Vector3& GetScale()const;
-	[[nodiscard]] const Vector3& GetRotate()const;
-	[[nodiscard]] const Vector3& GetTranslate()const;
-	[[nodiscard]] const Quaternion& GetQuaternion()const;
+		[[nodiscard]] const Vector3& GetScale()const;
+		[[nodiscard]] const Vector3& GetRotate()const;
+		[[nodiscard]] const Vector3& GetTranslate()const;
+		[[nodiscard]] const Quaternion& GetQuaternion()const;
 
-	[[nodiscard]] const Matrix4x4& GetWorldMatrix();
-	[[nodiscard]] const Vector3& GetWorldPosition();
+		[[nodiscard]] const Matrix4x4& GetWorldMatrix();
+		[[nodiscard]] const Vector3& GetWorldPosition();
 
-	[[nodiscard]] Vector3 GetRight() const;
-	[[nodiscard]] Vector3 GetUp() const;
-	[[nodiscard]] Vector3 GetForward() const;
+		[[nodiscard]] Vector3 GetRight() const;
+		[[nodiscard]] Vector3 GetUp() const;
+		[[nodiscard]] Vector3 GetForward() const;
 
-private:
-	//---------------------------- 
-	// トランスフォーム
-	//----------------------------
-	Vector3 scale_ = { 1.0f,1.0f,1.0f };
-	Quaternion rotate_ = { 0.0f,0.0f,0.0f,1.0f };
-	Vector3 translate_ = { 0.0f,0.0f,0.0f };
+	private:
+		//---------------------------- 
+		// トランスフォーム
+		//----------------------------
+		Vector3 scale_ = { 1.0f,1.0f,1.0f };
+		Quaternion rotate_ = { 0.0f,0.0f,0.0f,1.0f };
+		Vector3 translate_ = { 0.0f,0.0f,0.0f };
 
-	Vector3 inputRadians_ = { 0.0f,0.0f,0.0f };
+		Vector3 inputRadians_ = { 0.0f,0.0f,0.0f };
 
-	// ワールド座標
-	Vector3 worldPosition_ = { 0.0f,0.0f,0.0f };
+		// ワールド座標
+		Vector3 worldPosition_ = { 0.0f,0.0f,0.0f };
 
-	// ワールド行列
-	Matrix4x4 worldMatrix_;
+		// ワールド行列
+		Matrix4x4 worldMatrix_;
 
-	//---------------------------- 
-	// 1フレーム前の値保存用変数
-	//----------------------------
-	Quaternion preRotate_ = { 0.0f,0.0f,0.0f,1.0f };
-	Vector3 preInputRadians_ = { 0.0f,0.0f,0.0f };
+		//---------------------------- 
+		// 1フレーム前の値保存用変数
+		//----------------------------
+		Quaternion preRotate_ = { 0.0f,0.0f,0.0f,1.0f };
+		Vector3 preInputRadians_ = { 0.0f,0.0f,0.0f };
 
-	// 親
-	Transform3D* parent_ = nullptr;
-	// 子
-	std::vector<Transform3D*> children_;
+		// 親
+		Transform3D* parent_ = nullptr;
+		// 子
+		std::vector<Transform3D*> children_;
 
-	// 変更フラグ
-	bool isChanged_ = false;
+		// 変更フラグ
+		bool isChanged_ = false;
 
-	// 生存フラグ
-	bool isAlive_ = true;
+		// 生存フラグ
+		bool isAlive_ = true;
 
-private:
-	// コピー禁止
-	Transform3D(const Transform3D&) = delete;
-	Transform3D& operator=(const Transform3D&) = delete;
-};
+	private:
+		// コピー禁止
+		Transform3D(const Transform3D&) = delete;
+		Transform3D& operator=(const Transform3D&) = delete;
+	};
+}

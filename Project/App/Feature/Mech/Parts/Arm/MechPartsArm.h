@@ -7,7 +7,10 @@
 
 // Forward
 class BaseMech;
-class Transform3D;
+
+namespace Magi {
+	class Transform3D;
+}
 
 class MechPartsArm : public IMechParts {
 public:
@@ -32,16 +35,16 @@ public:
 	void SetInitParam(const InitParam& param);
 	void SetInitTranslate(const InitParam& param);
 
-	Transform3D* GetUpperTransform();
-	Transform3D* GetLowerTransform();
-	Transform3D* GetHandTransform();
+	Magi::Transform3D* GetUpperTransform();
+	Magi::Transform3D* GetLowerTransform();
+	Magi::Transform3D* GetHandTransform();
 
 private:
 	BaseMech* mech_ = nullptr;
 
-	Transform3D* upperTrans_ = nullptr;
-	Transform3D* lowerTrans_ = nullptr;
-	Transform3D* handTrans_ = nullptr;
+	Magi::Transform3D* upperTrans_ = nullptr;
+	Magi::Transform3D* lowerTrans_ = nullptr;
+	Magi::Transform3D* handTrans_ = nullptr;
 
 	std::string upperModelName_;
 	std::string lowerModelName_;

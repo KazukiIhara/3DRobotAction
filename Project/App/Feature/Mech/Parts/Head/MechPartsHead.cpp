@@ -57,4 +57,4 @@ void MechPartsHead::SetInitTranslate(const InitParam& param) {
 	headTrans_->SetTranslate(param.translate);
 }
 
-Transform3D* MechPartsHead::GetHeadTransform() { return headTrans_; }
+Magi::Transform3D* MechPartsHead::GetHeadTransform() { return headTrans_; }

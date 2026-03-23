@@ -9,7 +9,7 @@
 class BaseMelee:public BaseDamageObject {
 public:
 	struct InitParam {
-		Transform3D* parent;
+		Magi::Transform3D* parent;
 		float radius = 0.0f;
 		float life = 0.0f;
 		DamageCollider::GameParam gParam;
@@ -29,7 +29,7 @@ public:
 	float GetLife()const;
 
 private:
-	Transform3D* parent_;
+	Magi::Transform3D* parent_;
 	float radius_;
 	float life_;
 };

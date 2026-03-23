@@ -7,7 +7,9 @@
 
 // Forward
 class BaseMech;
-class Transform3D;
+namespace Magi {
+	class Transform3D;
+}
 
 class MechPartsLeg : public IMechParts {
 public:
@@ -44,28 +46,28 @@ public:
 	void SetInitParam(const InitParam& param);
 	void SetInitTranslate(const InitParam& param);
 
-	Transform3D* GetWaistTransform();
+	Magi::Transform3D* GetWaistTransform();
 
-	Transform3D* GetUpperTransformLeft();
-	Transform3D* GetLowerTransformLeft();
-	Transform3D* GetFootTransformLeft();
+	Magi::Transform3D* GetUpperTransformLeft();
+	Magi::Transform3D* GetLowerTransformLeft();
+	Magi::Transform3D* GetFootTransformLeft();
 
-	Transform3D* GetUpperTransformRight();
-	Transform3D* GetLowerTransformRight();
-	Transform3D* GetFootTransformRight();
+	Magi::Transform3D* GetUpperTransformRight();
+	Magi::Transform3D* GetLowerTransformRight();
+	Magi::Transform3D* GetFootTransformRight();
 
 private:
 	BaseMech* mech_ = nullptr;
 
-	Transform3D* waistTrans_ = nullptr;
+	Magi::Transform3D* waistTrans_ = nullptr;
 
-	Transform3D* upperTransLeft_ = nullptr;
-	Transform3D* lowerTransLeft_ = nullptr;
-	Transform3D* footTransLeft_ = nullptr;
+	Magi::Transform3D* upperTransLeft_ = nullptr;
+	Magi::Transform3D* lowerTransLeft_ = nullptr;
+	Magi::Transform3D* footTransLeft_ = nullptr;
 
-	Transform3D* upperTransRight_ = nullptr;
-	Transform3D* lowerTransRight_ = nullptr;
-	Transform3D* footTransRight_ = nullptr;
+	Magi::Transform3D* upperTransRight_ = nullptr;
+	Magi::Transform3D* lowerTransRight_ = nullptr;
+	Magi::Transform3D* footTransRight_ = nullptr;
 
 	std::string waistModelName_;
 

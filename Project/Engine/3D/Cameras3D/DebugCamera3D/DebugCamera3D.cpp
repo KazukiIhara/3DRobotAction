@@ -2,6 +2,7 @@
 
 #include "MAGI.h"
 
+using namespace Magi;
 using namespace MAGIMath;
 
 DebugCamera3D::DebugCamera3D()

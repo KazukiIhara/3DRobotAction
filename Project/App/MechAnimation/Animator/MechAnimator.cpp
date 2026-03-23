@@ -393,13 +393,13 @@ MechAnimation::Pose MechAnimator::CaptureCurrentPose() const {
 	for (size_t i = 0; i < MechAnimation::kJointCount; ++i) {
 		const auto type = static_cast<MechAnimation::TransType>(i);
 
-		Transform3D* trans = mech_->GetPartsTransform(type);
+		Magi::Transform3D* trans = mech_->GetPartsTransform(type);
 		pose.rotations[i] = trans ? trans->GetQuaternion() : identity;
 	}
 
 	// Waistの位置
 	{
-		Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
+		Magi::Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
 		if (waist) {
 			pose.waistTranslate = waist->GetTranslate();
 		}
@@ -421,7 +421,7 @@ void MechAnimator::ApplyPose(const MechAnimation::Pose& pose) {
 			continue;
 		}
 
-		Transform3D* trans = mech_->GetPartsTransform(type);
+		Magi::Transform3D* trans = mech_->GetPartsTransform(type);
 		if (!trans) {
 			continue;
 		}
@@ -432,7 +432,7 @@ void MechAnimator::ApplyPose(const MechAnimation::Pose& pose) {
 
 	// Waist位置反映
 	{
-		Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
+		Magi::Transform3D* waist = mech_->GetPartsTransform(MechAnimation::TransType::Waist);
 		if (waist) {
 			waist->SetTranslate(pose.waistTranslate);
 		}

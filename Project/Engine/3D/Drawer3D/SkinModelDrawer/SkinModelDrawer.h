@@ -13,6 +13,8 @@
 #include "3D/Skeleton/Skeleton.h"
 #include "Structs/AnimationStruct.h"
 
+
+
 /// <summary>
 /// スキンモデル描画クラス
 /// </summary>
@@ -47,7 +49,7 @@ private:
 	uint32_t currentIndex_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// スケルトン
-	std::unique_ptr<Skeleton> skeleton_ = nullptr;
+	std::unique_ptr<Magi::Skeleton> skeleton_ = nullptr;
 	// 補完用ジョイント
 	std::vector<Joint> lerpJoints_;
 	// アニメーション遷移時間

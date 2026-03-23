@@ -153,7 +153,7 @@ void MechKinematicSystem::UpdateMechAABB() {
 
 void MechKinematicSystem::ApplyCenter(const Vector3& center) {
 	// ルートTransformに反映
-	Transform3D* t = mech_->GetTransform();
+	Magi::Transform3D* t = mech_->GetTransform();
 	if (!t) return;
 
 	const Vector3 rootPos = center - offset_;

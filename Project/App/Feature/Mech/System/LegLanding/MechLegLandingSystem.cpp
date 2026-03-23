@@ -18,7 +18,7 @@ namespace {
 	}
 
 	// ワールド回転取得
-	Quaternion GetWorldRotation(Transform3D* t) {
+	Quaternion GetWorldRotation(Magi::Transform3D* t) {
 		Vector3 s{}, tr{};
 		Quaternion r{};
 		MAGIMath::DecomposeAffineMatrix(t->GetWorldMatrix(), s, r, tr);
@@ -26,7 +26,7 @@ namespace {
 	}
 
 	// ワールド回転から、親に対するローカル回転を計算
-	Quaternion MakeLocalFromWorldRotation(const Quaternion& targetWorldR, Transform3D* parent) {
+	Quaternion MakeLocalFromWorldRotation(const Quaternion& targetWorldR, Magi::Transform3D* parent) {
 		const Quaternion parentWorldR = GetWorldRotation(parent);
 		const Quaternion parentInv = MAGIMath::Inverse(parentWorldR);
 		return MAGIMath::Normalize(targetWorldR * parentInv);
@@ -193,8 +193,8 @@ void MechLegLandingSystem::UpdateLeg(const LegRef& leg, float footOffsetY, float
 	leg.lower->AddRotate({ delta * lowerWeight_, 0.0f, 0.0f });
 
 	// Foot のワールド回転を Waist と一致させる
-	Transform3D* model = mech_->GetModelTransform();
-	Transform3D* footParent = leg.foot->GetParent();
+	Magi::Transform3D* model = mech_->GetModelTransform();
+	Magi::Transform3D* footParent = leg.foot->GetParent();
 	if (model && footParent) {
 		const Quaternion targetWorldR = GetWorldRotation(model);
 

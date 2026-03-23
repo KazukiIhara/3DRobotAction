@@ -9,7 +9,9 @@
 #include "Math/Types/AllMathTypes.h"
 
 // 前方宣言
-class Transform3D;
+namespace Magi {
+	class Transform3D;
+}
 
 // 実装メモ
 
@@ -21,7 +23,7 @@ class Transform3D;
 /// <summary>
 /// レーザー攻撃のエフェクト
 /// </summary>
-class LaserEffect:public BaseGameEffect {
+class LaserEffect :public BaseGameEffect {
 public:
 	enum class Col {
 		RED,
@@ -56,18 +58,18 @@ private:
 	Vector3 dir_{};
 
 	// レーザーの親トランスフォーム
-	Transform3D* laserParent_;
+	Magi::Transform3D* laserParent_;
 
 	// レーザーの終点
 	Vector3 laserEndPos_ = {};
 
 	// 板ポリ
-	std::array<Transform3D*, 2> planeTrans_;
+	std::array<Magi::Transform3D*, 2> planeTrans_;
 	std::array<PlaneData3D, 2> planeData_;
 	MaterialData3D planeMat_;
 
 	// シリンダー
-	Transform3D* cylinderTrans_;
+	Magi::Transform3D* cylinderTrans_;
 	CylinderData3D cylinderData_;
 	MaterialData3D cylinderMat_;
 

@@ -32,7 +32,7 @@ public:
 
 private:
 	// カメラ
-	Camera3D* mainCamera_;
+	Magi::Camera3D* mainCamera_;
 	std::unique_ptr<Magi::Camera2D> sceneCamera2D_ = nullptr;
 
 
@@ -57,14 +57,14 @@ private:
 	DirectionalLight directionalLight_{};
 
 	// Paradin
-	Transform3D* paradinTrans_ = nullptr;
+	Magi::Transform3D* paradinTrans_ = nullptr;
 	float paradinAnimationT_ = 0.0f;
 	ParadinState curParadinState_ = ParadinState::Idle;
 	float paradinSpeed_ = 2.0f;
 
 	// BrainStem
 	static const uint32_t brainStemNum_ = 3;
-	std::array<Transform3D*, brainStemNum_> brainStemTrans_;
+	std::array<Magi::Transform3D*, brainStemNum_> brainStemTrans_;
 	float brainStemT_ = 0.0f;
 
 	// texIndex
