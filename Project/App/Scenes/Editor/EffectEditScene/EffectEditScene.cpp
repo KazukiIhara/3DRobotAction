@@ -8,6 +8,8 @@
 #include "Feature/Effect/Explosion/ExplosionEffect.h"
 #include "Feature/Effect/BossDestroy/BossDestroyEffect.h"
 
+using namespace Magi;
+
 void EffectEditScene::Initialize() {
 	// 2Dカメラ作成
 	std::unique_ptr<Camera2D> sceneCamera2D = std::make_unique<Camera2D>("SpriteCamera");

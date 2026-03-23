@@ -17,6 +17,7 @@
 #include "MAGI.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 BossMechWeaponLaserGun::BossMechWeaponLaserGun(BossMech* mech) :
 	BaseBossMechWeapon(mech) {

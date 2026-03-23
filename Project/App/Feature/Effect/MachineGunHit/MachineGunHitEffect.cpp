@@ -5,6 +5,7 @@
 #include "Random/Random.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 MachineGunHitEffect::MachineGunHitEffect(const Vector3& emitPos) :
 	BaseGameEffect(emitPos) {

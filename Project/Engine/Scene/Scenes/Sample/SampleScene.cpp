@@ -1,6 +1,8 @@
 #include "SampleScene.h"
 
+using namespace Magi;
 using namespace MAGIUtility;
+using namespace MAGIMath;
 
 void SampleScene::Initialize() {
 

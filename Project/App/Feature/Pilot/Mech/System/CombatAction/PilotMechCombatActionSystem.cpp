@@ -6,6 +6,7 @@
 #include "Feature/GameInputSystem/GameInputSystem.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 PilotMechCombatActionSystem::PilotMechCombatActionSystem(PilotMech* mech) {
 	// 機体のポインタを受け取る

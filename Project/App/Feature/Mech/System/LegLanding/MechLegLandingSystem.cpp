@@ -9,6 +9,7 @@
 #include "MAGI.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 namespace {
 	// クランプ

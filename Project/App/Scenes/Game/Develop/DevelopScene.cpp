@@ -1,6 +1,7 @@
 #include "DevelopScene.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 void DevelopScene::Initialize() {
 	// 3Dカメラ作成

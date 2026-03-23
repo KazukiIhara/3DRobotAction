@@ -3,6 +3,7 @@
 #include "MAGI.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 BeamCannon::BeamCannon(const BeamCannon::InitParam& initParam, RefContext ref) :
 	BaseProjectileAttack(initParam.initParam_, ref.damageCollisionSystem) {

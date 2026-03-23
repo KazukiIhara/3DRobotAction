@@ -5,6 +5,7 @@
 #include "MAGI.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 BaseProjectileAttack::BaseProjectileAttack(
 	const BaseProjectileAttack::InitParam& initParam,

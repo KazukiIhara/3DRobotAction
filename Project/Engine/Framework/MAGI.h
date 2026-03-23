@@ -515,9 +515,9 @@ public: // エンジンの機能
 
 #pragma region Camera2DManager
 	// 2Dカメラの追加
-	static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
+	static void AddCamera2D(std::unique_ptr<Magi::Camera2D> newCamera2D);
 	// 2Dカメラの取得
-	static Camera2D* FindCamera2D(const std::string& cameraName);
+	static Magi::Camera2D* FindCamera2D(const std::string& cameraName);
 	// 使用する2Dカメラのセット
 	static void SetCurrentCamera2D(const std::string& cameraName);
 	// 2Dカメラの転送

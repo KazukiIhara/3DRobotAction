@@ -11,6 +11,7 @@
 #include "Random/Random.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 namespace {
 

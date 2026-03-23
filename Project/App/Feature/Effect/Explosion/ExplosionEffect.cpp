@@ -7,6 +7,7 @@
 #include "Random/Random.h"
 
 using namespace Magi;
+using namespace MAGIMath;
 
 ExplosionEffect::ExplosionEffect(const Vector3& emitPos) :
 	BaseGameEffect(emitPos) {
