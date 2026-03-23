@@ -58,8 +58,8 @@ namespace Magi {
 
 	private:
 		// 描画クラスのコンテナ
-		std::unordered_map<std::string, std::unique_ptr<ModelDrawer>> modelDrawers_;
-		std::unordered_map<std::string, std::unique_ptr<SkinModelDrawer>> skinModelDrawers_;
+		std::unordered_map<std::string, std::unique_ptr<Magi::ModelDrawer>> modelDrawers_;
+		std::unordered_map<std::string, std::unique_ptr<Magi::SkinModelDrawer>> skinModelDrawers_;
 
 	private:
 		DXGI* dxgi_ = nullptr;

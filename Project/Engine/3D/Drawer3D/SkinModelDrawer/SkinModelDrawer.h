@@ -13,54 +13,54 @@
 #include "3D/Skeleton/Skeleton.h"
 #include "Structs/AnimationStruct.h"
 
+namespace Magi {
+	/// <summary>
+	/// スキンモデル描画クラス
+	/// </summary>
+	class SkinModelDrawer {
+	public:
+		SkinModelDrawer(const ModelData& modelData);
+		~SkinModelDrawer() = default;
 
+		void AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material);
+		void Update();
+		void Draw(BlendMode mode);
+		void DrawShadow(BlendMode mode);
+		bool ApplyAnimation(const AnimationData& animation, float animationTime);
+		bool ApplyAnimationLoop(const AnimationData& animation, float animationTime);
+	private:
+		// インスタンスの最大数
+		static const uint32_t kNumMaxInstance = 65536;
 
-/// <summary>
-/// スキンモデル描画クラス
-/// </summary>
-class SkinModelDrawer {
-public:
-	SkinModelDrawer(const ModelData& modelData);
-	~SkinModelDrawer() = default;
+		// スキンメッシュ
+		std::vector<std::unique_ptr<Magi::SkinMeshDrawer>> skinMeshes_;
 
-	void AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material);
-	void Update();
-	void Draw(BlendMode mode);
-	void DrawShadow(BlendMode mode);
-	bool ApplyAnimation(const AnimationData& animation, float animationTime);
-	bool ApplyAnimationLoop(const AnimationData& animation, float animationTime);
-private:
-	// インスタンスの最大数
-	static const uint32_t kNumMaxInstance = 65536;
+		// Instancing描画用のリソース
+		ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
+		// instancing描画用のデータ
+		ModelDataForGPU* instancingData_[static_cast<uint32_t>(BlendMode::Num)];
+		// instancingSrvIndex
+		uint32_t instancingSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
 
-	// スキンメッシュ
-	std::vector<std::unique_ptr<SkinMeshDrawer>> skinMeshes_;
+		// instance描画の際に使う変数
+		uint32_t instanceCount_[static_cast<uint32_t>(BlendMode::Num)];
+		// 現在のインデックス
+		uint32_t currentIndex_[static_cast<uint32_t>(BlendMode::Num)];
 
-	// Instancing描画用のリソース
-	ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
-	// instancing描画用のデータ
-	ModelDataForGPU* instancingData_[static_cast<uint32_t>(BlendMode::Num)];
-	// instancingSrvIndex
-	uint32_t instancingSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
+		// スケルトン
+		std::unique_ptr<Magi::Skeleton> skeleton_ = nullptr;
+		// 補完用ジョイント
+		std::vector<Joint> lerpJoints_;
+		// アニメーション遷移時間
+		float animationLerpTime_ = 0.3f;
 
-	// instance描画の際に使う変数
-	uint32_t instanceCount_[static_cast<uint32_t>(BlendMode::Num)];
-	// 現在のインデックス
-	uint32_t currentIndex_[static_cast<uint32_t>(BlendMode::Num)];
+		// パレットのリソース
+		ComPtr<ID3D12Resource> paletteResource_ = nullptr;
+		std::span<WellForGPU> mappedPalette_;
+		uint32_t paletteSrvIndex_ = 0;
 
-	// スケルトン
-	std::unique_ptr<Magi::Skeleton> skeleton_ = nullptr;
-	// 補完用ジョイント
-	std::vector<Joint> lerpJoints_;
-	// アニメーション遷移時間
-	float animationLerpTime_ = 0.3f;
+		// 逆バインドポーズ
+		std::vector<Matrix4x4> inverseBindPoseMatrices_;
 
-	// パレットのリソース
-	ComPtr<ID3D12Resource> paletteResource_ = nullptr;
-	std::span<WellForGPU> mappedPalette_;
-	uint32_t paletteSrvIndex_ = 0;
-
-	// 逆バインドポーズ
-	std::vector<Matrix4x4> inverseBindPoseMatrices_;
-
-};
+	};
+}
