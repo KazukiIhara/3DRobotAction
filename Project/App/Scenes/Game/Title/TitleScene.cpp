@@ -14,6 +14,10 @@ void TitleScene::Initialize() {
 	MAGISYSTEM::AddParameterData({ "UI","Title","AlphaEffectStart" }, Magi::ParamType::Float);
 	MAGISYSTEM::AddParameterData({ "UI","Title","AlphaEffectEnd" }, Magi::ParamType::Float);
 
+	// テクスチャをロード
+	MAGISYSTEM::LoadTexture("White.png");
+	MAGISYSTEM::LoadTexture("Title.png");
+	MAGISYSTEM::LoadTexture("PressAButton.png");
 
 	// サイズを設定
 	data_.size = { WindowApp::kClientWidth,WindowApp::kClientHeight };
@@ -27,11 +31,11 @@ void TitleScene::Initialize() {
 
 	// 座標設定
 	uiData_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Title","PressAnyButton" });
-	uiMat_.textureName = "PressAnyButton.png";
+	uiMat_.textureName = "PressAButton.png";
 	uiMat_.anchorPoint = { 0.5f,0.5f };
 
 	uiEffectData_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","Title","PressAnyButton" });
-	uiEffectMat_.textureName = "PressAnyButton.png";
+	uiEffectMat_.textureName = "PressAButton.png";
 	uiEffectMat_.anchorPoint = { 0.5f,0.5f };
 
 }

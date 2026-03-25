@@ -165,6 +165,15 @@
         "y": 900.0
       }
     },
+    "PressAtoTitle": {
+      "Pos": {
+        "type": "Vec2",
+        "value": {
+          "x": 960.0,
+          "y": 900.0
+        }
+      }
+    },
     "SizeEffectEnd": {
       "type": "Vec2",
       "value": {

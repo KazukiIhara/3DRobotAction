@@ -19,4 +19,7 @@ private:
 	SpriteData data_{};
 	SpriteMaterialData mat_{};
 
+	SpriteData uidData_{};
+	SpriteMaterialData uiMat_{};
+
 };
