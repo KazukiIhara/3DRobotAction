@@ -67,6 +67,24 @@ void PilotMechStateDodge::Update(PilotMech* mech) {
 		mech->ChangeState(PilotMech::State::Move);
 		return;
 	}
+
+
+	// ラジアルブラーエフェクト
+	const float kMaxTime = MAGISYSTEM::GetParameterValue<float>({ "PilotMechStateParam","Dodge","Time" });
+	// ブラーの最大値
+	const float kMaxBlurWidth = MAGISYSTEM::GetParameterValue<float>({ "EffectParam","Dodge","MaxBlur" });
+	// ブラーの値を補完計算
+	const float blurWitdh = (timer_ / kMaxTime) * kMaxBlurWidth;
+
+	// ブラーの座標計算
+	const Vector3 blurWorldPos = mech->GetTargetWorldPos();
+	const Vector2 blurScreenPos = TransformWorldToScreen(blurWorldPos).second;
+	const Vector2 blurScreenPosClamped = {
+		std::clamp(blurScreenPos.x / Magi::WindowApp::kClientWidth,0.0f,1.0f),
+		std::clamp(blurScreenPos.y / Magi::WindowApp::kClientHeight,0.0f,1.0f)
+	};
+	// ブラーを掛ける
+	MAGISYSTEM::ApplyPostEffectRadialBlur(blurScreenPosClamped, blurWitdh);
 }
 
 void PilotMechStateDodge::Exit([[maybe_unused]] PilotMech* mech) {

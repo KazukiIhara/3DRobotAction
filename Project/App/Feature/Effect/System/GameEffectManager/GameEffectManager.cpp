@@ -11,8 +11,10 @@ BaseGameEffect* GameEffectManager::Add(std::unique_ptr<BaseGameEffect> effect) {
 
 void GameEffectManager::Update() {
 	for (auto& effect : effects_) {
-		if (effect && effect->IsAlive()) {
-			effect->Update();
+		if (effect) {
+			if (effect->IsAlive()) {
+				effect->Update();
+			}
 		}
 	}
 	// 死んでいるエフェクトを削除
@@ -21,8 +23,10 @@ void GameEffectManager::Update() {
 
 void GameEffectManager::Draw() {
 	for (auto& effect : effects_) {
-		if (effect && effect->IsAlive()) {
-			effect->Draw();
+		if (effect) {
+			if (effect->IsAlive()) {
+				effect->Draw();
+			}
 		}
 	}
 }

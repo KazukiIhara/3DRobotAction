@@ -42,7 +42,9 @@ namespace {
 			// プレイヤーの位置に向かう処理
 			const Vector3 targetPos = mech->GetTargetWorldPos();
 			const Vector3 curPos = mech->GetCenterPos();
-			const Vector3 dir = targetPos - curPos;
+			Vector3 dir = targetPos - curPos;
+			// Y軸移動をなくす
+			dir.y = 0.0f;
 			const float len = Length(dir);
 			const Vector3 dirN = Normalize(dir);
 			auto ms = mech->GetMoveSystem();
@@ -130,7 +132,9 @@ namespace {
 			// プレイヤーの位置に向かう処理
 			const Vector3 targetPos = mech->GetTargetWorldPos();
 			const Vector3 curPos = mech->GetCenterPos();
-			const Vector3 dir = targetPos - curPos;
+			Vector3 dir = targetPos - curPos;
+			// Y軸移動をなくす
+			dir.y = 0.0f;
 			const float len = Length(dir);
 			const Vector3 dirN = Normalize(dir);
 			auto ms = mech->GetMoveSystem();

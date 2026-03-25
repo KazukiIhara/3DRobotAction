@@ -81,6 +81,12 @@
       "value": 2.0
     }
   },
+  "Dodge": {
+    "MaxBlur": {
+      "type": "Float",
+      "value": 0.009999999776482582
+    }
+  },
   "Explosion": {
     "ExplosionParticleColor": {
       "type": "Vec4",
@@ -153,6 +159,10 @@
     "EffectTime": {
       "type": "Float",
       "value": 0.6000000238418579
+    },
+    "MaxBlur": {
+      "type": "Float",
+      "value": 0.019999999552965164
     },
     "ParticleColor": {
       "type": "Vec4",
