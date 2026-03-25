@@ -44,7 +44,7 @@ WeaponUI::WeaponUI(PilotMech* pilotMech) {
 	MAGISYSTEM::LoadTexture("LTEnable.png");
 	MAGISYSTEM::LoadTexture("RTEnable.png");
 
-	
+
 
 	// パラメータ取得
 	cannonRifle_.position = MAGISYSTEM::GetParameterValue<Vector2>({ "UI","CannonRifle","Pos" });
@@ -118,58 +118,64 @@ void WeaponUI::Update() {
 	PilotMech::State cs = pilotMech_->GetCurrentState();
 	// ステートごとに切り替え
 	switch (cs) {
-		case PilotMech::State::Idle:
-			ltMat_.textureName = "LT.png";
-			lbMat_.textureName = "LBEnable.png";
-			rbMat_.textureName = "RBEnable.png";
-			break;
-		case PilotMech::State::Move:
-			ltMat_.textureName = "LT.png";
-			lbMat_.textureName = "LBEnable.png";
-			rbMat_.textureName = "RBEnable.png";
-			break;
-		case PilotMech::State::Dodge:
-			ltMat_.textureName = "LT.png";
-			lbMat_.textureName = "LBEnable.png";
-			rbMat_.textureName = "RB.png";
-			break;
-		case PilotMech::State::JustDodge:
-			ltMat_.textureName = "LTEnable.png";
-			lbMat_.textureName = "LBEnable.png";
-			rbMat_.textureName = "RB.png";
-			break;
-		case PilotMech::State::JustDodgeAttack:
-			ltMat_.textureName = "LT.png";
-			lbMat_.textureName = "LB.png";
-			rbMat_.textureName = "RB.png";
-			break;
-		case PilotMech::State::HitReact:
-			ltMat_.textureName = "LT.png";
-			lbMat_.textureName = "LB.png";
-			rbMat_.textureName = "RB.png";
-			break;
-		case PilotMech::State::KnockBack:
-			ltMat_.textureName = "LT.png";
-			lbMat_.textureName = "LB.png";
-			rbMat_.textureName = "RB.png";
-			break;
-		default:
-			break;
+	case PilotMech::State::Idle:
+		ltMat_.textureName = "LT.png";
+		lbMat_.textureName = "LBEnable.png";
+		rbMat_.textureName = "RBEnable.png";
+		break;
+	case PilotMech::State::Move:
+		ltMat_.textureName = "LT.png";
+		lbMat_.textureName = "LBEnable.png";
+		rbMat_.textureName = "RBEnable.png";
+		break;
+	case PilotMech::State::Dodge:
+		ltMat_.textureName = "LT.png";
+		lbMat_.textureName = "LBEnable.png";
+		rbMat_.textureName = "RB.png";
+		break;
+	case PilotMech::State::JustDodge:
+		ltMat_.textureName = "LTEnable.png";
+		lbMat_.textureName = "LBEnable.png";
+		rbMat_.textureName = "RB.png";
+		break;
+	case PilotMech::State::JustDodgeAttack:
+		ltMat_.textureName = "LT.png";
+		lbMat_.textureName = "LB.png";
+		rbMat_.textureName = "RB.png";
+		break;
+	case PilotMech::State::HitReact:
+		ltMat_.textureName = "LT.png";
+		lbMat_.textureName = "LB.png";
+		rbMat_.textureName = "RB.png";
+		break;
+	case PilotMech::State::KnockBack:
+		ltMat_.textureName = "LT.png";
+		lbMat_.textureName = "LB.png";
+		rbMat_.textureName = "RB.png";
+		break;
+	default:
+		break;
 	}
 }
 
 void WeaponUI::Draw() {
 
-	MAGISYSTEM::DrawSprite(jump_, jumpMat_);
-	MAGISYSTEM::DrawSprite(dodge_, dodgeMat_);
-	MAGISYSTEM::DrawSprite(lb_, lbMat_);
-	MAGISYSTEM::DrawSprite(rb_, rbMat_);
+	const Vector3 pilotWPos = pilotMech_->GetCenterPos();
+	const bool isDraw = TransformWorldToScreen(pilotWPos).first;
+
+	if (isDraw) {
+		MAGISYSTEM::DrawSprite(jump_, jumpMat_);
+		MAGISYSTEM::DrawSprite(dodge_, dodgeMat_);
+		MAGISYSTEM::DrawSprite(lb_, lbMat_);
+		MAGISYSTEM::DrawSprite(rb_, rbMat_);
+	}
 
 	MAGISYSTEM::DrawSprite(cannonRifle_, cannonRifleMat_);
 	MAGISYSTEM::DrawSprite(machineGun_, machineGunMat_);
 
 	MAGISYSTEM::DrawSprite(lt_, ltMat_);
 	MAGISYSTEM::DrawSprite(rt_, rtMat_);
+
 
 	const int32_t mgAmmo = dynamic_cast<PilotMechWeaponMachineGun*>(pilotMech_->GetWeapon("MachineGun"))->GetAmmo();
 	MAGISYSTEM::DrawFont(std::to_string(mgAmmo) + "/30", ammoPos_, Color::White, ammoSize_);
