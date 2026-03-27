@@ -1,4 +1,5 @@
 #pragma once
 #include <wrl.h>
 
-using namespace Microsoft::WRL;
+template<typename T>
+using ComPtr = Microsoft::WRL::ComPtr<T>;
