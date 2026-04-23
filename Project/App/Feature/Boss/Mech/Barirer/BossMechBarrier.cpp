@@ -64,11 +64,6 @@ void BossMechBarrier::Damage(float damage) {
 	status_.hp = std::max(0.0f, status_.hp);
 }
 
-void BossMechBarrier::RepairBarrier() {
-	// HPを回復
-	status_.hp;
-}
-
 const BossMechBarrier::Status& BossMechBarrier::GetState() {
 	return status_;
 }
