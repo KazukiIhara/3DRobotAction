@@ -37,8 +37,6 @@ public:
 
 	// ダメージを与える
 	void Damage(float damage);
-	// バリア復活
-	void RepairBarrier();
 
 	const Status& GetState();
 
